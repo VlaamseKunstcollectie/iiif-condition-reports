@@ -8,9 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateController extends AbstractController
 {
     /**
-     * @Route("/create", name="create")
+     * @Route("/create/{type}/{inventorynumber}", name="create", defaults={"inventorynumber"=""})
      */
-    public function create()
+    public function create($type, $inventorynumber)
     {
         return $this->render('create.html.twig');
     }

@@ -1,0 +1,41 @@
+
+.reports {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    color: #37559d;
+}
+
+.reports a {
+    color: #5165ff;
+}
+
+.reports-header {
+    display: grid;
+    text-decoration: none;
+    color: black;
+    grid-template-columns: repeat(2, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+}
+
+.reports-row {
+    display: grid;
+    text-decoration: none;
+    color: inherit;
+    grid-template-columns: repeat(2, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+    cursor: pointer;
+}
+
+.reports-row:hover, .reports-row:focus {
+    background: #f2f3ff;
+    outline: none;
+}
+
+.reports-cell {
+    padding: 18px;
+}
+
