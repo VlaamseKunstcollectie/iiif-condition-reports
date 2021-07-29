@@ -215,4 +215,5 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
         $xpath = 'descendant::' . $xpath;
         $xpath = $prepend . $xpath;
         return $xpath;
-    }}
+    }
+}
