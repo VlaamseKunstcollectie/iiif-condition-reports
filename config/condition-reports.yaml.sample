@@ -50,3 +50,7 @@ parameters:
     handling_en:
       xpath: 'descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="en"]'
       field: 'en-handling'
+
+    authentication_url: 'https://imagehub.kmska.be/public/authenticate'
+    authentication_whitelist:
+      - '127.0.0.1'
