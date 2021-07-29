@@ -1,0 +1,52 @@
+---
+parameters:
+  datahub_url: 'http://datahub.kmska.be'
+  datahub_language: nl
+  datahub_namespace: 'lido'
+  datahub_metadataprefix: 'oai_lido'
+
+  datahub_data_definition:
+    id:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/repositoryWrap/repositorySet/workID[@type="object-number"]'
+      field: 'id'
+    work_pid:
+      xpath: 'objectPublishedID'
+      field: 'pidobject'
+    title_nl:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="nl"]'
+      field: 'nl-titleartwork'
+    title_en:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="en"]'
+      field: 'en-titleartwork'
+    short_description:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
+      field: 'description'
+    creator:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/actor/nameActorSet/appellationValue[@pref="preferred"]'
+      field: 'creatorofartworkobje'
+    creator_role:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/roleActor/term'
+      field: 'roleofcreatorofartworkobje'
+    earliest_date:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/earliestDate'
+      field: 'earliestdate'
+    latest_date:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/latestDate'
+      label: 'latestdate'
+    publisher:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/recordWrap/recordSource/legalBodyName/appellationValue'
+      field: 'publisher'
+    keywords:
+      xpaths:
+        - 'descriptiveMetadata[@xml:lang="{language}"]/objectClassificationWrap/objectWorkTypeWrap/objectWorkType/conceptID[@source="AAT"]'
+        - 'descriptiveMetadata[@xml:lang="{language}"]/objectClassificationWrap/objectWorkTypeWrap/objectWorkType/term[@pref="preferred"]'
+      field: 'keywords'
+    copyright:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/rightsWorkWrap/rightsWorkSet/creditLine'
+      field: 'copyrightnoticeofart'
+    handling_nl:
+      xpath: 'descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="nl"]'
+      field: 'nl-handling'
+    handling_en:
+      xpath: 'descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="en"]'
+      field: 'en-handling'
