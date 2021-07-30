@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreateController extends AbstractController
+class CreateReportController extends AbstractController
 {
     /**
      * @Route("/create/{type}/{id}", name="create", defaults={ "id"="" })

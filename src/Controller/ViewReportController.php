@@ -5,12 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ViewController extends AbstractController
+class ViewReportController extends AbstractController
 {
     /**
      * @Route("/view/{id}", name="view")
      */
-    public function create($id)
+    public function view($id)
     {
         return $this->render('view.html.twig');
     }

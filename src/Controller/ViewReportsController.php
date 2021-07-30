@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ReportsController extends AbstractController
+class ViewReportsController extends AbstractController
 {
     /**
      * @Route("/reports/{action}", name="reports")
