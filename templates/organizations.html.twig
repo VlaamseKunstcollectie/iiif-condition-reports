@@ -1,0 +1,20 @@
+{{ include('header.html.twig') }}
+<h1>Beheer organisaties</h1>
+<div class="create">
+    <div class="create-header">
+        <div class="create-cell">Logo</div>
+        <div class="create-cell">Alias</div>
+        <div class="create-cell">Naam</div>
+        <div class="create-cell">Functie</div>
+    </div>
+    {% for organization in organizations %}
+        <a class="create-row" href="{{ path('organization', { id : organization.id }) }}">
+            <div class="create-cell"><img src="{{  organization.logo }}" alt="" /></div>
+            <div class="create-cell">{{  organization.alias }}</div>
+            <div class="create-cell">{{  organization.name }}</div>
+            <div class="create-cell">{{  organization.function }}</div>
+        </a>
+    {% endfor %}
+</div>
+<a href="{{ path('organization', { type : 'new' }) }}">Een nieuwe organisatie toevoegen</a>
+{{ include('footer.html.twig') }}

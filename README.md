@@ -26,4 +26,22 @@ CREATE TABLE `report_data` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `organizations` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `alias` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `function` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `vat` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `postal` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `mobile` varchar(255) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
