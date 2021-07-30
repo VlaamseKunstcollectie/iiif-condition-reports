@@ -1,6 +1,10 @@
 
+body {
+    text-align: center;
+}
+
 .reports {
-    width: 400px;
+    width: 1000px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -15,7 +19,7 @@
     display: grid;
     text-decoration: none;
     color: black;
-    grid-template-columns: repeat(2, 200px);
+    grid-template-columns: repeat(5, 200px);
     place-items: start;
     border-bottom: 2px solid #ccd2ff;
 }
@@ -24,7 +28,7 @@
     display: grid;
     text-decoration: none;
     color: inherit;
-    grid-template-columns: repeat(2, 200px);
+    grid-template-columns: repeat(5, 200px);
     place-items: start;
     border-bottom: 2px solid #ccd2ff;
     cursor: pointer;

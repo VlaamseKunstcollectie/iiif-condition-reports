@@ -4,12 +4,18 @@
 {% else %}
     <div class="reports">
         <div class="reports-header">
+            <div class="reports-cell">Thumbnail</div>
             <div class="reports-cell">Inventarisnummer</div>
+            <div class="reports-cell">Titel</div>
+            <div class="reports-cell">Vervaardiger</div>
             <div class="reports-cell">Laatste wijziging</div>
         </div>
         {% for result in search_results %}
-            <a class="reports-row" href="{{ path(action, { type : type, inventorynumber : result.inventory_number }) }}">
+            <a class="reports-row" href="{{ path(action, { id : result.id }) }}">
+                <div class="reports-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
                 <div class="reports-cell">{{  result.inventory_number }}</div>
+                <div class="reports-cell">{{  result.title }}</div>
+                <div class="reports-cell">{{  result.creator }}</div>
                 <div class="reports-cell">{{  result.last_modified }}</div>
             </a>
         {% endfor %}

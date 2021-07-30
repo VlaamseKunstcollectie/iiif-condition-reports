@@ -8,9 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewController extends AbstractController
 {
     /**
-     * @Route("/view/{inventorynumber}", name="view")
+     * @Route("/view/{id}", name="view")
      */
-    public function create($inventorynumber)
+    public function create($id)
     {
         return $this->render('view.html.twig');
     }

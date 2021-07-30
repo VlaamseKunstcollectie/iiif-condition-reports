@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DatahubData;
 use App\Entity\Report;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,17 +19,47 @@ class ReportsController extends AbstractController
         $em = $this->container->get('doctrine')->getManager();
 
         $searchResults = array();
-        $reports = $em->createQueryBuilder()
-            ->select('i')
-            ->from(Report::class, 'i')
-//            ->orderBy('i.last_modified', 'DESC')
+        $reportData = $em->createQueryBuilder()
+            ->select('r', 'd')
+            ->from(Report::class, 'r')
+            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryNumber')
+            ->orderBy('r.lastModified', 'DESC')
             ->getQuery()
             ->getResult();
-        foreach ($reports as $report) {
-            $searchResults[] = [
-                'inventory_number' => $report->getInventoryNumber(),
-                'last_modified' => $report->getLastModified()->format('Y-m-d H:i:s')
-            ];
+        $currentReport = array();
+        foreach ($reportData as $data) {
+            if($data instanceof Report) {
+                if(!empty($currentReport)) {
+                    $searchResults[] = $currentReport;
+                }
+                $currentReport = array(
+                    'id' => $data->getId(),
+                    'inventory_number' => $data->getInventoryNumber(),
+                    'last_modified' => $data->getLastModified()->format('Y-m-d H:i:s'),
+                    'title' => '',
+                    'creator' => '',
+                    'thumbnail' => ''
+                );
+            } elseif($data instanceof DatahubData) {
+                if(!empty($currentReport)) {
+                    switch($data->getName()) {
+                        case 'nl-titleartwork':
+                            $currentReport['title'] = $data->getValue();
+                            break;
+                        case 'creatorofartworkobje':
+                            $currentReport['creator'] = $data->getValue();
+                            break;
+                        case 'iiif_image_url':
+                            if(strpos($data->getValue(), '/public@') !== false) {
+                                $currentReport['thumbnail'] = $data->getValue() . '/full/100,/0/default.jpg';
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        if(!empty($currentReport)) {
+            $searchResults[] = $currentReport;
         }
 
         return $this->render('reports.html.twig', [

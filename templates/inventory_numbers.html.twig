@@ -1,0 +1,18 @@
+{{ include('header.html.twig') }}
+{{ form(form) }}
+{% if search_results is empty %}
+    <p>Geen inventarisnummers gevonden.</p>
+{% else %}
+    <div class="inventory-numbers">
+        <div class="inventory-numbers-header">
+            <div class="reports-cell">Inventarisnummer</div>
+        </div>
+        {% for result in search_results %}
+            <a class="reports-row" href="{{ path(action, { type : type, inventorynumber : result.inventory_number }) }}">
+                <div class="reports-cell">{{  result.inventory_number }}</div>
+                <div class="reports-cell">{{  result.last_modified }}</div>
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
+{{ include('footer.html.twig') }}
