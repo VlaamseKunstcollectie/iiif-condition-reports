@@ -50,7 +50,13 @@ parameters:
     handling_en:
       xpath: 'descriptiveMetadata/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="en"]'
       field: 'en-handling'
+    iiif_manifest:
+      xpath: 'administrativeMetadata/resourceWrap/resourceSet[resourceType/term="IIIF Manifest"]/resourceID[@source="ImagehubKMSKA"]'
+      field: 'iiif_manifest'
+    iiif_image_url:
+      xpath: 'administrativeMetadata/resourceWrap/resourceSet[resourceType/term="thumbnail"]/resourceID[@source="ImagehubKMSKA"]'
+      field: 'iiif_image_url'
 
-    authentication_url: 'https://imagehub.kmska.be/public/authenticate'
-    authentication_whitelist:
-      - '127.0.0.1'
+  authentication_url: 'https://imagehub.kmska.be/public/authenticate'
+  authentication_whitelist:
+    - '127.0.0.1'
