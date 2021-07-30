@@ -12,7 +12,7 @@ class DatahubData
 {
     /**
      * @ORM\Id()
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -27,36 +27,34 @@ class DatahubData
      */
     private $value;
 
-    public function getId(): ?string
+    public function getId()
     {
         return $this->id;
     }
 
-    public function setId(string $id): self
+    public function setId($id)
     {
         $this->id = $id;
-
-        return $this;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name)
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue()
     {
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    public function setValue($value)
     {
         $this->value = $value;
 

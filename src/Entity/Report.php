@@ -18,9 +18,9 @@ class Report
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
-    private $inventoryNumber;
+    private $inventoryId;
 
     /**
      * @ORM\Column(type="datetime")
@@ -37,14 +37,14 @@ class Report
         $this->id = $id;
     }
 
-    public function getInventoryNumber()
+    public function getInventoryId()
     {
-        return $this->inventoryNumber;
+        return $this->inventoryId;
     }
 
-    public function setInventoryNumber($inventoryNumber)
+    public function setInventoryNumber($inventoryId)
     {
-        $this->inventoryNumber = $inventoryNumber;
+        $this->inventoryId = $inventoryId;
     }
 
     public function getLastModified()

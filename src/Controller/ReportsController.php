@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\DatahubData;
+use App\Entity\InventoryNumber;
 use App\Entity\Report;
+use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,46 +22,37 @@ class ReportsController extends AbstractController
 
         $searchResults = array();
         $reportData = $em->createQueryBuilder()
-            ->select('r', 'd')
+            ->select('r.id, r.inventoryId, r.lastModified, i.inventoryNumber, d.name, d.value')
             ->from(Report::class, 'r')
-            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryNumber')
+            ->leftJoin(InventoryNumber::class, 'i', 'WITH', 'i.id = r.inventoryId')
+            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryId')
             ->orderBy('r.lastModified', 'DESC')
+            ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
-        $currentReport = array();
         foreach ($reportData as $data) {
-            if($data instanceof Report) {
-                if(!empty($currentReport)) {
-                    $searchResults[] = $currentReport;
-                }
-                $currentReport = array(
-                    'id' => $data->getId(),
-                    'inventory_number' => $data->getInventoryNumber(),
-                    'last_modified' => $data->getLastModified()->format('Y-m-d H:i:s'),
+            if(!array_key_exists($data['id'], $searchResults)) {
+                $searchResults[$data['id']] = [
+                    'id' => $data['id'],
+                    'inventory_id' => $data['inventoryId'],
+                    'last_modified' => $data['lastModified']->format('Y-m-d H:i:s'),
+                    'inventory_number' => $data['inventoryNumber'],
+                    'thumbnail' => '',
                     'title' => '',
-                    'creator' => '',
-                    'thumbnail' => ''
-                );
-            } elseif($data instanceof DatahubData) {
-                if(!empty($currentReport)) {
-                    switch($data->getName()) {
-                        case 'nl-titleartwork':
-                            $currentReport['title'] = $data->getValue();
-                            break;
-                        case 'creatorofartworkobje':
-                            $currentReport['creator'] = $data->getValue();
-                            break;
-                        case 'iiif_image_url':
-                            if(strpos($data->getValue(), '/public@') !== false) {
-                                $currentReport['thumbnail'] = $data->getValue() . '/full/100,/0/default.jpg';
-                            }
-                            break;
-                    }
-                }
+                    'creator' => ''
+                ];
             }
-        }
-        if(!empty($currentReport)) {
-            $searchResults[] = $currentReport;
+            switch($data['name']) {
+                case 'iiif_image_url':
+                    $searchResults[$data['id']]['thumbnail'] = IIIFUtil::generateThumbnail($data['value']);
+                    break;
+                case 'nl-titleartwork':
+                    $searchResults[$data['id']]['title'] = $data['value'];
+                    break;
+                case 'creatorofartworkobje':
+                    $searchResults[$data['id']]['creator'] = $data['value'];
+                    break;
+            }
         }
 
         return $this->render('reports.html.twig', [

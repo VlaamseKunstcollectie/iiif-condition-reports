@@ -3,6 +3,8 @@
 namespace App\Command;
 
 use App\Entity\DatahubData;
+use App\Entity\InventoryNumber;
+use App\Entity\Report;
 use App\Utils\StringUtil;
 use DOMDocument;
 use DOMXPath;
@@ -81,7 +83,7 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
             $records = $datahubEndpoint->listRecords($this->metadataPrefix);
             $n = 0;
             foreach($records as $record) {
-                $id = null;
+                $inventoryNumber = null;
                 $datahubData = array();
 
                 $data = $record->metadata->children($this->namespace, true);
@@ -131,14 +133,14 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     if ($value != null) {
                         $value = trim($value);
                         if($dataDef['field'] == 'id') {
-                            $id = $value;
+                            $inventoryNumber = $value;
                         } else {
                             $datahubData[$dataDef['field']] = $value;
                         }
                     }
                 }
 
-                if($id != null) {
+                if($inventoryNumber != null) {
                     // Combine earliest and latest date into one
                     if(array_key_exists('earliestdate', $datahubData)) {
                         if(array_key_exists('latestdate', $datahubData)) {
@@ -162,10 +164,29 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     if(!array_key_exists('creatorofartworkobje', $datahubData)) {
                         $datahubData['creatorofartworkobje'] = '';
                     }
+
+                    $invNr = null;
+                    $inventoryNumbers = $em->createQueryBuilder()
+                        ->select('i')
+                        ->from(InventoryNumber::class, 'i')
+                        ->where('i.inventoryNumber = :inventory_number')
+                        ->setParameter('inventory_number',  $inventoryNumber)
+                        ->getQuery()
+                        ->getResult();
+                    foreach ($inventoryNumbers as $nr) {
+                        $invNr = $nr;
+                    }
+                    if($invNr == null) {
+                        $invNr = new InventoryNumber();
+                        $invNr->setInventoryNumber($inventoryNumber);
+                        $em->persist($invNr);
+                        $em->flush();
+                    }
+
                     // Delete any data that might already exist for this inventory number
                     $query = $qb->delete(DatahubData::class, 'data')
                         ->where('data.id = :id')
-                        ->setParameter('id', $id)
+                        ->setParameter('id', $invNr->getId())
                         ->getQuery();
                     $query->execute();
                     $em->flush();
@@ -174,7 +195,7 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     //Store all relevant Datahub data in mysql
                     foreach($datahubData as $key => $value) {
                         $data = new DatahubData();
-                        $data->setId($id);
+                        $data->setId($invNr->getId());
                         $data->setName($key);
                         $data->setValue($value);
                         $em->persist($data);

@@ -6,6 +6,8 @@ class Search
 {
     private $inventoryNumber;
 
+    private $matchType;
+
     public function getInventoryNumber()
     {
         return $this->inventoryNumber;
@@ -14,5 +16,15 @@ class Search
     public function setInventoryNumber($inventoryNumber)
     {
         $this->inventoryNumber = $inventoryNumber;
+    }
+
+    public function getMatchType()
+    {
+        return $this->matchType;
+    }
+
+    public function setMatchType($matchType)
+    {
+        $this->matchType = $matchType;
     }
 }

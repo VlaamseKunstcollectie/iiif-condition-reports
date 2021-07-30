@@ -1,5 +1,5 @@
 {{ include('header.html.twig') }}
     <p><a href="{{ path('reports', { action : 'view' }) }}">Bekijk bestaande rapporten</a></p>
     <p><a href="{{ path('reports', { action : 'create' }) }}">Creëer nieuw rapport op basis van een bestaand rapport</a></p>
-    <p><a href="{{ path('create') }}">Creëer nieuw blanco rapport</a></p>
+    <p><a href="{{ path('create', { type : 'new' }) }}">Creëer nieuw blanco rapport</a></p>
 {{ include('footer.html.twig') }}
