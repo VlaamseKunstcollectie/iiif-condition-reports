@@ -41,6 +41,7 @@ body {
 
 .reports-cell {
     padding: 18px;
+    text-align: left;
 }
 
 .create {
@@ -81,5 +82,6 @@ body {
 
 .create-cell {
     padding: 18px;
+    text-align: left;
 }
 

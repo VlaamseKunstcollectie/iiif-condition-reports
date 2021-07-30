@@ -4,19 +4,9 @@ namespace App\Entity;
 
 class Search
 {
-    private $inventoryNumber;
-
     private $matchType;
 
-    public function getInventoryNumber()
-    {
-        return $this->inventoryNumber;
-    }
-
-    public function setInventoryNumber($inventoryNumber)
-    {
-        $this->inventoryNumber = $inventoryNumber;
-    }
+    private $inventoryNumber;
 
     public function getMatchType()
     {
@@ -26,5 +16,15 @@ class Search
     public function setMatchType($matchType)
     {
         $this->matchType = $matchType;
+    }
+
+    public function getInventoryNumber()
+    {
+        return $this->inventoryNumber;
+    }
+
+    public function setInventoryNumber($inventoryNumber)
+    {
+        $this->inventoryNumber = $inventoryNumber;
     }
 }

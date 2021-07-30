@@ -1,27 +1,28 @@
 {{ include('header.html.twig') }}
 {% if id == '' %}
     {{ form(form) }}
-    {% if search_results is empty %}
-        <p>Geen inventarisnummers gevonden.</p>
-    {% else %}
-        <div class="create">
-            <div class="create-header">
-                <div class="create-cell">Thumbnail</div>
-                <div class="create-cell">Inventarisnummer</div>
-                <div class="create-cell">Titel</div>
-                <div class="create-cell">Vervaardiger</div>
+    {% if search_results is not null %}
+        {% if search_results is empty %}
+            <p>Geen inventarisnummers gevonden.</p>
+        {% else %}
+            <div class="create">
+                <div class="create-header">
+                    <div class="create-cell">Thumbnail</div>
+                    <div class="create-cell">Inventarisnummer</div>
+                    <div class="create-cell">Titel</div>
+                    <div class="create-cell">Vervaardiger</div>
+                </div>
+                {% for result in search_results %}
+                    <a class="create-row" href="{{ path('create', { type: 'new', id : result.id }) }}">
+                        <div class="create-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
+                        <div class="create-cell">{{  result.inventory_number }}</div>
+                        <div class="create-cell">{{  result.title }}</div>
+                        <div class="create-cell">{{  result.creator }}</div>
+                    </a>
+                {% endfor %}
             </div>
-            {% for result in search_results %}
-                <a class="create-row" href="{{ path('create', { type: 'new', id : result.id }) }}">
-                    <div class="create-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
-                    <div class="create-cell">{{  result.inventory_number }}</div>
-                    <div class="create-cell">{{  result.title }}</div>
-                    <div class="create-cell">{{  result.creator }}</div>
-                </a>
-            {% endfor %}
-        </div>
+        {% endif %}
     {% endif %}
-
 {% else %}
     <p>MAAK {{ id }}</p>
 {% endif %}

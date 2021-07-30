@@ -25,8 +25,8 @@ class CreateController extends AbstractController
         if($id === '') {
             $search = new Search();
             $form = $this->createFormBuilder($search)
-                ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer' ])
                 ->add('match_type', ChoiceType::class, [ 'label' => 'Type zoekopdracht', 'choices' => [ 'Volledig' => 0, 'Gedeeltelijk' => 1, 'Begint met' => 2 ]])
+                ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer' ])
                 ->add('submit', SubmitType::class, [ 'label' => 'Zoeken' ])
                 ->getForm();
             $form->handleRequest($request);
