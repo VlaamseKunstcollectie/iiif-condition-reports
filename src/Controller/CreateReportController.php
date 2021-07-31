@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
+use App\Entity\Report;
+use App\Entity\ReportData;
 use App\Entity\Search;
 use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +24,8 @@ class CreateReportController extends AbstractController
     {
         $formView = null;
         $searchResults = null;
+        $prefilledData = array();
+        $reportReasons = $this->getParameter('report_reasons');
         if($id === '') {
             $search = new Search();
             $form = $this->createFormBuilder($search)
@@ -78,11 +82,73 @@ class CreateReportController extends AbstractController
                 }
             }
             $formView = $form->createView();
+        } else {
+            $em = $this->container->get('doctrine')->getManager();
+            if($type ===  'existing') {
+                $reportData = $em->createQueryBuilder()
+                    ->select('r.id, r.lastModified, d.name, d.value')
+                    ->from(Report::class, 'r')
+                    ->leftJoin(ReportData::class, 'd', 'WITH', 'd.id = r.id')
+                    ->where('r.id = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+                    ->getResult();
+                foreach ($reportData as $data) {
+                    $prefilledData[$data['name']] = $data['value'];
+                }
+            } else if($type === 'new') {
+                $datahubData = $em->createQueryBuilder()
+                    ->select('i.inventoryNumber, d.name, d.value')
+                    ->from(InventoryNumber::class, 'i')
+                    ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
+                    ->where('i.id = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+                    ->getResult();
+                foreach ($datahubData as $data) {
+                    if (empty($prefilledData)) {
+                        $prefilledData = [
+                            'id' => $data['id'],
+                            'inventory_number' => $data['inventoryNumber'],
+                            'thumbnail' => '',
+                            'title' => '',
+                            'creator' => '',
+                            'iiif_manifest' => ''
+                        ];
+                    }
+                    switch ($data['name']) {
+                        case 'iiif_image_url':
+                            $searchResults[$data['id']]['thumbnail'] = IIIFUtil::generateThumbnail($data['value']);
+                            break;
+                        case 'nl-titleartwork':
+                            $searchResults[$data['id']]['title'] = $data['value'];
+                            break;
+                        case 'creatorofartworkobje':
+                            $searchResults[$data['id']]['creator'] = $data['value'];
+                            break;
+                        case 'iiif_manifest_url':
+                            $searchResults[$data['id']]['manifest'] = IIIFUtil::generateThumbnail($data['value']);
+                            break;
+                    }
+                }
+                $ok = true;
+                if(!array_key_exists('manifest', $prefilledData)) {
+                    $ok = false;
+                } else if(empty($prefilledData['manifest'])) {
+                    $ok = false;
+                }
+                if(!$ok) {
+                    //TODO give error
+                }
+            }
         }
         return $this->render('create.html.twig', [
             'form' => $formView,
-            'search_results' => $searchResults,
-            'id' => $id
+            'type' => $type,
+            'id' => $id,
+            'prefilled_data' => $prefilledData,
+            'report_reasons' => $reportReasons,
+            'search_results' => $searchResults
         ]);
     }
 }
