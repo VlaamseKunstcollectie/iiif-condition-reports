@@ -60,6 +60,11 @@ class Organization
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $country;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $email;
 
     /**
@@ -170,6 +175,16 @@ class Organization
     public function setCity($city)
     {
         $this->city = $city;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function setCountry($country)
+    {
+        $this->country = $country;
     }
 
     public function getEmail()

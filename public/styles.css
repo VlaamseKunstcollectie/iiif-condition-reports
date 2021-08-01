@@ -39,12 +39,12 @@ body {
     outline: none;
 }
 
-.reports-cell {
+.table-cell {
     padding: 18px;
     text-align: left;
 }
 
-.create {
+.search {
     width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -52,11 +52,11 @@ body {
     color: #37559d;
 }
 
-.create a {
+.search a {
     color: #5165ff;
 }
 
-.create-header {
+.search-header {
     display: grid;
     text-decoration: none;
     color: black;
@@ -65,7 +65,7 @@ body {
     border-bottom: 2px solid #ccd2ff;
 }
 
-.create-row {
+.search-row {
     display: grid;
     text-decoration: none;
     color: inherit;
@@ -75,13 +75,7 @@ body {
     cursor: pointer;
 }
 
-.create-row:hover, .create-row:focus {
+.search-row:hover, .search-row:focus {
     background: #f2f3ff;
     outline: none;
 }
-
-.create-cell {
-    padding: 18px;
-    text-align: left;
-}
-

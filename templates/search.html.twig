@@ -4,27 +4,27 @@
     {% if search_results is empty %}
         <p>Geen inventarisnummers gevonden.</p>
     {% else %}
-        <div class="create">
-            <div class="create-header">
-                <div class="create-cell">Thumbnail</div>
-                <div class="create-cell">Inventarisnummer</div>
-                <div class="create-cell">Titel</div>
-                <div class="create-cell">Vervaardiger</div>
+        <div class="search">
+            <div class="search-header">
+                <div class="search-cell">Thumbnail</div>
+                <div class="search-cell">Inventarisnummer</div>
+                <div class="search-cell">Titel</div>
+                <div class="search-cell">Vervaardiger</div>
             </div>
             {% for result in search_results %}
                 {% if result.thumbnail is empty %}
-                    <div class="create-row" onclick="alert('Fout: inventarisnummer \'{{ result.inventory_number }}\' heeft geen afbeelding.')">
-                        <div class="create-cell"></div>
-                        <div class="create-cell">{{  result.inventory_number }}</div>
-                        <div class="create-cell">{{  result.title }}</div>
-                        <div class="create-cell">{{  result.creator }}</div>
+                    <div class="search-row" onclick="alert('Fout: inventarisnummer \'{{ result.inventory_number }}\' heeft geen afbeelding.')">
+                        <div class="search-cell"></div>
+                        <div class="search-cell">{{  result.inventory_number }}</div>
+                        <div class="search-cell">{{  result.title }}</div>
+                        <div class="search-cell">{{  result.creator }}</div>
                     </div>
                 {% else %}
-                    <a class="create-row" href="{{ path('create_blank', { id : result.id }) }}">
-                        <div class="create-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
-                        <div class="create-cell">{{  result.inventory_number }}</div>
-                        <div class="create-cell">{{  result.title }}</div>
-                        <div class="create-cell">{{  result.creator }}</div>
+                    <a class="search-row" href="{{ path('create_blank', { id : result.id }) }}">
+                        <div class="search-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
+                        <div class="search-cell">{{  result.inventory_number }}</div>
+                        <div class="search-cell">{{  result.title }}</div>
+                        <div class="search-cell">{{  result.creator }}</div>
                     </a>
                 {% endif %}
             {% endfor %}
