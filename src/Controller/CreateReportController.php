@@ -27,6 +27,7 @@ class CreateReportController extends AbstractController
         $prefilledData = [
             'report_history' => array(),
             'base_id' => '',
+            'inventory_id' => '',
             'inventory_number' => '',
             'thumbnail' => '',
             'title' => '',
@@ -86,7 +87,7 @@ class CreateReportController extends AbstractController
             $em = $this->container->get('doctrine')->getManager();
             if($type ===  'existing') {
                 $reportData = $em->createQueryBuilder()
-                    ->select('r.id, r.baseId, r.timestamp, d.name, d.value')
+                    ->select('r.id, r.inventoryId, r.baseId, r.timestamp, d.name, d.value')
                     ->from(Report::class, 'r')
                     ->leftJoin(ReportData::class, 'd', 'WITH', 'd.id = r.id')
                     ->where('r.id = :id')
@@ -96,6 +97,9 @@ class CreateReportController extends AbstractController
                 foreach ($reportData as $data) {
                     if(empty($prefilledData['base_id'])) {
                         $prefilledData['base_id'] = $data['baseId'];
+                    }
+                    if(empty($prefilledData['inventory_id'])) {
+                        $prefilledData['inventory_id'] = $data['inventoryId'];
                     }
                     $prefilledData[$data['name']] = $data['value'];
                 }
@@ -115,7 +119,7 @@ class CreateReportController extends AbstractController
                 }
             } else if($type === 'new') {
                 $datahubData = $em->createQueryBuilder()
-                    ->select('i.inventoryNumber, d.name, d.value')
+                    ->select('i.id, i.inventoryNumber, d.name, d.value')
                     ->from(InventoryNumber::class, 'i')
                     ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
                     ->where('i.id = :id')
@@ -123,6 +127,9 @@ class CreateReportController extends AbstractController
                     ->getQuery()
                     ->getResult();
                 foreach ($datahubData as $data) {
+                    if (empty($prefilledData['inventory_id'])) {
+                        $prefilledData['inventory_id'] = $data['id'];
+                    }
                     if (empty($prefilledData['inventory_number'])) {
                         $prefilledData['inventory_number'] = $data['inventoryNumber'];
                     }
