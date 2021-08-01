@@ -1,16 +1,34 @@
+<script>
+    var {{ type }}Organizations = {{ organizations | json_encode | raw }};
+
+    function fill{{ type }}Organization(id) {
+        for(var key in {{ type }}Organizations[id]) {
+            var element = document.querySelector("input[name='{{ type }}_" + key + "']");
+            if(element != null) {
+                element.value = {{ type }}Organizations[id][key];
+            }
+        }
+    }
+</script>
+<select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
+    <option></option>
+    {% for organization in organizations %}
+        <option value="{{ organization.id }}">{{ organization.alias }}</option>
+    {% endfor %}
+</select>
 <div>
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_name', 'label': 'Naam' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_vat', 'label': 'BTW-nummer' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_vat', 'label': 'BTW-nummer' } %}
 <div>
 </div>
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_address', 'label': 'Adres' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_postal', 'label': 'Postcode' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_city', 'label': 'Gemeente' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_country', 'label': 'Land' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_address', 'label': 'Adres' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_postal', 'label': 'Postcode' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_city', 'label': 'Gemeente' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_country', 'label': 'Land' } %}
 </div>
 <div>
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_email', 'label': 'E-mail' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_website', 'label': 'Website' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_phone', 'label': 'Tel.' } %}
-    {% include 'textfield.html.twig' with { 'name': '{{ type }}_mobile', 'label': 'GSM' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_website', 'label': 'Website' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Tel.' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_mobile', 'label': 'GSM' } %}
 </div>

@@ -2,16 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\DatahubData;
-use App\Entity\InventoryNumber;
+use App\Entity\Organization;
 use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
-use App\Entity\Search;
+use App\Entity\Representative;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -56,9 +52,34 @@ class CreateExistingReportController extends AbstractController
             }
             $prefilledData['report_history'][$history->getPreviousId()] = $history->getOrder();
         }
+
+        $organizations = array();
+        $organizationData = $em->createQueryBuilder()
+            ->select('o')
+            ->from(Organization::class, 'o')
+            ->orderBy('o.alias')
+            ->getQuery()
+            ->getResult();
+        foreach ($organizationData as $organization) {
+            $organizations[$organization->getId()] = $organization;
+        }
+
+        $representatives = array();
+        $representativeData = $em->createQueryBuilder()
+            ->select('r')
+            ->from(Representative::class, 'r')
+            ->orderBy('r.alias')
+            ->getQuery()
+            ->getResult();
+        foreach ($representativeData as $representative) {
+            $representatives[$representative->getId()] = $representative;
+        }
+
         return $this->render('create_existing.html.twig', [
             'prefilled_data' => $prefilledData,
-            'report_reasons' => $reportReasons
+            'report_reasons' => $reportReasons,
+            'organizations' => $organizations,
+            'representatives' => $representatives
         ]);
     }
 }

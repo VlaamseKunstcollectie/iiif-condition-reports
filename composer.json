@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-dom": "20031129",
         "ext-iconv": "*",
+        "ext-json": "^7.4",
         "caseyamcl/phpoaipmh": "^3.3",
         "composer/package-versions-deprecated": "1.11.99.2",
         "doctrine/doctrine-bundle": "^2.4",

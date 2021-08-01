@@ -25,7 +25,7 @@ class Organization
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,52 +35,52 @@ class Organization
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $logo;
+    public $logo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $vat;
+    public $vat;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $address;
+    public $address;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $postal;
+    public $postal;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $city;
+    public $city;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $country;
+    public $country;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    public $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $website;
+    public $website;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $phone;
+    public $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mobile;
+    public $mobile;
 
     /**
      * @ORM\Column(type="string", length=255)

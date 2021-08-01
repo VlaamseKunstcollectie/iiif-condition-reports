@@ -15,32 +15,32 @@ class Representative
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $alias;
+    public $alias;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $function;
+    public $function;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    public $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $phone;
+    public $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
