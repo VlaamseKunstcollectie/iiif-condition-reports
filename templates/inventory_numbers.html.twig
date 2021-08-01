@@ -10,7 +10,6 @@
         {% for result in search_results %}
             <a class="reports-row" href="{{ path(action, { type : type, inventorynumber : result.inventory_number }) }}">
                 <div class="reports-cell">{{  result.inventory_number }}</div>
-                <div class="reports-cell">{{  result.last_modified }}</div>
             </a>
         {% endfor %}
     </div>

@@ -51,7 +51,6 @@
         </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
         <input type="submit" value="Submit">
     </form>
-    <p>{{ report_reasons | json_encode | raw }}</p>
     <p>{{ prefilled_data | json_encode | raw }}</p>
 {% endif %}
 {{ include('footer.html.twig') }}

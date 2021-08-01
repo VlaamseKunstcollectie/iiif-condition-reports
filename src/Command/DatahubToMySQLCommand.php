@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
 use App\Entity\Report;
+use App\Utils\IIIFUtil;
 use App\Utils\StringUtil;
 use DOMDocument;
 use DOMXPath;
@@ -102,9 +103,6 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                 $xpath = new DOMXPath($domDoc);
 
                 foreach ($this->dataDefinition as $key => $dataDef) {
-                    if(!array_key_exists('field', $dataDef)) {
-                        continue;
-                    }
                     $xpaths = array();
                     if(array_key_exists('xpaths', $dataDef)) {
                         $xpaths = $dataDef['xpaths'];
@@ -132,37 +130,42 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     }
                     if ($value != null) {
                         $value = trim($value);
-                        if($dataDef['field'] == 'id') {
+                        if($key == 'id') {
                             $inventoryNumber = $value;
                         } else {
-                            $datahubData[$dataDef['field']] = $value;
+                            $datahubData[$key] = $value;
                         }
                     }
                 }
 
                 if($inventoryNumber != null) {
                     // Combine earliest and latest date into one
-                    if(array_key_exists('earliestdate', $datahubData)) {
-                        if(array_key_exists('latestdate', $datahubData)) {
-                            $datahubData['datecreatedofartwork'] = StringUtil::getDateRange($datahubData['earliestdate'], $datahubData['latestdate']);
-                            unset($datahubData['latestdate']);
+                    if(array_key_exists('earliest_date', $datahubData)) {
+                        if(array_key_exists('latest_date', $datahubData)) {
+                            if($datahubData['earliest_date'] === $datahubData['latest_date']) {
+                                $datahubData['creation_date'] = $datahubData['earliest_date'];
+                            }
+                            unset($datahubData['latest_date']);
                         } else {
-                            $datahubData['datecreatedofartwork'] = StringUtil::getDateRange($datahubData['earliestdate'], $datahubData['earliestdate']);
+                            $datahubData['creation_date'] = $datahubData['earliest_date'];
                         }
-                        unset($datahubData['earliestdate']);
-                    } else if(array_key_exists('latestdate', $datahubData)) {
-                        $datahubData['datecreatedofartwork'] = StringUtil::getDateRange($datahubData['latestdate'], $datahubData['latestdate']);
-                        unset($datahubData['latestdate']);
+                        unset($datahubData['earliest_date']);
+                    } else if(array_key_exists('latest_date', $datahubData)) {
+                        $datahubData['creation_date'] = $datahubData['latest_date'];
+                        unset($datahubData['latest_date']);
                     }
                     // Combine role and creator name
-                    if(array_key_exists('roleofcreatorofartworkobje', $datahubData)) {
-                        if(array_key_exists('creatorofartworkobje', $datahubData)) {
-                            $datahubData['creatorofartworkobje'] = ucfirst($datahubData['roleofcreatorofartworkobje']) . ': ' . $datahubData['creatorofartworkobje'];
+                    if(array_key_exists('creator_role', $datahubData)) {
+                        if(array_key_exists('creator_role', $datahubData)) {
+                            $datahubData['creator'] = ucfirst($datahubData['creator_role']) . ': ' . $datahubData['creator'];
                         }
-                        unset($datahubData['roleofcreatorofartworkobje']);
+                        unset($datahubData['creator_role']);
                     }
-                    if(!array_key_exists('creatorofartworkobje', $datahubData)) {
-                        $datahubData['creatorofartworkobje'] = '';
+                    if(!array_key_exists('creator', $datahubData)) {
+                        $datahubData['creator'] = '';
+                    }
+                    if(array_key_exists('iiif_image_url', $datahubData)) {
+                        $datahubData['thumbnail'] = IIIFUtil::generateThumbnail($datahubData['iiif_image_url']);
                     }
 
                     $invNr = null;
@@ -191,7 +194,6 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     $query->execute();
                     $em->flush();
 
-                    $datahubData['dh_record_id'] = $recordId;
                     //Store all relevant Datahub data in mysql
                     foreach($datahubData as $key => $value) {
                         $data = new DatahubData();

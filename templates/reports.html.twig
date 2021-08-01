@@ -8,7 +8,7 @@
             <div class="reports-cell">Inventarisnummer</div>
             <div class="reports-cell">Titel</div>
             <div class="reports-cell">Vervaardiger</div>
-            <div class="reports-cell">Laatste wijziging</div>
+            <div class="reports-cell">Aangemaakt</div>
         </div>
         {% for result in search_results %}
             <a class="reports-row" href="{% if action == 'create' %}{{ path('create', { type : 'existing', id : result.id }) }}{% else %}{{ path('view', { id : result.id }) }}{% endif %}">
@@ -16,7 +16,7 @@
                 <div class="reports-cell">{{  result.inventory_number }}</div>
                 <div class="reports-cell">{{  result.title }}</div>
                 <div class="reports-cell">{{  result.creator }}</div>
-                <div class="reports-cell">{{  result.last_modified }}</div>
+                <div class="reports-cell">{{  result.timestamp }}</div>
             </a>
         {% endfor %}
     </div>

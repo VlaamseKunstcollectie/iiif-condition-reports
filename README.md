@@ -15,9 +15,17 @@ CREATE TABLE `datahub_data` (
 
 CREATE TABLE `reports` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `base_id` INT UNSIGNED NOT NULL,
   `inventory_id` INT UNSIGNED NOT NULL,
-  `last_modified` TIMESTAMP NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `report_history` (
+  `id` INT UNSIGNED NOT NULL,
+  `previous_id` INT UNSIGNED NOT NULL,
+  `order` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`, `previous_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `report_data` (

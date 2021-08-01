@@ -20,21 +20,36 @@ class Report
     /**
      * @ORM\Column(type="integer")
      */
+    private $baseId;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $inventoryId;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $lastModified;
+    private $timestamp;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getBaseId()
+    {
+        return $this->baseId;
+    }
+
+    public function setBaseId($baseId)
+    {
+        $this->baseId = $baseId;
     }
 
     public function getInventoryId()
@@ -47,13 +62,13 @@ class Report
         $this->inventoryId = $inventoryId;
     }
 
-    public function getLastModified()
+    public function getTimestamp()
     {
-        return $this->lastModified;
+        return $this->timestamp;
     }
 
-    public function setLastModified($lastModified)
+    public function setTimestamp($timestamp)
     {
-        $this->lastModified = $lastModified;
+        $this->timestamp = $timestamp;
     }
 }
