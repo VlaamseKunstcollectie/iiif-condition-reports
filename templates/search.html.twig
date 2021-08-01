@@ -6,25 +6,25 @@
     {% else %}
         <div class="search">
             <div class="search-header">
-                <div class="search-cell">Thumbnail</div>
-                <div class="search-cell">Inventarisnummer</div>
-                <div class="search-cell">Titel</div>
-                <div class="search-cell">Vervaardiger</div>
+                <div class="table-cell">Thumbnail</div>
+                <div class="table-cell">Inventarisnummer</div>
+                <div class="table-cell">Titel</div>
+                <div class="table-cell">Vervaardiger</div>
             </div>
             {% for result in search_results %}
                 {% if result.thumbnail is empty %}
                     <div class="search-row" onclick="alert('Fout: inventarisnummer \'{{ result.inventory_number }}\' heeft geen afbeelding.')">
-                        <div class="search-cell"></div>
-                        <div class="search-cell">{{  result.inventory_number }}</div>
-                        <div class="search-cell">{{  result.title }}</div>
-                        <div class="search-cell">{{  result.creator }}</div>
+                        <div class="table-cell"></div>
+                        <div class="table-cell">{{  result.inventory_number }}</div>
+                        <div class="table-cell">{{  result.title }}</div>
+                        <div class="table-cell">{{  result.creator }}</div>
                     </div>
                 {% else %}
                     <a class="search-row" href="{{ path('create_blank', { id : result.id }) }}">
-                        <div class="search-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
-                        <div class="search-cell">{{  result.inventory_number }}</div>
-                        <div class="search-cell">{{  result.title }}</div>
-                        <div class="search-cell">{{  result.creator }}</div>
+                        <div class="table-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
+                        <div class="table-cell">{{  result.inventory_number }}</div>
+                        <div class="table-cell">{{  result.title }}</div>
+                        <div class="table-cell">{{  result.creator }}</div>
                     </a>
                 {% endif %}
             {% endfor %}

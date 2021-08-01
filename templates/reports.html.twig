@@ -4,19 +4,19 @@
 {% else %}
     <div class="reports">
         <div class="reports-header">
-            <div class="reports-cell">Thumbnail</div>
-            <div class="reports-cell">Inventarisnummer</div>
-            <div class="reports-cell">Titel</div>
-            <div class="reports-cell">Vervaardiger</div>
-            <div class="reports-cell">Aangemaakt</div>
+            <div class="table-cell">Thumbnail</div>
+            <div class="table-cell">Inventarisnummer</div>
+            <div class="table-cell">Titel</div>
+            <div class="table-cell">Vervaardiger</div>
+            <div class="table-cell">Aangemaakt</div>
         </div>
         {% for result in search_results %}
             <a class="reports-row" href="{% if action == 'create' %}{{ path('create_existing', { id : result.id }) }}{% else %}{{ path('view', { id : result.id }) }}{% endif %}">
-                <div class="reports-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
-                <div class="reports-cell">{{  result.inventory_number }}</div>
-                <div class="reports-cell">{{  result.title }}</div>
-                <div class="reports-cell">{{  result.creator }}</div>
-                <div class="reports-cell">{{  result.timestamp }}</div>
+                <div class="table-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
+                <div class="table-cell">{{  result.inventory_number }}</div>
+                <div class="table-cell">{{  result.title }}</div>
+                <div class="table-cell">{{  result.creator }}</div>
+                <div class="table-cell">{{  result.timestamp }}</div>
             </a>
         {% endfor %}
     </div>

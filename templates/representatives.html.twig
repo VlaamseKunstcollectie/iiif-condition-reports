@@ -2,19 +2,19 @@
 <h1>Beheer vertegenwoordigers</h1>
 <div class="reports">
     <div class="reports-header">
-        <div class="reports-cell">Alias</div>
-        <div class="reports-cell">Naam</div>
-        <div class="reports-cell">Functie</div>
-        <div class="reports-cell">E-mail</div>
-        <div class="reports-cell">Tel.</div>
+        <div class="table-cell">Alias</div>
+        <div class="table-cell">Naam</div>
+        <div class="table-cell">Functie</div>
+        <div class="table-cell">E-mail</div>
+        <div class="table-cell">Tel.</div>
     </div>
     {% for representative in representatives %}
         <a class="reports-row" href="{{ path('representative', { id : representative.id }) }}">
-            <div class="reports-cell">{{  representative.alias }}</div>
-            <div class="reports-cell">{{  representative.name }}</div>
-            <div class="reports-cell">{{  representative.function }}</div>
-            <div class="reports-cell">{{  representative.email }}</div>
-            <div class="reports-cell">{{  representative.phone }}</div>
+            <div class="table-cell">{{  representative.alias }}</div>
+            <div class="table-cell">{{  representative.name }}</div>
+            <div class="table-cell">{{  representative.function }}</div>
+            <div class="table-cell">{{  representative.email }}</div>
+            <div class="table-cell">{{  representative.phone }}</div>
         </a>
     {% endfor %}
 </div>

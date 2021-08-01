@@ -1,10 +1,16 @@
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_name', 'label': 'Naam' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_vat', 'label': 'BTW-nummer' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_address', 'label': 'Adres' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_postal', 'label': 'Postcode' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_city', 'label': 'Gemeente' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_country', 'label': 'Land' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_email', 'label': 'E-mail' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_website', 'label': 'Website' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_phone', 'label': 'Tel.' } %}
-{% include 'textfield.html.twig' with { 'name': '{{ type }}_mobile', 'label': 'GSM' } %}
+<div>
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_name', 'label': 'Naam' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_vat', 'label': 'BTW-nummer' } %}
+<div>
+</div>
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_address', 'label': 'Adres' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_postal', 'label': 'Postcode' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_city', 'label': 'Gemeente' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_country', 'label': 'Land' } %}
+</div>
+<div>
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_email', 'label': 'E-mail' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_website', 'label': 'Website' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_phone', 'label': 'Tel.' } %}
+    {% include 'textfield.html.twig' with { 'name': '{{ type }}_mobile', 'label': 'GSM' } %}
+</div>

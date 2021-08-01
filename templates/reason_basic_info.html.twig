@@ -15,12 +15,16 @@ Aanleiding:
 </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this, this.previousSibling);}">
 
 <h2>Identificatie object</h2>
-{% include 'textfield.html.twig' with { 'name': 'inventory_number', 'label': 'Inventarisnummer' } %}
-{% include 'textfield.html.twig' with { 'name': 'current_location', 'label': 'Standplaats' } %}
-{% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Objectnaam' } %}
-{% include 'textfield.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}
-{% include 'textfield.html.twig' with { 'name': 'title_nl', 'label': 'Titel' } %}
-{% include 'textfield.html.twig' with { 'name': 'creation_date', 'label': 'Datering' } %}
+<div>
+    {% include 'textfield.html.twig' with { 'name': 'inventory_number', 'label': 'Inventarisnummer' } %}
+    {% include 'textfield.html.twig' with { 'name': 'current_location', 'label': 'Standplaats' } %}
+    {% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Objectnaam' } %}
+    {% include 'textfield.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}</div>
+<div>
+    {% include 'textfield.html.twig' with { 'name': 'title_nl', 'label': 'Titel' } %}
+    {% include 'textfield.html.twig' with { 'name': 'creation_date', 'label': 'Datering' } %}
+    {% include 'textfield.html.twig' with { 'name': 'copyright', 'label': 'Copyright' } %}
+</div>
 
 <h2>Informatie eigenaar</h2>
 <h3>Instelling</h3>
