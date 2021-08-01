@@ -1,6 +1,6 @@
-{{ include('header.html.twig') }}
+{% include 'header.html.twig' %}
     <p><a href="{{ path('reports', { action : 'view' }) }}">Bekijk bestaande rapporten</a></p>
     <p><a href="{{ path('reports', { action : 'create' }) }}">Creëer nieuw rapport op basis van een bestaand rapport</a></p>
     <p><a href="{{ path('search') }}">Creëer nieuw blanco rapport</a></p>
     <p><a href="{{ path('organizations') }}">Beheer organisaties</a></p>
-{{ include('footer.html.twig') }}
+{% include 'footer.html.twig' %}

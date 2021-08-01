@@ -1,4 +1,4 @@
-{{ include('header.html.twig') }}
+{% include 'header.html.twig' %}
 {% if search_results is empty %}
     <p>Geen rapporten gevonden.</p>
 {% else %}
@@ -21,4 +21,4 @@
         {% endfor %}
     </div>
 {% endif %}
-{{ include('footer.html.twig') }}
+{% include 'footer.html.twig' %}

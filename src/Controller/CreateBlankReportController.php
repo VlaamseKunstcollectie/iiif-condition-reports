@@ -22,16 +22,7 @@ class CreateBlankReportController extends AbstractController
      */
     public function createBlank(Request $request, $id)
     {
-        $prefilledData = [
-            'inventory_id' => '',
-            'inventory_number' => '',
-            'thumbnail' => '',
-            'title' => '',
-            'creator' => '',
-            'creation_date' => '',
-            'copyright' => '',
-            'iiif_manifest_url' => ''
-        ];
+        $prefilledData = array();
         $reportReasons = $this->getParameter('report_reasons');
         $em = $this->container->get('doctrine')->getManager();
         $datahubData = $em->createQueryBuilder()
@@ -43,13 +34,15 @@ class CreateBlankReportController extends AbstractController
             ->getQuery()
             ->getResult();
         foreach ($datahubData as $data) {
-            if (empty($prefilledData['inventory_id'])) {
+            if (!array_key_exists('inventory_id', $prefilledData)) {
                 $prefilledData['inventory_id'] = $data['id'];
             }
-            if (empty($prefilledData['inventory_number'])) {
+            if (!array_key_exists('inventory_number', $prefilledData)) {
                 $prefilledData['inventory_number'] = $data['inventoryNumber'];
             }
-            $prefilledData[$data['name']] = $data['value'];
+            if(!empty($data['value'])) {
+                $prefilledData[$data['name']] = $data['value'];
+            }
         }
         return $this->render('create_blank.html.twig', [
             'prefilled_data' => $prefilledData,

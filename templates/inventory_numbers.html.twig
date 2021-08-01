@@ -1,4 +1,4 @@
-{{ include('header.html.twig') }}
+{% include 'header.html.twig' %}
 {{ form(form) }}
 {% if search_results is empty %}
     <p>Geen inventarisnummers gevonden.</p>
@@ -14,4 +14,4 @@
         {% endfor %}
     </div>
 {% endif %}
-{{ include('footer.html.twig') }}
+{% include 'footer.html.twig' %}

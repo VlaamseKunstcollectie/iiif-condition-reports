@@ -1,4 +1,4 @@
-{{ include('header.html.twig') }}
+{% include 'header.html.twig' %}
 <script>
     function toggleField(hideObj,showObj) {
         hideObj.disabled=true;
@@ -9,23 +9,9 @@
     }
 </script>
 <form action="{{ path('annotate_existing') }}" method="POST">
-    Aanleiding:
-    <select name="reason" onchange="if(this.options[this.selectedIndex].value=='customOption') {
-        toggleField(this,this.nextSibling);
-        this.selectedIndex='0';
-    }">
-        <option></option>
-        {% for key, reason_type in report_reasons %}
-            <optgroup label="{{ reason_type.name }}">
-                {% for id, reason in reason_type.options %}
-                <option value="{{ id }}">{{ reason }}</option>
-                {% endfor %}
-            </optgroup>
-        {% endfor %}
-        <option value="customOption">Andere</option>
-    </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+    {% include 'reason_basic_info.html.twig' %}
     <input type="submit" value="Submit">
 </form>
 
 <p>{{ prefilled_data | json_encode | raw }}</p>
-{{ include('footer.html.twig') }}
+{% include 'footer.html.twig' %}

@@ -22,18 +22,7 @@ class CreateExistingReportController extends AbstractController
      */
     public function createExisting(Request $request, $id)
     {
-        $prefilledData = [
-            'report_history' => array(),
-            'base_id' => '',
-            'inventory_id' => '',
-            'inventory_number' => '',
-            'thumbnail' => '',
-            'title' => '',
-            'creator' => '',
-            'creation_date' => '',
-            'copyright' => '',
-            'iiif_manifest_url' => ''
-        ];
+        $prefilledData = array();
         $reportReasons = $this->getParameter('report_reasons');
         $em = $this->container->get('doctrine')->getManager();
         $reportData = $em->createQueryBuilder()
@@ -62,8 +51,8 @@ class CreateExistingReportController extends AbstractController
             ->getQuery()
             ->getResult();
         foreach($reportHistory as $history) {
-            if(empty($prefilledData['report_history'])) {
-                $prefilledData['report_history'][$id] = $history->getOrder() + 1;
+            if(!array_key_exists('report_history', $prefilledData)) {
+                $prefilledData['report_history'] = array($id => $history->getOrder() + 1);
             }
             $prefilledData['report_history'][$history->getPreviousId()] = $history->getOrder();
         }

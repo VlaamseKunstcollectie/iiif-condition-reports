@@ -1,4 +1,4 @@
-{{ include('header.html.twig') }}
+{% include 'header.html.twig' %}
 <h1>Beheer personen en organisaties</h1>
 <div class="create">
     <div class="create-header">
@@ -17,4 +17,4 @@
     {% endfor %}
 </div>
 <a href="{{ path('organization', { type : 'new' }) }}">Een nieuwe organisatie toevoegen</a>
-{{ include('footer.html.twig') }}
+{% include 'footer.html.twig' %}

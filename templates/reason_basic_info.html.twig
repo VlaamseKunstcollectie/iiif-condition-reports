@@ -1,0 +1,25 @@
+Aanleiding:
+<select name="reason" onchange="if(this.options[this.selectedIndex].value=='customOption') {
+        toggleField(this,this.nextSibling);
+        this.selectedIndex='0';
+    }">
+    <option></option>
+    {% for key, reason_type in report_reasons %}
+        <optgroup label="{{ reason_type.name }}">
+            {% for id, reason in reason_type.options %}
+                <option value="{{ id }}">{{ reason }}</option>
+            {% endfor %}
+        </optgroup>
+    {% endfor %}
+    <option value="customOption">Andere</option>
+</select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this, this.previousSibling);}">
+
+<h2>Identificatie object</h2>
+{% include 'textfield.html.twig' with { 'name': 'inventory_number', 'label': 'Inventarisnummer' } %}
+{% include 'textfield.html.twig' with { 'name': 'current_location', 'label': 'Standplaats' } %}
+{% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Objectnaam' } %}
+{% include 'textfield.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}
+{% include 'textfield.html.twig' with { 'name': 'title_nl', 'label': 'Titel' } %}
+{% include 'textfield.html.twig' with { 'name': 'creation_date', 'label': 'Datering' } %}
+
+<h2>Informatie eigenaar</h2>
