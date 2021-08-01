@@ -23,6 +23,8 @@
             </div>
         {% endif %}
     {% endif %}
+{% elseif no_image %}
+    <p>Fout: er is geen afbeelding beschikbaar voor dit inventarisnummer!</p>
 {% else %}
     <script>
         function toggleField(hideObj,showObj) {

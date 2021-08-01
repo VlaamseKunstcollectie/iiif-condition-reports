@@ -24,6 +24,7 @@ class CreateReportController extends AbstractController
     {
         $formView = null;
         $searchResults = null;
+        $noImage = false;
         $prefilledData = [
             'report_history' => array(),
             'base_id' => '',
@@ -142,8 +143,7 @@ class CreateReportController extends AbstractController
                     $ok = false;
                 }
                 if(!$ok) {
-                    //TODO give error
-
+                    $noImage = true;
                 }
             }
         }
@@ -151,6 +151,7 @@ class CreateReportController extends AbstractController
             'form' => $formView,
             'type' => $type,
             'id' => $id,
+            'no_image' => $noImage,
             'prefilled_data' => $prefilledData,
             'report_reasons' => $reportReasons,
             'search_results' => $searchResults
