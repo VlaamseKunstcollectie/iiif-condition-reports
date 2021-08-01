@@ -15,13 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AnnotateReportController extends AbstractController
+class AnnotateBlankReportController extends AbstractController
 {
     /**
-     * @Route("/annotate/{type}/{id}", name="annotate", defaults={ "id"="" })
+     * @Route("/annotate/blank", name="annotate_blank")
      */
-    public function annotate(Request $request, $type, $id)
+    public function annotateBlank(Request $request)
     {
-        return $this->render('annotate.html.twig');
+        return $this->render('annotate_blank.html.twig');
     }
 }
