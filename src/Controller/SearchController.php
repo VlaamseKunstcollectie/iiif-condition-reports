@@ -60,7 +60,7 @@ class SearchController extends AbstractController
                         'id' => $data['id'],
                         'inventory_number' => $data['inventoryNumber'],
                         'thumbnail' => '',
-                        'title' => '',
+                        'title_nl' => '',
                         'creator' => ''
                     ];
                 }

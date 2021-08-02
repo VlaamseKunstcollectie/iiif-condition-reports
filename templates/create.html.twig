@@ -1,0 +1,48 @@
+{% include 'header.html.twig' %}
+<script>
+    function toggleField(hideObj, showObj) {
+        hideObj.disabled = true;
+        hideObj.style.display = 'none';
+        showObj.disabled = false;
+        showObj.style.display = 'inline';
+        showObj.focus();
+    }
+
+    function nextPrev(hideId, showId) {
+        document.getElementById(hideId).style.display = 'none';
+        document.getElementById(showId).style.display = 'block';
+    }
+</script>
+<form action="{{ path('save', { type: 'existing' }) }}" method="POST">
+    <div id="basic-info-form">
+        {% include 'reason_basic_info.html.twig' %}
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" onclick="nextPrev('basic-info-form', 'condition-form')">Volgende</button>
+            </div>
+        </div>
+    </div>
+    <div id="condition-form" style="display: none;">
+        {% include 'condition.html.twig' %}
+        <div style="overflow:auto;">
+            <div style="float:left;">
+                <button type="button" onclick="nextPrev('condition-form', 'basic-info-form')">Vorige</button>
+            </div>
+            <div style="float:right;">
+                <button type="button" onclick="nextPrev('condition-form', 'annotate-form')">Volgende</button>
+            </div>
+        </div>    </div>
+    <div id="annotate-form" style="display: none;">
+        {% include 'annotate.html.twig' %}
+        <div style="overflow:auto;">
+            <div style="float:left;">
+                <button type="button" onclick="nextPrev('annotate-form', 'condition-form')">Vorige</button>
+            </div>
+            <div style="float:right;">
+                <button type="button">Rapport verzenden</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html.twig' %}

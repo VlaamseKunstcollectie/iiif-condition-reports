@@ -75,7 +75,7 @@ class CreateExistingReportController extends AbstractController
             $representatives[$representative->getId()] = $representative;
         }
 
-        return $this->render('create_existing.html.twig', [
+        return $this->render('create.html.twig', [
             'prefilled_data' => $prefilledData,
             'report_reasons' => $reportReasons,
             'organizations' => $organizations,

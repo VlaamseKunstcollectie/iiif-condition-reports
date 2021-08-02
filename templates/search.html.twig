@@ -16,14 +16,14 @@
                     <div class="search-row" onclick="alert('Fout: inventarisnummer \'{{ result.inventory_number }}\' heeft geen afbeelding.')">
                         <div class="table-cell"></div>
                         <div class="table-cell">{{  result.inventory_number }}</div>
-                        <div class="table-cell">{{  result.title }}</div>
+                        <div class="table-cell">{{  result.title_nl }}</div>
                         <div class="table-cell">{{  result.creator }}</div>
                     </div>
                 {% else %}
                     <a class="search-row" href="{{ path('create_blank', { id : result.id }) }}">
                         <div class="table-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
                         <div class="table-cell">{{  result.inventory_number }}</div>
-                        <div class="table-cell">{{  result.title }}</div>
+                        <div class="table-cell">{{  result.title_nl }}</div>
                         <div class="table-cell">{{  result.creator }}</div>
                     </a>
                 {% endif %}
