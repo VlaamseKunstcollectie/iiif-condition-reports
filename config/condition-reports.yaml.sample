@@ -54,49 +54,32 @@ parameters:
   datahub_data_definition:
     id:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/repositoryWrap/repositorySet/workID[@type="object-number"]'
-      field: 'id'
-    work_pid:
-      xpath: 'objectPublishedID'
-      field: 'pidobject'
     title_nl:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="nl"]'
-      field: 'nl-titleartwork'
     title_en:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="en"]'
-      field: 'en-titleartwork'
-    short_description:
+    description_nl:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
-      field: 'description'
     creator:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/actor/nameActorSet/appellationValue[@pref="preferred"]'
-      field: 'creatorofartworkobje'
     creator_role:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/roleActor/term'
-      field: 'roleofcreatorofartworkobje'
     earliest_date:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/earliestDate'
-      field: 'earliestdate'
     latest_date:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/latestDate'
-      label: 'latestdate'
     publisher:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/recordWrap/recordSource/legalBodyName/appellationValue'
-      field: 'publisher'
     copyright:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/rightsWorkWrap/rightsWorkSet/creditLine'
-      field: 'copyrightnoticeofart'
     handling_nl:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="nl"]'
-      field: 'nl-handling'
     handling_en:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="en"]'
-      field: 'en-handling'
     iiif_manifest_url:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="IIIF Manifest"]/resourceID[@source="ImagehubKMSKA"]'
-      field: 'iiif_manifest_url'
     iiif_image_url:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="thumbnail"]/resourceID[@source="ImagehubKMSKA"]'
-      field: 'iiif_image_url'
 
   authentication_url: 'https://imagehub.kmska.be/public/authenticate'
   authentication_whitelist:
