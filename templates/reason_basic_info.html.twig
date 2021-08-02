@@ -25,27 +25,21 @@ Aanleiding:
     {% include 'textfield.html.twig' with { 'name': 'creation_date', 'label': 'Datering' } %}
     {% include 'textfield.html.twig' with { 'name': 'copyright', 'label': 'Copyright' } %}
 </div>
+<div>
+    {% include 'textarea.html.twig' with { 'name': 'handling_nl', 'label': 'Objectvereisten' } %}
+</div>
 
-<h2>Informatie eigenaar</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'owner' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'owner_rep' }%}
-
-<h2>Informatie rapporteur/bruikleennemer/restaurateur</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'user' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'user_rep' }%}
-
-<h2>Informatie koerier/art handler</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'handler' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'handler_rep' }%}
-
-<h2>Informatie andere derde partij</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'third_party' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'third_party_rep' }%}
+<h2>Informatie bruikleenproject (indien van toepassing)</h2>
+<div>
+{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}
+{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina' } %}
+</div>
+<div>
+{% include 'textfield.html.twig' with { 'name': 'exhibition_date', 'label': 'Start- en einddatum bruikleen' } %}
+{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}
+</div>
+<div>
+{% include 'textarea.html.twig' with { 'name': 'exhibition_info', 'label': 'Extra informatie tentoonstelling/bruikleenproject' } %}
+</div>
+<h3>Verantwoordelijke curator instelling/museum/tentoonstellingsplek</h3>
+{% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}

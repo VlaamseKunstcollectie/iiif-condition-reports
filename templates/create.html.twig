@@ -18,7 +18,18 @@
         {% include 'reason_basic_info.html.twig' %}
         <div style="overflow:auto;">
             <div style="float:right;">
-                <button type="button" onclick="nextPrev('basic-info-form', 'condition-form')">Volgende</button>
+                <button type="button" onclick="nextPrev('basic-info-form', 'actors-form')">Volgende</button>
+            </div>
+        </div>
+    </div>
+    <div id="actors-form" style="display: none;">
+        {% include 'actors.html.twig' %}
+        <div style="overflow:auto;">
+            <div style="float:left;">
+                <button type="button" onclick="nextPrev('actors-form', 'basic-info-form')">Vorige</button>
+            </div>
+            <div style="float:right;">
+                <button type="button" onclick="nextPrev('actors-form', 'condition-form')">Volgende</button>
             </div>
         </div>
     </div>
@@ -31,7 +42,8 @@
             <div style="float:right;">
                 <button type="button" onclick="nextPrev('condition-form', 'annotate-form')">Volgende</button>
             </div>
-        </div>    </div>
+        </div>
+    </div>
     <div id="annotate-form" style="display: none;">
         {% include 'annotate.html.twig' %}
         <div style="overflow:auto;">
