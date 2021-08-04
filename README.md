@@ -1,6 +1,6 @@
 ```
 CREATE TABLE `inventory_numbers` (
-  `inventory_number` varchar(100) NOT NULL,
+  `inventory_number` VARCHAR(100) NOT NULL,
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`inventory_number`),
   KEY(`id`)
@@ -8,8 +8,8 @@ CREATE TABLE `inventory_numbers` (
 
 CREATE TABLE `datahub_data` (
   `id` INT UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `value` text NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `value` TEXT NOT NULL,
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -30,38 +30,45 @@ CREATE TABLE `report_history` (
 
 CREATE TABLE `report_data` (
   `id` INT UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `value` text NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `value` TEXT NOT NULL,
   PRIMARY KEY (`id`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `annotations` (
+  `id` INT UNSIGNED NOT NULL,
+  `annotations` LONGTEXT NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `organizations` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `alias` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `function` varchar(255) DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL,
-  `vat` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `postal` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `website` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `mobile` varchar(255) DEFAULT NULL,
-  `notes` text DEFAULT NULL,
+  `alias` VARCHAR(255) DEFAULT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `function` VARCHAR(255) DEFAULT NULL,
+  `logo` VARCHAR(255) DEFAULT NULL,
+  `vat` VARCHAR(255) DEFAULT NULL,
+  `address` VARCHAR(255) DEFAULT NULL,
+  `postal` VARCHAR(255) DEFAULT NULL,
+  `city` VARCHAR(255) DEFAULT NULL,
+  `country` VARCHAR(255) DEFAULT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `website` VARCHAR(255) DEFAULT NULL,
+  `phone` VARCHAR(255) DEFAULT NULL,
+  `mobile` VARCHAR(255) DEFAULT NULL,
+  `notes` TEXT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `representatives` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `alias` varchar(255) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `function` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `notes` text DEFAULT NULL,
+  `alias` VARCHAR(255) DEFAULT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `function` VARCHAR(255) DEFAULT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `phone` VARCHAR(255) DEFAULT NULL,
+  `notes` TEXT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```

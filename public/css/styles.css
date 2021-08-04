@@ -85,6 +85,11 @@ body {
     width: 40%;
 }
 
+.a9s-selection-mask {
+    fill: rgba(0,0,0,0.4) !important;
+    pointer-events: none;
+}
+
 @media print {
     #basic-info-form, #actors-form #material-form, #condition-form, #annotate-form {
         position: relative !important;
