@@ -100,6 +100,8 @@ class SaveReportController extends AbstractController
                     }
                     $em->flush();
 
+                    sort($previousIds);
+
                     $annotations = array();
                     foreach($annotationData as $annotation) {
                         $annotations[$annotation->id] = json_encode($annotation);
