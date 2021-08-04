@@ -1,96 +1,118 @@
-<h3>Materiaalsoort</h3>
+<h3>Conditie van het object</h3>
+<h4>Algemene conditie</h4>
+<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_good', 'label': 'Goed' } %}</div>
+<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_reasonable', 'label': 'Redelijk' } %}</div>
+<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_bad', 'label': 'Slecht' } %}</div>
+<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_not_transportable', 'label': 'Niet vervoerbaar' } %}</div>
+<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_not_displayable', 'label': 'Niet tentoonstelbaar' } %}</div>
+
+<h4>Specifieke toestand van het object</h4>
 <div class="half">
-<h4>Drager</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_stone', 'label': 'Steen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_metal', 'label': 'Metaal' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_glass', 'label': 'Glas' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_ceramic', 'label': 'Keramiek/aardewerk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_plaster', 'label': 'Gips' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_textile', 'label': 'Textiel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_paper', 'label': 'Papier' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_wood', 'label': 'Hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_plastic', 'label': 'Kunststof' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom' } %}</div>
+    <h4>Drager</h4>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_surface_dirt', 'label': 'Oppervlaktevuil' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_crusted_dirt', 'label': 'Geïncrusteerd vuil' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_spots', 'label': 'Vlekken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_fingerprints', 'label': 'Vingerafrdrukken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_old_restoration', 'label': 'Oude ingrepen/restauratie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_salts', 'label': 'Zouten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_insects', 'label': 'Insectenaantasten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_mold', 'label': 'Schimmel' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_water_damage', 'label': 'Waterschade' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_corrision', 'label': 'Corrosie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_gaps', 'label': 'Lacunes' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_flaking', 'label': 'Schilfering' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_powders', 'label': 'Poederen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_discoloration', 'label': 'Verkleuringen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_wear', 'label': 'Slijtage' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_scratches', 'label': 'Krassen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_twists', 'label': 'Scheluw' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_dents', 'label': 'Blutsen/deuken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_structural_damage', 'label': 'Structurele schade' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_cracks', 'label': 'Barsten/spleten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_tears', 'label': 'Haarscheurtjes' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_holes', 'label': 'Gaten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_wrinkled', 'label': 'Gekreukt' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_delamination', 'label': 'Delaminatie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_missing_parts', 'label': 'Ontbrekende delen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_removable_parts', 'label': 'Afneembare delen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_brittle', 'label': 'Bros' } %}</div>
+    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom' } %}</div>
 </div>
 
 <div class="half">
-<h4>Sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_stone', 'label': 'Steen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_metal', 'label': 'Metaal' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_glass', 'label': 'Glas' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_ceramic', 'label': 'Keramiek/aardewerk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_plaster', 'label': 'Gips' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_textile', 'label': 'Textiel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_paper', 'label': 'Papier' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_wood', 'label': 'Hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_plastic', 'label': 'Kunststof' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'socket_custom' } %}</div>
+    <h4>Afwerkingslaag</h4>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_surface_dirt', 'label': 'Oppervlaktevuil' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_crusted_dirt', 'label': 'Geïncrusteerd vuil' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_spots', 'label': 'Vlekken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_fingerprints', 'label': 'Vingerafrdrukken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_old_restoration', 'label': 'Oude ingrepen/restauratie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_salts', 'label': 'Zouten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_insects', 'label': 'Insectenaantasten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_mold', 'label': 'Schimmel' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_water_damage', 'label': 'Waterschade' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_corrision', 'label': 'Corrosie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_gaps', 'label': 'Lacunes' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_flaking', 'label': 'Schilfering' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_powders', 'label': 'Poederen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_discoloration', 'label': 'Verkleuringen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wear', 'label': 'Slijtage' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_scratches', 'label': 'Krassen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_twists', 'label': 'Scheluw' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_dents', 'label': 'Blutsen/deuken' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_structural_damage', 'label': 'Structurele schade' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_cracks', 'label': 'Barsten/spleten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_tears', 'label': 'Haarscheurtjes' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_holes', 'label': 'Gaten' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wrinkled', 'label': 'Gekreukt' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_delamination', 'label': 'Delaminatie' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_missing_parts', 'label': 'Ontbrekende delen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_removable_parts', 'label': 'Afneembare delen' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_brittle', 'label': 'Bros' } %}</div>
+    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_damage_custom' } %}</div>
 </div>
 
-<div>{% include 'textfield.html.twig' with { 'name': 'material_specification', 'label': 'Materiaalspecificatie' } %}</div>
+{% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specificaties' } %}
 
-<h4>Afwerklaag</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_absent', 'label': 'Niet aanwezig' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_glaze', 'label': 'Glazuur' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_varnish', 'label': 'Vernis' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wax', 'label': 'Waslaag' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_painted', 'label': 'Beschildering' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_monochrome', 'label': 'Monochroom' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_polychrome', 'label': 'Polychroom' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_patination', 'label': 'Patinering' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_marks', 'label': 'Kapsporen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_polish', 'label': 'Polijsting' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_natural', 'label': 'Natuurlijk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_artificial', 'label': 'Kustmatig' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_custom' } %}</div>
+<h3>Conservatie</h3>
 
-<div>{% include 'textfield.html.twig' with { 'name': 'finish_layer_specification', 'label': 'Materiaalspecificatie afwerkingslaag' } %}</div>
+<h4>Conservering voor transport nodig</h4>
+<div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_yes', 'label': 'Ja' } %}</div>
+<div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_no', 'label': 'Nee' } %}</div>
 
-<div>{% include 'textfield.html.twig' with { 'name': 'material_production', 'label': 'Vervaardigingstechnieken' } %}</div>
+<h4>Conservatiebehandeling</h4>
+<div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_remove_dust', 'label': 'Ontstoffen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_surface_cleaning', 'label': 'Oppervlakkige reiniging' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_insect_treatment', 'label': 'Insectenwerende behandeling' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_remove_mold', 'label': 'Schimmelsporen verwijderen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_reinforcement', 'label': 'Versteviging/steunconstructie' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_reglue', 'label': 'Herlijmen van aparte delen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_fixate_loose_parts', 'label': 'Fixeren losse delen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_stabilize_socket', 'label': 'Stabiliseren van de sokkel' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_add_protective_layer', 'label': 'Beschermlaag aanbrengen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_add_barcode', 'label': 'Barcode aanbrengen' } %}</div>
+<div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conversation_custom', 'label': 'Andere' } %}</div>
+<div>{% include 'number.html.twig' with { 'name': 'conservation_hours', 'label': 'Schatting werkuren' } %}</div>
 
-<h3>Vorm</h3>
-<div>{% include 'checkbox.html.twig' with { 'name': 'form_relief', 'label': 'Reliëf' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'form_full_plastic', 'label': 'Volplastisch' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'form_custom' } %}</div>
+<h4>Restauratiebehandeling</h4>
+<div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_thorough_cleaning', 'label': 'Grondig reinigen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_local_cleaning', 'label': 'Plaatselijk reinigen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_polychromy_research', 'label': 'Polychromieonderzoek' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_reconstruction', 'label': 'Reconstructie van het origineel' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_remove_material_tension', 'label': 'Materiaal spanning wegnemen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_remove_old_restaurations', 'label': 'Verwijderen van oude restauraties' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_replace_construction', 'label': 'Constructie vervangen' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_protective_layer', 'label': 'Protectielaag' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_add_fastening_system', 'label': 'Bevestigingssysteem voorzien' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_retouch', 'label': 'Retoucheren' } %}</div>
+<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_fill_gaps', 'label': 'Elementen opvullen van lacunes' } %}</div>
+<div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restauration_custom', 'label': 'Andere' } %}</div>
+<div>{% include 'number.html.twig' with { 'name': 'restauration_hours', 'label': 'Schatting werkuren' } %}</div>
 
-<h3>Constructie/samenstelling</h3>
-<div class="half">
-<h4>Werk</h4>
-<div>{% include 'number.html.twig' with { 'name': 'construction_work_number_of_parts', 'label': 'Aantal onderdelen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_loose', 'label': 'Los' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_fixed', 'label': 'Vast' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_work_custom', 'label': 'Te monteren met' } %}</div>
-</div>
-<div class="half">
-<h4>Sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_loose', 'label': 'Los' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_fixed', 'label': 'Vast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_original', 'label': 'Origineel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_not_original', 'label': 'Niet origineel' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_socket_custom' } %}</div>
-</div>
-<h3>Verbindingen</h3>
-<div class="half">
-<h4>Tussen afzonderlijke delen van het beeld</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_none', 'label': 'Niet van toepassing' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_welded', 'label': 'gelast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_soldered', 'label': 'Gesoldeerd' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_dived_wood', 'label': 'Doken hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_glue', 'label': 'Verlijming' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_screws', 'label': 'Schroeven' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_nails', 'label': 'Nagels' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_bolts', 'label': 'Bouten' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_work_custom' } %}</div>
-</div>
-<div class="half">
-<h4>Tussen beeld en sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__none', 'label': 'Niet van toepassing' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__welded', 'label': 'gelast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__soldered', 'label': 'Gesoldeerd' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__dived_wood', 'label': 'Doken hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__glue', 'label': 'Verlijming' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__screws', 'label': 'Schroeven' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__nails', 'label': 'Nagels' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__bolts', 'label': 'Bouten' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_socket__custom' } %}</div>
-</div>
+<h4>Verder onderzoek nodig</h4>
+<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_setup_method', 'label': 'Opstellingswijze' } %}</div>
+<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_material_technical', 'label': 'Materiaaltechnisch onderzoek' } %}</div>
+<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_analysis', 'label': 'Analyse' } %}</div>
+<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_background_information', 'label': 'Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek' } %}</div>
+<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'label': 'Andere' } %}</div>

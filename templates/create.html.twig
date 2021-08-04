@@ -41,11 +41,22 @@
             </div>
         </div>
     </div>
+    <div id="material-form" style="display: none;">
+        {% include 'material_construction.html.twig' %}
+        <div>
+            <div style="float:left;">
+                <button type="button" onclick="nextPrev('material-form', 'actors-form')">Vorige</button>
+            </div>
+            <div style="float:right;">
+                <button type="button" onclick="nextPrev('material-form', 'condition-form')">Volgende</button>
+            </div>
+        </div>
+    </div>
     <div id="condition-form">
         {% include 'condition.html.twig' %}
         <div>
             <div style="float:left;">
-                <button type="button" onclick="nextPrev('condition-form', 'actors-form')">Vorige</button>
+                <button type="button" onclick="nextPrev('condition-form', 'material-form')">Vorige</button>
             </div>
             <div style="float:right;">
                 <button type="button" onclick="nextPrev('condition-form', 'annotate-form')">Volgende</button>
