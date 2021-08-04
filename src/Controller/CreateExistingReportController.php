@@ -43,7 +43,7 @@ class CreateExistingReportController extends AbstractController
             ->from(ReportHistory::class, 'h')
             ->where('h.id = :id')
             ->setParameter('id', $id)
-            ->orderBy('h.order', 'DESC')
+            ->orderBy('h.sortOrder', 'DESC')
             ->getQuery()
             ->getResult();
         foreach($reportHistory as $history) {
@@ -51,6 +51,9 @@ class CreateExistingReportController extends AbstractController
                 $prefilledData['report_history'] = array($id => $history->getOrder() + 1);
             }
             $prefilledData['report_history'][$history->getPreviousId()] = $history->getOrder();
+        }
+        if(!array_key_exists('report_history', $prefilledData)) {
+            $prefilledData['report_history'] = array($id => 1);
         }
 
         $organizations = array();

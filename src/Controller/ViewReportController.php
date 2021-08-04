@@ -12,6 +12,8 @@ class ViewReportController extends AbstractController
      */
     public function view($id)
     {
-        return $this->render('view.html.twig');
+        return $this->render('view.html.twig', [
+            'id' => $id
+        ]);
     }
 }

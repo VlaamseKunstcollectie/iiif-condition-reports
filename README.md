@@ -1,4 +1,5 @@
 ```
+DROP TABLE IF EXISTS inventory_numbers;
 CREATE TABLE `inventory_numbers` (
   `inventory_number` VARCHAR(100) NOT NULL,
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -6,6 +7,7 @@ CREATE TABLE `inventory_numbers` (
   KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS datahub_data;
 CREATE TABLE `datahub_data` (
   `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
@@ -13,21 +15,24 @@ CREATE TABLE `datahub_data` (
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS reports;
 CREATE TABLE `reports` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `base_id` INT UNSIGNED NOT NULL,
+  `base_id` INT UNSIGNED DEFAULT NULL,
   `inventory_id` INT UNSIGNED NOT NULL,
   `timestamp` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS report_history;
 CREATE TABLE `report_history` (
   `id` INT UNSIGNED NOT NULL,
   `previous_id` INT UNSIGNED NOT NULL,
-  `order` INT UNSIGNED NOT NULL,
+  `sort_order` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `previous_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS report_data;
 CREATE TABLE `report_data` (
   `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
@@ -35,19 +40,22 @@ CREATE TABLE `report_data` (
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS annotations;
 CREATE TABLE `annotations` (
   `id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
   `annotation` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS deleted_annotations;
 CREATE TABLE `deleted_annotations` (
   `id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`, `annotation`)
+  PRIMARY KEY (`id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS organizations;
 CREATE TABLE `organizations` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,
@@ -67,6 +75,7 @@ CREATE TABLE `organizations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS representatives;
 CREATE TABLE `representatives` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,

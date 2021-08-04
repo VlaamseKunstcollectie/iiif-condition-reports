@@ -57,7 +57,7 @@ class Report
         return $this->inventoryId;
     }
 
-    public function setInventoryNumber($inventoryId)
+    public function setInventoryId($inventoryId)
     {
         $this->inventoryId = $inventoryId;
     }

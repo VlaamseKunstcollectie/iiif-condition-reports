@@ -25,14 +25,14 @@ class ReportHistory
     /**
      * @ORM\Column(type="integer")
      */
-    private $order;
+    private $sortOrder;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -47,13 +47,13 @@ class ReportHistory
         $this->previousId = $previousId;
     }
 
-    public function getOrder()
+    public function getSortOrder()
     {
-        return $this->order;
+        return $this->sortOrder;
     }
 
-    public function setOrder($order)
+    public function setSortOrder($sortOrder)
     {
-        $this->order = $order;
+        $this->sortOrder = $sortOrder;
     }
 }

@@ -1,7 +1,9 @@
+<div>
 {% if predefined_data['report_history'] is defined %}
-    <div><p>Test</p></div>
+    <div><p>Geschiedenis</p></div>
 {% endif %}
 
+</div>
 <!-- Patterns that can be used in the annotations -->
 <svg style="display: none">
     <pattern id="rect-red" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
@@ -33,7 +35,12 @@
 </svg>
 
 <div id="openseadragon-annotorious"></div>
+
 <input type="hidden" id="annotation_data" name="annotation_data">
+<input type="hidden" id="iiif_image_url" name="iiif_image_url" value="{{ prefilled_data['iiif_image_url'] }}">
+<input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data['inventory_id'] }}">
+<input type="hidden" id="base_id" name="base_id"{% if prefilled_data['base_id'] is defined %} value="{{ prefilled_data['base_id'] }}"{% endif %}>
+<input type="hidden" id="report_history" name="report_history"{% if prefilled_data['report_history'] is defined %} value="{{ prefilled_data['report_history'] | json_encode }}"{% endif %}>
 
 <script>
 window.onload = function() {
@@ -60,6 +67,9 @@ window.onload = function() {
         id: 'http://www.example.com/hero-solutions',
         displayName: 'Hero Solutions'
     });
+
+    <!--TODO remove, this is for testing only! -->
+    window.anno.loadAnnotations('{{ asset('annotations.w3c.json') }}');
 
     document.forms[0].addEventListener('submit', function() {
         document.getElementById("annotation_data").value =  JSON.stringify(window.anno.getAnnotations());
