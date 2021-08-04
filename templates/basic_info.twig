@@ -33,16 +33,7 @@ Aanleiding:
     {% include 'textarea.html.twig' with { 'name': 'handling_nl', 'label': 'Objectvereisten' } %}
 </div>
 
-<div id="openseadragon-view" style="width: 640px; height: 480px;"></div>
-<script>
-window.onload = function() {
-     window.osd = OpenSeadragon({
-        id: "openseadragon-view",
-        tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
-    });
-}
-</script>
-<script src="{{ asset('js/openseadragon.2.4.2.min.js') }}"></script>
+<div id="openseadragon-viewer" style="width: 640px; height: 480px;"></div>
 
 <h2>Informatie bruikleenproject (indien van toepassing)</h2>
 <div>

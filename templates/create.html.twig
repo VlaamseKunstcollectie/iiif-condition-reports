@@ -1,4 +1,15 @@
-{% include 'header.html.twig' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IIIF conditierapport{% if prefilled_data['title_nl'] is defined %} - {{ prefilled_data['title_nl'] }}{% endif %}</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/annotorious.min.css') }}">
+    <script src="{{ asset('js/openseadragon.2.4.2.min.js') }}"></script>
+    <script src="{{ asset('js/annotorious-selector-pack.min.js') }}"></script>
+    <script src="{{ asset('js/openseadragon-annotorious.min.js') }}"></script>
+</head>
+<body>
+
 <script>
     function toggleField(hideObj, showObj) {
         hideObj.disabled = true;
@@ -29,7 +40,7 @@
 </script>
 <form action="{{ path('save', { type: 'existing' }) }}" method="POST">
     <div id="basic-info-form" style="position: absolute; top: -9999px; left: -9999px;">
-        {% include 'reason_basic_info.html.twig' %}
+        {% include 'basic_info.twig' %}
         <div>
             <div style="float:right;">
                 <button type="button" onclick="nextPrev('basic-info-form', 'actors-form')">Volgende</button>
@@ -76,7 +87,7 @@
                 <button type="button" onclick="nextPrev('annotate-form', 'condition-form')">Vorige</button>
             </div>
             <div style="float:right;">
-                <button type="button">Rapport verzenden</button>
+                <input type="submit" value="Rapport verzenden">
             </div>
         </div>
     </div>

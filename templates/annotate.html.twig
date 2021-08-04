@@ -1,1 +1,68 @@
-<p>Annotate</p>
+{% if predefined_data['report_history'] is defined %}
+    <div><p>Test</p></div>
+{% endif %}
+
+<!-- Patterns that can be used in the annotations -->
+<svg style="display: none">
+    <pattern id="rect-red" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="red" x1="0" y1="0" x2="0" y2="50" stroke-width="2"></line>
+        <line stroke="red" x1="50" y1="0" x2="0" y2="0" stroke-width="2"></line>
+    </pattern>
+    <pattern id="diagonal-rect-red" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="red" x1="0" y1="0" x2="50" y2="50" stroke-width="2"></line>
+        <line stroke="red" x2="0" y1="0" y2="50" x1="50" stroke-width="2"></line>
+    </pattern>
+    <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="red" x1="0" y1="0" x2="40" y2="40" stroke-width="2"></line>
+        <line stroke="red" x2="0" y1="0" y2="40" x1="40" stroke-width="2"></line>
+    </pattern>
+
+    <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="green" x1="0" y1="0" x2="50" y2="50" stroke-width="2"></line>
+        <line stroke="green" x2="0" y1="0" y2="50" x1="50" stroke-width="2"></line>
+    </pattern>
+    <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="red" x1="0" y1="0" x2="40" y2="40" stroke-width="2"></line>
+        <line stroke="red" x2="0" y1="0" y2="40" x1="40" stroke-width="2"></line>
+    </pattern>
+
+    <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
+        <line stroke="orange" x1="0" y1="0" x2="50" y2="50" stroke-width="2"></line>
+        <line stroke="orange" x2="0" y1="0" y2="50" x1="50" stroke-width="2"></line>
+    </pattern>
+</svg>
+
+<div id="openseadragon-annotorious"></div>
+<input type="hidden" id="annotation_data" name="annotation_data">
+
+<script>
+window.onload = function() {
+    window.osd = OpenSeadragon({
+        id: "openseadragon-viewer",
+        tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
+    });
+
+    var viewer = OpenSeadragon({
+        id: "openseadragon-annotorious",
+        tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
+    });
+
+    var conf = {
+        locale: 'auto'
+    };
+
+    window.anno = OpenSeadragon.Annotorious(viewer, conf);
+
+    Annotorious.SelectorPack(window.anno, {});
+
+    <!--TODO set proper auth info-->
+    window.anno.setAuthInfo({
+        id: 'http://www.example.com/hero-solutions',
+        displayName: 'Hero Solutions'
+    });
+
+    document.forms[0].addEventListener('submit', function() {
+        document.getElementById("annotation_data").value =  JSON.stringify(window.anno.getAnnotations());
+    });
+};
+</script>

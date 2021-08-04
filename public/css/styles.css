@@ -85,6 +85,22 @@ body {
     width: 40%;
 }
 
+#openseadragon-viewer {
+    height: 600px;
+    width: 400px;
+}
+
+#openseadragon-annotorious {
+    position: absolute;
+    height: calc(100vh - 50px);
+    left: 200px;
+    width: calc(100vh - 200px);
+}
+
+.openseadragon-canvas {
+    outline: none;
+}
+
 .a9s-selection-mask {
     fill: rgba(0,0,0,0.4) !important;
     pointer-events: none;
