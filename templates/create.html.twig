@@ -21,7 +21,6 @@
         showObj.style.left = '0';
         if(typeof eventsToTrigger !== 'undefined') {
             for (var e in eventsToTrigger) {
-                console.log(eventsToTrigger[e]);
                 eval(eventsToTrigger[e] + "()");
             }
         }
