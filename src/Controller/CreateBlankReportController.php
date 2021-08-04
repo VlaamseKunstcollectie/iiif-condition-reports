@@ -64,6 +64,9 @@ class CreateBlankReportController extends AbstractController
 
         return $this->render('create.html.twig', [
             'prefilled_data' => $prefilledData,
+            'annotation_history' => array(),
+            'annotations' => array(),
+            'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
             'organizations' => $organizations,
             'representatives' => $representatives

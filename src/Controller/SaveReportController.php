@@ -87,25 +87,20 @@ class SaveReportController extends AbstractController
                     }
                     $em->flush();
                 } else {
-                    $highestOrder = 0;
-                    $highestId = 0;
+                    $previousIds = array();
                     foreach($reportHistory as $id => $order) {
                         $idInt = intval($id);
                         $orderInt = intval($order);
+                        $previousIds[] = $idInt;
                         $reportHistoryEntity = new ReportHistory();
                         $reportHistoryEntity->setId($report->getId());
                         $reportHistoryEntity->setPreviousId($idInt);
                         $reportHistoryEntity->setSortOrder($orderInt);
-                        if($orderInt > $highestOrder) {
-                            $highestOrder = $orderInt;
-                            $highestId = $idInt;
-                        }
                         $em->persist($reportHistoryEntity);
                     }
                     $em->flush();
 
                     $annotations = array();
-                    $oldAnnotations = array();
                     foreach($annotationData as $annotation) {
                         $annotations[$annotation->id] = json_encode($annotation);
                     }
@@ -113,22 +108,56 @@ class SaveReportController extends AbstractController
                     $oldAnnotationEntities = $em->createQueryBuilder()
                         ->select('a')
                         ->from(Annotation::class, 'a')
-                        ->where('a.id = :id')
-                        ->setParameter('id', $highestId)
+                        ->where('a.id IN (:ids)')
+                        ->setParameter('ids', $previousIds)
+                        ->orderBy('a.id')
                         ->getQuery()
                         ->getResult();
+                    $oldAnnotationsToAdd = array();
+                    foreach($oldAnnotationEntities as $annotation) {
+                        if(!array_key_exists($annotation->getId(), $oldAnnotationsToAdd)) {
+                            $oldAnnotationsToAdd[$annotation->getId()] = array();
+                        }
+                        $oldAnnotationsToAdd[$annotation->getId()][$annotation->getAnnotationId()] = $annotation->getAnnotation();
+                    }
+
+                    $oldDeletedAnnotationEntities = $em->createQueryBuilder()
+                        ->select('d')
+                        ->from(DeletedAnnotation::class, 'd')
+                        ->where('d.id IN (:ids)')
+                        ->setParameter('ids', $previousIds)
+                        ->orderBy('d.id')
+                        ->getQuery()
+                        ->getResult();
+                    $oldAnnotationsToDelete = array();
+                    foreach($oldDeletedAnnotationEntities as $deletedAnnotation) {
+                        if(!array_key_exists($deletedAnnotation->getId(), $oldAnnotationsToDelete)) {
+                            $oldAnnotationsToDelete[$deletedAnnotation->getId()] = array();
+                        }
+                        $oldAnnotationsToDelete[$deletedAnnotation->getId()][$deletedAnnotation->getAnnotationId()] = $deletedAnnotation->getAnnotationId();
+                    }
+
+                    $oldAnnotations = array();
+                    foreach($previousIds as $id) {
+                        if(array_key_exists($id, $oldAnnotationsToDelete)) {
+                            foreach($oldAnnotationsToDelete[$id] as $key => $val) {
+                                unset($oldAnnotations[$key]);
+                            }
+                        }
+                        if(array_key_exists($id, $oldAnnotationsToAdd)) {
+                            foreach($oldAnnotationsToAdd[$id] as $key => $anno) {
+                                $oldAnnotations[$key] = $anno;
+                            }
+                        }
+                    }
+
                     $deleted = array();
                     $added = array();
-                    foreach($oldAnnotationEntities as $annotation) {
-                        $oldAnnotations[$annotation->getAnnotationId()] = $annotation->getAnnotation();
-                        if(!array_key_exists($annotation->getAnnotationId(), $annotations)) {
-                            $deleted[] = $annotation->getAnnotationId();
-                        } else if($annotation->getAnnotation() !== $annotations[$annotation->getAnnotationId()]) {
-                            $deleted[] = $annotation->getAnnotationId();
-                            echo 'Different: ';
-                            var_dump($annotation->getAnnotation());
-                            echo 'Versus: ';
-                            var_dump($annotations[$annotation->getAnnotationId()]);
+                    foreach($oldAnnotations as $id => $annotation) {
+                        if(!array_key_exists($id, $annotations)) {
+                            $deleted[] = $id;
+                        } else if($annotation !== $annotations[$id]) {
+                            $deleted[] = $id;
                         }
                     }
                     foreach ($annotations as $id => $annotation) {

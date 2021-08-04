@@ -1,9 +1,14 @@
-<div>
-{% if predefined_data['report_history'] is defined %}
-    <div><p>Geschiedenis</p></div>
-{% endif %}
-
+<div id="annotation-form">
+<div id="annotation-tools">
+<p>Geschiedenis</p>
+{% for id, timestamp in annotation_history %}
+    <p>{{ timestamp }}</p>
+    <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon huidige status</button>
+    <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon wijzigingen</button>
+{% endfor %}
+<p>Gereedschap</p>
 </div>
+<div id="annotation-viewer">
 <!-- Patterns that can be used in the annotations -->
 <svg style="display: none">
     <pattern id="rect-red" patternUnits="userSpaceOnUse" width="7.5%" height="10%">
@@ -41,17 +46,18 @@
 <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data['inventory_id'] }}">
 <input type="hidden" id="base_id" name="base_id"{% if prefilled_data['base_id'] is defined %} value="{{ prefilled_data['base_id'] }}"{% endif %}>
 <input type="hidden" id="report_history" name="report_history"{% if prefilled_data['report_history'] is defined %} value="{{ prefilled_data['report_history'] | json_encode }}"{% endif %}>
-
+</div>
+</div>
 <script>
 window.onload = function() {
     window.osd = OpenSeadragon({
         id: "openseadragon-viewer",
-        tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
+        tileSources: ['{{ prefilled_data.iiif_image_url }}']
     });
 
     var viewer = OpenSeadragon({
         id: "openseadragon-annotorious",
-        tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
+        tileSources: ['{{ prefilled_data.iiif_image_url }}']
     });
 
     var conf = {
@@ -68,11 +74,71 @@ window.onload = function() {
         displayName: 'Hero Solutions'
     });
 
-    <!--TODO remove, this is for testing only! -->
-    window.anno.loadAnnotations('{{ asset('annotations.w3c.json') }}');
+    window.anno.setAnnotations(window.mostRecentAnnotations);
 
     document.forms[0].addEventListener('submit', function() {
-        document.getElementById("annotation_data").value =  JSON.stringify(window.anno.getAnnotations());
+        document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
     });
 };
+
+var annotationHistory = {{ annotation_history | json_encode | raw }};
+
+var addedAnnotations = {};
+{% for reportId, annotation in annotations %}
+var annos = {};
+{% for id, a in annotation %}
+annos["{{ id }}"] = JSON.parse({{ a | json_encode | raw }});
+{% endfor %}
+addedAnnotations["{{ reportId }}"] = annos;
+{% endfor %}
+
+var deletedAnnotations = {};
+{% for reportId, annotation in deleted_annotations %}
+var deletedAnnos = [];
+{% for id, a in annotation %}
+deletedAnnos.push("{{ id }}");
+{% endfor %}
+deletedAnnotations["{{ reportId }}"] = deletedAnnos;
+{% endfor %}
+
+annotationsUntil = {};
+annotationsOnly = {};
+var lastAnnotation = {};
+var highestId = -1;
+for(const id in annotationHistory) {
+    if(id in deletedAnnotations) {
+        for(const delId of deletedAnnotations[id]) {
+            delete lastAnnotation[delId];
+        }
+    }
+    if(id in addedAnnotations) {
+        var thisAnnotation = [];
+        for(const [ annoId, anno] of Object.entries(addedAnnotations[id])) {
+            lastAnnotation[annoId] = anno;
+            thisAnnotation.push(anno);
+        }
+        annotationsOnly[id] = thisAnnotation;
+    }
+    var arr = [];
+    for(const [ annoId, anno ] of Object.entries(lastAnnotation)) {
+        arr.push(anno);
+    }
+    annotationsUntil[id] = arr;
+    if(id > highestId) {
+        highestId = id;
+    }
+}
+if(highestId > -1) {
+    window.mostRecentAnnotations = annotationsUntil[highestId];
+} else {
+    window.mostRecentAnnotations = [];
+}
+
+function showAnnotationsUntil(id) {
+    window.anno.setAnnotations(annotationsUntil[id]);
+}
+
+function showAnnotationsOnly(id) {
+    window.anno.setAnnotations(annotationsOnly[id]);
+}
 </script>

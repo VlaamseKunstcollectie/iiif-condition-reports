@@ -90,11 +90,27 @@ body {
     width: 400px;
 }
 
-#openseadragon-annotorious {
-    position: absolute;
+#annotation-form {
     height: calc(100vh - 50px);
-    left: 200px;
-    width: calc(100vh - 200px);
+}
+
+#annotation-tools {
+    width: 200px;
+    float: left;
+    display: inline;
+}
+
+#annotation-viewer {
+    left: 250px;
+    width: calc(100vh - 250px);
+    float: right;
+    height: 100%;
+    display: inline;
+}
+
+#openseadragon-annotorious {
+    height: 100%;
+    width: 100%;
 }
 
 .openseadragon-canvas {
