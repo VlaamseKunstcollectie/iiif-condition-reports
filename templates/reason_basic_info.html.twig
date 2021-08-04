@@ -19,7 +19,9 @@ Aanleiding:
     {% include 'textfield.html.twig' with { 'name': 'inventory_number', 'label': 'Inventarisnummer' } %}
     {% include 'textfield.html.twig' with { 'name': 'current_location', 'label': 'Standplaats' } %}
     {% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Objectnaam' } %}
-    {% include 'textfield.html.twig' with { 'name': 'measurements', 'label': 'Afmetingen' } %}
+</div>
+<div>
+    {% include 'textarea.html.twig' with { 'name': 'dimensions', 'label': 'Afmetingen', 'no_newline': true, 'cols': 40 } %}
     {% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Gewicht' } %}
 <div>
     {% include 'textfield.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}</div>

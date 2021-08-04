@@ -79,3 +79,8 @@ body {
     background: #f2f3ff;
     outline: none;
 }
+
+.half {
+    display: inline-block;
+    width: 40%;
+}
