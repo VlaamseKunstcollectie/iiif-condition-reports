@@ -42,6 +42,12 @@ CREATE TABLE `annotations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `deleted_annotations` (
+  `id` INT UNSIGNED NOT NULL,
+  `annotation` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`, `annotation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `organizations` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,
