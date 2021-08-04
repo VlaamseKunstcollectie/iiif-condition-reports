@@ -116,3 +116,5 @@
 <div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_analysis', 'label': 'Analyse' } %}</div>
 <div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_background_information', 'label': 'Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek' } %}</div>
 <div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'label': 'Andere' } %}</div>
+
+<button type="button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Print</button>

@@ -36,7 +36,7 @@ Aanleiding:
 <div id="openseadragon-view" style="width: 640px; height: 480px;"></div>
 <script>
 window.onload = function() {
-    OpenSeadragon({
+     window.osd = OpenSeadragon({
         id: "openseadragon-view",
         tileSources: [ '{{ prefilled_data.iiif_image_url }}' ]
     });

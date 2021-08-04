@@ -84,3 +84,15 @@ body {
     display: inline-block;
     width: 40%;
 }
+
+@media print {
+    #basic-info-form, #actors-form #material-form, #condition-form, #annotate-form {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    .openseadragon-container div:not(.openseadragon-canvas) {
+        display: none !important;
+    }
+}
