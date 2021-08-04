@@ -37,14 +37,14 @@ CREATE TABLE `report_data` (
 
 CREATE TABLE `annotations` (
   `id` INT UNSIGNED NOT NULL,
-  `annotations` LONGTEXT NOT NULL,
-  `timestamp` TIMESTAMP NOT NULL,
+  `annotation_id` VARCHAR(255) NOT NULL,
+  `annotation` LONGTEXT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `deleted_annotations` (
   `id` INT UNSIGNED NOT NULL,
-  `annotation` VARCHAR(255) NOT NULL,
+  `annotation_id` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`, `annotation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
