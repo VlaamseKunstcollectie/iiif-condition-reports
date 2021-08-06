@@ -39,7 +39,7 @@
     }
 </script>
 <form action="{{ path('save', { type: 'existing' }) }}" method="POST">
-    <div id="basic-info-form" style="position: absolute; top: -9999px; left: -9999px;">
+    <div id="basic-info-form">
         {% include 'basic_info.twig' %}
         <div>
             <div style="float:right;">
@@ -54,7 +54,7 @@
                 <button type="button" onclick="nextPrev('actors-form', 'basic-info-form')">Vorige</button>
             </div>
             <div style="float:right;">
-                <button type="button" onclick="nextPrev('actors-form', 'condition-form')">Volgende</button>
+                <button type="button" onclick="nextPrev('actors-form', 'material-form')">Volgende</button>
             </div>
         </div>
     </div>
@@ -80,15 +80,17 @@
             </div>
         </div>
     </div>
-    <div id="annotate-form">
+    <div id="annotate-form" style="position: absolute; top: -9999px; left: -9999px;">
         {% include 'annotate.html.twig' %}
         <div>
             <div style="float:left;">
                 <button type="button" onclick="nextPrev('annotate-form', 'condition-form')">Vorige</button>
             </div>
-            <div style="float:right;">
-                <input type="submit" value="Rapport verzenden">
-            </div>
+            {% if not readonly %}
+                <div style="float:right;">
+                    <input type="submit" value="Rapport verzenden">
+                </div>
+            {% endif %}
         </div>
     </div>
 </form>

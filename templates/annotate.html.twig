@@ -1,32 +1,36 @@
 <div id="annotation-form">
-<div id="annotation-tools">
+{% if not readonly %}
+    <div id="annotation-tools">
     <p>Geschiedenis</p>
     <button type="button" onclick="resetAnnotations();">Reset</button>
     {% for id, timestamp in annotation_history %}
-    <p>{{ timestamp }}</p>
-    <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
-    <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
-    {% endfor %}
-    <p>Gereedschap</p>
-    <button type="button" onclick="setDrawingTool('rect');">Rechthoek</button>
-    <button type="button" onclick="setDrawingTool('polygon');">Polygoon</button>
-    <button type="button" onclick="setDrawingTool('circle');">Cirkel</button>
-    <button type="button" onclick="setDrawingTool('ellipse');">Ellips</button>
-    <button type="button" onclick="setDrawingTool('freehand');">Vrije hand</button>
-    <p>Tekenstijl</p>
-    <button type="button" onclick="window.annoConf.styleClass='condition-red';">Rood omlijnd</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-green';">Groen omlijnd</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-blue';">Blauw omlijnd</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-orange';">Oranje omlijnd</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-rect-red';">Invulling: rode vierkanten</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-red';">Invulling: rode ruiten</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-red';">Invulling: rode kruisen</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-green';">Invulling: groene ruiten</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-green';">Invulling: groene kruisen</button>
-    <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-orange';">Invulling: oranje ruiten</button>
-</div>
+        <p>{{ timestamp }}</p>
+            <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
+            <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
+        {% endfor %}
+        <p>Gereedschap</p>
+        <button type="button" onclick="setDrawingTool('rect');">Rechthoek</button>
+        <button type="button" onclick="setDrawingTool('polygon');">Polygoon</button>
+        <button type="button" onclick="setDrawingTool('circle');">Cirkel</button>
+        <button type="button" onclick="setDrawingTool('ellipse');">Ellips</button>
+        <button type="button" onclick="setDrawingTool('freehand');">Vrije hand</button>
+        <p>Tekenstijl</p>
+        <button type="button" onclick="window.annoConf.styleClass='condition-red';">Rood omlijnd</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-green';">Groen omlijnd</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-blue';">Blauw omlijnd</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-orange';">Oranje omlijnd</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-rect-red';">Invulling: rode vierkanten</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-red';">Invulling: rode ruiten</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-red';">Invulling: rode kruisen</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-green';">Invulling: groene ruiten</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-green';">Invulling: groene kruisen</button>
+        <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-orange';">Invulling: oranje ruiten</button>
+    </div>
+    <div id="annotation-viewer">
+{% else %}
+    <div id="annotation-viewer-full">
+{% endif %}
 
-<div id="annotation-viewer">
 <!-- Patterns that can be used in the annotations -->
 <svg style="position: absolute; top: -9999px; left: -9999px;">
     <pattern id="rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
@@ -64,6 +68,9 @@
 <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
 </div>
 </div>
+
+<button type="button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>
+
 <script>
 window.onload = function() {
     window.osd = OpenSeadragon({
@@ -110,20 +117,20 @@ var annotationHistory = {{ annotation_history | json_encode | raw }};
 
 var addedAnnotations = {};
 {% for reportId, annotation in annotations %}
-var annos = {};
-{% for id, a in annotation %}
-annos["{{ id }}"] = JSON.parse({{ a | json_encode | raw }});
-{% endfor %}
-addedAnnotations["{{ reportId }}"] = annos;
+    var annos = {};
+    {% for id, a in annotation %}
+        annos["{{ id }}"] = JSON.parse({{ a | json_encode | raw }});
+    {% endfor %}
+    addedAnnotations["{{ reportId }}"] = annos;
 {% endfor %}
 
 var deletedAnnotations = {};
 {% for reportId, annotation in deleted_annotations %}
-var deletedAnnos = [];
-{% for id, a in annotation %}
-deletedAnnos.push("{{ id }}");
-{% endfor %}
-deletedAnnotations["{{ reportId }}"] = deletedAnnos;
+    var deletedAnnos = [];
+    {% for id, a in annotation %}
+        deletedAnnos.push("{{ id }}");
+    {% endfor %}
+    deletedAnnotations["{{ reportId }}"] = deletedAnnos;
 {% endfor %}
 
 annotationsUntil = {};

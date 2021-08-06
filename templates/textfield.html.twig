@@ -1,1 +1,8 @@
-<label for="{{ name }}">{{ label }}</label> <input name="{{ name }}" type="text" value="{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}"/>
+{% if readonly %}
+    {% if prefilled_data[name] is defined %}
+        {{ label }}: {{ prefilled_data[name] }}
+    {% endif %}
+{% else %}
+    <label for="{{ name }}">{{ label }}</label>
+    <input name="{{ name }}" type="text" value="{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}"/>
+{% endif %}

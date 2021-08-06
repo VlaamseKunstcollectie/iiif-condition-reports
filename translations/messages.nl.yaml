@@ -1,0 +1,93 @@
+stone: Steen
+metal: Metaal
+glass: Glas
+ceramic: Keramiek/aardewerk
+plaster: Gips
+textile: Textiel
+paper: Papier
+wood: Hout
+plastic: Kunststof
+
+absent: Niet aanwezig
+glaze: Glazuur
+varnish: Vernis
+wax_layer: Waslaag
+painting: Beschildering
+monochrome: Monochroom
+polychrome: Polychroom
+patination: Patinering
+chop_marks: Kapsporen
+polishing: Polijsting
+natural: Natuurlijk
+artificial: Kunstmatig
+
+not_applicable: Niet van toepassing
+welded: Gelast
+soldered: Gesoldeerd
+dived_wood: Doken hout
+gluing: Verlijming
+screws: Schroeven
+nails: Nagels
+bolts: Bouten
+
+good: Goed
+reasonable: Redelijk
+bad: Slecht
+not_transportable: Niet vervoerbaar
+not_displayable: Niet tentoonstelbaar
+
+surface_dirt: Oppervlaktevuil
+crusted_dirt: Geïncrusteerd vuil
+spots: Vlekken
+fingerprints: Vingerafdrukken
+old_restoration: Oude ingrepen/restauratie
+salts: Zouten
+insect_damage: Insectenaantasting
+mold: Schimmel
+water_damage: Waterschade
+corrosion: Corrosie
+gaps: Lacunes
+flaking: Schilfering
+powdering: Poederen
+discolorations: Verkleuringen
+wearage: Slijtage
+scratches: Krassen
+twists: Scheluw
+dents: Blutsen/deuken
+structural_damage: Structurele schade
+cracks: Barsten/spleten
+hair_tears: Haarscheurtjes
+holes: Gaten
+wrinkled: Gekreukt
+delamination: Delaminatie
+missing_parts: Ontbrekende delen
+removable_parts: Afneembare delen
+brittle: Bros
+
+removing_dust: Ontstoffen
+superficial_clenaing: Oppervlakkige reiniging
+insect_repellent_treatment: Insectenwerende behandeling
+removing_old_spores: Schimmelsporen verwijderen
+reinforcing: Versteviging/steunconstructie
+regluing_loose_parts: Herlijmen van aparte delen
+fixating_loose_parts: Fixeren losse delen
+stabilizing_socket: Stabiliseren van de sokkel
+adding_protective_layer: Beschermlaag aanbrengen
+adding_barcode: Barcode aanbrengen
+
+thorough_cleaning: Grondig reinigen
+local_cleaning: Plaatselijk reinigen
+polychromy_research: Polychromieonderzoek
+reconstruction_of_original: Reconstructie van het origineel
+removing_material_tension: Materiaal spanning wegnemen
+removing_old_restoration: Verwijderen van oude restauraties
+replacing_construction: Constructie vervangen
+protective_layer: Protectielaag
+adding_fastening_system: Bevestigingssysteem voorzien
+retouching: Retoucheren
+filling_gap_elements: Elementen opvullen van lacunes
+
+setup_method: Opstellingswijze
+material_technical_research: Materiaaltechnisch onderzoek
+analysis: Analyse
+necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek

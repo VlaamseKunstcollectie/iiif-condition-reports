@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Utils\ReportTemplateData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,8 +13,7 @@ class ViewReportController extends AbstractController
      */
     public function view($id)
     {
-        return $this->render('view.html.twig', [
-            'id' => $id
-        ]);
+        $em = $this->get('doctrine')->getManager();
+        return $this->render('report.html.twig', ReportTemplateData::getViewData($em, $id));
     }
 }

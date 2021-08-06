@@ -1,120 +1,136 @@
-<h3>Conditie van het object</h3>
-<h4>Algemene conditie</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_good', 'label': 'Goed' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_reasonable', 'label': 'Redelijk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_bad', 'label': 'Slecht' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_not_transportable', 'label': 'Niet vervoerbaar' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_not_displayable', 'label': 'Niet tentoonstelbaar' } %}</div>
+{% set general_conditions = [ 'good', 'reasonable', 'bad', 'not transportable', 'not_dispayable' ] %}
+{% set has_general_condition = false %}
+{% for general_condition in general_conditions %}
+    {% if prefilled_data['general_condition' ~ general_condition] is defined %}
+        {% set has_general_condition = true %}
+    {% endif %}
+{% endfor %}
 
-<h4>Specifieke toestand van het object</h4>
-<div class="half">
-    <h4>Drager</h4>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_surface_dirt', 'label': 'Oppervlaktevuil' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_crusted_dirt', 'label': 'Geïncrusteerd vuil' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_spots', 'label': 'Vlekken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_fingerprints', 'label': 'Vingerafrdrukken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_old_restoration', 'label': 'Oude ingrepen/restauratie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_salts', 'label': 'Zouten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_insects', 'label': 'Insectenaantasten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_mold', 'label': 'Schimmel' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_water_damage', 'label': 'Waterschade' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_corrision', 'label': 'Corrosie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_gaps', 'label': 'Lacunes' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_flaking', 'label': 'Schilfering' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_powders', 'label': 'Poederen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_discoloration', 'label': 'Verkleuringen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_wear', 'label': 'Slijtage' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_scratches', 'label': 'Krassen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_twists', 'label': 'Scheluw' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_dents', 'label': 'Blutsen/deuken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_structural_damage', 'label': 'Structurele schade' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_cracks', 'label': 'Barsten/spleten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_tears', 'label': 'Haarscheurtjes' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_holes', 'label': 'Gaten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_wrinkled', 'label': 'Gekreukt' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_delamination', 'label': 'Delaminatie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_missing_parts', 'label': 'Ontbrekende delen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_removable_parts', 'label': 'Afneembare delen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_brittle', 'label': 'Bros' } %}</div>
-    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom' } %}</div>
-</div>
+{% set damages = [ 'surface_dirt', 'crusted_dirt', 'spots', 'fingerprints', 'old_restoration', 'salts', 'insect_damage', 'mold', 'water_damage',
+    'corrosion', 'gaps', 'flaking', 'powdering', 'discolorations', 'wearage', 'scratches', 'twists', 'dents', 'structural_damage',
+    'cracks', 'hair_tears', 'holes', 'wrinkled', 'delamination', 'missing_parts', 'removable_parts', 'brittle', 'custom' ] %}
+{% set has_carrier_damage = false %}
+{% set has_finish_layer_damage = false %}
+{% for damage in damages %}
+    {% if prefilled_data['carrier_damage_' ~ damage] is defined %}
+        {% set has_carrier_damage = true %}
+    {% endif %}
+    {% if prefilled_data['finish_layer_damage_' ~ damage] is defined %}
+        {% set has_finish_layer_damage = true %}
+    {% endif %}
+{% endfor %}
 
-<div class="half">
-    <h4>Afwerkingslaag</h4>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_surface_dirt', 'label': 'Oppervlaktevuil' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_crusted_dirt', 'label': 'Geïncrusteerd vuil' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_spots', 'label': 'Vlekken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_fingerprints', 'label': 'Vingerafrdrukken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_old_restoration', 'label': 'Oude ingrepen/restauratie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_salts', 'label': 'Zouten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_insects', 'label': 'Insectenaantasten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_mold', 'label': 'Schimmel' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_water_damage', 'label': 'Waterschade' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_corrision', 'label': 'Corrosie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_gaps', 'label': 'Lacunes' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_flaking', 'label': 'Schilfering' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_powders', 'label': 'Poederen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_discoloration', 'label': 'Verkleuringen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wear', 'label': 'Slijtage' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_scratches', 'label': 'Krassen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_twists', 'label': 'Scheluw' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_dents', 'label': 'Blutsen/deuken' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_structural_damage', 'label': 'Structurele schade' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_cracks', 'label': 'Barsten/spleten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_tears', 'label': 'Haarscheurtjes' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_holes', 'label': 'Gaten' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wrinkled', 'label': 'Gekreukt' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_delamination', 'label': 'Delaminatie' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_missing_parts', 'label': 'Ontbrekende delen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_removable_parts', 'label': 'Afneembare delen' } %}</div>
-    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_brittle', 'label': 'Bros' } %}</div>
-    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_damage_custom' } %}</div>
-</div>
+{% if not readonly or has_general_condition or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
+    <h3>Conditie van het object</h3>
+{% endif %}
+{% if not readonly or has_general_condition %}
+    <h4>Algemene conditie</h4>
+    {% for general_condition in general_conditions %}
+        <div>{% include 'checkbox.html.twig' with { 'name': 'general_condition_' ~ general_condition, 'label': general_condition | trans } %}</div>
+    {% endfor %}
+{% endif %}
 
-{% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specificaties' } %}
+{% if not readonly or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
+    <h4>Specifieke toestand van het object</h4>
+    {% if not readonly or has_carrier_damage %}
+        <div class="half">
+            <h4>Drager</h4>
+            {% for damage in damages %}
+                {% if damage == 'custom' %}
+                    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom' } %}</div>
+                {% else %}
+                    <div>{% include 'checkbox.html.twig' with { 'name': 'carrier_damage_' ~ damage, 'label': damage | trans } %}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
-<h3>Conservatie</h3>
+    {% if not readonly or has_finish_layer_damage %}
+        <div class="half">
+            <h4>Afwerkingslaag</h4>
+            {% for damage in damages %}
+                {% if damage == 'custom' %}
+                    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_damage_custom' } %}</div>
+                {% else %}
+                    <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_damage_' ~ damage, 'label': damage | trans } %}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
-<h4>Conservering voor transport nodig</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_yes', 'label': 'Ja' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_no', 'label': 'Nee' } %}</div>
+    {% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specificaties' } %}
+{% endif %}
 
-<h4>Conservatiebehandeling</h4>
-<div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_remove_dust', 'label': 'Ontstoffen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_surface_cleaning', 'label': 'Oppervlakkige reiniging' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_insect_treatment', 'label': 'Insectenwerende behandeling' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_remove_mold', 'label': 'Schimmelsporen verwijderen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_reinforcement', 'label': 'Versteviging/steunconstructie' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_reglue', 'label': 'Herlijmen van aparte delen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_fixate_loose_parts', 'label': 'Fixeren losse delen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_stabilize_socket', 'label': 'Stabiliseren van de sokkel' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_add_protective_layer', 'label': 'Beschermlaag aanbrengen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conversation_add_barcode', 'label': 'Barcode aanbrengen' } %}</div>
-<div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conversation_custom', 'label': 'Andere' } %}</div>
-<div>{% include 'number.html.twig' with { 'name': 'conservation_hours', 'label': 'Schatting werkuren' } %}</div>
+{% set conservation_treatments = [ 'removing_dust', 'superficial_cleaning', 'insect_repellent_treatment', 'removing_mold_spores', 'reinforcing',
+                                    'regluing_loose_parts', 'fixating_loose_parts', 'stabilizing_socket', 'adding_protective_layer', 'adding_barcode', 'custom' ] %}
+{% set has_conservation_treatment = false %}
+{% for conservation_treatment in conservation_treatments %}
+    {% if prefilled_data['conservation_treatment_' ~ conservation_treatment] is defined %}
+        {% set has_conservation_treatment = true %}
+    {% endif %}
+{% endfor %}
 
-<h4>Restauratiebehandeling</h4>
-<div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_thorough_cleaning', 'label': 'Grondig reinigen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_local_cleaning', 'label': 'Plaatselijk reinigen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_polychromy_research', 'label': 'Polychromieonderzoek' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_reconstruction', 'label': 'Reconstructie van het origineel' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_remove_material_tension', 'label': 'Materiaal spanning wegnemen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_remove_old_restaurations', 'label': 'Verwijderen van oude restauraties' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_replace_construction', 'label': 'Constructie vervangen' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_protective_layer', 'label': 'Protectielaag' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_add_fastening_system', 'label': 'Bevestigingssysteem voorzien' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_retouch', 'label': 'Retoucheren' } %}</div>
-<div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restauration_fill_gaps', 'label': 'Elementen opvullen van lacunes' } %}</div>
-<div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restauration_custom', 'label': 'Andere' } %}</div>
-<div>{% include 'number.html.twig' with { 'name': 'restauration_hours', 'label': 'Schatting werkuren' } %}</div>
+{% set restoration_treatments = [ 'thorough_cleaning', 'local_cleaning', 'polychromy_research', 'reconstruction_of_original', 'remove_material_tension', 'removing_old_restoration',
+                                  'replacing_construction', 'protective_layer', 'adding_fastening_system', 'retouching', 'filling_gap_elements', 'custom' ] %}
+{% set has_restoration_treatment = false %}
+{% for restoration_treatment in restoration_treatments %}
+    {% if prefilled_data['restoration_treatment_' ~ restoration_treatment] is defined %}
+        {% set has_restoration_treatment = true %}
+    {% endif %}
+{% endfor %}
 
-<h4>Verder onderzoek nodig</h4>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_setup_method', 'label': 'Opstellingswijze' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_material_technical', 'label': 'Materiaaltechnisch onderzoek' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_analysis', 'label': 'Analyse' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_background_information', 'label': 'Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'label': 'Andere' } %}</div>
+{% set researches = [ 'setup_method', 'material_technical_research', 'analysis', 'necessary_background_information', 'custom' ] %}
+{% set has_research_needed = false %}
+{% for research in researches %}
+    {% if prefilled_data['research_needed_' ~ research] is defined %}
+        {% set has_research_needed = true %}
+    {% endif %}
+{% endfor %}
 
-<button type="button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Print</button>
+{% if not readonly or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined
+    or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
+    <h3>Conservatie</h3>
+{% endif %}
+
+{% if not readonly or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined %}
+    <h4>Conservering voor transport nodig</h4>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_yes', 'label': 'Ja' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'conservation_before_transport_no', 'label': 'Nee' } %}</div>
+{% endif %}
+
+{% if not readonly or has_conservation_treatment %}
+    <h4>Conservatiebehandeling</h4>
+    <div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
+    {% for conservation_treatment in conservation_treatments %}
+        {% if conservation_treatment == 'custom' %}
+            <div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conservation_treatment_custom', 'label': 'Andere' } %}</div>
+        {% else %}
+            <div>{% include 'checkbox_conservation.html.twig' with { 'name': 'conservation_treatment_' ~ conservation_treatment, 'label': conservation_treatment | trans } %}</div>
+        {% endif %}
+    {% endfor %}
+    <div>{% include 'number.html.twig' with { 'name': 'conservation_treatment_hours', 'label': 'Schatting werkuren' } %}</div>
+{% endif %}
+
+{% if not readonly or has_restoration_treatment %}
+    <h4>Restauratiebehandeling</h4>
+    <div><p>Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</p></div>
+    {% for restoration_treatment in restoration_treatments %}
+        {% if restoration_treatment == 'custom' %}
+            <div>{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restoration_treatment_custom', 'label': 'Andere' } %}</div>
+        {% else %}
+            <div>{% include 'checkbox_conservation.html.twig' with { 'name': 'restoration_treatment_' ~ restoration_treatment, 'label': restoration_treatment | trans } %}</div>
+        {% endif %}
+    {% endfor %}
+    <div>{% include 'number.html.twig' with { 'name': 'restoration_treatment_hours', 'label': 'Schatting werkuren' } %}</div>
+{% endif %}
+
+{% if not readonly or has_research_needed %}
+    <h4>Verder onderzoek nodig</h4>
+    {% for research in researches %}
+        {% if research == 'custom' %}
+            <div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'label': 'Andere' } %}</div>
+        {% else %}
+            <div>{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_' ~ research, 'label': research | trans } %}</div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

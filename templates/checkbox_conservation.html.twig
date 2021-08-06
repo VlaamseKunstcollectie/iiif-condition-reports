@@ -1,3 +1,10 @@
-{{ label }} <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}checked{% endif %}"/>
-<input type="number" oninput="document.getElementById('{{ name }}_checkbox_right_text').checked = this.value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
-<input type="text" name="{{ name }}_text" value="{% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}{{ prefilled_data[name ~ '_text'] }}{% endif %}"/>
+{% if readonly %}
+    {% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}
+    {{ label }} <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox" checked disabled/>{{ prefilled_data[name] }}
+    {% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}<label for="{{ name }}_checkbox_right_text">{{ prefilled_data[name ~ '_text'] }}</label>{% endif %}
+    {% endif %}
+{% else %}
+    {{ label }} <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox"{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %} checked{% endif %}/>
+    <input type="number" oninput="document.getElementById('{{ name }}_checkbox_right_text').checked = this.value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
+    <input type="text" name="{{ name }}_text" value="{% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}{{ prefilled_data[name ~ '_text'] }}{% endif %}"/>
+{% endif %}

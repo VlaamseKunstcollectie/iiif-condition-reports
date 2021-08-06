@@ -1,3 +1,4 @@
+{% if not readonly %}
 Aanleiding:
 <select name="reason" onchange="if(this.options[this.selectedIndex].value=='customOption') {
         toggleField(this,this.nextSibling);
@@ -13,6 +14,7 @@ Aanleiding:
     {% endfor %}
     <option value="customOption">Andere</option>
 </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this, this.previousSibling);}">
+{% endif %}
 
 <h2>Identificatie object</h2>
 <div>
@@ -34,18 +36,21 @@ Aanleiding:
 </div>
 
 <div id="openseadragon-viewer" style="width: 640px; height: 480px;"></div>
-
-<h2>Informatie bruikleenproject (indien van toepassing)</h2>
-<div>
-{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}
-{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina' } %}
-</div>
-<div>
-{% include 'textfield.html.twig' with { 'name': 'exhibition_date', 'label': 'Start- en einddatum bruikleen' } %}
-{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}
-</div>
-<div>
-{% include 'textarea.html.twig' with { 'name': 'exhibition_info', 'label': 'Extra informatie tentoonstelling/bruikleenproject' } %}
-</div>
-<h3>Verantwoordelijke curator instelling/museum/tentoonstellingsplek</h3>
-{% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}
+{% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_id is defined %}
+    <h2>Informatie bruikleenproject (indien van toepassing)</h2>
+    <div>
+        {% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}
+        {% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina' } %}
+    </div>
+    <div>
+        {% include 'textfield.html.twig' with { 'name': 'exhibition_date', 'label': 'Start- en einddatum bruikleen' } %}
+        {% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}
+    </div>
+    <div>
+        {% include 'textarea.html.twig' with { 'name': 'exhibition_info', 'label': 'Extra informatie tentoonstelling/bruikleenproject' } %}
+    </div>
+    {% if not readonly or prefilled_data.exhibition_rep_name is defined %}
+        <h3>Verantwoordelijke curator instelling/museum/tentoonstellingsplek</h3>
+        {% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}
+    {% endif %}
+{% endif %}

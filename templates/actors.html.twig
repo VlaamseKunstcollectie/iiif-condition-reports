@@ -1,23 +1,37 @@
 <h2>Informatie eigenaar</h2>
 <h3>Instelling</h3>
 {% include 'organization_info.html.twig' with { 'type': 'owner' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'owner_rep' }%}
+{% if not readonly or prefilled_data.owner_rep_name is defined %}
+    <h3>Vertegenwoordiger</h3>
+    {% include 'representative_info.html.twig' with { 'type': 'owner_rep' }%}
+{% endif %}
 
-<h2>Informatie rapporteur/bruikleennemer/restaurateur</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'user' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'user_rep' }%}
+{% if not readonly or prefilled_data.user_name is defined %}
+    <h2>Informatie rapporteur/bruikleennemer/restaurateur</h2>
+    <h3>Instelling</h3>
+    {% include 'organization_info.html.twig' with { 'type': 'user' }%}
+    {% if not readonly or prefilled_data.user_rep_name is defined %}
+        <h3>Vertegenwoordiger</h3>
+        {% include 'representative_info.html.twig' with { 'type': 'user_rep' }%}
+    {% endif %}
+{% endif %}
 
-<h2>Informatie koerier/art handler</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'handler' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'handler_rep' }%}
+{% if not readonly or prefilled_data.handler_name is defined %}
+    <h2>Informatie koerier/art handler</h2>
+    <h3>Instelling</h3>
+    {% include 'organization_info.html.twig' with { 'type': 'handler' }%}
+    {% if not readonly or prefilled_data.handler_rep_name is defined %}
+        <h3>Vertegenwoordiger</h3>
+        {% include 'representative_info.html.twig' with { 'type': 'handler_rep' }%}
+    {% endif %}
+{% endif %}
 
-<h2>Informatie andere derde partij</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'third_party' }%}
-<h3>Vertegenwoordiger</h3>
-{% include 'representative_info.html.twig' with { 'type': 'third_party_rep' }%}
+{% if not readonly or prefilled_data.third_party_name is defined %}
+    <h2>Informatie andere derde partij</h2>
+    <h3>Instelling</h3>
+    {% include 'organization_info.html.twig' with { 'type': 'third_party' }%}
+    {% if not readonly or prefilled_data.third_party_rep_name is defined %}
+        <h3>Vertegenwoordiger</h3>
+        {% include 'representative_info.html.twig' with { 'type': 'third_party_rep' }%}
+    {% endif %}
+{% endif %}

@@ -1,96 +1,150 @@
-<h3>Materiaalsoort</h3>
-<div class="half">
-<h4>Drager</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_stone', 'label': 'Steen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_metal', 'label': 'Metaal' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_glass', 'label': 'Glas' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_ceramic', 'label': 'Keramiek/aardewerk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_plaster', 'label': 'Gips' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_textile', 'label': 'Textiel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_paper', 'label': 'Papier' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_wood', 'label': 'Hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'material_plastic', 'label': 'Kunststof' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom' } %}</div>
-</div>
+{% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
+{% set has_material = false %}
+{% set has_socket = false %}
+{% for material in materials %}
+    {% if prefilled_data['material_' ~ material] is defined %}
+        {% set has_material = true %}
+    {% endif %}
+    {% if prefilled_data['socket_' ~ material] is defined %}
+        {% set has_socket = true %}
+    {% endif %}
+{% endfor %}
 
-<div class="half">
-<h4>Sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_stone', 'label': 'Steen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_metal', 'label': 'Metaal' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_glass', 'label': 'Glas' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_ceramic', 'label': 'Keramiek/aardewerk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_plaster', 'label': 'Gips' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_textile', 'label': 'Textiel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_paper', 'label': 'Papier' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_wood', 'label': 'Hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'socket_plastic', 'label': 'Kunststof' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'socket_custom' } %}</div>
-</div>
+{% set finish_layers = [ 'absent', 'glaze', 'varnish', 'wax_layer', 'painting', 'monochrome', 'polychrome', 'patination', 'chop_marks', 'polishing', 'natural', 'artificial', 'custom' ] %}
+{% set has_finish_layer = false %}
+{% for finish_layer in finish_layers %}
+    {% if prefilled_data['finish_layer_' ~ finish_layer] is defined %}
+        {% set has_finish_layer = true %}
+    {% endif %}
+{% endfor %}
 
-<div>{% include 'textfield.html.twig' with { 'name': 'material_specification', 'label': 'Materiaalspecificatie' } %}</div>
+{% if not readonly or has_material or has_socket or prefilled_data.material_specification is defined or has_finish_layer or prefilled_data.finish_layer_specification is defined or prefilled_data.material_production is defined %}
+    <h3>Materiaalsoort</h3>
+{% endif %}
 
-<h4>Afwerklaag</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_absent', 'label': 'Niet aanwezig' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_glaze', 'label': 'Glazuur' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_varnish', 'label': 'Vernis' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_wax', 'label': 'Waslaag' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_painted', 'label': 'Beschildering' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_monochrome', 'label': 'Monochroom' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_polychrome', 'label': 'Polychroom' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_patination', 'label': 'Patinering' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_marks', 'label': 'Kapsporen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_polish', 'label': 'Polijsting' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_natural', 'label': 'Natuurlijk' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_artificial', 'label': 'Kustmatig' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_custom' } %}</div>
+{% if not readonly or has_material %}
+    <div class="half">
+        <h4>Drager</h4>
+        {% for material in materials %}
+            {% if material == 'custom' %}
+                <div>{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom' } %}</div>
+            {% else %}
+                <div>{% include 'checkbox.html.twig' with { 'name': 'material_' ~ material, 'label': material | trans } %}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
 
-<div>{% include 'textfield.html.twig' with { 'name': 'finish_layer_specification', 'label': 'Materiaalspecificatie afwerkingslaag' } %}</div>
+{% if not readonly or has_socket %}
+    <div class="half">
+        <h4>Sokkel</h4>
+        {% for material in materials %}
+            {% if material == 'custom' %}
+                <div>{% include 'checkbox_custom.html.twig' with { 'name': 'socket_custom' } %}</div>
+            {% else %}
+                <div>{% include 'checkbox.html.twig' with { 'name': 'socket_' ~ material, 'label': material | trans } %}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
 
-<div>{% include 'textfield.html.twig' with { 'name': 'material_production', 'label': 'Vervaardigingstechnieken' } %}</div>
+{% if not readonly or prefilled_data.material_specification is defined %}
+    <div>{% include 'textfield.html.twig' with { 'name': 'material_specification', 'label': 'Materiaalspecificatie' } %}</div>
+{% endif %}
 
-<h3>Vorm</h3>
-<div>{% include 'checkbox.html.twig' with { 'name': 'form_relief', 'label': 'Reliëf' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'form_full_plastic', 'label': 'Volplastisch' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'form_custom' } %}</div>
+{% if not readonly or has_socket %}
+    <h4>Afwerklaag</h4>
+    {% for finish_layer in finish_layers %}
+        {% if finish_layer == 'custom' %}
+            <div>{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_custom' } %}</div>
+        {% else %}
+            <div>{% include 'checkbox.html.twig' with { 'name': 'finish_layer_' ~ finish_layer, 'label': finish_layer | trans } %}</div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
-<h3>Constructie/samenstelling</h3>
-<div class="half">
-<h4>Werk</h4>
-<div>{% include 'number.html.twig' with { 'name': 'construction_work_number_of_parts', 'label': 'Aantal onderdelen' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_loose', 'label': 'Los' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_fixed', 'label': 'Vast' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_work_custom', 'label': 'Te monteren met' } %}</div>
-</div>
-<div class="half">
-<h4>Sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_loose', 'label': 'Los' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_fixed', 'label': 'Vast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_original', 'label': 'Origineel' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_not_original', 'label': 'Niet origineel' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_socket_custom' } %}</div>
-</div>
-<h3>Verbindingen</h3>
-<div class="half">
-<h4>Tussen afzonderlijke delen van het beeld</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_none', 'label': 'Niet van toepassing' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_welded', 'label': 'gelast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_soldered', 'label': 'Gesoldeerd' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_dived_wood', 'label': 'Doken hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_glue', 'label': 'Verlijming' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_screws', 'label': 'Schroeven' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_nails', 'label': 'Nagels' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_bolts', 'label': 'Bouten' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_work_custom' } %}</div>
-</div>
-<div class="half">
-<h4>Tussen beeld en sokkel</h4>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__none', 'label': 'Niet van toepassing' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__welded', 'label': 'gelast' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__soldered', 'label': 'Gesoldeerd' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__dived_wood', 'label': 'Doken hout' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__glue', 'label': 'Verlijming' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__screws', 'label': 'Schroeven' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__nails', 'label': 'Nagels' } %}</div>
-<div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket__bolts', 'label': 'Bouten' } %}</div>
-<div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_socket__custom' } %}</div>
-</div>
+{% if not readonly or prefilled_data.finish_layer_specification is defined %}
+    <div>{% include 'textfield.html.twig' with { 'name': 'finish_layer_specification', 'label': 'Materiaalspecificatie afwerkingslaag' } %}</div>
+{% endif %}
+
+{% if not readonly or prefilled_data.material_production is defined %}
+    <div>{% include 'textfield.html.twig' with { 'name': 'material_production', 'label': 'Vervaardigingstechnieken' } %}</div>
+{% endif %}
+
+{% if not readonly or prefilled_data.form_relief is defined or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined %}
+    <h3>Vorm</h3>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'form_relief', 'label': 'Reliëf' } %}</div>
+    <div>{% include 'checkbox.html.twig' with { 'name': 'form_full_plastic', 'label': 'Volplastisch' } %}</div>
+    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'form_custom' } %}</div>
+{% endif %}
+
+{% if not readonly or prefilled_data.construction_work_number_of_parts is defined
+    or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined
+    or prefilled_data.construction_work_custom is defined or prefilled_data.construction_socket_loose is defined
+    or prefilled_data.construction_socket_fixed is defined or prefilled_data.construction_socket_original is defined
+    or prefilled_data.construction_socket_not_original is defined or prefilled_data.construction_socket_custom is defined %}
+    <h3>Constructie/samenstelling</h3>
+    {% if not readonly or prefilled_data.construction_work_number_of_parts is defined
+        or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined
+        or prefilled_data.construction_work_custom is defined%}
+        <div class="half">
+            <h4>Werk</h4>
+            <div>{% include 'number.html.twig' with { 'name': 'construction_work_number_of_parts', 'label': 'Aantal onderdelen' } %}</div>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_loose', 'label': 'Los' } %}</div>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_work_fixed', 'label': 'Vast' } %}</div>
+            <div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_work_custom', 'label': 'Te monteren met' } %}</div>
+        </div>
+    {% endif %}
+    {% if not readonly or prefilled_data.construction_socket_loose is defined
+        or prefilled_data.construction_socket_fixed is defined or prefilled_data.construction_socket_original is defined
+        or prefilled_data.construction_socket_not_original is defined or prefilled_data.construction_socket_custom is defined %}
+        <div class="half">
+            <h4>Sokkel</h4>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_loose', 'label': 'Los' } %}</div>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_fixed', 'label': 'Vast' } %}</div>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_original', 'label': 'Origineel' } %}</div>
+            <div>{% include 'checkbox.html.twig' with { 'name': 'construction_socket_not_original', 'label': 'Niet origineel' } %}</div>
+            <div>{% include 'checkbox_custom.html.twig' with { 'name': 'construction_socket_custom' } %}</div>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% set connections = [ 'not_applicable', 'welded', 'soldered', 'dived_wood', 'glue', 'screws', 'nails', 'bolts', 'custom' ] %}
+{% set has_connection_work = false %}
+{% set has_connection_socket = false %}
+{% for connection in connections %}
+    {% if prefilled_data['connection_work_' ~ connection] is defined %}
+        {% set has_connection_work = true %}
+    {% endif %}
+    {% if prefilled_data['connection_socket_' ~ connection] is defined %}
+        {% set has_connection_socket = true %}
+    {% endif %}
+{% endfor %}
+
+{% if not readonly or has_connection_work or has_connection_socket %}
+    <h3>Verbindingen</h3>
+    {% if not readonly or has_connection_work %}
+        <div class="half">
+            <h4>Tussen afzonderlijke delen van het beeld</h4>
+            {% for connection in connections %}
+                {% if connection == 'custom' %}
+                    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_work_custom' } %}</div>
+                {% else %}
+                    <div>{% include 'checkbox.html.twig' with { 'name': 'connections_work_' ~ connection, 'label': connection | trans } %}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if not readonly or has_connection_socket %}
+        <div class="half">
+            <h4>Tussen beeld en sokkel</h4>
+            {% for connection in connections %}
+                {% if connection == 'custom' %}
+                    <div>{% include 'checkbox_custom.html.twig' with { 'name': 'connections_socket_custom' } %}</div>
+                {% else %}
+                    <div>{% include 'checkbox.html.twig' with { 'name': 'connections_socket_' ~ connection, 'label': connection | trans } %}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}

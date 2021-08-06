@@ -1,21 +1,23 @@
-<script>
-    var {{ type }}Representatives = {{ representatives | json_encode | raw }};
+{% if not readonly %}
+    <script>
+        var {{ type }}Representatives = {{ representatives | json_encode | raw }};
 
-    function fill{{ type }}Representative(id) {
-        for(var key in {{ type }}Representatives[id]) {
-            var element = document.querySelector("input[name='{{ type }}_" + key + "']");
-            if(element != null) {
-                element.value = {{ type }}Representatives[id][key];
+        function fill{{ type }}Representative(id) {
+            for(var key in {{ type }}Representatives[id]) {
+                var element = document.querySelector("input[name='{{ type }}_" + key + "']");
+                if(element != null) {
+                    element.value = {{ type }}Representatives[id][key];
+                }
             }
         }
-    }
-</script>
-<select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
-    <option></option>
-    {% for representative in representatives %}
-        <option value="{{ representative.id }}">{{ representative.alias }}</option>
-    {% endfor %}
-</select>
+    </script>
+    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
+        <option></option>
+        {% for representative in representatives %}
+            <option value="{{ representative.id }}">{{ representative.alias }}</option>
+        {% endfor %}
+    </select>
+{% endif %}
 <div>
     {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
     {% include 'textfield.html.twig' with { 'name': type ~ '_function', 'label': 'Hoedanigheid' } %}

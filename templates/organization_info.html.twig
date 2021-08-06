@@ -1,21 +1,23 @@
-<script>
-    var {{ type }}Organizations = {{ organizations | json_encode | raw }};
+{% if not readonly %}
+    <script>
+        var {{ type }}Organizations = {{ organizations | json_encode | raw }};
 
-    function fill{{ type }}Organization(id) {
-        for(var key in {{ type }}Organizations[id]) {
-            var element = document.querySelector("input[name='{{ type }}_" + key + "']");
-            if(element != null) {
-                element.value = {{ type }}Organizations[id][key];
+        function fill{{ type }}Organization(id) {
+            for(var key in {{ type }}Organizations[id]) {
+                var element = document.querySelector("input[name='{{ type }}_" + key + "']");
+                if(element != null) {
+                    element.value = {{ type }}Organizations[id][key];
+                }
             }
         }
-    }
-</script>
-<select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
-    <option></option>
-    {% for organization in organizations %}
-        <option value="{{ organization.id }}">{{ organization.alias }}</option>
-    {% endfor %}
-</select>
+    </script>
+    <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
+        <option></option>
+        {% for organization in organizations %}
+            <option value="{{ organization.id }}">{{ organization.alias }}</option>
+        {% endfor %}
+    </select>
+{% endif %}
 <div>
     {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
     {% include 'textfield.html.twig' with { 'name': type ~ '_vat', 'label': 'BTW-nummer' } %}
