@@ -1,18 +1,18 @@
 <div id="annotation-form">
 <div id="annotation-tools">
     <p>Geschiedenis</p>
-    <button type="button" onclick="window.isCurrentAnnotations = true; window.anno.setAnnotations(window.mostRecentAnnotations);">Reset</button>
+    <button type="button" onclick="resetAnnotations();">Reset</button>
     {% for id, timestamp in annotation_history %}
     <p>{{ timestamp }}</p>
     <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
     <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
     {% endfor %}
     <p>Gereedschap</p>
-    <button type="button" onclick="window.anno.setDrawingTool('rect'); window.anno.setDrawingEnabled(true);">Rechthoek</button>
-    <button type="button" onclick="window.anno.setDrawingTool('polygon'); window.anno.setDrawingEnabled(true);">Polygoon</button>
-    <button type="button" onclick="window.anno.setDrawingTool('circle'); window.anno.setDrawingEnabled(true);">Cirkel</button>
-    <button type="button" onclick="window.anno.setDrawingTool('ellipse'); window.anno.setDrawingEnabled(true);">Ellips</button>
-    <button type="button" onclick="window.anno.setDrawingTool('freehand'); window.anno.setDrawingEnabled(true);">Vrije hand</button>
+    <button type="button" onclick="setDrawingTool('rect');">Rechthoek</button>
+    <button type="button" onclick="setDrawingTool('polygon');">Polygoon</button>
+    <button type="button" onclick="setDrawingTool('circle');">Cirkel</button>
+    <button type="button" onclick="setDrawingTool('ellipse');">Ellips</button>
+    <button type="button" onclick="setDrawingTool('freehand');">Vrije hand</button>
     <p>Tekenstijl</p>
     <button type="button" onclick="window.annoConf.styleClass='condition-red';">Rood omlijnd</button>
     <button type="button" onclick="window.annoConf.styleClass='condition-green';">Groen omlijnd</button>
@@ -176,5 +176,16 @@ function showAnnotationsOnly(id) {
         window.isCurrentAnnotations = false;
     }
     window.anno.setAnnotations(annotationsOnly[id]);
+}
+
+function resetAnnotations() {
+    window.isCurrentAnnotations = true;
+    window.anno.setAnnotations(window.mostRecentAnnotations);
+}
+
+function setDrawingTool(drawingTool) {
+    resetAnnotations();
+    window.anno.setDrawingTool(drawingTool);
+    window.anno.setDrawingEnabled(true);
 }
 </script>
