@@ -67,7 +67,7 @@
 </div>
 </div>
 
-<button type="button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>
+<button type="button" id="print-button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>
 
 <script>
 window.onload = function() {

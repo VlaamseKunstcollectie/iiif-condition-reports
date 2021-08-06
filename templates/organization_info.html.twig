@@ -30,7 +30,7 @@
 </div>
 <div>
     {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_website', 'label': 'Website' } %}
+    {% include 'textfield.html.twig' with { 'name': type ~ '_website', 'label': 'Website', 'is_url': true } %}
     {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Tel.' } %}
     {% include 'textfield.html.twig' with { 'name': type ~ '_mobile', 'label': 'GSM' } %}
 </div>

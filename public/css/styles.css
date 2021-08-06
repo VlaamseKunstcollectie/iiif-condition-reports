@@ -85,9 +85,9 @@ body {
     width: 40%;
 }
 
-#openseadragon-viewer {
-    height: 600px;
-    width: 400px;
+#openseadragon-viewer, #openseadragon-annotorious {
+    height: 800px;
+    width: 800px;
 }
 
 #annotation-form {
@@ -113,11 +113,6 @@ body {
     height: 100%;
 }
 
-#openseadragon-annotorious {
-    height: 100%;
-    width: 100%;
-}
-
 .openseadragon-canvas {
     outline: none;
 }
@@ -134,7 +129,11 @@ body {
         left: 0 !important;
     }
 
-    .openseadragon-container div:not(.openseadragon-canvas) {
+    .openseadragon-container div:not(.openseadragon-canvas), #annotation-tools, #print-button {
         display: none !important;
+    }
+
+    #annotation-viewer {
+        width: 100% !important;
     }
 }

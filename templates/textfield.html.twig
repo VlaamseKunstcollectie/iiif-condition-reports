@@ -1,6 +1,6 @@
 {% if readonly %}
     {% if prefilled_data[name] is defined %}
-        {{ label }}: {{ prefilled_data[name] }}
+        {{ label }}: {% if is_url is defined and is_url %}<a href="{{ prefilled_data[name] }}">{{ prefilled_data[name] }}</a>{% else %}{{ prefilled_data[name] }}{% endif %}
     {% endif %}
 {% else %}
     <label for="{{ name }}">{{ label }}</label>

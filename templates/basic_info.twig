@@ -39,10 +39,10 @@ Aanleiding:
 {% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined
     or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined
     or prefilled_data.exhibition_rep_name is defined %}
-    <h2>Informatie bruikleenproject (indien van toepassing)</h2>
+    <h2>Informatie bruikleenproject{% if not readonly %} (indien van toepassing){% endif %}</h2>
     <div>
         {% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}
-        {% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina' } %}
+        {% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina', 'is_url': true } %}
     </div>
     <div>
         {% include 'textfield.html.twig' with { 'name': 'exhibition_date', 'label': 'Start- en einddatum bruikleen' } %}

@@ -1,4 +1,4 @@
-{% set general_conditions = [ 'good', 'reasonable', 'bad', 'not transportable', 'not_dispayable' ] %}
+{% set general_conditions = [ 'good', 'reasonable', 'bad', 'not transportable', 'not_displayable' ] %}
 {% set has_general_condition = false %}
 {% for general_condition in general_conditions %}
     {% if prefilled_data['general_condition' ~ general_condition] is defined %}

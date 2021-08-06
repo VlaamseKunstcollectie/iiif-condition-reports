@@ -187,11 +187,12 @@ class SaveReportController extends AbstractController
                 }
                 //TODO add signature
 
-//                return $this->redirectToRoute('view', [ 'id' => $report->getId() ]);
+                return $this->redirectToRoute('view', [ 'id' => $report->getId() ]);
             } else {
                 //TODO appropriate error message
             }
+        } else {
+            return $this->render('main.html.twig');
         }
-        return $this->render('main.html.twig');
     }
 }
