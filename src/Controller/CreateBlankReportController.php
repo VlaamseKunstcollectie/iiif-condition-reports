@@ -6,6 +6,7 @@ use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
 use App\Entity\Organization;
 use App\Entity\Representative;
+use App\Utils\CurlUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,8 @@ class CreateBlankReportController extends AbstractController
     public function createBlank(Request $request, $id)
     {
         $prefilledData = array();
+        $iiifImageData = '{}';
+        $patternSize = 100;
         $reportReasons = $this->getParameter('report_reasons');
         $em = $this->container->get('doctrine')->getManager();
         $datahubData = $em->createQueryBuilder()
@@ -36,6 +39,13 @@ class CreateBlankReportController extends AbstractController
                 $prefilledData['inventory_number'] = $data['inventoryNumber'];
             }
             if(!empty($data['value'])) {
+                if($data['name'] === 'iiif_image_url') {
+                    $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
+                    if(!empty($iiifImageData)) {
+                        $dataDecoded = json_decode($iiifImageData);
+                        $patternSize = round(($dataDecoded->height > $dataDecoded->width ? $dataDecoded->height : $dataDecoded->width) / 100);
+                    }
+                }
                 $prefilledData[$data['name']] = $data['value'];
             }
         }
@@ -64,6 +74,9 @@ class CreateBlankReportController extends AbstractController
 
         return $this->render('create.html.twig', [
             'prefilled_data' => $prefilledData,
+            'iiif_image_data' => $iiifImageData,
+            'pattern_size' => $patternSize,
+            'stroke_width' => round($patternSize / 15),
             'annotation_history' => array(),
             'annotations' => array(),
             'deleted_annotations' => array(),

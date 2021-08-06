@@ -6,6 +6,7 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
+        "ext-curl": "^7.4",
         "ext-dom": "20031129",
         "ext-iconv": "*",
         "ext-json": "^7.4",

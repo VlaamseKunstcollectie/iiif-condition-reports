@@ -206,7 +206,6 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     $em->clear();
                 }
             }
-//            var_dump($relations);
         }
         catch(OaipmhException $e) {
 //            echo 'OAI-PMH error: ' . $e . PHP_EOL;

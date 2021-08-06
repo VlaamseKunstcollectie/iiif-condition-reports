@@ -9,6 +9,7 @@ use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
 use App\Entity\Representative;
+use App\Utils\CurlUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +22,8 @@ class CreateExistingReportController extends AbstractController
     public function createExisting(Request $request, $id)
     {
         $prefilledData = array();
+        $iiifImageData = '{}';
+        $patternSize = 100;
         $reportReasons = $this->getParameter('report_reasons');
         $em = $this->container->get('doctrine')->getManager();
         $reportData = $em->createQueryBuilder()
@@ -41,6 +44,13 @@ class CreateExistingReportController extends AbstractController
             }
             if(empty($lastReportTimestamp)) {
                 $lastReportTimestamp = $data['timestamp']->format('Y-m-d H:i:s');
+            }
+            if($data['name'] === 'iiif_image_url') {
+                $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
+                if(!empty($iiifImageData)) {
+                    $dataDecoded = json_decode($iiifImageData);
+                    $patternSize = round(($dataDecoded->height > $dataDecoded->width ? $dataDecoded->height : $dataDecoded->width) / 100);
+                }
             }
             $prefilledData[$data['name']] = $data['value'];
         }
@@ -164,6 +174,9 @@ class CreateExistingReportController extends AbstractController
 
         return $this->render('create.html.twig', [
             'prefilled_data' => $prefilledData,
+            'iiif_image_data' => $iiifImageData,
+            'pattern_size' => $patternSize,
+            'stroke_width' => round($patternSize / 10),
             'annotation_history' => $annotationHistory,
             'annotations' => $annotations,
             'deleted_annotations' => $deletedAnnotations,
