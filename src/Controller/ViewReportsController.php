@@ -38,7 +38,7 @@ class ViewReportsController extends AbstractController
                     'timestamp' => $data['timestamp']->format('Y-m-d H:i:s'),
                     'inventory_number' => $data['inventoryNumber'],
                     'thumbnail' => '',
-                    'title' => '',
+                    'title_nl' => '',
                     'creator' => ''
                 ];
             }

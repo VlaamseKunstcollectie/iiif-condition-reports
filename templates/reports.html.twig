@@ -14,7 +14,7 @@
             <a class="reports-row" href="{% if action == 'create' %}{{ path('create_existing', { id : result.id }) }}{% else %}{{ path('view', { id : result.id }) }}{% endif %}">
                 <div class="table-cell"><img src="{{  result.thumbnail }}" alt="" /></div>
                 <div class="table-cell">{{  result.inventory_number }}</div>
-                <div class="table-cell">{{  result.title }}</div>
+                <div class="table-cell">{{  result.title_nl }}</div>
                 <div class="table-cell">{{  result.creator }}</div>
                 <div class="table-cell">{{  result.timestamp }}</div>
             </a>
