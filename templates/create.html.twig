@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>IIIF conditierapport{% if prefilled_data['title_nl'] is defined %} - {{ prefilled_data['title_nl'] }}{% endif %}</title>
+    <title>IIIF conditierapport{% if prefilled_data.title_nl is defined %} - {{ prefilled_data.title_nl }}{% endif %}</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/annotorious.min.css') }}">
     <script src="{{ asset('js/openseadragon.2.4.2.min.js') }}"></script>
