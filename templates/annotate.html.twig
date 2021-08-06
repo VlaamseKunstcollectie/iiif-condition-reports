@@ -37,19 +37,18 @@
         <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
         <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
     </pattern>
-    <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+    <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size * 3 / 2 }}px">
+        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
     </pattern>
     <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
         <line stroke="green" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
         <line stroke="green" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
     </pattern>
-    <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+    <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
+        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
     </pattern>
-
     <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
         <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
         <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
@@ -179,8 +178,10 @@ function showAnnotationsOnly(id) {
 }
 
 function resetAnnotations() {
-    window.isCurrentAnnotations = true;
-    window.anno.setAnnotations(window.mostRecentAnnotations);
+    if(!window.isCurrentAnnotations) {
+        window.isCurrentAnnotations = true;
+        window.anno.setAnnotations(window.mostRecentAnnotations);
+    }
 }
 
 function setDrawingTool(drawingTool) {
