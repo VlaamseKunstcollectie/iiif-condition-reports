@@ -91,20 +91,22 @@ body {
 }
 
 #annotation-form {
-    height: calc(100vh - 50px);
+    height: 800px;
 }
 
-#annotation-tools {
+#annotation-history-tools {
     width: 200px;
     float: left;
     display: inline;
+    height: 800px;
+    overflow: scroll;
 }
 
 #annotation-viewer {
     left: 250px;
-    width: calc(100% - 250px);
+    width: 800px;
     float: right;
-    height: 100%;
+    height: 800px;
     display: inline;
 }
 
@@ -129,7 +131,7 @@ body {
         left: 0 !important;
     }
 
-    .openseadragon-container div:not(.openseadragon-canvas), #annotation-tools, #print-button {
+    .openseadragon-container div:not(.openseadragon-canvas), #annotation-history-tools, #print-button {
         display: none !important;
     }
 
