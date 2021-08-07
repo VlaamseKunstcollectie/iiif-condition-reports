@@ -11,7 +11,7 @@
             }
         }
     </script>
-    <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
+    Organisatie <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
         <option></option>
         {% for organization in organizations %}
             <option value="{{ organization.id }}">{{ organization.alias }}</option>

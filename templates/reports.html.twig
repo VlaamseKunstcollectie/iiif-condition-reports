@@ -8,7 +8,7 @@
             <div class="table-cell">Inventarisnummer</div>
             <div class="table-cell">Titel</div>
             <div class="table-cell">Vervaardiger</div>
-            <div class="table-cell">Aangemaakt</div>
+            <div class="table-cell">Laatste wijziging</div>
         </div>
         {% for result in search_results %}
             <a class="reports-row" href="{% if action == 'create' %}{{ path('create_existing', { id : result.id }) }}{% else %}{{ path('view', { id : result.id }) }}{% endif %}">

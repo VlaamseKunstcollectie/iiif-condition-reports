@@ -11,7 +11,7 @@
             }
         }
     </script>
-    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
+    Verantwoordelijke <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
         <option></option>
         {% for representative in representatives %}
             <option value="{{ representative.id }}">{{ representative.alias }}</option>
