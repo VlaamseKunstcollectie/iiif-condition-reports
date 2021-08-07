@@ -1,7 +1,5 @@
 {% include 'header.html.twig' %}
-    <p><a href="{{ path('reports', { action : 'view' }) }}">Bekijk bestaande rapporten</a></p>
-    <p><a href="{{ path('reports', { action : 'create' }) }}">Creëer nieuw rapport op basis van een bestaand rapport</a></p>
-    <p><a href="{{ path('search') }}">Creëer nieuw blanco rapport</a></p>
-    <p><a href="{{ path('organizations') }}">Beheer organisaties</a></p>
-    <p><a href="{{ path('representatives') }}">Beheer vertegenwoordigers</a></p>
+    <p><a href="{{ path('reports') }}">Rapporten</a></p>
+    <p><a href="{{ path('organizations') }}">Organisaties</a></p>
+    <p><a href="{{ path('representatives') }}">Vertegenwoordigers</a></p>
 {% include 'footer.html.twig' %}

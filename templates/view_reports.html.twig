@@ -1,6 +1,5 @@
 {% include 'header.html.twig' %}
-{{ form(form) }}
-{% if is_search %}
+{% if search_results is not null %}
     {% if search_results is empty %}
         <p>Geen rapporten gevonden.</p>
     {% else %}
@@ -10,9 +9,9 @@
                 <div class="table-cell">Inventarisnummer</div>
                 <div class="table-cell">Titel</div>
                 <div class="table-cell">Vervaardiger</div>
-                <div class="table-cell">Laatste wijziging</div>
+                <div class="table-cell">Aangemaakt</div>
                 <div class="table-cell">Bekijk</div>
-                <div class="table-cell">Maak rapport aan</div>
+                <div class="table-cell"></div>
             </div>
             {% for result in search_results %}
                 <div class="reports-row">
@@ -21,8 +20,7 @@
                     <div class="table-cell">{{ result.title_nl }}</div>
                     <div class="table-cell">{{ result.creator }}</div>
                     <div class="table-cell">{{ result.timestamp }}</div>
-                    {% if result.id is not empty %}<a href="{{ path('view_reports', { baseId: result.base_id }) }}" class="table-cell">Bekijk</a>{% else %}<div class="table-cell"></div>{% endif %}
-                    {% if result.id is not empty %}<a href="{{ path('create_existing', { baseId: result.base_id }) }}" class="table-cell">Breid uit</a>{% else %}<a href="{{ path('create_blank', { id: result.inventory_id }) }}">Maak nieuw</a>{% endif %}
+                    {% if result.id is not empty %}<a href="{{ path('view', { id: result.id }) }}" class="table-cell">Bekijk</a>{% else %}<div class="table-cell"></div>{% endif %}
                 </div>
             {% endfor %}
         </div>

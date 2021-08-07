@@ -4,7 +4,7 @@ body {
 }
 
 .reports {
-    width: 1000px;
+    width: 1400px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
@@ -19,7 +19,7 @@ body {
     display: grid;
     text-decoration: none;
     color: black;
-    grid-template-columns: repeat(5, 200px);
+    grid-template-columns: repeat(7, 200px);
     place-items: start;
     border-bottom: 2px solid #ccd2ff;
 }
@@ -28,13 +28,47 @@ body {
     display: grid;
     text-decoration: none;
     color: inherit;
-    grid-template-columns: repeat(5, 200px);
+    grid-template-columns: repeat(7, 200px);
     place-items: start;
     border-bottom: 2px solid #ccd2ff;
-    cursor: pointer;
 }
 
 .reports-row:hover, .reports-row:focus {
+    background: #f2f3ff;
+    outline: none;
+}
+
+.orgs {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    color: #37559d;
+}
+
+.orgs a {
+    color: #5165ff;
+}
+
+.orgs-header {
+    display: grid;
+    text-decoration: none;
+    color: black;
+    grid-template-columns: repeat(6, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+}
+
+.orgs-row {
+    display: grid;
+    text-decoration: none;
+    color: inherit;
+    grid-template-columns: repeat(6, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+}
+
+.orgs-row:hover, .orgs-row:focus {
     background: #f2f3ff;
     outline: none;
 }
@@ -72,7 +106,6 @@ body {
     grid-template-columns: repeat(4, 200px);
     place-items: start;
     border-bottom: 2px solid #ccd2ff;
-    cursor: pointer;
 }
 
 .search-row:hover, .search-row:focus {
@@ -139,3 +172,12 @@ body {
         width: 100% !important;
     }
 }
+
+
+
+
+
+
+
+
+

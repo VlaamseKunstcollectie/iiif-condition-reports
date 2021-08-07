@@ -14,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewReportsController extends AbstractController
 {
     /**
-     * @Route("/reports/{action}", name="reports")
+     * @Route("/view_reports/{baseId}", name="view_reports")
      */
-    public function reports(Request $request, $action) : Response
+    public function viewReports(Request $request, $baseId)
     {
         $em = $this->container->get('doctrine')->getManager();
 
@@ -26,13 +26,15 @@ class ViewReportsController extends AbstractController
             ->from(Report::class, 'r')
             ->leftJoin(InventoryNumber::class, 'i', 'WITH', 'i.id = r.inventoryId')
             ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryId')
+            ->where('r.baseId = :id')
+            ->setParameter('id', $baseId)
             ->orderBy('r.timestamp', 'DESC')
             ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
         foreach ($reportData as $data) {
-            if(!array_key_exists($data['baseId'], $searchResults)) {
-                $searchResults[$data['baseId']] = [
+            if(!array_key_exists($data['id'], $searchResults)) {
+                $searchResults[$data['id']] = [
                     'id' => $data['id'],
                     'inventory_id' => $data['inventoryId'],
                     'timestamp' => $data['timestamp']->format('Y-m-d H:i:s'),
@@ -42,12 +44,15 @@ class ViewReportsController extends AbstractController
                     'creator' => ''
                 ];
             }
-            $searchResults[$data['baseId']][$data['name']] = $data['value'];
+            $searchResults[$data['id']][$data['name']] = $data['value'];
+        }
+        if(count($searchResults) == 1) {
+            foreach($searchResults as $result) {
+                return $this->redirectToRoute('view', ['id' => $result['id']]);
+            }
         }
 
-        return $this->render('reports.html.twig', [
-            'action' => $action,
-            'type' => 'existing',
+        return $this->render('view_reports.html.twig', [
             'search_results' => $searchResults
         ]);
     }

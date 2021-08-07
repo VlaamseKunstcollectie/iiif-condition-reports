@@ -9,7 +9,7 @@
     <script src="{{ asset('js/openseadragon-annotorious.min.js') }}"></script>
 </head>
 <body>
-
+{% include 'navbar.html.twig' %}
 {% if readonly %}
     <div id="basic-info-form">
         {% include 'basic_info.twig' %}

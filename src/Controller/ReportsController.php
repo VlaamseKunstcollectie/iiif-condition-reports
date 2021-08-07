@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\DatahubData;
+use App\Entity\InventoryNumber;
+use App\Entity\Report;
+use App\Entity\ReportData;
+use App\Entity\ReportHistory;
+use App\Entity\Search;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ReportsController extends AbstractController
+{
+    /**
+     * @Route("/reports", name="reports")
+     */
+    public function reports(Request $request)
+    {
+        $search = new Search();
+        $form = $this->createFormBuilder($search)
+            ->add('match_type', ChoiceType::class, [ 'label' => 'Type zoekopdracht', 'choices' => [ 'Volledig' => 0, 'Gedeeltelijk' => 1, 'Begint met' => 2 ]])
+            ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer', 'required' => false, 'empty_data' => '' ])
+            ->add('submit', SubmitType::class, [ 'label' => 'Zoeken' ])
+            ->getForm();
+        $form->handleRequest($request);
+        $searchResults = array();
+        $isSearch = false;
+        $searchParameter = null;
+
+        $em = $this->container->get('doctrine')->getManager();
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $isSearch = true;
+            $formData = $form->getData();
+            $inventoryNumber = $formData->getInventoryNumber();
+            $matchType = $formData->getMatchType();
+
+            $searchParameter = $inventoryNumber;
+            if ($matchType == '1') {
+                $searchParameter = '%' . $searchParameter . '%';
+            } else if ($matchType == '2') {
+                $searchParameter .= '%';
+            }
+
+            $datahubData = $em->createQueryBuilder()
+                ->select('i.id, i.inventoryNumber, d.name, d.value')
+                ->from(InventoryNumber::class, 'i')
+                ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
+                ->where('i.inventoryNumber ' . ($matchType == '0' ? '=' : 'LIKE') . ' :inventory_number')
+                ->setParameter('inventory_number', $searchParameter)
+                ->orderBy('d.id')
+                ->setMaxResults(1000)
+                ->getQuery()
+                ->getResult();
+            $datahubData = array_reverse($datahubData);
+            foreach ($datahubData as $data) {
+                $id = $data['id'] . '_0';
+                if (!array_key_exists($id, $searchResults)) {
+                    $searchResults[$id] = [
+                        'id' => '',
+                        'base_id' => '',
+                        'inventory_id' => $data['id'],
+                        'inventory_number' => $data['inventoryNumber'],
+                        'timestamp' => '',
+                        'thumbnail' => '',
+                        'title_nl' => '',
+                        'creator' => ''
+                    ];
+                }
+                $searchResults[$id][$data['name']] = $data['value'];
+            }
+        }
+
+        $queryBuilder = $em->createQueryBuilder()
+            ->select('r.id, r.baseId, r.inventoryId, r.timestamp, i.inventoryNumber, d.name, d.value')
+            ->from(Report::class, 'r')
+            ->leftJoin(InventoryNumber::class, 'i', 'WITH', 'i.id = r.inventoryId')
+            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryId');
+        if($searchParameter != null) {
+            $queryBuilder = $queryBuilder->where('i.inventoryNumber ' . ($matchType == '0' ? '=' : 'LIKE') . ' :inventory_number')
+                ->setParameter('inventory_number', $searchParameter);
+        }
+        $reportData = $queryBuilder->orderBy('r.timestamp', 'DESC')
+            ->orderBy('r.id', 'DESC')
+            ->setMaxResults(1000)
+            ->getQuery()
+            ->getResult();
+        $reportData = array_reverse($reportData);
+        foreach ($reportData as $data) {
+            $id = $data['inventoryId'] . '_' . $data['baseId'];
+            if(!array_key_exists($id, $searchResults)) {
+                $searchResults[$id] = array();
+                // Remove any results of Datahub data when a report exists for this inventory number
+                if(array_key_exists($data['inventoryId'] . '_0', $searchResults)) {
+                    unset($searchResults[$data['inventoryId'] . '_0']);
+                }
+            }
+            $searchResults[$id]['id'] = $data['id'];
+            $searchResults[$id]['base_id'] = $data['baseId'];
+            $searchResults[$id]['inventory_id'] = $data['inventoryId'];
+            $searchResults[$id]['inventory_number'] = $data['inventoryNumber'];
+            $searchResults[$id]['timestamp'] = $data['timestamp']->format('Y-m-d H:i:s');
+            $searchResults[$id][$data['name']] = $data['value'];
+        }
+        $searchResults = array_reverse($searchResults);
+
+        return $this->render('reports.html.twig', [
+            'form' => $form->createView(),
+            'is_search' => $isSearch,
+            'search_results' => $searchResults
+        ]);
+    }
+}

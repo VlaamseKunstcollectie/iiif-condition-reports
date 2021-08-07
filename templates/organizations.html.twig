@@ -1,19 +1,23 @@
 {% include 'header.html.twig' %}
 <h1>Beheer organisaties</h1>
-<div class="search">
-    <div class="search-header">
+<div class="orgs">
+    <div class="orgs-header">
         <div class="table-cell">Logo</div>
         <div class="table-cell">Alias</div>
         <div class="table-cell">Naam</div>
         <div class="table-cell">Functie</div>
+        <div class="table-cell">Wijzig</div>
+        <div class="table-cell">Verwijder</div>
     </div>
     {% for organization in organizations %}
-        <a class="create-row" href="{{ path('organization', { id : organization.id }) }}">
+        <div class="orgs-row">
             <div class="table-cell"><img src="{{  organization.logo }}" alt="" /></div>
             <div class="table-cell">{{  organization.alias }}</div>
             <div class="table-cell">{{  organization.name }}</div>
             <div class="table-cell">{{  organization.function }}</div>
-        </a>
+            <a class="table-cell" href="{{ path('organization', { id: organization.id }) }}">Wijzig</a>
+            <a class="table-cell" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}">Verwijder</a>
+        </div>
     {% endfor %}
 </div>
 <a href="{{ path('organization', { type : 'new' }) }}">Een nieuwe organisatie toevoegen</a>

@@ -50,7 +50,28 @@ class SaveReportController extends AbstractController
                 $report->setTimestamp(new DateTime());
                 if(!empty($baseId)) {
                     $report->setBaseId($baseId);
+
+                    $reportData = $em->createQueryBuilder()
+                        ->select('r.id, r.baseId')
+                        ->from(Report::class, 'r')
+                        ->where('h.id = :id')
+                        ->setParameter('id', $id)
+                        ->orderBy('r.timestamp', 'DESC')
+                        ->orderBy('r.id', 'DESC')
+                        ->getQuery()
+                        ->getResult();
+                    $mostRecentId = $id;
+                    foreach ($reportData as $data) {
+                        if($data['id'] > $mostRecentId) {
+                            $mostRecentId = $data['id'];
+                        }
+                    }
+                    if($mostRecentId != $id) {
+
+                    }
                 }
+
+
                 $em->persist($report);
                 $em->flush();
 

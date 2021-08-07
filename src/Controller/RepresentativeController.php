@@ -19,14 +19,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class RepresentativeController extends AbstractController
 {
     /**
-     * @Route("/representative/{id}", name="representative", defaults={ "id"="" })
+     * @Route("/representative/{id}/{action}", name="representative", defaults={ "id"="", "action"="" })
      */
-    public function representative(Request $request, $id)
+    public function representative(Request $request, $id, $action)
     {
         $em = $this->container->get('doctrine')->getManager();
 
         $representative = new Representative();
-        if(!empty($id)) {
+        if (!empty($id)) {
             $representative = null;
             $representatives = $em->createQueryBuilder()
                 ->select('r')
@@ -40,28 +40,35 @@ class RepresentativeController extends AbstractController
                 $representative = $org;
             }
         }
-        $form = $this->createFormBuilder($representative)
-            ->add('alias', TextType::class, [ 'required' => false, 'label' => 'Alias', 'attr' => [ 'placeholder' =>  'Zelfgekozen alias (optioneel)' ]])
-            ->add('name', TextType::class, [ 'label' => 'Naam' ])
-            ->add('function', TextType::class, [ 'required' => false, 'label' => 'Functie', 'attr' => [ 'placeholder' => 'Bv. restaurateur, koerier, ...' ]])
-            ->add('email', TextType::class, [ 'required' => false, 'label' => 'E-mail', 'attr' => [ 'placeholder' => 'contact@voorbeeld.com' ]])
-            ->add('phone', TextType::class, [ 'required' => false, 'label' => 'Tel.', 'attr' => [ 'placeholder' => 'xxx xx.xx.xx' ]])
-            ->add('notes', TextareaType::class, [ 'required' => false, 'label' => 'Notities', 'attr' => [ 'placeholder' => 'Eigen notities over deze persoon' ]])
-            ->add('submit', SubmitType::class, [ 'label' => 'Opslaan' ])
-            ->getForm();
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-            if(empty($formData->getAlias())) {
-                $formData->setAlias($formData->getName());
-            }
-            $em->persist($formData);
+
+        if($action == 'delete' && !empty($id) && $representative != null) {
+            $em->remove($representative);
             $em->flush();
             return $this->redirectToRoute('representatives');
         } else {
-            return $this->render('form.html.twig', [
-                'form' => $form->createView()
-            ]);
+            $form = $this->createFormBuilder($representative)
+                ->add('alias', TextType::class, ['required' => false, 'label' => 'Alias', 'attr' => ['placeholder' => 'Zelfgekozen alias (optioneel)']])
+                ->add('name', TextType::class, ['label' => 'Naam'])
+                ->add('function', TextType::class, ['required' => false, 'label' => 'Functie', 'attr' => ['placeholder' => 'Bv. restaurateur, koerier, ...']])
+                ->add('email', TextType::class, ['required' => false, 'label' => 'E-mail', 'attr' => ['placeholder' => 'contact@voorbeeld.com']])
+                ->add('phone', TextType::class, ['required' => false, 'label' => 'Tel.', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
+                ->add('notes', TextareaType::class, ['required' => false, 'label' => 'Notities', 'attr' => ['placeholder' => 'Eigen notities over deze persoon']])
+                ->add('submit', SubmitType::class, ['label' => 'Opslaan'])
+                ->getForm();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $formData = $form->getData();
+                if (empty($formData->getAlias())) {
+                    $formData->setAlias($formData->getName());
+                }
+                $em->persist($formData);
+                $em->flush();
+                return $this->redirectToRoute('representatives');
+            } else {
+                return $this->render('form.html.twig', [
+                    'form' => $form->createView()
+                ]);
+            }
         }
     }
 }

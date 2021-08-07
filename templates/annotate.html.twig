@@ -1,13 +1,15 @@
 <div id="annotation-form">
     <div id="annotation-history-tools">
         <div id="annotation-history">
-            <p>Geschiedenis</p>
-            <button type="button" onclick="resetAnnotations();">Reset</button>
-            {% for id, timestamp in annotation_history %}
-                <p>{{ timestamp }}</p>
-                <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
-                <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
-            {% endfor %}
+            {% if annotation_history | length > 1 or not readonly and annotation_history is not empty %}
+                <p>Geschiedenis</p>
+                <button type="button" onclick="resetAnnotations();">Reset</button>
+                {% for id, timestamp in annotation_history %}
+                    <p>{{ timestamp }}</p>
+                    <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
+                    <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
+                {% endfor %}
+            {% endif %}
         </div>
         {% if not readonly %}
             <div id="annotation-tools">
