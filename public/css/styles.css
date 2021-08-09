@@ -157,6 +157,30 @@ body {
     pointer-events: none;
 }
 
+#wrap {
+    display: block;
+    clear: both;
+    float: none;
+}
+
+#left-col {
+    width: 10%;
+    float: left;
+    display: inline;
+}
+
+#middle-col {
+    width: 50%;
+    float: left;
+    display: inline;
+}
+
+#right-col {
+    width: 40%;
+    float: left;
+    display: inline;
+}
+
 @media print {
     #basic-info-form, #actors-form #material-form, #condition-form, #annotate-form {
         position: relative !important;
