@@ -33,6 +33,7 @@ class RepresentativesController extends AbstractController
         }
 
         return $this->render('representatives.html.twig', [
+            'current_page' => 'representatives',
             'representatives' => $searchResults
         ]);
 

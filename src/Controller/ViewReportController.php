@@ -14,6 +14,8 @@ class ViewReportController extends AbstractController
     public function view($id)
     {
         $em = $this->get('doctrine')->getManager();
-        return $this->render('report.html.twig', ReportTemplateData::getViewData($em, $id));
+        $reportReasons = $this->getParameter('report_reasons');
+
+        return $this->render('report.html.twig', ReportTemplateData::getViewData($em, $reportReasons, $id));
     }
 }

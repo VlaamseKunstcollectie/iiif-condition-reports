@@ -1,31 +1,69 @@
 {% include 'header.html.twig' %}
-{{ form(form) }}
-{% if is_search %}
+<div class="search-form">
+{{ form_start(form) }}
+<div id="form">
+    <div id="form_match_type_div">
+        {{ form_widget(form.match_type) }}
+    </div>
+    <div id="form_inventory_number_div">
+        {{ form_widget(form.inventory_number) }}
+    </div>
+    <div id="form_submit_div">
+        {{ form_widget(form.submit) }}
+    </div>
+</div>
+{{ form_end(form) }}
+</div>
+<div class="reports">
     {% if search_results is empty %}
-        <p>Geen rapporten gevonden.</p>
+        <p>Geen resultaten gevonden.</p>
     {% else %}
-        <div class="reports">
-            <div class="reports-header">
-                <div class="table-cell">Thumbnail</div>
-                <div class="table-cell">Inventarisnummer</div>
-                <div class="table-cell">Titel</div>
-                <div class="table-cell">Vervaardiger</div>
-                <div class="table-cell">Laatste wijziging</div>
-                <div class="table-cell">Bekijk</div>
-                <div class="table-cell">Maak rapport aan</div>
-            </div>
-            {% for result in search_results %}
-                <div class="reports-row">
-                    <div class="table-cell"><img src="{{ result.thumbnail }}" alt="" /></div>
-                    <div class="table-cell">{{ result.inventory_number }}</div>
-                    <div class="table-cell">{{ result.title_nl }}</div>
-                    <div class="table-cell">{{ result.creator }}</div>
-                    <div class="table-cell">{{ result.timestamp }}</div>
-                    {% if result.id is not empty %}<a href="{{ path('view_reports', { baseId: result.base_id }) }}" class="table-cell">Bekijk</a>{% else %}<div class="table-cell"></div>{% endif %}
-                    {% if result.id is not empty %}<a href="{{ path('create_existing', { baseId: result.base_id }) }}" class="table-cell">Breid uit</a>{% else %}<a href="{{ path('create_blank', { id: result.inventory_id }) }}">Maak nieuw</a>{% endif %}
+        {% for result in search_results %}
+            <div class="reports-row">
+                <div class="reports-row-thumbnail"><img src="{% if result.thumbnail is empty %}{{ asset('images/no_image_available.png') }}{% else %}{{ result.thumbnail }}{% endif %}" alt="" /></div>
+                <div class="reports-row-metadata">
+                    <div class="reports-row-inventory-number">
+                        <div>Inventarisnummer:</div>
+                        <div>{{ result.inventory_number }}</div>
+                    </div>
+                    <div class="reports-row-title">
+                        <div>Titel:</div>
+                        <div>{{ result.title_nl }}</div>
+                    </div>
+                    <div class="reports-row-creator">
+                        <div>Vervaardiger:</div>
+                        <div>
+                            {% for creator in result.creator|split('\n') %}
+                                {{ creator }}{% if not loop.last %}<br>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="reports-row-timestamp">
+                        <div>Laatste wijziging:</div>
+                        <div>{{ result.timestamp }}</div>
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
+                <div class="reports-row-actions">
+                    <div>
+                        {% if result.id is not empty %}
+                            <a href="{{ path('create_existing', { baseId: result.base_id }) }}" class="button">
+                                <!--Breid uit-->
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="{{ path('view_reports', { baseId: result.base_id }) }}" class="button">
+                                <!--Bekijk-->
+                                <i class="far fa-eye"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('create_blank', { id: result.inventory_id }) }}" class="button">
+                                <!--Maak nieuw-->
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
-{% endif %}
+</div>
 {% include 'footer.html.twig' %}

@@ -15,9 +15,10 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $id)
+    public static function getViewData(EntityManager $em, $reportReasons, $id)
     {
         $data = self::getExistingReportData($em, $id);
+        $data['report_reasons'] = $reportReasons;
         $data['readonly'] = true;
         return $data;
     }
@@ -64,6 +65,7 @@ class ReportTemplateData
         }
 
         return [
+            'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
             'iiif_image_data' => $iiifImageData,
             'pattern_size' => $patternSize,
@@ -110,6 +112,29 @@ class ReportTemplateData
             }
             $prefilledData[$data['name']] = $data['value'];
         }
+
+        $datahubData = $em->createQueryBuilder()
+            ->select('i.id, i.inventoryNumber, d.name, d.value')
+            ->from(InventoryNumber::class, 'i')
+            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
+            ->where('i.id = :id')
+            ->setParameter('id', $prefilledData['inventory_id'])
+            ->getQuery()
+            ->getResult();
+        foreach ($datahubData as $data) {
+            $prefilledData['inventory_id'] = $data['id'];
+            $prefilledData['inventory_number'] = $data['inventoryNumber'];
+            if(!empty($data['value'])) {
+                if($data['name'] === 'iiif_image_url') {
+                    $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
+                    if(!empty($iiifImageData)) {
+                        $patternSize = self::getPatternSize($iiifImageData);
+                    }
+                }
+                $prefilledData[$data['name']] = $data['value'];
+            }
+        }
+
         $reportHistory = $em->createQueryBuilder()
             ->select('h.id, h.previousId, h.sortOrder, r.timestamp')
             ->from(ReportHistory::class, 'h')
@@ -207,6 +232,7 @@ class ReportTemplateData
         }
 
         return [
+            'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
             'iiif_image_data' => $iiifImageData,
             'pattern_size' => $patternSize,

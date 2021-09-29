@@ -1,3 +1,4 @@
+<div class="report-header-2">Instelling</div>
 {% if not readonly %}
     <script>
         var {{ type }}Organizations = {{ organizations | json_encode | raw }};
@@ -11,26 +12,46 @@
             }
         }
     </script>
-    Organisatie <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
+    <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
         <option></option>
         {% for organization in organizations %}
             <option value="{{ organization.id }}">{{ organization.alias }}</option>
         {% endfor %}
     </select>
 {% endif %}
-<div>
-    {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_vat', 'label': 'BTW-nummer' } %}
-<div>
+<div class="form-subgroup">
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_vat', 'label': 'BTW-nummer' } %}
+    </div>
 </div>
-    {% include 'textfield.html.twig' with { 'name': type ~ '_address', 'label': 'Adres' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_postal', 'label': 'Postcode' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_city', 'label': 'Gemeente' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_country', 'label': 'Land' } %}
+<div class="form-subgroup">
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_address', 'label': 'Adres' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_postal', 'label': 'Postcode' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_city', 'label': 'Gemeente' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_country', 'label': 'Land' } %}
+    </div>
 </div>
-<div>
-    {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_website', 'label': 'Website', 'is_url': true } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Tel.' } %}
-    {% include 'textfield.html.twig' with { 'name': type ~ '_mobile', 'label': 'GSM' } %}
+<div class="form-subgroup">
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_website', 'label': 'Website', 'is_url': true } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Telefoon' } %}
+    </div>
+    <div class="form-item">
+        {% include 'textfield.html.twig' with { 'name': type ~ '_mobile', 'label': 'GSM' } %}
+    </div>
 </div>

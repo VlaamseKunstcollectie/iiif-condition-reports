@@ -1,24 +1,41 @@
 {% include 'header.html.twig' %}
-<h1>Beheer organisaties</h1>
+<!--<h1>Beheer organisaties</h1>-->
 <div class="orgs">
     <div class="orgs-header">
-        <div class="table-cell">Logo</div>
-        <div class="table-cell">Alias</div>
-        <div class="table-cell">Naam</div>
-        <div class="table-cell">Functie</div>
-        <div class="table-cell">Wijzig</div>
-        <div class="table-cell">Verwijder</div>
+        <div class="header">Organisaties</div>
+        <a class="button" href="{{ path('organization', { type : 'new' }) }}">
+            <i class="fas fa-plus"></i>
+            Organisatie toevoegen
+        </a>
     </div>
     {% for organization in organizations %}
         <div class="orgs-row">
-            <div class="table-cell"><img src="{{  organization.logo }}" alt="" /></div>
-            <div class="table-cell">{{  organization.alias }}</div>
-            <div class="table-cell">{{  organization.name }}</div>
-            <div class="table-cell">{{  organization.function }}</div>
-            <a class="table-cell" href="{{ path('organization', { id: organization.id }) }}">Wijzig</a>
-            <a class="table-cell" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}">Verwijder</a>
+            <div class="orgs-row-thumbnail"><img src="{{  organization.logo }}" alt="" /></div>
+            <div class="orgs-row-metadata">
+                <div class="orgs-row-alias">
+                    <div>Alias:</div>
+                    <div>{{ organization.alias }}</div>
+                </div>
+                <div class="orgs-row-name">
+                    <div>Naam:</div>
+                    <div>{{ organization.name }}</div>
+                </div>
+                <div class="orgs-row-function">
+                    <div>Functie:</div>
+                    <div>{{ organization.function }}</div>
+                </div>
+            </div>
+            <div class="orgs-row-actions">
+                <a class="button" href="{{ path('organization', { id: organization.id }) }}">
+                    <!--Wijzig-->
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a class="button" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}">
+                    <!--Verwijder-->
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </div>
         </div>
     {% endfor %}
 </div>
-<a href="{{ path('organization', { type : 'new' }) }}">Een nieuwe organisatie toevoegen</a>
 {% include 'footer.html.twig' %}

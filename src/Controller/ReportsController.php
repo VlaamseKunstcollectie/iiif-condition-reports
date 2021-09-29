@@ -18,63 +18,63 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReportsController extends AbstractController
 {
     /**
-     * @Route("/reports", name="reports")
+     * @Route("/", name="main")
      */
     public function reports(Request $request)
     {
         $search = new Search();
         $form = $this->createFormBuilder($search)
-            ->add('match_type', ChoiceType::class, [ 'label' => 'Type zoekopdracht', 'choices' => [ 'Volledig' => 0, 'Gedeeltelijk' => 1, 'Begint met' => 2 ]])
-            ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer', 'required' => false, 'empty_data' => '' ])
+            ->add('match_type', ChoiceType::class, [ 'label' => 'Type zoekopdracht', 'choices' => [ 'Exact' => 0, 'Gedeeltelijk' => 1, 'Begint met' => 2 ]])
+            ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer', 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => 'Zoek op inventarisnummer ...'] ])
             ->add('submit', SubmitType::class, [ 'label' => 'Zoeken' ])
             ->getForm();
         $form->handleRequest($request);
         $searchResults = array();
-        $isSearch = false;
-        $searchParameter = null;
 
         $em = $this->container->get('doctrine')->getManager();
 
+        $inventoryNumber = '';
+        $matchType = '0';
+
         if($form->isSubmitted() && $form->isValid()) {
-            $isSearch = true;
             $formData = $form->getData();
             $inventoryNumber = $formData->getInventoryNumber();
             $matchType = $formData->getMatchType();
+        }
 
-            $searchParameter = $inventoryNumber;
-            if ($matchType == '1') {
-                $searchParameter = '%' . $searchParameter . '%';
-            } else if ($matchType == '2') {
-                $searchParameter .= '%';
-            }
+        $searchParameter = $inventoryNumber;
+        if ($matchType == '1') {
+            $searchParameter = '%' . $searchParameter . '%';
+        } else if ($matchType == '2') {
+            $searchParameter .= '%';
+        }
 
-            $datahubData = $em->createQueryBuilder()
-                ->select('i.id, i.inventoryNumber, d.name, d.value')
-                ->from(InventoryNumber::class, 'i')
-                ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
-                ->where('i.inventoryNumber ' . ($matchType == '0' ? '=' : 'LIKE') . ' :inventory_number')
-                ->setParameter('inventory_number', $searchParameter)
-                ->orderBy('d.id')
-                ->setMaxResults(1000)
-                ->getQuery()
-                ->getResult();
-            $datahubData = array_reverse($datahubData);
-            foreach ($datahubData as $data) {
-                $id = $data['id'] . '_0';
-                if (!array_key_exists($id, $searchResults)) {
-                    $searchResults[$id] = [
-                        'id' => '',
-                        'base_id' => '',
-                        'inventory_id' => $data['id'],
-                        'inventory_number' => $data['inventoryNumber'],
-                        'timestamp' => '',
-                        'thumbnail' => '',
-                        'title_nl' => '',
-                        'creator' => ''
-                    ];
-                }
-                $searchResults[$id][$data['name']] = $data['value'];
+        $datahubData = $em->createQueryBuilder()
+            ->select('i.id, i.inventoryNumber, d.name, d.value')
+            ->from(InventoryNumber::class, 'i')
+            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
+            ->where('i.inventoryNumber ' . ($matchType == '0' ? '=' : 'LIKE') . ' :inventory_number')
+            ->setParameter('inventory_number', $searchParameter)
+            ->orderBy('d.id')
+            ->setMaxResults(1000)
+            ->getQuery()
+            ->getResult();
+        $datahubData = array_reverse($datahubData);
+        foreach ($datahubData as $data) {
+            $id = $data['id'] . '_0';
+            if (!array_key_exists($id, $searchResults)) {
+                $searchResults[$id] = [
+                    'id' => '',
+                    'base_id' => '',
+                    'inventory_id' => $data['id'],
+                    'inventory_number' => $data['inventoryNumber'],
+                    'timestamp' => '',
+                    'thumbnail' => '',
+                    'title_nl' => '',
+                    'creator' => ''
+                ];
             }
+            $searchResults[$id][$data['name']] = $data['value'];
         }
 
         $queryBuilder = $em->createQueryBuilder()
@@ -108,12 +108,20 @@ class ReportsController extends AbstractController
             $searchResults[$id]['timestamp'] = $data['timestamp']->format('Y-m-d H:i:s');
             $searchResults[$id][$data['name']] = $data['value'];
         }
-        $searchResults = array_reverse($searchResults);
+        usort($searchResults, array('App\Controller\ReportsController', 'cmp'));
 
         return $this->render('reports.html.twig', [
+            'current_page' => 'reports',
             'form' => $form->createView(),
-            'is_search' => $isSearch,
             'search_results' => $searchResults
         ]);
+    }
+
+    function cmp($a, $b)
+    {
+        if ($a['timestamp'] == $b['timestamp']) {
+            return $a['id'] > $b['id'] ? -1 : 1;
+        }
+        return $a['timestamp'] > $b['timestamp'] ? -1 : 1;
     }
 }

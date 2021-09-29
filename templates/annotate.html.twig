@@ -1,94 +1,175 @@
-<div id="annotation-form">
-    <div id="annotation-history-tools">
+<div id="annotate-form"{% if not readonly %} class="form-tab"{% endif %}>
+    {% if readonly %}
+    <div class="report-header">Annotaties</div>
+    {% endif %}
+    <div id="annotation-form">
         <div id="annotation-history">
-            {% if annotation_history | length > 1 or not readonly and annotation_history is not empty %}
-                <p>Geschiedenis</p>
-                <button type="button" onclick="resetAnnotations();">Reset</button>
-                {% for id, timestamp in annotation_history %}
-                    <p>{{ timestamp }}</p>
-                    <button type="button" onclick="showAnnotationsUntil('{{ id }}')">Toon status op dit moment</button>
-                    <button type="button" onclick="showAnnotationsOnly('{{ id }}')">Toon toevoegingen</button>
-                {% endfor %}
+            {% if annotation_history | length > 0 or not readonly and annotation_history is not empty %}
+                <button type="button" onclick="resetAnnotations();" class="show-all"><i class="far fa-eye"></i>Toon alles</button>
+                <div class="annotation-history-timestamps">
+                    {% for id, timestamp in annotation_history %}
+                        <button type="button" onclick="showAnnotationsOnly('{{ id }}')" id="show-hide-annos-{{ id }}" class="hide">
+                            <i class="far fa-eye"></i>
+                            <p>{{ timestamp }}</p>
+                        </button>
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
-        {% if not readonly %}
-            <div id="annotation-tools">
-                <p>Gereedschap</p>
-                <button type="button" onclick="setDrawingTool('rect');">Rechthoek</button>
-                <button type="button" onclick="setDrawingTool('polygon');">Polygoon</button>
-                <button type="button" onclick="setDrawingTool('circle');">Cirkel</button>
-                <button type="button" onclick="setDrawingTool('ellipse');">Ellips</button>
-                <button type="button" onclick="setDrawingTool('freehand');">Vrije hand</button>
-                <p>Tekenstijl</p>
-                <button type="button" onclick="window.annoConf.styleClass='condition-red';">Rood omlijnd</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-green';">Groen omlijnd</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-blue';">Blauw omlijnd</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-orange';">Oranje omlijnd</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-rect-red';">Invulling: rode vierkanten</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-red';">Invulling: rode ruiten</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-red';">Invulling: rode kruisen</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-green';">Invulling: groene ruiten</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-disconnected-cross-green';">Invulling: groene kruisen</button>
-                <button type="button" onclick="window.annoConf.styleClass='condition-diagonal-rect-orange';">Invulling: oranje ruiten</button>
-            </div>
-        {% endif %}
+        <div id="annotation-tools">
+            {% if not readonly %}
+                <div>
+                    <!--<p>Vorm: </p>-->
+                    <button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('rect');" value="rect">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+                            <path d="M25.8,4.2v21.6H4.2V4.2H25.8 M30,0H0v30h30V0L30,0z"/>
+                        </svg>
+                    </button>
+                    <button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('polygon');" value="polygon">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 34.6 30" style="enable-background:new 0 0 34.6 30;" xml:space="preserve">
+                            <path d="M23.6,4.2L29.8,15l-6.2,10.8H11.1L4.8,15l6.2-10.8H23.6 M26,0H8.7L0,15l8.7,15H26l8.7-15L26,0L26,0z"/>
+                        </svg>
+                    </button>
+                    <!--<button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('circle');" value="recirclect">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+                            <path d="M15,4.2C21,4.2,25.8,9,25.8,15S21,25.8,15,25.8S4.2,21,4.2,15S9,4.2,15,4.2 M15,0C6.7,0,0,6.7,0,15s6.7,15,15,15
+                                s15-6.7,15-15S23.3,0,15,0L15,0z"/>
+                        </svg>
+                    </button>-->
+                    <button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('ellipse');" value="ellipse">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+                            <path d="M15,4.2C21,4.2,25.8,9,25.8,15S21,25.8,15,25.8S4.2,21,4.2,15S9,4.2,15,4.2 M15,0C6.7,0,0,6.7,0,15s6.7,15,15,15
+                                s15-6.7,15-15S23.3,0,15,0L15,0z"/>
+                        </svg>
+                    </button>
+                    <button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('freehand');" value="freehand">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 30.3 30" style="enable-background:new 0 0 30.3 30;" xml:space="preserve">
+                            <path d="M2.9,6.5c1.2-1.2,2.3-2.3,2.9-2c0.8,0.3,0,1.7-0.5,2.5c-0.4,0.7-4.8,6.5-4.8,10.5c0,2.1,0.8,3.9,2.2,5
+                                c1.3,0.9,2.9,1.2,4.4,0.8c1.8-0.5,3.3-2.3,5.1-4.6c2-2.5,4.7-5.7,6.8-5.7c2.7,0,2.8,1.7,2.9,3c-6.3,1.1-9,6.1-9,9
+                                c0,2.8,2.4,5.2,5.4,5.2c2.7,0,7.2-2.2,7.8-10.2h4.1v-4.2h-4.1c-0.3-2.8-1.8-7-6.7-7c-3.8,0-7,3.2-8.2,4.7c-1,1.2-3.4,4.1-3.8,4.5
+                                c-0.4,0.5-1.1,1.4-1.9,1.4c-0.8,0-1.2-1.4-0.6-3.2c0.6-1.8,2.3-4.8,3.1-5.9c1.3-1.9,2.2-3.2,2.2-5.5C10.2,1.2,7.5,0,6,0
+                                C3.8,0,1.9,1.7,1.5,2.1C0.9,2.7,0.4,3.2,0,3.6L2.9,6.5z M18.4,25.9c-0.5,0-1.2-0.4-1.2-1.2c0-1,1.2-3.7,4.8-4.6
+                                C21.5,24.6,19.6,25.9,18.4,25.9z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div>
+                    <!--<p>Kleur: </p>-->
+                    <input type="radio" onclick="window.annoConf.styleColor='red'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'red';" id="choose-colour-red" name="choose-colour" value="red" checked/>
+                    <label for="choose-colour-red"></label>
+                    <input type="radio" onclick="window.annoConf.styleColor='green'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'green';" id="choose-colour-green" name="choose-colour" value="green"/>
+                    <label for="choose-colour-green"></label>
+                    <input type="radio" onclick="window.annoConf.styleColor='blue'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'blue';" id="choose-colour-blue" name="choose-colour" value="blue"/>
+                    <label for="choose-colour-blue"></label>
+                    <input type="radio" onclick="window.annoConf.styleColor='orange'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'orange';" id="choose-colour-orange" name="choose-colour" value="orange"/>
+                    <label for="choose-colour-orange"></label>
+                </div>
+                <div>
+                    <!--<p>Opvulling: </p>-->
+                    <select id="fill-dropdown" onchange="selectDropdown()">
+                        <option value="">Geen opvulling</option>
+                        <option value="rect">Geen opvulling</option>
+                        <option value="diagonal-rect">Geen opvulling</option>
+                        <option value="disconnected-cross">Geen opvulling</option>
+                    </select>
+                </div>
+            {% endif %}
+        </div>
+
+        <div id="annotation-viewer">
+            <!-- Patterns that can be used in the annotations -->
+            <svg style="position: absolute; top: -9999px; left: -9999px;">
+                <pattern id="rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="red" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width * 2 }}"></line>
+                    <line stroke="red" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width * 2}}"></line>
+                </pattern>
+                <pattern id="diagonal-rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size * 3 / 2 }}px">
+                    <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="green" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="green" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="green" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="green" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
+                    <line stroke="green" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="green" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="orange" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="orange" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="disconnected-cross-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
+                    <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="blue" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="blue" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="diagonal-rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
+                    <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+                <pattern id="disconnected-cross-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
+                    <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                    <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
+                </pattern>
+            </svg>
+
+            <div id="openseadragon-annotorious"></div>
+
+            <input type="hidden" id="annotation_data" name="annotation_data">
+            <input type="hidden" id="iiif_image_url" name="iiif_image_url" value="{{ prefilled_data.iiif_image_url }}">
+            <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
+            <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
+            <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+        </div>
     </div>
 
-    <div id="annotation-viewer">
-        <!-- Patterns that can be used in the annotations -->
-        <svg style="position: absolute; top: -9999px; left: -9999px;">
-            <pattern id="rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                <line stroke="red" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="red" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-            <pattern id="diagonal-rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-            <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size * 3 / 2 }}px">
-                <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-            <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                <line stroke="green" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="green" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-            <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-            <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-            </pattern>
-        </svg>
+    <!--<button type="button" id="print-button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>-->
 
-        <div id="openseadragon-annotorious"></div>
-
-        <input type="hidden" id="annotation_data" name="annotation_data">
-        <input type="hidden" id="iiif_image_url" name="iiif_image_url" value="{{ prefilled_data.iiif_image_url }}">
-        <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
-        <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
-        <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+    {% if not readonly %}
+    <div class="buttons">
+        <div class="previous-button">
+            <button type="button" onclick="showDiv('recommendations-form')">Vorige</button>
+        </div>
+        <!--<div class="send-button">
+            <input type="submit" value="Rapport verzenden">
+        </div>-->
     </div>
+    {% endif %}
 </div>
-
-<button type="button" id="print-button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>
 
 <script>
 window.onload = function() {
-    window.osd = OpenSeadragon({
-        id: "openseadragon-viewer",
-        tileSources: [ {{ iiif_image_data | json_encode | raw }} ]
-    });
-
     window.osd_anno = OpenSeadragon({
         id: "openseadragon-annotorious",
         tileSources: [ {{ iiif_image_data | json_encode | raw }} ]
     });
 
     window.annoConf = {
-        locale: 'auto'
+        locale: 'auto',
+        styleColor: 'red',
+        styleFill: '',
+        styleClass: 'condition-red'
     };
 
     window.anno = OpenSeadragon.Annotorious(window.osd_anno, window.annoConf);
@@ -101,21 +182,37 @@ window.onload = function() {
         displayName: 'Hero Solutions'
     });
 
-    //TODO remove this, for testing purposes only
-    {% if annotation_history is empty %}
-        window.anno.loadAnnotations('{{ asset('annotations.w3c.json') }}');
-    {% else %}
-        window.anno.setAnnotations(window.mostRecentAnnotations);
-    {% endif %}
+    window.anno.setAnnotations(window.mostRecentAnnotations);
 
-    document.forms[0].addEventListener('submit', function() {
-        if(!window.isCurrentAnnotations) {
-            document.getElementById("annotation_data").value = JSON.stringify(window.mostRecentAnnotations);
-        } else {
-            document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
+    {% if not readonly %}
+        document.forms[0].addEventListener('submit', function() {
+            if(!window.isCurrentAnnotations) {
+                document.getElementById("annotation_data").value = JSON.stringify(window.mostRecentAnnotations);
+            } else {
+                document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
+            }
+        });
+    {% else %}
+        var headers = document.getElementsByClassName("report-header");
+
+        for (var i = 0; i < headers.length; i++) {
+            var nextSibling = headers[i].nextElementSibling;
+
+            if (typeof nextSibling !== 'undefined' && nextSibling.className == "form-group") {
+                var groupDiv = document.createElement("div");
+
+                groupDiv.className = "nobreak";
+
+                headers[i].parentElement.insertBefore(groupDiv, headers[i]);
+
+                groupDiv.appendChild(headers[i]);
+                groupDiv.appendChild(nextSibling);
+            }
         }
-    });
+    {% endif %}
 };
+
+window.drawingEnabled = false;
 
 var annotationHistory = {{ annotation_history | json_encode | raw }};
 
@@ -139,6 +236,7 @@ var deletedAnnotations = {};
 
 annotationsUntil = {};
 annotationsOnly = {};
+annotationsVisible = {};
 var lastAnnotation = {};
 var highestId = -1;
 for(const id in annotationHistory) {
@@ -154,6 +252,7 @@ for(const id in annotationHistory) {
             thisAnnotation.push(anno);
         }
         annotationsOnly[id] = thisAnnotation;
+        annotationsVisible[id] = true;
     }
     var arr = [];
     for(const [ annoId, anno ] of Object.entries(lastAnnotation)) {
@@ -185,13 +284,38 @@ function showAnnotationsOnly(id) {
         window.mostRecentAnnotations = window.anno.getAnnotations();
         window.isCurrentAnnotations = false;
     }
-    window.anno.setAnnotations(annotationsOnly[id]);
+    annotationsVisible[id] = !annotationsVisible[id];
+    if(!annotationsVisible[id]) {
+        var showAnnotationsButton = document.getElementById("show-hide-annos-" + id);
+        //showAnnotationsButton.innerHTML = "Toon";
+        showAnnotationsButton.classList.remove("hide");
+        showAnnotationsButton.classList.add("show");
+    } else {
+        var hideAnnotationsButton = document.getElementById("show-hide-annos-" + id);
+        //hideAnnotationsButton.innerHTML = "Verberg";
+        hideAnnotationsButton.classList.remove("show");
+        hideAnnotationsButton.classList.add("hide");
+    }
+    var annos = [];
+    for(const [ annoId, anno ] of Object.entries(annotationsOnly)) {
+        if(annotationsVisible[annoId]) {
+            annos = annos.concat(anno);
+        }
+    }
+    window.anno.setAnnotations(annos);
 }
 
 function resetAnnotations() {
     if(!window.isCurrentAnnotations) {
         window.isCurrentAnnotations = true;
         window.anno.setAnnotations(window.mostRecentAnnotations);
+        for(const [ annoId, anno ] of Object.entries(annotationsOnly)) {
+            annotationsVisible[annoId] = true;
+            var showAllButton = document.getElementById("show-hide-annos-" + annoId);
+            //showAllButton.innerHTML = "Verberg";
+            showAllButton.classList.remove("show");
+            showAllButton.classList.add("hide");
+        }
     }
 }
 
@@ -199,5 +323,105 @@ function setDrawingTool(drawingTool) {
     resetAnnotations();
     window.anno.setDrawingTool(drawingTool);
     window.anno.setDrawingEnabled(true);
+    window.drawingEnabled = true;
+
+    var drawingToolButtons = document.getElementsByName("drawing-tools");
+
+    for (var i = 0; i < drawingToolButtons.length; i++) {
+        if (drawingToolButtons[i].value == drawingTool) {
+            drawingToolButtons[i].classList.add("drawing-tool-active");
+            drawingToolButtons[i].classList.remove("drawing-tool-inactive");
+        } else {
+            drawingToolButtons[i].classList.add("drawing-tool-inactive");
+            drawingToolButtons[i].classList.remove("drawing-tool-active");
+        }
+    }
 }
+
+var colours = document.querySelectorAll('input[name="choose-colour"]');
+
+for (var i = 0; i < colours.length; i++) {
+    colours[i].onchange = chooseColour;
+}
+
+var style = document.createElement('style');
+
+function chooseColour() {
+    for (var i = 0; i < colours.length; i++) {
+        if (colours[i] == this) {
+            selectedColour = colours[i].value;
+            if (selectedColour == "red") {
+                style.innerHTML = `
+                    .fill-pattern-line {
+                        stroke: rgb(255,0,0) !important;
+                    }
+                `;
+            } else if (selectedColour == "green") {
+                style.innerHTML = `
+                    .fill-pattern-line {
+                        stroke: rgb(0,255,0) !important;
+                    }
+                `;
+            } else if (selectedColour == "blue") {
+                style.innerHTML = `
+                    .fill-pattern-line {
+                        stroke: rgb(0,0,255) !important;
+                    }
+                `;
+            } else if (selectedColour == "orange") {
+                style.innerHTML = `
+                    .fill-pattern-line {
+                        stroke: rgb(255,165,0) !important;
+                    }
+                `;
+            }
+            document.head.appendChild(style);
+        }
+    }
+}
+
+$("#fill-dropdown").select2({
+    minimumResultsForSearch: Infinity,
+    templateResult: function(option) {
+        return optionFill(option);
+    },
+    templateSelection: function(option) {
+        return optionFill(option);
+    }
+});
+
+function optionFill(option) {
+    switch(option.id) {
+        default:
+            return option.text;
+        case "rect":
+            return $('<span><svg><pattern id="fill-rect-id-1" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="5" y1="0" x2="5" y2="10" stroke-width="1" /><line class="fill-pattern-line" x1="0" y1="5" x2="10" y2="5" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-rect-id-1);" /></svg></span>');
+        case "diagonal-rect":
+            return $('<span><svg><pattern id="fill-cross-id-2" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="10" y2="10" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="10" x1="10" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-cross-id-2);" /></svg></span>');
+        case "disconnected-cross":
+            return $('<span><svg class="fill-disconnected-cross-id-3"><pattern id="fill-disconnected-cross-id-3" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="6" y2="6" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="6" x1="6" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-disconnected-cross-id-3);" /></svg></span>');
+    }
+}
+
+function selectDropdown() {
+    var fill = document.getElementById("fill-dropdown").value;
+    if (fill == "") {
+        window.annoConf.styleFill = fill;
+        window.annoConf.styleClass = 'condition-' + window.annoConf.styleColor;
+    } else {
+        window.annoConf.styleFill = fill + '-';
+        window.annoConf.styleClass = 'condition-' + fill + '-' + window.annoConf.styleColor;
+    }
+}
+
+window.setInterval(function() {
+    if (window.drawingEnabled && !window.anno._app.current.annotationLayer.mouseTracker.isTracking()) {
+        window.drawingEnabled = false;
+        var buttons = document.getElementsByClassName("drawing-tool-active");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.add("drawing-tool-inactive");
+            buttons[i].classList.remove("drawing-tool-active");
+        }
+    }
+}, 100);
 </script>

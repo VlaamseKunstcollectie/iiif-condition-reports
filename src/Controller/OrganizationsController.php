@@ -32,6 +32,7 @@ class OrganizationsController extends AbstractController
         }
 
         return $this->render('organizations.html.twig', [
+            'current_page' => 'organizations',
             'organizations' => $searchResults
         ]);
 

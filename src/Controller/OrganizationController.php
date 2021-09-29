@@ -56,7 +56,7 @@ class OrganizationController extends AbstractController
                 ->add('country', TextType::class, ['required' => false, 'label' => 'Land', 'attr' => ['placeholder' => 'Bv. België']])
                 ->add('email', TextType::class, ['required' => false, 'label' => 'E-mail', 'attr' => ['placeholder' => 'contact@voorbeeld.com']])
                 ->add('website', TextType::class, ['required' => false, 'label' => 'Website', 'attr' => ['placeholder' => 'https://www.example.com']])
-                ->add('phone', TextType::class, ['required' => false, 'label' => 'Tel.', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
+                ->add('phone', TextType::class, ['required' => false, 'label' => 'Telefoon', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
                 ->add('mobile', TextType::class, ['required' => false, 'label' => 'GSM', 'attr' => ['placeholder' => 'xxxx xx.xx.xx']])
                 ->add('notes', TextareaType::class, ['required' => false, 'label' => 'Notities', 'attr' => ['placeholder' => 'Eigen notities over deze organisatie']])
                 ->add('submit', SubmitType::class, ['label' => 'Opslaan'])
@@ -71,7 +71,8 @@ class OrganizationController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('organizations');
             } else {
-                return $this->render('form.html.twig', [
+                return $this->render('organization.html.twig', [
+                    'current_page' => 'organizations',
                     'form' => $form->createView()
                 ]);
             }

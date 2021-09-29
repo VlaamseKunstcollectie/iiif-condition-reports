@@ -51,7 +51,7 @@ class RepresentativeController extends AbstractController
                 ->add('name', TextType::class, ['label' => 'Naam'])
                 ->add('function', TextType::class, ['required' => false, 'label' => 'Functie', 'attr' => ['placeholder' => 'Bv. restaurateur, koerier, ...']])
                 ->add('email', TextType::class, ['required' => false, 'label' => 'E-mail', 'attr' => ['placeholder' => 'contact@voorbeeld.com']])
-                ->add('phone', TextType::class, ['required' => false, 'label' => 'Tel.', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
+                ->add('phone', TextType::class, ['required' => false, 'label' => 'Telefoon', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
                 ->add('notes', TextareaType::class, ['required' => false, 'label' => 'Notities', 'attr' => ['placeholder' => 'Eigen notities over deze persoon']])
                 ->add('submit', SubmitType::class, ['label' => 'Opslaan'])
                 ->getForm();
@@ -65,7 +65,8 @@ class RepresentativeController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('representatives');
             } else {
-                return $this->render('form.html.twig', [
+                return $this->render('representative.html.twig', [
+                    'current_page' => 'representatives',
                     'form' => $form->createView()
                 ]);
             }

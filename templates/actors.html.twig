@@ -1,37 +1,69 @@
-<h2>Informatie eigenaar</h2>
-<h3>Instelling</h3>
-{% include 'organization_info.html.twig' with { 'type': 'owner' }%}
-{% if not readonly or prefilled_data.owner_rep_name is defined %}
-    <h3>Vertegenwoordiger</h3>
-    {% include 'representative_info.html.twig' with { 'type': 'owner_rep' }%}
-{% endif %}
-
-{% if not readonly or prefilled_data.user_name is defined %}
-    <h2>Informatie rapporteur/bruikleennemer/restaurateur</h2>
-    <h3>Instelling</h3>
-    {% include 'organization_info.html.twig' with { 'type': 'user' }%}
-    {% if not readonly or prefilled_data.user_rep_name is defined %}
-        <h3>Vertegenwoordiger</h3>
-        {% include 'representative_info.html.twig' with { 'type': 'user_rep' }%}
+{% if not readonly or prefilled_data.owner_rep_name is defined or prefilled_data.owner_name is defined or prefilled_data.user_name is defined or prefilled_data.handler_name is defined or prefilled_data.third_party_name is defined %}
+<div id="actors-form"{% if not readonly %} class="form-tab"{% endif %}>
+    {% if not readonly or prefilled_data.owner_name is defined %}
+        <div class="report-header">Informatie eigenaar</div>
+        {% if not readonly or prefilled_data.owner_name is defined %}
+            <div class="form-group">
+                {% include 'organization_info.html.twig' with { 'type': 'owner' }%}
+            </div>
+        {% endif %}
+        {% if not readonly or prefilled_data.owner_rep_name is defined %}
+            <div class="form-group">
+                {% include 'representative_info.html.twig' with { 'type': 'owner_rep' }%}
+            </div>
+        {% endif %}
     {% endif %}
-{% endif %}
 
-{% if not readonly or prefilled_data.handler_name is defined %}
-    <h2>Informatie koerier/art handler</h2>
-    <h3>Instelling</h3>
-    {% include 'organization_info.html.twig' with { 'type': 'handler' }%}
-    {% if not readonly or prefilled_data.handler_rep_name is defined %}
-        <h3>Vertegenwoordiger</h3>
-        {% include 'representative_info.html.twig' with { 'type': 'handler_rep' }%}
+    {% if not readonly or prefilled_data.user_name is defined %}
+        <div class="report-header">Informatie rapporteur/bruikleennemer/restaurateur</div>
+        {% if not readonly or prefilled_data.user_name is defined %}
+            <div class="form-group">
+                {% include 'organization_info.html.twig' with { 'type': 'user' }%}
+            </div>
+        {% endif %}
+        {% if not readonly or prefilled_data.user_rep_name is defined %}
+            <div class="form-group">
+                {% include 'representative_info.html.twig' with { 'type': 'user_rep' }%}
+            </div>
+        {% endif %}
     {% endif %}
-{% endif %}
 
-{% if not readonly or prefilled_data.third_party_name is defined %}
-    <h2>Informatie andere derde partij</h2>
-    <h3>Instelling</h3>
-    {% include 'organization_info.html.twig' with { 'type': 'third_party' }%}
-    {% if not readonly or prefilled_data.third_party_rep_name is defined %}
-        <h3>Vertegenwoordiger</h3>
-        {% include 'representative_info.html.twig' with { 'type': 'third_party_rep' }%}
+    {% if not readonly or prefilled_data.handler_name is defined %}
+        <div class="report-header">Informatie koerier/art handler</div>
+        {% if not readonly or prefilled_data.handler_name is defined %}
+            <div class="form-group">
+                {% include 'organization_info.html.twig' with { 'type': 'handler' }%}
+            </div>
+        {% endif %}
+        {% if not readonly or prefilled_data.handler_rep_name is defined %}
+            <div class="form-group">
+                {% include 'representative_info.html.twig' with { 'type': 'handler_rep' }%}
+            </div>
+        {% endif %}
     {% endif %}
+
+    {% if not readonly or prefilled_data.third_party_name is defined %}
+        <div class="report-header">Informatie andere derde partij</div>
+        {% if not readonly or prefilled_data.third_party_name is defined %}
+            <div class="form-group">
+                {% include 'organization_info.html.twig' with { 'type': 'third_party' }%}
+            </div>
+        {% endif %}
+        {% if not readonly or prefilled_data.third_party_rep_name is defined %}
+            <div class="form-group">
+                {% include 'representative_info.html.twig' with { 'type': 'third_party_rep' }%}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if not readonly %}
+    <div class="buttons">
+        <div class="previous-button">
+            <button type="button" onclick="showDiv('basic-info-form')">Vorige</button>
+        </div>
+        <div class="next-button">
+            <button type="button" onclick="showDiv('material-form')">Volgende</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endif %}

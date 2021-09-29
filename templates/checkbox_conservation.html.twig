@@ -1,10 +1,13 @@
 {% if readonly %}
-    {% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}
-    {{ label }} <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox" checked disabled/>{{ prefilled_data[name] }}
-    {% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}<label for="{{ name }}_checkbox_right_text">{{ prefilled_data[name ~ '_text'] }}</label>{% endif %}
+    {% if prefilled_data[name] is defined and prefilled_data[name] is not empty or prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}
+    <span class="readonly-label">{{ label }}: </span>
+    <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox" checked disabled/>
+    <span class="readonly-input">{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}</span>
+    {% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}<span class="readonly-input">{{ prefilled_data[name ~ '_text'] }}</span>{% endif %}
     {% endif %}
 {% else %}
-    {{ label }} <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox"{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %} checked{% endif %}/>
-    <input type="number" oninput="document.getElementById('{{ name }}_checkbox_right_text').checked = this.value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
-    <input type="text" name="{{ name }}_text" value="{% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}{{ prefilled_data[name ~ '_text'] }}{% endif %}"/>
+    <label for="{{ name }}_checkbox_right_text">{{ label }}</label>
+    <input id="{{ name }}_checkbox_right_text" name="{{ name }}_checkbox" type="checkbox"{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %} checked{% endif %} onclick="if(!document.getElementById('{{ name }}_checkbox_right_text').checked) { document.getElementById('{{ name }}_checkbox_right_text_number').value = ''; document.getElementById('{{ name }}_checkbox_right_text_text').value = ''; }"/>
+    <input type="number" id="{{ name }}_checkbox_right_text_number" oninput="document.getElementById('{{ name }}_checkbox_right_text').checked = this.value != '' || document.getElementById('{{ name }}_checkbox_right_text_text').value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
+    <input type="text" id="{{ name }}_checkbox_right_text_text" name="{{ name }}_text" value="{% if prefilled_data[name ~ '_text'] is defined and prefilled_data[name ~ '_text'] is not empty %}{{ prefilled_data[name ~ '_text'] }}{% endif %}" oninput="document.getElementById('{{ name }}_checkbox_right_text').checked = this.value != '' || document.getElementById('{{ name }}_checkbox_right_text_number').value != '';"/>
 {% endif %}

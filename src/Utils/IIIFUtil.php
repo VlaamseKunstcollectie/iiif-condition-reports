@@ -20,6 +20,6 @@ class IIIFUtil
                 return '';
             }
         }
-        return $imageUrl . '/full/100,/0/default.jpg';
+        return $imageUrl . '/full/150,/0/default.jpg';
     }
 }

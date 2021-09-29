@@ -1,0 +1,22 @@
+{% if not readonly or prefilled_data.handling_nl is defined %}
+<div id="recommendations-form"{% if not readonly %} class="form-tab"{% endif %}>
+	<div class="report-header">Aanbevelingen</div>
+	<div class="form-group">
+		<div class="form-subgroup">
+	        <div class="form-item no-spaces">
+	            {% include 'textarea.html.twig' with { 'name': 'handling_nl', 'label': 'Objectvereisten' } %}
+	        </div>
+	    </div>
+	</div>
+	{% if not readonly %}
+	<div class="buttons">
+        <div class="previous-button">
+            <button type="button" onclick="showDiv('condition-form')">Vorige</button>
+        </div>
+        <div class="next-button">
+            <button type="button" onclick="showDiv('annotate-form')">Volgende</button>
+        </div>
+    </div>
+	{% endif %}
+</div>
+{% endif %}

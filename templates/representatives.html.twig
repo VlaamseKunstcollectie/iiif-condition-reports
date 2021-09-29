@@ -1,26 +1,48 @@
 {% include 'header.html.twig' %}
-<h1>Beheer vertegenwoordigers</h1>
-<div class="reports">
-    <div class="reports-header">
-        <div class="table-cell">Alias</div>
-        <div class="table-cell">Naam</div>
-        <div class="table-cell">Functie</div>
-        <div class="table-cell">E-mail</div>
-        <div class="table-cell">Tel.</div>
-        <div class="table-cell">Wijzig</div>
-        <div class="table-cell">Verwijder</div>
+<!--<h1>Beheer vertegenwoordigers</h1>-->
+<div class="reps">
+    <div class="reps-header">
+        <div class="header">Vertegenwoordigers</div>
+        <a class="button" href="{{ path('representative', { type : 'new' }) }}">
+            <i class="fas fa-plus"></i>
+            Vertegenwoordiger toevoegen
+        </a>
     </div>
     {% for representative in representatives %}
-        <div class="reports-row">
-            <div class="table-cell">{{  representative.alias }}</div>
-            <div class="table-cell">{{  representative.name }}</div>
-            <div class="table-cell">{{  representative.function }}</div>
-            <div class="table-cell">{{  representative.email }}</div>
-            <div class="table-cell">{{  representative.phone }}</div>
-            <a class="table-cell" href="{{ path('representative', { id: representative.id }) }}">Wijzig</a>
-            <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}">Verwijder</a>
+        <div class="reps-row">
+            <div class="reps-row-metadata">
+                <div class="reps-row-alias">
+                    <div>Alias:</div>
+                    <div>{{ representative.alias }}</div>
+                </div>
+                <div class="reps-row-name">
+                    <div>Naam:</div>
+                    <div>{{ representative.name }}</div>
+                </div>
+                <div class="reps-row-function">
+                    <div>Functie:</div>
+                    <div>{{ representative.function }}</div>
+                </div>
+                <div class="reps-row-email">
+                    <div>E-mail:</div>
+                    <div>{{ representative.email }}</div>
+                </div>
+                <div class="reps-row-phone">
+                    <div>Telefoon:</div>
+                    <div>{{ representative.phone }}</div>
+                </div>
+            </div>
+            <div class="reps-row-actions">
+                <a class="table-cell" href="{{ path('representative', { id: representative.id }) }}">
+                    <!--Wijzig-->
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}">
+                    <!--Verwijder-->
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </div>
         </div>
     {% endfor %}
 </div>
-<a href="{{ path('representative', { type : 'new' }) }}">Een nieuwe persoon toevoegen</a>
 {% include 'footer.html.twig' %}

@@ -53,6 +53,7 @@ class ViewReportsController extends AbstractController
         }
 
         return $this->render('view_reports.html.twig', [
+            'current_page' => 'reports',
             'search_results' => $searchResults
         ]);
     }

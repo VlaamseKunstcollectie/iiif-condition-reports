@@ -1,0 +1,54 @@
+{% if not readonly or prefilled_data.inventory_number is defined or prefilled_data.current_location is defined or prefilled_data.object_name is defined or prefilled_data.dimensions is defined or prefilled_data.weight is defined or prefilled_data.creator is defined or prefilled_data.title_nl is defined or prefilled_data.creation_date is defined or prefilled_data.copyright is defined %}
+<div id="basic-info-form"{% if not readonly %} class="form-tab"{% endif %}>
+    <div class="report-header">Identificatie object</div>
+    <div class="form-group">
+        <div class="form-subgroup">
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'inventory_number', 'label': 'Inventarisnummer' } %}
+            </div>
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'current_location', 'label': 'Standplaats' } %}
+            </div>
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Objectnaam' } %}
+            </div>
+        </div>
+        <div class="form-subgroup">
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'dimensions', 'label': 'Afmetingen' } %}
+            </div>
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Gewicht' } %}
+            </div>
+        </div>
+        <div class="form-subgroup">
+            <div class="form-item form-creator">
+                {% include 'textarea.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}
+            </div>
+        </div>
+        <div class="form-subgroup">
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'title_nl', 'label': 'Titel' } %}
+            </div>
+        </div>
+        <div class="form-subgroup">
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'creation_date', 'label': 'Datering' } %}
+            </div>
+            <div class="form-item">
+                {% include 'textfield.html.twig' with { 'name': 'copyright', 'label': 'Copyright' } %}
+            </div>
+        </div>
+    </div>
+    {% if not readonly %}
+    <div class="buttons">
+        <div class="previous-button">
+            <button type="button" onclick="showDiv('reason-form')">Vorige</button>
+        </div>
+        <div class="next-button">
+            <button type="button" onclick="showDiv('actors-form')">Volgende</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}

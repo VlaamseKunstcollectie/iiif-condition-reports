@@ -1,0 +1,73 @@
+{% if not readonly or prefilled_data.reason is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
+<div id="reason-form"{% if not readonly %} class="form-tab"{% endif %}>
+    {% if not readonly %}
+    <div class="report-header">Identificatie van de aanleiding voor het rapport</div>
+    <div class="form-group">
+        <div class="form-subgroup">
+            <div class="form-item">
+                <label for="reason">Aanleiding</label>
+                <select name="reason" onchange="if(this.options[this.selectedIndex].value=='customOption') {
+                        toggleField(this, this.nextSibling);
+                        this.selectedIndex='0';
+                    }">
+                    <option></option>
+                    {% for key, reason_type in report_reasons %}
+                        <optgroup label="{{ reason_type.name }}">
+                            {% for id, reason in reason_type.options %}
+                                <option value="{{ id }}">{{ reason }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                    <option value="customOption">Andere</option>
+                </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this, this.previousSibling);}">
+            </div>
+        </div>
+    </div>
+    {% elseif prefilled_data.reason is defined %}
+    <div class="report-header">Identificatie van de aanleiding voor het rapport</div>
+    <div class="form-group">
+        <div class="form-subgroup">
+            <div class="form-item">
+                <span class="readonly-label">Aanleiding: </span>
+                {% for key, reason_type in report_reasons %}
+                    {% for id, reason in reason_type.options %}
+                        {% if prefilled_data.reason == id %}
+                            <span class="readonly-input">{{ reason }}</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined
+        or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined
+        or prefilled_data.exhibition_rep_name is defined %}
+        <div class="report-header">Informatie bruikleenproject{% if not readonly %} (indien van toepassing){% endif %}</div>
+        <div class="form-group">
+            <div class="form-subgroup">
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}</div>
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina', 'is_url': true } %}</div>
+            </div>
+            <div class="form-subgroup">
+                <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_start', 'label': 'Startdatum bruikleen' } %}</div>
+                <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_end', 'label': 'Einddatum bruikleen' } %}</div>
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}</div>
+            </div>
+        </div>
+        {% if not readonly or prefilled_data.exhibition_rep_name is defined %}
+            <div class="form-group">
+                {% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if not readonly %}
+    <div class="buttons">
+        <div class="next-button">
+            <button type="button" onclick="showDiv('basic-info-form')">Volgende</button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
