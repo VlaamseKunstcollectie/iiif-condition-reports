@@ -19,7 +19,7 @@
         <div id="wrap" class="readonly">
             <div class="readonly-header">
                 <div class="header">Rapport bekijken</div>
-                <button type="button" id="print-button" onclick="if(window.isPrinting) return; window.isPrinting = true; setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">
+                <button type="button" id="print-button" onclick="window.print()">
                     <i class="fas fa-print"></i>
                     Afdrukken
                 </button>

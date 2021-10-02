@@ -4,11 +4,17 @@
     {% endif %}
     <div id="annotation-form">
         <div id="annotation-history">
-            {% if annotation_history | length > 0 or not readonly and annotation_history is not empty %}
-                <button type="button" onclick="resetAnnotations();" class="show-all"><i class="far fa-eye"></i>Toon alles</button>
+            {% if annotation_history | length > 0 or not readonly %}
+                <button type="button" onclick="resetAnnotations();" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i>Toon alles</button>
                 <div class="annotation-history-timestamps">
+                    {% if not readonly %}
+                        <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-999999999" class="hide">
+                            <i class="far fa-eye"></i>
+                            <p>Huidige annotaties</p>
+                        </button>
+                    {% endif %}
                     {% for id, timestamp in annotation_history %}
-                        <button type="button" onclick="showAnnotationsOnly('{{ id }}')" id="show-hide-annos-{{ id }}" class="hide">
+                        <button type="button" onclick="toggleAnnotations('{{ id }}')" id="show-hide-annos-{{ id }}" class="hide">
                             <i class="far fa-eye"></i>
                             <p>{{ timestamp }}</p>
                         </button>
@@ -182,15 +188,14 @@ window.onload = function() {
         displayName: 'Hero Solutions'
     });
 
-    window.anno.setAnnotations(window.mostRecentAnnotations);
+    refreshAnnotations();
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
-            if(!window.isCurrentAnnotations) {
-                document.getElementById("annotation_data").value = JSON.stringify(window.mostRecentAnnotations);
-            } else {
-                document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
+            if(!window.allAnnotationsVisible) {
+                resetAnnotations();
             }
+            document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
         });
     {% else %}
         var headers = document.getElementsByClassName("report-header");
@@ -214,214 +219,243 @@ window.onload = function() {
 
 window.drawingEnabled = false;
 
-var annotationHistory = {{ annotation_history | json_encode | raw }};
+window.annotationHistory = {{ annotation_history | json_encode | raw }};
+{% if not readonly %}
+    window.annotationHistory['999999999'] = "";
+{% endif %}
 
-var addedAnnotations = {};
+window.annoIds = [];
+window.addedAnnotations = {};
 {% for reportId, annotation in annotations %}
     var annos = {};
     {% for id, a in annotation %}
         annos["{{ id }}"] = JSON.parse({{ a | json_encode | raw }});
+        window.annoIds.push("{{ id }}");
     {% endfor %}
-    addedAnnotations["{{ reportId }}"] = annos;
+    window.addedAnnotations["{{ reportId }}"] = annos;
 {% endfor %}
+{% if not readonly %}
+    window.addedAnnotations["999999999"] = {};
+{% endif %}
 
-var deletedAnnotations = {};
+window.deletedAnnotations = {};
 {% for reportId, annotation in deleted_annotations %}
     var deletedAnnos = [];
     {% for id, a in annotation %}
         deletedAnnos.push("{{ id }}");
     {% endfor %}
-    deletedAnnotations["{{ reportId }}"] = deletedAnnos;
+    window.deletedAnnotations["{{ reportId }}"] = deletedAnnos;
 {% endfor %}
 
-annotationsUntil = {};
-annotationsOnly = {};
-annotationsVisible = {};
-var lastAnnotation = {};
-var highestId = -1;
-for(const id in annotationHistory) {
-    if(id in deletedAnnotations) {
-        for(const delId of deletedAnnotations[id]) {
-            delete lastAnnotation[delId];
+window.annotationsVisible = {};
+for (const id in window.annotationHistory) {
+    window.annotationsVisible[id] = true;
+}
+window.allAnnotationsVisible = true;
+
+function refreshAnnotations() {
+    var annotations = {};
+    for (const id in window.annotationHistory) {
+        if(window.annotationsVisible[id]) {
+            if (id in window.deletedAnnotations) {
+                for (const delId of window.deletedAnnotations[id]) {
+                    delete annotations[delId];
+                }
+            }
+            if (id in window.addedAnnotations) {
+                for (const [annoId, anno] of Object.entries(window.addedAnnotations[id])) {
+                    annotations[annoId] = anno;
+                }
+            }
         }
-    }
-    if(id in addedAnnotations) {
-        var thisAnnotation = [];
-        for(const [ annoId, anno] of Object.entries(addedAnnotations[id])) {
-            lastAnnotation[annoId] = anno;
-            thisAnnotation.push(anno);
-        }
-        annotationsOnly[id] = thisAnnotation;
-        annotationsVisible[id] = true;
     }
     var arr = [];
-    for(const [ annoId, anno ] of Object.entries(lastAnnotation)) {
+    for(const [ annoId, anno ] of Object.entries(annotations)) {
         arr.push(anno);
     }
-    annotationsUntil[id] = arr;
-    var idInt = parseInt(id);
-    if(idInt > highestId) {
-        highestId = idInt;
-    }
-}
-if(highestId > -1) {
-    window.mostRecentAnnotations = annotationsUntil[highestId];
-} else {
-    window.mostRecentAnnotations = [];
-}
-window.isCurrentAnnotations = true;
-
-function showAnnotationsUntil(id) {
-    if(window.isCurrentAnnotations) {
-        window.mostRecentAnnotations = window.anno.getAnnotations();
-        window.isCurrentAnnotations = false;
-    }
-    window.anno.setAnnotations(annotationsUntil[id]);
+    window.anno.setAnnotations(arr);
 }
 
-function showAnnotationsOnly(id) {
-    if(window.isCurrentAnnotations) {
-        window.mostRecentAnnotations = window.anno.getAnnotations();
-        window.isCurrentAnnotations = false;
-    }
-    annotationsVisible[id] = !annotationsVisible[id];
-    if(!annotationsVisible[id]) {
-        var showAnnotationsButton = document.getElementById("show-hide-annos-" + id);
+function toggleAnnotations(id) {
+    storeCurrentAnnotations();
+    window.annotationsVisible[id] = !window.annotationsVisible[id];
+    var showAnnotationsButton = document.getElementById("show-hide-annos-" + id);
+    if(!window.annotationsVisible[id]) {
         //showAnnotationsButton.innerHTML = "Toon";
         showAnnotationsButton.classList.remove("hide");
         showAnnotationsButton.classList.add("show");
     } else {
-        var hideAnnotationsButton = document.getElementById("show-hide-annos-" + id);
         //hideAnnotationsButton.innerHTML = "Verberg";
-        hideAnnotationsButton.classList.remove("show");
-        hideAnnotationsButton.classList.add("hide");
+        showAnnotationsButton.classList.remove("show");
+        showAnnotationsButton.classList.add("hide");
     }
-    var annos = [];
-    for(const [ annoId, anno ] of Object.entries(annotationsOnly)) {
-        if(annotationsVisible[annoId]) {
-            annos = annos.concat(anno);
+
+    var allVisible = true;
+    for(const id in window.annotationHistory) {
+        if(!window.annotationsVisible[id]) {
+            allVisible = false;
+            break;
         }
     }
-    window.anno.setAnnotations(annos);
+    window.allAnnotationsVisible = allVisible;
+    setShowHideAllButton();
+    refreshAnnotations();
+}
+
+function setShowHideAllButton() {
+    var showAllAnnotationsButton = document.getElementById("show-hide-all-annos");
+    if(window.allAnnotationsVisible) {
+        showAllAnnotationsButton.innerHTML = "<i class=\"far fa-eye\"></i>Verberg alles";
+        showAllAnnotationsButton.classList.remove("show");
+        showAllAnnotationsButton.classList.add("hide");
+    } else {
+        showAllAnnotationsButton.innerHTML = "<i class=\"far fa-eye\"></i>Toon alles";
+        showAllAnnotationsButton.classList.remove("hide");
+        showAllAnnotationsButton.classList.add("show");
+    }
+}
+
+function storeCurrentAnnotations() {
+    {% if not readonly %}
+        if(annotationsVisible["999999999"]) {
+            window.addedAnnotations["999999999"] = {};
+            var annos = window.anno.getAnnotations();
+            for (var i = 0; i < annos.length; i++) {
+                if (!window.annoIds.includes(annos[i].id)) {
+                    window.addedAnnotations["999999999"][annos[i].id] = annos[i];
+                }
+            }
+        }
+    {% endif %}
 }
 
 function resetAnnotations() {
-    if(!window.isCurrentAnnotations) {
-        window.isCurrentAnnotations = true;
-        window.anno.setAnnotations(window.mostRecentAnnotations);
-        for(const [ annoId, anno ] of Object.entries(annotationsOnly)) {
-            annotationsVisible[annoId] = true;
-            var showAllButton = document.getElementById("show-hide-annos-" + annoId);
+    storeCurrentAnnotations();
+    window.allAnnotationsVisible = !window.allAnnotationsVisible;
+    setShowHideAllButton();
+    for (const id in window.annotationHistory) {
+        window.annotationsVisible[id] = window.allAnnotationsVisible;
+        var showAllButton = document.getElementById("show-hide-annos-" + id);
+        if(window.allAnnotationsVisible) {
             //showAllButton.innerHTML = "Verberg";
             showAllButton.classList.remove("show");
             showAllButton.classList.add("hide");
-        }
-    }
-}
-
-function setDrawingTool(drawingTool) {
-    resetAnnotations();
-    window.anno.setDrawingTool(drawingTool);
-    window.anno.setDrawingEnabled(true);
-    window.drawingEnabled = true;
-
-    var drawingToolButtons = document.getElementsByName("drawing-tools");
-
-    for (var i = 0; i < drawingToolButtons.length; i++) {
-        if (drawingToolButtons[i].value == drawingTool) {
-            drawingToolButtons[i].classList.add("drawing-tool-active");
-            drawingToolButtons[i].classList.remove("drawing-tool-inactive");
         } else {
-            drawingToolButtons[i].classList.add("drawing-tool-inactive");
-            drawingToolButtons[i].classList.remove("drawing-tool-active");
+            //showAllButton.innerHTML = "Toon";
+            showAllButton.classList.remove("hide");
+            showAllButton.classList.add("show");
         }
     }
+    refreshAnnotations();
 }
 
-var colours = document.querySelectorAll('input[name="choose-colour"]');
+{% if not readonly %}
+    function setDrawingTool(drawingTool) {
+        if(!window.annotationsVisible["999999999"]) {
+            toggleAnnotations("999999999");
+        }
+        window.anno.setDrawingTool(drawingTool);
+        window.anno.setDrawingEnabled(true);
+        window.drawingEnabled = true;
 
-for (var i = 0; i < colours.length; i++) {
-    colours[i].onchange = chooseColour;
-}
+        var drawingToolButtons = document.getElementsByName("drawing-tools");
 
-var style = document.createElement('style');
-
-function chooseColour() {
-    for (var i = 0; i < colours.length; i++) {
-        if (colours[i] == this) {
-            selectedColour = colours[i].value;
-            if (selectedColour == "red") {
-                style.innerHTML = `
-                    .fill-pattern-line {
-                        stroke: rgb(255,0,0) !important;
-                    }
-                `;
-            } else if (selectedColour == "green") {
-                style.innerHTML = `
-                    .fill-pattern-line {
-                        stroke: rgb(0,255,0) !important;
-                    }
-                `;
-            } else if (selectedColour == "blue") {
-                style.innerHTML = `
-                    .fill-pattern-line {
-                        stroke: rgb(0,0,255) !important;
-                    }
-                `;
-            } else if (selectedColour == "orange") {
-                style.innerHTML = `
-                    .fill-pattern-line {
-                        stroke: rgb(255,165,0) !important;
-                    }
-                `;
+        for (var i = 0; i < drawingToolButtons.length; i++) {
+            if (drawingToolButtons[i].value == drawingTool) {
+                drawingToolButtons[i].classList.add("drawing-tool-active");
+                drawingToolButtons[i].classList.remove("drawing-tool-inactive");
+            } else {
+                drawingToolButtons[i].classList.add("drawing-tool-inactive");
+                drawingToolButtons[i].classList.remove("drawing-tool-active");
             }
-            document.head.appendChild(style);
         }
     }
-}
 
-$("#fill-dropdown").select2({
-    minimumResultsForSearch: Infinity,
-    templateResult: function(option) {
-        return optionFill(option);
-    },
-    templateSelection: function(option) {
-        return optionFill(option);
+    var colours = document.querySelectorAll('input[name="choose-colour"]');
+
+    for (var i = 0; i < colours.length; i++) {
+        colours[i].onchange = chooseColour;
     }
-});
 
-function optionFill(option) {
-    switch(option.id) {
-        default:
-            return option.text;
-        case "rect":
-            return $('<span><svg><pattern id="fill-rect-id-1" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="5" y1="0" x2="5" y2="10" stroke-width="1" /><line class="fill-pattern-line" x1="0" y1="5" x2="10" y2="5" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-rect-id-1);" /></svg></span>');
-        case "diagonal-rect":
-            return $('<span><svg><pattern id="fill-cross-id-2" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="10" y2="10" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="10" x1="10" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-cross-id-2);" /></svg></span>');
-        case "disconnected-cross":
-            return $('<span><svg class="fill-disconnected-cross-id-3"><pattern id="fill-disconnected-cross-id-3" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="6" y2="6" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="6" x1="6" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-disconnected-cross-id-3);" /></svg></span>');
-    }
-}
+    var style = document.createElement('style');
 
-function selectDropdown() {
-    var fill = document.getElementById("fill-dropdown").value;
-    if (fill == "") {
-        window.annoConf.styleFill = fill;
-        window.annoConf.styleClass = 'condition-' + window.annoConf.styleColor;
-    } else {
-        window.annoConf.styleFill = fill + '-';
-        window.annoConf.styleClass = 'condition-' + fill + '-' + window.annoConf.styleColor;
-    }
-}
-
-window.setInterval(function() {
-    if (window.drawingEnabled && !window.anno._app.current.annotationLayer.mouseTracker.isTracking()) {
-        window.drawingEnabled = false;
-        var buttons = document.getElementsByClassName("drawing-tool-active");
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].classList.add("drawing-tool-inactive");
-            buttons[i].classList.remove("drawing-tool-active");
+    function chooseColour() {
+        for (var i = 0; i < colours.length; i++) {
+            if (colours[i] == this) {
+                selectedColour = colours[i].value;
+                if (selectedColour == "red") {
+                    style.innerHTML = `
+                        .fill-pattern-line {
+                            stroke: rgb(255,0,0) !important;
+                        }
+                    `;
+                } else if (selectedColour == "green") {
+                    style.innerHTML = `
+                        .fill-pattern-line {
+                            stroke: rgb(0,255,0) !important;
+                        }
+                    `;
+                } else if (selectedColour == "blue") {
+                    style.innerHTML = `
+                        .fill-pattern-line {
+                            stroke: rgb(0,0,255) !important;
+                        }
+                    `;
+                } else if (selectedColour == "orange") {
+                    style.innerHTML = `
+                        .fill-pattern-line {
+                            stroke: rgb(255,165,0) !important;
+                        }
+                    `;
+                }
+                document.head.appendChild(style);
+            }
         }
     }
-}, 100);
+
+    $("#fill-dropdown").select2({
+        minimumResultsForSearch: Infinity,
+        templateResult: function(option) {
+            return optionFill(option);
+        },
+        templateSelection: function(option) {
+            return optionFill(option);
+        }
+    });
+
+    function optionFill(option) {
+        switch(option.id) {
+            default:
+                return option.text;
+            case "rect":
+                return $('<span><svg><pattern id="fill-rect-id-1" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="5" y1="0" x2="5" y2="10" stroke-width="1" /><line class="fill-pattern-line" x1="0" y1="5" x2="10" y2="5" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-rect-id-1);" /></svg></span>');
+            case "diagonal-rect":
+                return $('<span><svg><pattern id="fill-cross-id-2" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="10" y2="10" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="10" x1="10" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-cross-id-2);" /></svg></span>');
+            case "disconnected-cross":
+                return $('<span><svg class="fill-disconnected-cross-id-3"><pattern id="fill-disconnected-cross-id-3" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="6" y2="6" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="6" x1="6" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-disconnected-cross-id-3);" /></svg></span>');
+        }
+    }
+
+    function selectDropdown() {
+        var fill = document.getElementById("fill-dropdown").value;
+        if (fill == "") {
+            window.annoConf.styleFill = fill;
+            window.annoConf.styleClass = 'condition-' + window.annoConf.styleColor;
+        } else {
+            window.annoConf.styleFill = fill + '-';
+            window.annoConf.styleClass = 'condition-' + fill + '-' + window.annoConf.styleColor;
+        }
+    }
+
+    window.setInterval(function() {
+        if (window.drawingEnabled && !window.anno._app.current.annotationLayer.mouseTracker.isTracking()) {
+            window.drawingEnabled = false;
+            var buttons = document.getElementsByClassName("drawing-tool-active");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.add("drawing-tool-inactive");
+                buttons[i].classList.remove("drawing-tool-active");
+            }
+        }
+    }, 100);
+{% endif %}
 </script>
