@@ -254,7 +254,10 @@ textarea {
     width: 40%;
 }
 
-#openseadragon-viewer, #openseadragon-annotorious {
+#openseadragon-annotorious {
+    display: flex;
+    grid-row-start: 1;
+    grid-column-start: 1;
     height: 800px;
     width: 800px;
     flex: 1;
@@ -262,6 +265,18 @@ textarea {
     border: 1px solid #dbdbdb;
     border-top: none;
     border-left: none;
+}
+
+#openseadragon-annotorious-print {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    z-index: -1;
+    height: 800px;
+    width: 800px;
+}
+
+#annotation-viewer {
+    display: grid;
 }
 
 #annotation-history {
@@ -280,10 +295,6 @@ textarea {
     border-top: none;
     border-left: none;
     overflow-y: scroll;
-}
-
-#annotation-viewer {
-    display: flex;
 }
 
 #annotation-viewer-full {
@@ -1149,6 +1160,14 @@ form {
 
     .readonly-header {
         display: none !important;
+    }
+
+    #openseadragon-annotorious, #annotation-history {
+        display: none;
+    }
+
+    #openseadragon-annotorious-print {
+        z-index: 0;
     }
 
     #report-form {

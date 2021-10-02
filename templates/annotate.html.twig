@@ -141,12 +141,15 @@
             </svg>
 
             <div id="openseadragon-annotorious"></div>
-
-            <input type="hidden" id="annotation_data" name="annotation_data">
-            <input type="hidden" id="iiif_image_url" name="iiif_image_url" value="{{ prefilled_data.iiif_image_url }}">
-            <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
-            <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
-            <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+            {% if readonly %}
+                <div id="openseadragon-annotorious-print"></div>
+            {% else %}
+                <input type="hidden" id="annotation_data" name="annotation_data">
+                <input type="hidden" id="iiif_image_url" name="iiif_image_url" value="{{ prefilled_data.iiif_image_url }}">
+                <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
+                <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
+                <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+            {% endif %}
         </div>
     </div>
 
@@ -188,7 +191,7 @@ window.onload = function() {
         displayName: 'Hero Solutions'
     });
 
-    refreshAnnotations();
+    refreshAnnotations(window.anno);
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
@@ -198,6 +201,12 @@ window.onload = function() {
             document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
         });
     {% else %}
+        var annoPrint = OpenSeadragon.Annotorious(OpenSeadragon({
+            id: "openseadragon-annotorious-print",
+            tileSources: [ {{ iiif_image_data | json_encode | raw }} ]
+        }), {});
+        refreshAnnotations(annoPrint);
+
         var headers = document.getElementsByClassName("report-header");
 
         for (var i = 0; i < headers.length; i++) {
@@ -253,7 +262,7 @@ for (const id in window.annotationHistory) {
 }
 window.allAnnotationsVisible = true;
 
-function refreshAnnotations() {
+function refreshAnnotations(viewer) {
     var annotations = {};
     for (const id in window.annotationHistory) {
         if(window.annotationsVisible[id]) {
@@ -273,7 +282,7 @@ function refreshAnnotations() {
     for(const [ annoId, anno ] of Object.entries(annotations)) {
         arr.push(anno);
     }
-    window.anno.setAnnotations(arr);
+    viewer.setAnnotations(arr);
 }
 
 function toggleAnnotations(id) {
@@ -299,7 +308,7 @@ function toggleAnnotations(id) {
     }
     window.allAnnotationsVisible = allVisible;
     setShowHideAllButton();
-    refreshAnnotations();
+    refreshAnnotations(window.anno);
 }
 
 function setShowHideAllButton() {
@@ -346,7 +355,7 @@ function resetAnnotations() {
             showAllButton.classList.add("show");
         }
     }
-    refreshAnnotations();
+    refreshAnnotations(window.anno);
 }
 
 {% if not readonly %}
