@@ -37,7 +37,7 @@
                     <!--Wijzig-->
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}">
+                <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de vertegenwoordiger {{ representative.alias }} wilt verwijderen?')">
                     <!--Verwijder-->
                     <i class="fas fa-trash-alt"></i>
                 </a>

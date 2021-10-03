@@ -30,7 +30,7 @@
                     <!--Wijzig-->
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a class="button" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}">
+                <a class="button" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de organisatie {{ organization.alias }} wilt verwijderen?')">
                     <!--Verwijder-->
                     <i class="fas fa-trash-alt"></i>
                 </a>
