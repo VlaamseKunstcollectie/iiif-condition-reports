@@ -76,7 +76,7 @@
         <div class="header-report">Rapport aanmaken</div>
         <div class="object-row">
             <div class="object-row-thumbnail">
-                <img src="{{ prefilled_data.thumbnail }}" alt="">
+                <img src="{% if prefilled_data.thumbnail is not defined %}{{ asset('images/no_image_available.png') }}{% else %}{{ prefilled_data.thumbnail }}{% endif %}" alt="">
             </div>
             <div class="object-row-metadata">
                 <div class="object-row-inventory-number">

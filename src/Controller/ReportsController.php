@@ -108,6 +108,11 @@ class ReportsController extends AbstractController
             $searchResults[$id]['timestamp'] = $data['timestamp']->format('Y-m-d H:i:s');
             $searchResults[$id][$data['name']] = $data['value'];
         }
+        foreach($searchResults as $id => $data) {
+            if(!array_key_exists('thumbnail', $data)) {
+                $searchResults[$id]['thumbnail'] = '';
+            }
+        }
         usort($searchResults, array('App\Controller\ReportsController', 'cmp'));
 
         return $this->render('reports.html.twig', [

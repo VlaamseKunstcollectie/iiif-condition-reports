@@ -171,7 +171,7 @@
 window.onload = function() {
     window.osd_anno = OpenSeadragon({
         id: "openseadragon-annotorious",
-        tileSources: [ {{ iiif_image_data | json_encode | raw }} ]
+        tileSources: [ {% if iiif_image_data is not empty %}{{ iiif_image_data | json_encode | raw }} {% endif %}]
     });
 
     window.annoConf = {

@@ -36,7 +36,7 @@ class ReportTemplateData
     public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id)
     {
         $prefilledData = array();
-        $iiifImageData = '{}';
+        $iiifImageData = '';
         $patternSize = 100;
         $datahubData = $em->createQueryBuilder()
             ->select('i.id, i.inventoryNumber, d.name, d.value')
@@ -56,12 +56,17 @@ class ReportTemplateData
             if(!empty($data['value'])) {
                 if($data['name'] === 'iiif_image_url') {
                     $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(!empty($iiifImageData)) {
+                    if(strpos($iiifImageData, 'Redirect: ') === false) {
+                        $iiifImageData = '';
+                    } else if(!empty($iiifImageData)) {
                         $patternSize = self::getPatternSize($iiifImageData);
                     }
                 }
                 $prefilledData[$data['name']] = $data['value'];
             }
+        }
+        if(!array_key_exists('iiif_image_url', $prefilledData)) {
+            $prefilledData['iiif_image_url'] = '';
         }
 
         return [
@@ -83,7 +88,7 @@ class ReportTemplateData
     public static function getExistingReportData(EntityManager $em, $id)
     {
         $prefilledData = array();
-        $iiifImageData = '{}';
+        $iiifImageData = '';
         $patternSize = 100;
         $reportData = $em->createQueryBuilder()
             ->select('r.id, r.inventoryId, r.baseId, r.timestamp, d.name, d.value')
@@ -127,7 +132,9 @@ class ReportTemplateData
             if(!empty($data['value'])) {
                 if($data['name'] === 'iiif_image_url') {
                     $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(!empty($iiifImageData)) {
+                    if(strpos($iiifImageData, 'Redirect: ') === false) {
+                        $iiifImageData = '';
+                    } else if(!empty($iiifImageData)) {
                         $patternSize = self::getPatternSize($iiifImageData);
                     }
                 }
@@ -230,6 +237,9 @@ class ReportTemplateData
                 unset($annotationHistory[$id]);
             }
         }
+        if(!array_key_exists('iiif_image_url', $prefilledData)) {
+            $prefilledData['iiif_image_url'] = '';
+        }
 
         return [
             'current_page' => 'reports',
@@ -246,7 +256,11 @@ class ReportTemplateData
    public static function getPatternSize($iiifImageData)
    {
        $dataDecoded = json_decode($iiifImageData);
-       return round(($dataDecoded->height > $dataDecoded->width ? $dataDecoded->height : $dataDecoded->width) / 100);
+       if($dataDecoded == null) {
+           return 20;
+       } else {
+           return round(($dataDecoded->height > $dataDecoded->width ? $dataDecoded->height : $dataDecoded->width) / 100);
+       }
    }
 
     public static function getOrganizations(EntityManager $em)
