@@ -60,8 +60,14 @@ parameters:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="en"]'
     description_nl:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
-    creator:
-      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/actor/nameActorSet/appellationValue[@pref="preferred"]'
+    creator_nl:
+      parent_xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole'
+      xpath_main: 'actor/nameActorSet/appellationValue[@pref="preferred"]'
+      xpath_sub: 'roleActor/term[@xml:lang="nl"]'
+    creator_en:
+      parent_xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole'
+      xpath_main: 'actor/nameActorSet/appellationValue[@pref="preferred"]'
+      xpath_sub: 'roleActor/term[@xml:lang="en"]'
     creator_role:
       xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/roleActor/term'
     earliest_date:

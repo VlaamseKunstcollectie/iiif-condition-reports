@@ -71,7 +71,7 @@ class ReportsController extends AbstractController
                     'timestamp' => '',
                     'thumbnail' => '',
                     'title_nl' => '',
-                    'creator' => ''
+                    'creator_nl' => ''
                 ];
             }
             $searchResults[$id][$data['name']] = $data['value'];
@@ -111,6 +111,12 @@ class ReportsController extends AbstractController
         foreach($searchResults as $id => $data) {
             if(!array_key_exists('thumbnail', $data)) {
                 $searchResults[$id]['thumbnail'] = '';
+            }
+            if(!array_key_exists('title_nl', $data)) {
+                $searchResults[$id]['title_nl'] = '';
+            }
+            if(!array_key_exists('creator_nl', $data)) {
+                $searchResults[$id]['creator_nl'] = '';
             }
         }
         usort($searchResults, array('App\Controller\ReportsController', 'cmp'));

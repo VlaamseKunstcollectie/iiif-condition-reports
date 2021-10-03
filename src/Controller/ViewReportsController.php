@@ -41,7 +41,7 @@ class ViewReportsController extends AbstractController
                     'inventory_number' => $data['inventoryNumber'],
                     'thumbnail' => '',
                     'title_nl' => '',
-                    'creator' => ''
+                    'creator_nl' => ''
                 ];
             }
             $searchResults[$data['id']][$data['name']] = $data['value'];

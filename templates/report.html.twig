@@ -90,7 +90,7 @@
                 <div class="object-row-creator">
                     <div>Vervaardiger: </div>
                     <div>
-                    {% for creator in prefilled_data.creator|split('\n') %}
+                    {% for creator in prefilled_data.creator_nl|split('\n') %}
                         {{ creator }}{% if not loop.last %}<br>{% endif %}
                     {% endfor %}
                     </div>

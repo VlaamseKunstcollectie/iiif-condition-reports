@@ -1,4 +1,4 @@
-{% if not readonly or prefilled_data.inventory_number is defined or prefilled_data.current_location is defined or prefilled_data.object_name is defined or prefilled_data.dimensions is defined or prefilled_data.weight is defined or prefilled_data.creator is defined or prefilled_data.title_nl is defined or prefilled_data.creation_date is defined or prefilled_data.copyright is defined %}
+{% if not readonly or prefilled_data.inventory_number is defined or prefilled_data.current_location is defined or prefilled_data.object_name is defined or prefilled_data.dimensions is defined or prefilled_data.weight is defined or prefilled_data.creator_nl is defined or prefilled_data.title_nl is defined or prefilled_data.creation_date is defined or prefilled_data.copyright is defined %}
 <div id="basic-info-form"{% if not readonly %} class="form-tab"{% endif %}>
     <div class="report-header">Identificatie object</div>
     <div class="form-group">
@@ -23,7 +23,7 @@
         </div>
         <div class="form-subgroup">
             <div class="form-item form-creator">
-                {% include 'textarea.html.twig' with { 'name': 'creator', 'label': 'Vervaardiger' } %}
+                {% include 'textarea.html.twig' with { 'name': 'creator_nl', 'label': 'Vervaardiger' } %}
             </div>
         </div>
         <div class="form-subgroup">

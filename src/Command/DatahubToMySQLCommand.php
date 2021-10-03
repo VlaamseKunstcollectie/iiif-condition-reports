@@ -98,30 +98,61 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     }
                 }
 
-                $domDoc = new DOMDocument;
-                $domDoc->loadXML($data->asXML());
-                $xpath = new DOMXPath($domDoc);
-
                 foreach ($this->dataDefinition as $key => $dataDef) {
-                    $xpaths = array();
-                    if(array_key_exists('xpaths', $dataDef)) {
-                        $xpaths = $dataDef['xpaths'];
-                    } else if(array_key_exists('xpath', $dataDef)) {
-                        $xpaths[] = $dataDef['xpath'];
-                    }
                     $value = null;
-                    foreach($xpaths as $xpath_) {
-                        $query = $this->buildXpath($xpath_, $this->datahubLanguage, $this->namespace);
-                        $extracted = $xpath->query($query);
+                    if(array_key_exists('parent_xpath', $dataDef)) {
+                        $query = $this->buildXpath($dataDef['parent_xpath'], $this->datahubLanguage, $this->namespace);
+                        $extracted = $data->xpath($query);
                         if ($extracted) {
                             if (count($extracted) > 0) {
                                 foreach ($extracted as $extr) {
-                                    if ($extr->nodeValue !== 'n/a') {
-                                        if($value == null) {
-                                            $value = $extr->nodeValue;
+                                    $query = $this->buildXpath($dataDef['xpath_main'], $this->datahubLanguage, $this->namespace);
+                                    $extract = $extr->xpath($query);
+                                    if ($extract) {
+                                        if (count($extract) > 0) {
+                                            foreach ($extract as $ext) {
+                                                $ex = (string)$ext;
+                                                if ($ex !== 'n/a') {
+                                                    $value .= (empty($value) ? '' : PHP_EOL) . $ex;
+                                                }
+                                            }
                                         }
-                                        else if($key != 'keywords' || !in_array($extr->nodeValue, explode(",", $value))) {
-                                            $value .= ', ' . $extr->nodeValue;
+                                    }
+                                    $query = $this->buildXpath($dataDef['xpath_sub'], $this->datahubLanguage, $this->namespace);
+                                    $extract = $extr->xpath($query);
+                                    if ($extract) {
+                                        if (count($extract) > 0) {
+                                            foreach ($extract as $ext) {
+                                                $ex = (string)$ext;
+                                                if ($ex !== 'n/a') {
+                                                    $value .= ' (' . $ex . ')';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $xpaths = array();
+                        if (array_key_exists('xpaths', $dataDef)) {
+                            $xpaths = $dataDef['xpaths'];
+                        } else if (array_key_exists('xpath', $dataDef)) {
+                            $xpaths[] = $dataDef['xpath'];
+                        }
+                        foreach ($xpaths as $xpath_) {
+                            $query = $this->buildXpath($xpath_, $this->datahubLanguage, $this->namespace);
+                            $extracted = $data->xpath($query);
+                            if ($extracted) {
+                                if (count($extracted) > 0) {
+                                    foreach ($extracted as $extr) {
+                                        $ext = (string)$extr;
+                                        if ($ext !== 'n/a') {
+                                            if ($value == null) {
+                                                $value = $ext;
+                                            } else if ($key != 'keywords' || !in_array($ext, explode(",", $value))) {
+                                                $value .= ', ' . $ext;
+                                            }
                                         }
                                     }
                                 }
@@ -153,16 +184,6 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                     } else if(array_key_exists('latest_date', $datahubData)) {
                         $datahubData['creation_date'] = $datahubData['latest_date'];
                         unset($datahubData['latest_date']);
-                    }
-                    // Combine role and creator name
-                    if(array_key_exists('creator_role', $datahubData)) {
-                        if(array_key_exists('creator_role', $datahubData)) {
-                            $datahubData['creator'] = ucfirst($datahubData['creator_role']) . ': ' . $datahubData['creator'];
-                        }
-                        unset($datahubData['creator_role']);
-                    }
-                    if(!array_key_exists('creator', $datahubData)) {
-                        $datahubData['creator'] = '';
                     }
                     if(array_key_exists('iiif_image_url', $datahubData)) {
                         $datahubData['thumbnail'] = IIIFUtil::generateThumbnail($datahubData['iiif_image_url']);

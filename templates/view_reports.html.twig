@@ -19,7 +19,7 @@
                         <div class="reports-row-creator">
                             <div>Vervaardiger:</div>
                             <div>
-                                {% for creator in result.creator|split('\n') %}
+                                {% for creator in result.creator_nl|split('\n') %}
                                     {{ creator }}{% if not loop.last %}<br>{% endif %}
                                 {% endfor %}
                             </div>
