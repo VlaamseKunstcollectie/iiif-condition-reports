@@ -198,6 +198,7 @@ window.onload = function() {
             if(!window.allAnnotationsVisible) {
                 resetAnnotations();
             }
+            document.body.onbeforeunload = '';
             document.getElementById("annotation_data").value = JSON.stringify(window.anno.getAnnotations());
         });
     {% else %}

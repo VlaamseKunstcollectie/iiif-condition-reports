@@ -12,9 +12,9 @@
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
 </head>
-<body>
 {% include 'navbar.html.twig' %}
 {% if readonly %}
+<body>
     <div id="readonly-container">
         <div id="wrap" class="readonly">
             <div class="readonly-header">
@@ -28,6 +28,7 @@
         </div>
     </div>
 {% else %}
+<body onbeforeunload="return ''">
     <script>
         const divIds = [
             'reason-form', 'basic-info-form', 'actors-form', 'material-form', 'condition-form', 'recommendations-form', 'annotate-form'
