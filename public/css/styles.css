@@ -272,7 +272,7 @@ textarea {
     grid-column-start: 1;
     z-index: -1;
     height: 900px;
-    width: 800px;
+    width: 770px;
 }
 
 #annotation-viewer {
@@ -1162,8 +1162,13 @@ form {
         display: none !important;
     }
 
-    #openseadragon-annotorious, #annotation-history {
+    #annotation-history {
         display: none;
+    }
+
+    #openseadragon-annotorious {
+        width: 0;
+        height: 0;
     }
 
     #openseadragon-annotorious-print {
