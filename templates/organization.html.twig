@@ -1,7 +1,7 @@
 {% include 'header.html.twig' %}
 {{ form_start(form) }}
 	<div id="wrap">
-		<div class="header">Organisatie toevoegen/wijzigen</div>
+		<div class="header">Organisatie {% if new %}toevoegen{% else %}wijzigen{% endif %}</div>
 	    <div id="organization-form">
 	        <div class="form-group">
 	            <div class="form-subgroup">

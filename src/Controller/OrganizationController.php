@@ -73,6 +73,7 @@ class OrganizationController extends AbstractController
             } else {
                 return $this->render('organization.html.twig', [
                     'current_page' => 'organizations',
+                    'new' => empty($id),
                     'form' => $form->createView()
                 ]);
             }

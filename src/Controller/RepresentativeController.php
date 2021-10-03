@@ -67,6 +67,7 @@ class RepresentativeController extends AbstractController
             } else {
                 return $this->render('representative.html.twig', [
                     'current_page' => 'representatives',
+                    'new' => empty($id),
                     'form' => $form->createView()
                 ]);
             }
