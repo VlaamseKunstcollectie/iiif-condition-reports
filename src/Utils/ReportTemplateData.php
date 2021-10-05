@@ -56,7 +56,7 @@ class ReportTemplateData
             if(!empty($data['value'])) {
                 if($data['name'] === 'iiif_image_url') {
                     $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(strpos($iiifImageData, 'Redirect: ') === false) {
+                    if(strpos($iiifImageData, 'Redirect: ') !== false) {
                         $iiifImageData = '';
                     } else if(!empty($iiifImageData)) {
                         $patternSize = self::getPatternSize($iiifImageData);
@@ -69,12 +69,17 @@ class ReportTemplateData
             $prefilledData['iiif_image_url'] = '';
         }
 
+        $strokeWidth = round($patternSize / 10);
+        if($strokeWidth < 1) {
+            $strokeWidth = 1;
+        }
+
         return [
             'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
             'iiif_image_data' => $iiifImageData,
             'pattern_size' => $patternSize,
-            'stroke_width' => round($patternSize / 15),
+            'stroke_width' => $strokeWidth,
             'annotation_history' => array(),
             'annotations' => array(),
             'deleted_annotations' => array(),
@@ -132,7 +137,7 @@ class ReportTemplateData
             if(!empty($data['value'])) {
                 if($data['name'] === 'iiif_image_url') {
                     $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(strpos($iiifImageData, 'Redirect: ') === false) {
+                    if(strpos($iiifImageData, 'Redirect: ') !== false) {
                         $iiifImageData = '';
                     } else if(!empty($iiifImageData)) {
                         $patternSize = self::getPatternSize($iiifImageData);
@@ -241,12 +246,17 @@ class ReportTemplateData
             $prefilledData['iiif_image_url'] = '';
         }
 
+        $strokeWidth = round($patternSize / 10);
+        if($strokeWidth < 1) {
+            $strokeWidth = 1;
+        }
+
         return [
             'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
             'iiif_image_data' => $iiifImageData,
             'pattern_size' => $patternSize,
-            'stroke_width' => round($patternSize / 10),
+            'stroke_width' => $strokeWidth,
             'annotation_history' => $annotationHistory,
             'annotations' => $annotations,
             'deleted_annotations' => $deletedAnnotations
