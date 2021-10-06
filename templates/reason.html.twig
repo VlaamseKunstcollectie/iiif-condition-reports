@@ -76,17 +76,20 @@
         or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined
         or prefilled_data.exhibition_rep_name is defined %}
         <div class="report-header">Informatie bruikleenproject{% if not readonly %} (indien van toepassing){% endif %}</div>
-        <div class="form-group">
-            <div class="form-subgroup">
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina', 'is_url': true } %}</div>
+        {% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined
+            or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined %}
+            <div class="form-group">
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina', 'is_url': true } %}</div>
+                </div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_start', 'label': 'Startdatum bruikleen' } %}</div>
+                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_end', 'label': 'Einddatum bruikleen' } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}</div>
+                </div>
             </div>
-            <div class="form-subgroup">
-                <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_start', 'label': 'Startdatum bruikleen' } %}</div>
-                <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_end', 'label': 'Einddatum bruikleen' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}</div>
-            </div>
-        </div>
+        {% endif %}
         {% if not readonly or prefilled_data.exhibition_rep_name is defined %}
             <div class="form-group">
                 {% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}
