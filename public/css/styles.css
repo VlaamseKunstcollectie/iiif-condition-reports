@@ -113,6 +113,7 @@ textarea {
 
 .reports-row-metadata div div,
 .orgs-row-metadata div div,
+.reps-row-metadata div div,
 .object-row-metadata div div {
     margin-left: 20px;
 }
@@ -259,7 +260,6 @@ textarea {
     grid-row-start: 1;
     grid-column-start: 1;
     height: 800px;
-    width: 800px;
     flex: 1;
     background-color: #f8f8f8;
     border: 1px solid #dbdbdb;
