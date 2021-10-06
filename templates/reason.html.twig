@@ -1,25 +1,52 @@
 {% if not readonly or prefilled_data.reason is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
 <div id="reason-form"{% if not readonly %} class="form-tab"{% endif %}>
+
+    {% set has_custom_reason = false %}
+    {% if prefilled_data.reason is defined %}
+        {% set has_custom_reason = true %}
+        {% for key, reason_type in report_reasons %}
+            {% for id, reason in reason_type.options %}
+                {% if prefilled_data.reason == id %}
+                    {% set has_custom_reason = false %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
     {% if not readonly %}
+    <script>
+        function toggleField(hideId, showId) {
+            var hideObj = document.getElementById(hideId);
+            hideObj.disabled = true;
+            hideObj.style.display = 'none';
+            var showObj = document.getElementById(showId);
+            showObj.disabled = false;
+            showObj.style.display = 'inline';
+            showObj.placeholder = 'Vul een andere aanleiding in ...';
+            showObj.focus();
+        }
+    </script>
     <div class="report-header">Identificatie van de aanleiding voor het rapport</div>
     <div class="form-group">
         <div class="form-subgroup">
             <div class="form-item">
                 <label for="reason">Aanleiding</label>
-                <select name="reason" onchange="if(this.options[this.selectedIndex].value=='customOption') {
-                        toggleField(this, this.nextSibling);
-                        this.selectedIndex='0';
-                    }">
+                <select id="reason-dropdown" name="reason" onchange="if(this.options[this.selectedIndex].value == 'customOption') {
+                        toggleField('reason-dropdown', 'reason-custom');
+                        this.selectedIndex = '0';
+                    }"{% if has_custom_reason %} disabled style="display: none;"{% endif %}>
                     <option></option>
+                    {% set has_reason = false %}
                     {% for key, reason_type in report_reasons %}
                         <optgroup label="{{ reason_type.name }}">
                             {% for id, reason in reason_type.options %}
-                                <option value="{{ id }}">{{ reason }}</option>
+                                <option value="{{ id }}"{% if prefilled_data.reason is defined and prefilled_data.reason == id %} selected{% set has_reason = true %}{% endif %}>{{ reason }}</option>
                             {% endfor %}
                         </optgroup>
                     {% endfor %}
                     <option value="customOption">Andere</option>
-                </select><input name="reason" style="display:none;" disabled="disabled" onblur="if(this.value==''){toggleField(this, this.previousSibling);}">
+                </select>
+                <input type="text" id="reason-custom" name="reason" {% if has_custom_reason%}value="{{ prefilled_data.reason }}" {% else %}style="display:none;" disabled="disabled" {% endif %}onblur="if(this.value == ''){ toggleField('reason-custom', 'reason-dropdown'); }">
             </div>
         </div>
     </div>
@@ -29,13 +56,17 @@
         <div class="form-subgroup">
             <div class="form-item">
                 <span class="readonly-label">Aanleiding: </span>
-                {% for key, reason_type in report_reasons %}
-                    {% for id, reason in reason_type.options %}
-                        {% if prefilled_data.reason == id %}
-                            <span class="readonly-input">{{ reason }}</span>
-                        {% endif %}
+                {% if has_custom_reason %}
+                    <span class="readonly-input">{{ prefilled_data.reason }}</span>
+                {% else %}
+                    {% for key, reason_type in report_reasons %}
+                        {% for id, reason in reason_type.options %}
+                            {% if prefilled_data.reason == id %}
+                                <span class="readonly-input">{{ reason }}</span>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
