@@ -1,10 +1,4 @@
 {% set general_conditions = [ 'good', 'reasonable', 'bad', 'not_transportable', 'not_displayable' ] %}
-{% set has_general_condition = false %}
-{% for general_condition in general_conditions %}
-    {% if prefilled_data['general_condition_' ~ general_condition] is defined %}
-        {% set has_general_condition = true %}
-    {% endif %}
-{% endfor %}
 
 {% set damages = [ 'surface_dirt', 'crusted_dirt', 'spots', 'fingerprints', 'old_restoration', 'salts', 'insect_damage', 'mold', 'water_damage',
     'corrosion', 'gaps', 'flaking', 'powdering', 'discolorations', 'wearage', 'scratches', 'twists', 'dents', 'structural_damage',
@@ -46,22 +40,22 @@
     {% endif %}
 {% endfor %}
 
-{% if not readonly or has_general_condition or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
+{% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
 <div id="condition-form"{% if not readonly %} class="form-tab"{% endif %}>
 
-    {% if not readonly or has_general_condition or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
+    {% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
         <div class="report-header">Conditie van het object</div>
     {% endif %}
-    {% if not readonly or has_general_condition %}
+    {% if not readonly or prefilled_data.general_condition is defined %}
         <div class="form-group">
             <div class="report-header-2">Algemene conditie</div>
-            {% for general_condition in general_conditions %}
-                <div class="form-subgroup">
-                    <div class="form-item">
-                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'general_condition_' ~ general_condition, 'label': general_condition | trans } %}</div>
-                    </div>
+            <div class="form-subgroup">
+                <div class="form-item">
+                    {% for general_condition in general_conditions %}
+                        <div class="form-radio">{% include 'radio.html.twig' with { 'name': 'general_condition', 'value': 'general_condition_' ~ general_condition, 'label': general_condition | trans } %}</div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     {% endif %}
 
