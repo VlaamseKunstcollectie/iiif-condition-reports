@@ -6,10 +6,10 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
-        "ext-curl": "^7.4",
+        "ext-curl": "^7.2",
         "ext-dom": "20031129",
         "ext-iconv": "*",
-        "ext-json": "^7.4",
+        "ext-json": "^7.2",
         "caseyamcl/phpoaipmh": "^3.3",
         "composer/package-versions-deprecated": "1.11.99.2",
         "doctrine/doctrine-bundle": "^2.4",
@@ -32,6 +32,9 @@
         "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
+        },
+        "platform": {
+            "php": "7.2"
         },
         "sort-packages": true
     },
