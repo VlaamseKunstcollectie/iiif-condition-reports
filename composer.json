@@ -6,10 +6,10 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
-        "ext-curl": "^7.2",
+        "ext-curl": "*",
         "ext-dom": "20031129",
         "ext-iconv": "*",
-        "ext-json": "^7.2",
+        "ext-json": "*",
         "caseyamcl/phpoaipmh": "^3.3",
         "composer/package-versions-deprecated": "1.11.99.2",
         "doctrine/doctrine-bundle": "^2.4",
