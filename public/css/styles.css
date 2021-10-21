@@ -267,7 +267,7 @@ textarea {
     border-left: none;
 }
 
-#openseadragon-annotorious-print {
+.openseadragon-annotorious-print {
     grid-row-start: 1;
     grid-column-start: 1;
     z-index: -1;
@@ -1161,8 +1161,13 @@ form {
     }
 
 @media print {
-    nav {
-        display: none;
+    nav,
+    .readonly-header,
+    #annotation-history,
+    #thumbnails,
+    .openseadragon-container div:not(.openseadragon-canvas),
+    #print-button {
+        display: none !important;
     }
 
     #readonly-container {
@@ -1171,20 +1176,14 @@ form {
         margin-right: auto;
     }
 
-    .readonly-header {
-        display: none !important;
-    }
-
-    #annotation-history {
-        display: none;
-    }
-
     #openseadragon-annotorious {
         width: 0;
         height: 0;
     }
 
-    #openseadragon-annotorious-print {
+    .openseadragon-annotorious-print {
+        grid-row-start: auto;
+        grid-column-start: auto;
         z-index: 0;
     }
 
@@ -1199,15 +1198,8 @@ form {
         border: 1px solid #cccccc;
     }
 
-    .openseadragon-container div:not(.openseadragon-canvas), #print-button {
-        display: none !important;
-    }
-
     .form-group,
-    #annotate-form {
-        break-inside: avoid;
-    }
-
+    #annotate-form,
     .nobreak {
         break-inside: avoid;
     }

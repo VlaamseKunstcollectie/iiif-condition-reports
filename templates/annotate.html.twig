@@ -160,7 +160,9 @@
                 </svg>
             </div>
             {% if readonly %}
-                <div id="openseadragon-annotorious-print"></div>
+                {% for image in images %}
+                    <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                {% endfor %}
             {% endif %}
             {% if images | length > 1 or not readonly %}
                 <div id="thumbnails">
@@ -465,25 +467,26 @@ window.onload = function() {
             document.getElementById("annotation_data").value = JSON.stringify(annotations);
         });
     {% else %}
-        var annoPrint = OpenSeadragon.Annotorious(OpenSeadragon({
-            id: "openseadragon-annotorious-print",
-            tileSources: [
-                {% for image in images %}
-                    {% if loop.first %}
-                        {% if image.image ends with '/info.json' %}
-                            '{{ image.image }}'
-                        {% else %}
-                            {
-                                'type': 'image',
-                                'url': '{{ image.image }}'
-                            }
-                        {% endif %}
+        var cur = window.currentImage;
+        {% for image in images %}
+            var annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(OpenSeadragon({
+                id: "openseadragon-annotorious-print-{{ image.hash }}",
+                tileSources: [
+                    {% if image.image ends with '/info.json' %}
+                        '{{ image.image }}'
+                    {% else %}
+                        {
+                            'type': 'image',
+                            'url': '{{ image.image }}'
+                        }
                     {% endif %}
-                {% endfor %}
-            ]
-        }), {});
+                ]
+            }), {});
 
-        refreshAnnotations(annoPrint);
+            window.currentImage = '{{ image.hash }}';
+            refreshAnnotations(annoPrint{{ image.hash }});
+        {% endfor %}
+        window.currentImage = cur;
 
         var headers = document.getElementsByClassName("report-header");
 

@@ -115,8 +115,6 @@ class SaveReportController extends AbstractController
 
                     sort($previousIds);
 
-                    var_dump($annotationData);
-
                     $newAnnotations = array();
                     foreach($annotationData as $image => $annos) {
                         $newAnnotations[$image] = array();
