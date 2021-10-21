@@ -1166,7 +1166,8 @@ form {
     #annotation-history,
     #thumbnails,
     .openseadragon-container div:not(.openseadragon-canvas),
-    #print-button {
+    #print-button,
+    #iiif-manifest-url {
         display: none !important;
     }
 
