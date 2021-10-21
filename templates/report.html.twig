@@ -11,6 +11,7 @@
     <script src="{{ asset('js/openseadragon-annotorious.min.js') }}"></script>
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/simpleupload.1.1.min.js') }}"></script>
 </head>
 {% include 'navbar.html.twig' %}
 {% if readonly %}
@@ -63,7 +64,7 @@
         }
     </script>
 
-    <form action="{{ path('save', { type: 'existing' }) }}" method="POST">
+    <form action="{{ path('save') }}" method="POST">
         <div class="header-report">Rapport aanmaken</div>
         <div class="object-row">
             <div class="object-row-thumbnail">

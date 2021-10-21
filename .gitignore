@@ -11,3 +11,4 @@
 config/condition-reports.yaml
 .env
 .idea/
+public/annotation_images/

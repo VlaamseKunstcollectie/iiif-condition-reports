@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Entity\Annotation;
 use App\Entity\DatahubData;
 use App\Entity\DeletedAnnotation;
+use App\Entity\Image;
 use App\Entity\InventoryNumber;
 use App\Entity\Organization;
 use App\Entity\Report;
@@ -17,84 +18,48 @@ class ReportTemplateData
 {
     public static function getViewData(EntityManager $em, $reportReasons, $id)
     {
-        $data = self::getExistingReportData($em, $id);
+        $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
         $data['readonly'] = true;
+        $data['pattern_size'] = 20;
+        $data['stroke_width'] = 2;
         return $data;
     }
 
     public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id)
     {
-        $data = self::getExistingReportData($em, $id);
+        $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
-        $data['organizations'] = self::getOrganizations($em);
-        $data['representatives'] = self::getRepresentatives($em);
         $data['readonly'] = false;
+        $data['pattern_size'] = 20;
+        $data['stroke_width'] = 2;
         return $data;
     }
 
     public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id)
     {
-        $prefilledData = array();
-        $iiifImageData = '';
-        $patternSize = 100;
-        $datahubData = $em->createQueryBuilder()
-            ->select('i.id, i.inventoryNumber, d.name, d.value')
-            ->from(InventoryNumber::class, 'i')
-            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
-            ->where('i.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
-        foreach ($datahubData as $data) {
-            if (!array_key_exists('inventory_id', $prefilledData)) {
-                $prefilledData['inventory_id'] = $data['id'];
-            }
-            if (!array_key_exists('inventory_number', $prefilledData)) {
-                $prefilledData['inventory_number'] = $data['inventoryNumber'];
-            }
-            if(!empty($data['value'])) {
-                if($data['name'] === 'iiif_image_url') {
-                    $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(strpos($iiifImageData, 'Redirect: ') !== false) {
-                        $iiifImageData = '';
-                    } else if(!empty($iiifImageData)) {
-                        $patternSize = self::getPatternSize($iiifImageData);
-                    }
-                }
-                $prefilledData[$data['name']] = $data['value'];
-            }
-        }
-        if(!array_key_exists('iiif_image_url', $prefilledData)) {
-            $prefilledData['iiif_image_url'] = '';
-        }
-
-        $strokeWidth = round($patternSize / 10);
-        if($strokeWidth < 1) {
-            $strokeWidth = 1;
-        }
+        $prefilledData = self::getDatahubData($em, $id, array());
+        $images = self::getImages($em, $prefilledData, '../..');
 
         return [
             'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
-            'iiif_image_data' => $iiifImageData,
-            'pattern_size' => $patternSize,
-            'stroke_width' => $strokeWidth,
+            'images' => $images,
             'annotation_history' => array(),
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
             'organizations' => self::getOrganizations($em),
             'representatives' => self::getRepresentatives($em),
-            'readonly' => false
+            'readonly' => false,
+            'pattern_size' => 20,
+            'stroke_width' => 2
         ];
     }
 
-    public static function getExistingReportData(EntityManager $em, $id)
+    public static function getExistingReportData(EntityManager $em, $id, $imageRelPath)
     {
         $prefilledData = array();
-        $iiifImageData = '';
-        $patternSize = 100;
         $reportData = $em->createQueryBuilder()
             ->select('r.id, r.inventoryId, r.baseId, r.timestamp, d.name, d.value')
             ->from(Report::class, 'r')
@@ -114,38 +79,11 @@ class ReportTemplateData
             if(empty($lastReportTimestamp)) {
                 $lastReportTimestamp = $data['timestamp']->format('Y-m-d H:i:s');
             }
-            if($data['name'] === 'iiif_image_url') {
-                $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                if(!empty($iiifImageData)) {
-                    $patternSize = self::getPatternSize($iiifImageData);
-                }
-            }
             $prefilledData[$data['name']] = $data['value'];
         }
 
-        $datahubData = $em->createQueryBuilder()
-            ->select('i.id, i.inventoryNumber, d.name, d.value')
-            ->from(InventoryNumber::class, 'i')
-            ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
-            ->where('i.id = :id')
-            ->setParameter('id', $prefilledData['inventory_id'])
-            ->getQuery()
-            ->getResult();
-        foreach ($datahubData as $data) {
-            $prefilledData['inventory_id'] = $data['id'];
-            $prefilledData['inventory_number'] = $data['inventoryNumber'];
-            if(!empty($data['value'])) {
-                if($data['name'] === 'iiif_image_url') {
-                    $iiifImageData = CurlUtil::get($data['value'] . '/info.json');
-                    if(strpos($iiifImageData, 'Redirect: ') !== false) {
-                        $iiifImageData = '';
-                    } else if(!empty($iiifImageData)) {
-                        $patternSize = self::getPatternSize($iiifImageData);
-                    }
-                }
-                $prefilledData[$data['name']] = $data['value'];
-            }
-        }
+        $prefilledData = self::getDatahubData($em, $prefilledData['inventory_id'], $prefilledData);
+        $images = self::getImages($em, $prefilledData, $imageRelPath);
 
         $reportHistory = $em->createQueryBuilder()
             ->select('h.id, h.previousId, h.sortOrder, r.timestamp')
@@ -157,120 +95,177 @@ class ReportTemplateData
             ->getQuery()
             ->getResult();
         $previousIds = array();
-        $annotationHistory = array();
+        $annotationTimestamps = array();
         foreach($reportHistory as $history) {
             if(!array_key_exists('report_history', $prefilledData)) {
                 $prefilledData['report_history'] = array($id => $history['sortOrder'] + 1);
                 $previousIds[] = $id;
-                $annotationHistory[$id] = $lastReportTimestamp;
+                $annotationTimestamps[$id] = $lastReportTimestamp;
             }
             $prefilledData['report_history'][$history['previousId']] = $history['sortOrder'];
             $previousIds[] = $history['previousId'];
-            $annotationHistory[$history['previousId']] = $history['timestamp']->format('Y-m-d H:i:s');
+            $annotationTimestamps[$history['previousId']] = $history['timestamp']->format('Y-m-d H:i:s');
         }
         if(!array_key_exists('report_history', $prefilledData)) {
             $prefilledData['report_history'] = array($id => 1);
             $previousIds[] = $id;
-            $annotationHistory[$id] = $lastReportTimestamp;
-        }
-        $annotationData = $em->createQueryBuilder()
-            ->select('a')
-            ->from(Annotation::class, 'a')
-            ->where('a.id IN (:ids)')
-            ->setParameter('ids', $previousIds)
-            ->orderBy('a.id')
-            ->getQuery()
-            ->getResult();
-        $annotations = array();
-        foreach($annotationData as $annotation) {
-            if(!array_key_exists($annotation->getId(), $annotations)) {
-                $annotations[$annotation->getId()] = array();
-            }
-            $annotations[$annotation->getId()][$annotation->getAnnotationId()] = $annotation->getAnnotation();
-        }
-
-        $deletedAnnotationData = $em->createQueryBuilder()
-            ->select('d')
-            ->from(DeletedAnnotation::class, 'd')
-            ->where('d.id IN (:ids)')
-            ->setParameter('ids', $previousIds)
-            ->orderBy('d.id')
-            ->getQuery()
-            ->getResult();
-        $deletedAnnotations = array();
-        foreach($deletedAnnotationData as $deletedAnnotation) {
-            if(!array_key_exists($deletedAnnotation->getId(), $deletedAnnotations)) {
-                $deletedAnnotations[$deletedAnnotation->getId()] = array();
-            }
-            $deletedAnnotations[$deletedAnnotation->getId()][$deletedAnnotation->getAnnotationId()] = $deletedAnnotation->getAnnotationId();
+            $annotationTimestamps[$id] = $lastReportTimestamp;
         }
 
         $annotationData = $em->createQueryBuilder()
             ->select('a')
             ->from(Annotation::class, 'a')
-            ->where('a.id IN (:ids)')
-            ->setParameter('ids', $previousIds)
-            ->orderBy('a.id')
+            ->where('a.reportId IN (:reportIds)')
+            ->setParameter('reportIds', $previousIds)
+            ->orderBy('a.reportId')
             ->getQuery()
             ->getResult();
         $annotations = array();
         foreach($annotationData as $annotation) {
-            if(!array_key_exists($annotation->getId(), $annotations)) {
-                $annotations[$annotation->getId()] = array();
+            if(!array_key_exists($annotation->getImage(), $annotations)) {
+                $annotations[$annotation->getImage()] = array();
             }
-            $annotations[$annotation->getId()][$annotation->getAnnotationId()] = $annotation->getAnnotation();
+            if(!array_key_exists($annotation->getReportId(), $annotations[$annotation->getImage()])) {
+                $annotations[$annotation->getImage()][$annotation->getReportId()] = array();
+            }
+            $annotations[$annotation->getImage()][$annotation->getReportId()][$annotation->getAnnotationId()] = $annotation->getAnnotation();
         }
 
         $deletedAnnotationData = $em->createQueryBuilder()
             ->select('d')
             ->from(DeletedAnnotation::class, 'd')
-            ->where('d.id IN (:ids)')
-            ->setParameter('ids', $previousIds)
-            ->orderBy('d.id')
+            ->where('d.reportId IN (:reportIds)')
+            ->setParameter('reportIds', $previousIds)
+            ->orderBy('d.reportId')
             ->getQuery()
             ->getResult();
         $deletedAnnotations = array();
         foreach($deletedAnnotationData as $deletedAnnotation) {
-            if(!array_key_exists($deletedAnnotation->getId(), $deletedAnnotations)) {
-                $deletedAnnotations[$deletedAnnotation->getId()] = array();
+            if(!array_key_exists($deletedAnnotation->getImage(), $annotations)) {
+                $annotations[$deletedAnnotation->getImage()] = array();
             }
-            $deletedAnnotations[$deletedAnnotation->getId()][$deletedAnnotation->getAnnotationId()] = $deletedAnnotation->getAnnotationId();
+            if(!array_key_exists($deletedAnnotation->getReportId(), $annotations[$deletedAnnotation->getImage()])) {
+                $annotations[$deletedAnnotation->getImage()][$deletedAnnotation->getReportId()] = array();
+            }
+            $deletedAnnotations[$deletedAnnotation->getImage()][$deletedAnnotation->getReportId()][$deletedAnnotation->getAnnotationId()] = $deletedAnnotation->getAnnotationId();
         }
 
-        foreach($annotationHistory as $id => $timestamp) {
-            if(!array_key_exists($id, $annotations) && !array_key_exists($id, $deletedAnnotations)) {
-                unset($annotationHistory[$id]);
+        $annotationHistory = array();
+        foreach($annotationTimestamps as $reportId => $timestamp) {
+            foreach($annotations as $image => $reports) {
+                if(array_key_exists($reportId, $reports)) {
+                    if(!array_key_exists($image, $annotationHistory)) {
+                        $annotationHistory[$image] = array();
+                    }
+                    if(!array_key_exists($reportId, $annotationHistory[$image])) {
+                        $annotationHistory[$image][$reportId] = $timestamp;
+                    }
+                }
             }
-        }
-        if(!array_key_exists('iiif_image_url', $prefilledData)) {
-            $prefilledData['iiif_image_url'] = '';
-        }
-
-        $strokeWidth = round($patternSize / 10);
-        if($strokeWidth < 1) {
-            $strokeWidth = 1;
+            foreach($deletedAnnotations as $image => $reports) {
+                if(array_key_exists($reportId, $reports)) {
+                    if(!array_key_exists($image, $annotationHistory)) {
+                        $annotationHistory[$image] = array();
+                    }
+                    if(!array_key_exists($reportId, $annotationHistory[$image])) {
+                        $annotationHistory[$image][$reportId] = $timestamp;
+                    }
+                }
+            }
         }
 
         return [
             'current_page' => 'reports',
             'prefilled_data' => $prefilledData,
-            'iiif_image_data' => $iiifImageData,
-            'pattern_size' => $patternSize,
-            'stroke_width' => $strokeWidth,
+            'images' => $images,
             'annotation_history' => $annotationHistory,
             'annotations' => $annotations,
-            'deleted_annotations' => $deletedAnnotations
+            'deleted_annotations' => $deletedAnnotations,
+            'organizations' => self::getOrganizations($em),
+            'representatives' => self::getRepresentatives($em)
         ];
    }
 
-   public static function getPatternSize($iiifImageData)
+   public static function getDatahubData(EntityManager $em, $id, $prefilledData)
+   {
+       $datahubData = $em->createQueryBuilder()
+           ->select('i.id, i.inventoryNumber, d.name, d.value')
+           ->from(InventoryNumber::class, 'i')
+           ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = i.id')
+           ->where('i.id = :id')
+           ->setParameter('id', $id)
+           ->getQuery()
+           ->getResult();
+       foreach ($datahubData as $data) {
+           $prefilledData['inventory_id'] = $data['id'];
+           $prefilledData['inventory_number'] = $data['inventoryNumber'];
+           if(!empty($data['value']) && !array_key_exists($data['name'], $prefilledData)) {
+               $prefilledData[$data['name']] = $data['value'];
+           }
+       }
+       return $prefilledData;
+   }
+
+   public static function getImages(EntityManager $em, $prefilledData, $imageRelPath)
+   {
+       $images = array();
+       if(array_key_exists('images', $prefilledData)) {
+           $hashes = explode(',', $prefilledData['images']);
+           $imageData = $em->createQueryBuilder()
+               ->select('i')
+               ->from(Image::class, 'i')
+               ->where('i.hash IN (:hashes)')
+               ->setParameter('hashes', $hashes)
+               ->getQuery()
+               ->getResult();
+           $tmpImages = array();
+           foreach ($imageData as $image) {
+/*               if(StringUtil::endsWith($image->getImage(), '/info.json')) {
+                   $patternSize = self::getIIIFPatternSize(CurlUtil::get($image->getImage()));
+               } else {
+                   $imageSize = getimagesize($image->getImage());
+                   $patternSize = self::getPatternSize($imageSize['width'], $imageSize['height']);
+               }
+               $strokeWidth = round($patternSize / 10);
+               if($strokeWidth < 1) {
+                   $strokeWidth = 1;
+               }*/
+               $img = $image->getImage();
+               $thm = $image->getThumbnail();
+               if(strpos($img, '/') === 0) {
+                   $img = $imageRelPath . $img;
+               }
+               if(strpos($thm, '/') === 0) {
+                   $thm = $imageRelPath . $thm;
+               }
+               $tmpImages[$image->getHash()] = array(
+                   'hash' => $image->getHash(),
+                   'image' => $img,
+                   'thumbnail' => $thm
+               );
+           }
+           foreach($hashes as $hash) {
+               if(array_key_exists($hash, $tmpImages)) {
+                   $images[] = $tmpImages[$hash];
+               }
+           }
+       }
+       return $images;
+   }
+
+   public static function getIIIFPatternSize($iiifImageData)
    {
        $dataDecoded = json_decode($iiifImageData);
        if($dataDecoded == null) {
            return 20;
        } else {
-           return round(($dataDecoded->height > $dataDecoded->width ? $dataDecoded->height : $dataDecoded->width) / 100);
+           return self::getPatternSize($dataDecoded->height, $dataDecoded->width);
        }
+   }
+
+   public static function getPatternSize($height, $width)
+   {
+       return round(($height > $width ? $height : $width) / 100);
    }
 
     public static function getOrganizations(EntityManager $em)

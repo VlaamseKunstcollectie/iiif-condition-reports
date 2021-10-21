@@ -14,7 +14,13 @@ class DeletedAnnotation
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $reportId;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="string", length=64)
+     */
+    private $image;
 
     /**
      * @ORM\Id
@@ -22,14 +28,24 @@ class DeletedAnnotation
      */
     private $annotationId;
 
-    public function getId()
+    public function getReportId()
     {
-        return $this->id;
+        return $this->reportId;
     }
 
-    public function setId($id)
+    public function setReportId($reportId)
     {
-        $this->id = $id;
+        $this->reportId = $reportId;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 
     public function getAnnotationId()

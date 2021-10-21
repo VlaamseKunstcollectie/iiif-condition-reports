@@ -3,8 +3,10 @@
 namespace App\Command;
 
 use App\Entity\DatahubData;
+use App\Entity\Image;
 use App\Entity\InventoryNumber;
 use App\Entity\Report;
+use App\Utils\CurlUtil;
 use App\Utils\IIIFUtil;
 use App\Utils\StringUtil;
 use DOMDocument;
@@ -28,6 +30,8 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
     private $namespace;
     private $metadataPrefix;
     private $dataDefinition;
+    private $placeholderImages;
+    private $imageHashes = array();
 
     private $verbose;
 
@@ -63,6 +67,7 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
         $this->namespace = $this->container->getParameter('datahub_namespace');
         $this->metadataPrefix = $this->container->getParameter('datahub_metadataprefix');
         $this->dataDefinition = $this->container->getParameter('datahub_data_definition');
+        $this->placeholderImages = $this->container->getParameter('placeholder_images');
 
         $em = $this->container->get('doctrine')->getManager();
         //Disable SQL logging to improve performance
@@ -78,6 +83,15 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
         $qb = $em->createQueryBuilder();
         $qb->delete(DatahubData::class, 'data')->getQuery()->execute();
         $em->flush();
+
+        $existingImages = $em->createQueryBuilder()
+            ->select('i')
+            ->from(Image::class, 'i')
+            ->getQuery()
+            ->getResult();
+        foreach($existingImages as $img) {
+            $this->imageHashes[] = $img->getHash();
+        }
 
         try {
             $datahubEndpoint = Endpoint::build($this->datahubUrl . '/oai');
@@ -186,7 +200,18 @@ class DatahubToMySQLCommand extends Command implements ContainerAwareInterface, 
                         unset($datahubData['latest_date']);
                     }
                     if(array_key_exists('iiif_image_url', $datahubData)) {
-                        $datahubData['thumbnail'] = IIIFUtil::generateThumbnail($datahubData['iiif_image_url']);
+                        if(!in_array($datahubData['iiif_image_url'], $this->placeholderImages)) {
+                            $image = new Image();
+                            $image->setImage($datahubData['iiif_image_url'] . '/info.json');
+                            $image->setThumbnail(IIIFUtil::generateIIIFThumbnail($datahubData['iiif_image_url']));
+                            if(!in_array($image->getHash(), $this->imageHashes)) {
+                                $this->imageHashes[] = $image->getHash();
+                                $em->persist($image);
+                            }
+                            $datahubData['images'] = $image->getHash();
+                            $datahubData['thumbnail'] = $image->getThumbnail();
+                        }
+                        unset($datahubData['iiif_image_url']);
                     }
 
                     $invNr = null;

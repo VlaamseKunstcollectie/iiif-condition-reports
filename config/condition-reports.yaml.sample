@@ -50,6 +50,8 @@ parameters:
   datahub_language: nl
   datahub_namespace: 'lido'
   datahub_metadataprefix: 'oai_lido'
+  placeholder_images:
+    - 'https://iiif.kmska.be/c/iiif/2/public@27254.tif'
 
   datahub_data_definition:
     id:

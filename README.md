@@ -1,3 +1,16 @@
+# IIIF Condition Reports
+
+## Project overview
+
+This tool is aimed toward the creation and management of condition reports in cultural heritage institutions, such as museums. It relies on a [Datahub](https://github.com/thedatahub/Datahub) as its source for information about objects for which the reports are to be created.
+
+
+## Requirements
+
+* php-imagick
+
+The following tables have to be present in MySQL:
+
 ```
 DROP TABLE IF EXISTS inventory_numbers;
 CREATE TABLE `inventory_numbers` (
@@ -40,19 +53,29 @@ CREATE TABLE `report_data` (
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+DROP TABLE IF EXISTS images;
+CREATE TABLE `images` (
+  `hash` CHAR(64) NOT NULL,
+  `image` TEXT NOT NULL,
+  `thumbnail` TEXT NOT NULL,
+  PRIMARY KEY(`hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 DROP TABLE IF EXISTS annotations;
 CREATE TABLE `annotations` (
-  `id` INT UNSIGNED NOT NULL,
+  `image` CHAR(64) NOT NULL,
+  `report_id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
   `annotation` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`, `annotation_id`)
+  PRIMARY KEY (`image`, `report_id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS deleted_annotations;
 CREATE TABLE `deleted_annotations` (
-  `id` INT UNSIGNED NOT NULL,
+  `image` CHAR(64) NOT NULL,
+  `report_id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`, `annotation_id`)
+  PRIMARY KEY (`image`, `report_id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS organizations;
