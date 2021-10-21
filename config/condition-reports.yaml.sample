@@ -89,7 +89,7 @@ parameters:
     iiif_image_url:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="thumbnail"]/resourceID[@source="ImagehubKMSKA"]'
 
-  service_url: 'https://conditierapporten.vlaamsekunstcollectie.be/iiif/2/'
+  service_url: 'https://conditierapporten.vlaamsekunstcollectie.be/iiif/3/'
 
   validate_manifests: false
   validator_url: 'http://localhost:8080/validate?url='
