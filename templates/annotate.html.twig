@@ -7,6 +7,7 @@
             {% set default_image = '' %}
             {% set has_history = false %}
             {% for image in images %}
+                <input type="hidden" name="images[]" value="{{ image | json_encode | replace({'"': '\\"'}) }}">
                 {% if annotation_history[image.hash] is defined %}
                     {% for id, timestamp in annotation_history[image.hash] %}
                         {% set has_history = true %}
@@ -167,7 +168,6 @@
             {% if images | length > 1 or not readonly %}
                 <div id="thumbnails">
                     {% for image in images %}
-                        <input type="hidden" name="images[]" value="{{ image.hash }}">
                         <div style="width: 150px; height: 200px; max-width: 150px; max-height: 200px;" onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
                             <img src="{{ image.thumbnail }}" alt="">
                         </div>
@@ -195,9 +195,6 @@
                 </label>
 
                 <input type="hidden" id="annotation_data" name="annotation_data">
-                <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
-                <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
-                <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
             {% endif %}
         </div>
     </div>
@@ -390,7 +387,7 @@ function addImage(image) {
     const inputDiv = document.createElement("input");
     inputDiv.type = "hidden";
     inputDiv.name = "images[]";
-    inputDiv.value = image.hash;
+    inputDiv.value = JSON.stringify(image);
     document.getElementById("thumbnails").appendChild(inputDiv);
 
     const thumbnailDiv = document.createElement("div");

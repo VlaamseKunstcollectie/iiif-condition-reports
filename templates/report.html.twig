@@ -65,6 +65,11 @@
     </script>
 
     <form action="{{ path('save') }}" method="POST">
+        <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
+        <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
+        <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+        <input type="hidden" id="publisher" name="publisher"{% if prefilled_data.publisher is defined %} value="{{ prefilled_data.publisher }}"{% endif %}>
+        <input type="hidden" id="title_en" name="title_en"{% if prefilled_data.title_en is defined %} value="{{ prefilled_data.title_en }}"{% endif %}>
         <div class="header-report">Rapport aanmaken</div>
         <div class="object-row">
             <div class="object-row-thumbnail">

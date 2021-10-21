@@ -109,4 +109,12 @@ CREATE TABLE `representatives` (
   `notes` TEXT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS iiif_manifests;
+CREATE TABLE IF NOT EXISTS `iiif_manifests` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `manifest_id` VARCHAR(255) NOT NULL,
+  `data` LONGTEXT NOT NULL,
+  PRIMARY KEY (`id`)
+);
 ```

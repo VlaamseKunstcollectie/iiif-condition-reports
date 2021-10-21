@@ -89,6 +89,19 @@ parameters:
     iiif_image_url:
       xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="thumbnail"]/resourceID[@source="ImagehubKMSKA"]'
 
+  service_url: 'https://conditierapporten.vlaamsekunstcollectie.be/iiif/2/'
+
+  validate_manifests: false
+  validator_url: 'http://localhost:8080/validate?url='
+
   authentication_url: 'https://imagehub.kmska.be/public/authenticate'
   authentication_whitelist:
     - '127.0.0.1'
+  authentication_service_description:
+    confirmLabel: 'Login'
+    description: 'The Flemish Art Collection requires that you log in with your museum account to view this content.'
+    failureDescription: 'Authentication failed'
+    failureHeader: 'Authentication Failed'
+    header: 'Please log in'
+    label: 'Login to the Flemish Art Collection'
+    profile: 'http://iiif.io/api/auth/1/login'

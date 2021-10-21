@@ -7,6 +7,7 @@ use App\Entity\DeletedAnnotation;
 use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
+use App\Utils\IIIFUtil;
 use DateTime;
 use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,12 +42,16 @@ class SaveReportController extends AbstractController
                 } else if($name === 'report_history') {
                     $reportHistory = json_decode($value);
                 } else if($name === 'images[]') {
-                    $images[] = $value;
+                    $images[] = json_decode(str_replace('\\"', '"', $value));
                 } else if($name !== 'choose-colour') {
                     $reportData[$name] = $value;
                 }
             }
-            $reportData['images'] = implode(',', $images);
+            $imageHashes = array();
+            foreach($images as $image) {
+                $imageHashes[] = $image->hash;
+            }
+            $reportData['images'] = implode(',', $imageHashes);
 
             if(!empty($inventoryId)) {
 
@@ -69,6 +74,10 @@ class SaveReportController extends AbstractController
                     $em->persist($report);
                     $em->flush();
                 }
+
+                $reportData['manifest'] = IIIFUtil::generateManifest($em, $report->getId(), $reportData, $images, $annotationData, $this->getParameter('service_url'),
+                                           $this->getParameter('validate_manifests'), $this->getParameter('validator_url'),
+                                           $this->getParameter('authentication_url'), $this->getParameter('authentication_service_description'));
 
                 $i = 0;
                 foreach($reportData as $key => $value) {
@@ -153,7 +162,7 @@ class SaveReportController extends AbstractController
                     $oldAnnotationsToDelete = array();
                     foreach($oldDeletedAnnotationEntities as $deletedAnnotation) {
                         if(!array_key_exists($deletedAnnotation->getImage(), $oldAnnotationsToDelete)) {
-                            $oldAnnotationsToDelete[$deletedAnnotation->getReportId()] = array();
+                            $oldAnnotationsToDelete[$deletedAnnotation->getImage()] = array();
                         }
                         if(!array_key_exists($deletedAnnotation->getReportId(), $oldAnnotationsToDelete[$deletedAnnotation->getImage()])) {
                             $oldAnnotationsToDelete[$deletedAnnotation->getImage()][$deletedAnnotation->getReportId()] = array();
@@ -162,11 +171,11 @@ class SaveReportController extends AbstractController
                     }
 
                     $oldAnnotations = array();
-                    foreach($images as $image) {
+                    foreach($imageHashes as $image) {
                         foreach ($previousIds as $reportId) {
                             if(array_key_exists($image, $oldAnnotations) && array_key_exists($image, $oldAnnotationsToDelete)) {
                                 if (array_key_exists($reportId, $oldAnnotationsToDelete[$image])) {
-                                    foreach ($oldAnnotationsToDelete[$reportId] as $key => $val) {
+                                    foreach ($oldAnnotationsToDelete[$image][$reportId] as $key => $val) {
                                         unset($oldAnnotations[$image][$key]);
                                     }
                                 }
@@ -184,7 +193,7 @@ class SaveReportController extends AbstractController
                         }
                     }
 
-                    foreach($images as $image) {
+                    foreach($imageHashes as $image) {
                         $added = array();
                         $deleted = array();
                         if(array_key_exists($image, $oldAnnotations)) {
