@@ -145,6 +145,7 @@ class IIIFUtil
         // Loop through all resources related to this resource (including itself)
         foreach($images as $image) {
             $imageData = self::getImageData($image->image);
+            $isIIIF = StringUtil::endsWith($image->image, '/info.json');
 
             $index++;
             $canvasId = $serviceUrl . $reportId . '/canvas/' . $index;
@@ -152,12 +153,19 @@ class IIIFUtil
                 $publicUse = $imageData['public_use'];
             }
             $body = array(
-                'id'     => $imageData['image_url'],
-                'type'   => 'Image',
-                'format' => 'image/jpeg',
-                'height' => $imageData['height'],
-                'width'  => $imageData['width']
+                'id'      => $imageData['image_url'],
+                'type'    => 'Image',
+                'format'  => 'image/jpeg',
+                'height'  => $imageData['height'],
+                'width'   => $imageData['width'],
             );
+            if($isIIIF) {
+                $body['service'] = array(
+                    'id'      => $imageData['service_id'],
+                    'profile' => 'http://iiif.io/api/image/2/level2.json',
+                    'type'    => 'ImageService2'
+                );
+            }
             $painting = array(
                 'id'         => $serviceUrl . $reportId . '/annotation/' . $index . '-image',
                 'type'       => 'Annotation',
@@ -182,8 +190,8 @@ class IIIFUtil
                 foreach($annotationData->{$image->hash} as $id => $annotation) {
                     $anno = clone $annotation;
                     $anno->id = $serviceUrl . $reportId . '/annotation/p1/' . substr($anno->id, 1);
-                    if(StringUtil::endsWith($imageData['image_url'], '/info.json')) {
-                        $anno->target->source = $anno->target->source . '/info.json';
+                    if(strpos($imageData['image_url'], '/full/max/0/default.jpg') !== false) {
+                        $anno->target->source = $anno->target->source . '/full/max/0/default.jpg';
                     }
                     $annotations[] = $anno;
                 }
@@ -252,6 +260,7 @@ class IIIFUtil
         $height = 0;
         if(StringUtil::endsWith($imageUrl, '/info.json')) {
             $baseImage = substr($imageUrl, 0, -10);
+            $image = $baseImage . '/full/max/0/default.jpg';
             $imageDataJSON = CurlUtil::get($imageUrl);
             if($imageDataJSON) {
                 $imageData = json_decode($imageDataJSON);
