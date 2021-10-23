@@ -182,8 +182,8 @@ class IIIFUtil
                 foreach($annotationData->{$image->hash} as $id => $annotation) {
                     $anno = clone $annotation;
                     $anno->id = $serviceUrl . $reportId . '/annotation/p1/' . substr($anno->id, 1);
-                    if(strpos($imageData['image_url'], '/full/max/0/default.jpg') !== false) {
-                        $anno->target->source = $anno->target->source . '/full/max/0/default.jpg';
+                    if(StringUtil::endsWith($imageData['image_url'], '/info.json')) {
+                        $anno->target->source = $anno->target->source . '/info.json';
                     }
                     $annotations[] = $anno;
                 }
@@ -252,7 +252,6 @@ class IIIFUtil
         $height = 0;
         if(StringUtil::endsWith($imageUrl, '/info.json')) {
             $baseImage = substr($imageUrl, 0, -10);
-            $image = $baseImage . '/full/max/0/default.jpg';
             $imageDataJSON = CurlUtil::get($imageUrl);
             if($imageDataJSON) {
                 $imageData = json_decode($imageDataJSON);
