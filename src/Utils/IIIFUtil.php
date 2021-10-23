@@ -249,7 +249,7 @@ class IIIFUtil
         $height = 0;
         if(StringUtil::endsWith($imageUrl, '/info.json')) {
             $baseImage = substr($imageUrl, 0, -10);
-            $image = $baseImage;// . '/full/max/0/default.jpg';
+            $image = $baseImage . '/full/max/0/default.jpg';
             $imageDataJSON = CurlUtil::get($imageUrl);
             if($imageDataJSON) {
                 $imageData = json_decode($imageDataJSON);
