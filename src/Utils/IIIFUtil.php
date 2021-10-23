@@ -151,12 +151,32 @@ class IIIFUtil
             if($index == 1) {
                 $publicUse = $imageData['public_use'];
             }
+            $body = array(
+                'id'     => $imageData['image_url'],
+                'type'   => 'Image',
+                'format' => 'image/jpeg',
+                'height' => $imageData['height'],
+                'width'  => $imageData['width']
+            );
+            $painting = array(
+                'id'         => $serviceUrl . $reportId . '/annotation/' . $index . '-image',
+                'type'       => 'Annotation',
+                'motivation' => 'painting',
+                'body'       => $body,
+                'target'     => $canvasId
+            );
+            $annotationPage = array(
+                'id'    => $canvasId . '/1',
+                'type'  => 'AnnotationPage',
+                'items' => array($painting)
+            );
             $canvases[] = array(
                 'id'     => $canvasId,
                 'type'   => 'Canvas',
                 'label'  => $data['label'],
+                'height' => $imageData['height'],
                 'width'  => $imageData['width'],
-                'height' => $imageData['height']
+                'items'  => array($annotationPage)
             );
             if(array_key_exists($image->hash, $annotationData)) {
                 foreach($annotationData->{$image->hash} as $id => $annotation) {
@@ -229,7 +249,7 @@ class IIIFUtil
         $height = 0;
         if(StringUtil::endsWith($imageUrl, '/info.json')) {
             $baseImage = substr($imageUrl, 0, -10);
-            $image = $baseImage . '/full/full/0/default.jpg';
+            $image = $baseImage;// . '/full/max/0/default.jpg';
             $imageDataJSON = CurlUtil::get($imageUrl);
             if($imageDataJSON) {
                 $imageData = json_decode($imageDataJSON);
@@ -246,7 +266,6 @@ class IIIFUtil
             if(strpos($imageUrl, '/') === 0) {
                 $imageUrl = '../public' . $imageUrl;
             }
-            var_dump($imageUrl);
             $imageSize = getimagesize($imageUrl);
             if($imageSize) {
                 if(array_key_exists('width', $imageSize) && array_key_exists('height', $imageSize)) {
