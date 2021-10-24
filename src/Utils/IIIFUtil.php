@@ -190,9 +190,7 @@ class IIIFUtil
                 foreach($annotationData->{$image->hash} as $id => $annotation) {
                     $anno = clone $annotation;
                     $anno->id = $serviceUrl . $reportId . '/annotation/p1/' . substr($anno->id, 1);
-                    if(strpos($imageData['image_url'], '/full/max/0/default.jpg') !== false) {
-                        $anno->target->source = $anno->target->source . '/full/max/0/default.jpg';
-                    }
+                    $anno->target->source = $imageData['image_url'];
                     $annotations[] = $anno;
                 }
             }
