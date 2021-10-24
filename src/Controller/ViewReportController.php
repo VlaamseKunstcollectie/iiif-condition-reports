@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewReportController extends AbstractController
 {
     /**
-     * @Route("/view/{id}", name="view")
+     * @Route("/{_locale}/view/{id}", name="view")
      */
     public function view($id)
     {

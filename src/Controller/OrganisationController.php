@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Report;
 use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,37 +15,38 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrganizationController extends AbstractController
+class OrganisationController extends AbstractController
 {
     /**
-     * @Route("/organization/{id}/{action}", name="organization", defaults={ "id"="", "action"="" })
+     * @Route("/{_locale}/organisation/{id}/{action}", name="organisation", defaults={ "id"="", "action"="" })
      */
-    public function organization(Request $request, $id, $action)
+    public function organisation(Request $request, $id, $action)
     {
         $em = $this->container->get('doctrine')->getManager();
 
-        $organization = new Organization();
+        $organisation = new Organisation();
         if (!empty($id)) {
-            $organization = null;
-            $organizations = $em->createQueryBuilder()
+            $organisation = null;
+            $organisations = $em->createQueryBuilder()
                 ->select('o')
-                ->from(Organization::class, 'o')
+                ->from(Organisation::class, 'o')
                 ->where('o.id = :id')
                 ->setParameter('id', $id)
                 ->orderBy('o.alias')
                 ->getQuery()
                 ->getResult();
-            foreach ($organizations as $org) {
-                $organization = $org;
+            foreach ($organisations as $org) {
+                $organisation = $org;
             }
         }
-        if($action == 'delete' && !empty($id) && $organizations != null) {
-            $em->remove($organization);
+        if($action == 'delete' && !empty($id) && $organisations != null) {
+            $em->remove($organisation);
             $em->flush();
-            return $this->redirectToRoute('organizations');
+            return $this->redirectToRoute('organisations');
         } else {
-            $form = $this->createFormBuilder($organization)
-                ->add('alias', TextType::class, ['required' => false, 'label' => 'Alias', 'attr' => ['placeholder' => 'Zelfgekozen alias (optioneel)']])
+            $translator = $this->get('translator');
+            $form = $this->createFormBuilder($organisation)
+                ->add('alias', TextType::class, ['required' => false, 'label' => 'Alias', 'attr' => ['placeholder' => $translator->trans('Zelfgekozen alias (optioneel)')]])
                 ->add('name', TextType::class, ['label' => 'Naam', 'attr' => ['placeholder' => 'Naam van de organisatie']])
                 ->add('function', TextType::class, ['required' => false, 'label' => 'Functie', 'attr' => ['placeholder' => 'Bv. eigen organisatie, bruikleennemer, koerier, ...']])
                 ->add('logo', TextType::class, ['required' => false, 'label' => 'Logo', 'attr' => ['placeholder' => 'URL van bedrijfslogo']])
@@ -69,10 +70,10 @@ class OrganizationController extends AbstractController
                 }
                 $em->persist($formData);
                 $em->flush();
-                return $this->redirectToRoute('organizations');
+                return $this->redirectToRoute('organisations');
             } else {
-                return $this->render('organization.html.twig', [
-                    'current_page' => 'organizations',
+                return $this->render('organisation.html.twig', [
+                    'current_page' => 'organisations',
                     'new' => empty($id),
                     'form' => $form->createView()
                 ]);

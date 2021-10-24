@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Report;
 use App\Entity\Representative;
 use App\Utils\IIIFUtil;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RepresentativesController extends AbstractController
 {
     /**
-     * @Route("/representatives", name="representatives")
+     * @Route("/{_locale}/representatives", name="representatives")
      */
     public function representatives(Request $request)
     {

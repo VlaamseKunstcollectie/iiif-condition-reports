@@ -2,35 +2,35 @@
 <!--<h1>Beheer organisaties</h1>-->
 <div class="orgs">
     <div class="orgs-header">
-        <div class="header">Organisaties</div>
-        <a class="button" href="{{ path('organization', { type : 'new' }) }}">
+        <div class="header">{{ 'organisations' | trans }}</div>
+        <a class="button" href="{{ path('organisation', { type : 'new' }) }}">
             <i class="fas fa-plus"></i>
             Organisatie toevoegen
         </a>
     </div>
-    {% for organization in organizations %}
+    {% for organisation in organisations %}
         <div class="orgs-row">
-            <div class="orgs-row-thumbnail"><img src="{{  organization.logo }}" alt="" /></div>
+            <div class="orgs-row-thumbnail"><img src="{{  organisation.logo }}" alt="" /></div>
             <div class="orgs-row-metadata">
                 <div class="orgs-row-alias">
                     <div>Alias:</div>
-                    <div>{{ organization.alias }}</div>
+                    <div>{{ organisation.alias }}</div>
                 </div>
                 <div class="orgs-row-name">
                     <div>Naam:</div>
-                    <div>{{ organization.name }}</div>
+                    <div>{{ organisation.name }}</div>
                 </div>
                 <div class="orgs-row-function">
                     <div>Functie:</div>
-                    <div>{{ organization.function }}</div>
+                    <div>{{ organisation.function }}</div>
                 </div>
             </div>
             <div class="orgs-row-actions">
-                <a class="button" href="{{ path('organization', { id: organization.id }) }}">
+                <a class="button" href="{{ path('organisation', { id: organisation.id }) }}">
                     <!--Wijzig-->
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a class="button" href="{{ path('organization', { id: organization.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de organisatie {{ organization.alias }} wilt verwijderen?')">
+                <a class="button" href="{{ path('organisation', { id: organisation.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de organisatie {{ organisation.alias }} wilt verwijderen?')">
                     <!--Verwijder-->
                     <i class="fas fa-trash-alt"></i>
                 </a>

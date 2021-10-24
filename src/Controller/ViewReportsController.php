@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewReportsController extends AbstractController
 {
     /**
-     * @Route("/view_reports/{baseId}", name="view_reports")
+     * @Route("/{_locale}/view_reports/{baseId}", name="view_reports")
      */
     public function viewReports(Request $request, $baseId)
     {

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Representative;
 use App\Utils\CurlUtil;
 use App\Utils\ReportTemplateData;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateBlankReportController extends AbstractController
 {
     /**
-     * @Route("/create/blank/{id}", name="create_blank")
+     * @Route("/{_locale}/create/blank/{id}", name="create_blank")
      */
     public function createBlank(Request $request, $id)
     {

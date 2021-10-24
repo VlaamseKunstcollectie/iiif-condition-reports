@@ -4,36 +4,36 @@ namespace App\Controller;
 
 use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Report;
 use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OrganizationsController extends AbstractController
+class OrganisationsController extends AbstractController
 {
     /**
-     * @Route("/organizations", name="organizations")
+     * @Route("/{_locale}/organisations", name="organisations")
      */
-    public function organizations(Request $request)
+    public function organisations(Request $request)
     {
         $em = $this->container->get('doctrine')->getManager();
 
         $searchResults = array();
-        $organizations = $em->createQueryBuilder()
+        $organisations = $em->createQueryBuilder()
             ->select('o')
-            ->from(Organization::class, 'o')
+            ->from(Organisation::class, 'o')
             ->orderBy('o.alias')
             ->getQuery()
             ->getResult();
-        foreach ($organizations as $organization) {
-            $searchResults[] = $organization;
+        foreach ($organisations as $organisation) {
+            $searchResults[] = $organisation;
         }
 
-        return $this->render('organizations.html.twig', [
-            'current_page' => 'organizations',
-            'organizations' => $searchResults
+        return $this->render('organisations.html.twig', [
+            'current_page' => 'organisations',
+            'organisations' => $searchResults
         ]);
 
     }

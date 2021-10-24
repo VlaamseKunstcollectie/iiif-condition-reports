@@ -5,10 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
- * @ORM\Table(name="organizations")
+ * @ORM\Entity(repositoryClass="App\Repository\OrganisationRepository")
+ * @ORM\Table(name="organisations")
  */
-class Organization
+class Organisation
 {
     /**
      * @ORM\Id

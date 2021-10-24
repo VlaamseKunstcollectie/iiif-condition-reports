@@ -78,8 +78,8 @@ CREATE TABLE `deleted_annotations` (
   PRIMARY KEY (`image`, `report_id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS organizations;
-CREATE TABLE `organizations` (
+DROP TABLE IF EXISTS organisations;
+CREATE TABLE `organisations` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,
   `name` VARCHAR(255) NOT NULL,

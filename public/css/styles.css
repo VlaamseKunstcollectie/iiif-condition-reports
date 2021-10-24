@@ -433,7 +433,7 @@ textarea {
 }
 
 #report-form,
-#organization-form,
+#organisation-form,
 #representative-form {
     margin-top: -1px;
     margin-bottom: 30px;
@@ -442,13 +442,13 @@ textarea {
     border: 1px solid #dbdbdb;
 }
 
-#organization-form,
+#organisation-form,
 #representative-form {
     padding: 5px 15px 15px 15px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
 
-#organization-form,
+#organisation-form,
 #representative-form {
     margin-top: 15px;
 }
@@ -460,20 +460,20 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup,
-#organization-form > .form-group > .form-subgroup,
+#organisation-form > .form-group > .form-subgroup,
 #representative-form > .form-group > .form-subgroup {
     display: flex;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item,
-#organization-form > .form-group > .form-subgroup > div,
+#organisation-form > .form-group > .form-subgroup > div,
 #representative-form > .form-group > .form-subgroup > div {
     margin-left: 15px;
     flex-grow: 1;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item:first-child,
-#organization-form > .form-group > .form-subgroup > div:first-child,
+#organisation-form > .form-group > .form-subgroup > div:first-child,
 #representative-form > .form-group > .form-subgroup > div:first-child {
     margin-left: 0;
 }
@@ -506,7 +506,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 #report-form label,
-#organization-form label,
+#organisation-form label,
 #representative-form label {
     display: block;
     padding-top: 10px;
@@ -516,9 +516,9 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form select,
 #report-form input,
 #report-form textarea,
-#organization-form select,
-#organization-form input,
-#organization-form textarea,
+#organisation-form select,
+#organisation-form input,
+#organisation-form textarea,
 #representative-form select,
 #representative-form input,
 #representative-form textarea {
@@ -589,7 +589,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 #report-form .report-header,
-#organization-form .report-header,
+#organisation-form .report-header,
 #representative-form .report-header {
     padding-top: 30px;
     padding-bottom: 10px;
@@ -598,7 +598,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 #report-form .report-header:first-child,
-#organization-form .report-header:first-child,
+#organisation-form .report-header:first-child,
 #representative-form .report-header:first-child {
     padding-top: 0;
 }
@@ -858,7 +858,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .previous-button button,
 #report-form .next-button button,
-#organization-form #form_submit,
+#organisation-form #form_submit,
 #representative-form #form_submit {
     background-color: #747db3;
     border: none;
@@ -871,7 +871,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .previous-button button:hover,
 #report-form .next-button button:hover,
-#organization-form #form_submit:hover,
+#organisation-form #form_submit:hover,
 #representative-form #form_submit:hover {
     background-color: #3a3f5a;
 }

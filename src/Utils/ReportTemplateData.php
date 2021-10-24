@@ -7,7 +7,7 @@ use App\Entity\DatahubData;
 use App\Entity\DeletedAnnotation;
 use App\Entity\Image;
 use App\Entity\InventoryNumber;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
@@ -49,7 +49,7 @@ class ReportTemplateData
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
-            'organizations' => self::getOrganizations($em),
+            'organisations' => self::getOrganisations($em),
             'representatives' => self::getRepresentatives($em),
             'readonly' => false,
             'pattern_size' => 20,
@@ -181,7 +181,7 @@ class ReportTemplateData
             'annotation_history' => $annotationHistory,
             'annotations' => $annotations,
             'deleted_annotations' => $deletedAnnotations,
-            'organizations' => self::getOrganizations($em),
+            'organisations' => self::getOrganisations($em),
             'representatives' => self::getRepresentatives($em)
         ];
    }
@@ -268,19 +268,19 @@ class ReportTemplateData
        return round(($height > $width ? $height : $width) / 100);
    }
 
-    public static function getOrganizations(EntityManager $em)
+    public static function getOrganisations(EntityManager $em)
     {
-        $organizations = array();
-        $organizationData = $em->createQueryBuilder()
+        $organisations = array();
+        $organisationData = $em->createQueryBuilder()
             ->select('o')
-            ->from(Organization::class, 'o')
+            ->from(Organisation::class, 'o')
             ->orderBy('o.alias')
             ->getQuery()
             ->getResult();
-        foreach ($organizationData as $organization) {
-            $organizations[$organization->getId()] = $organization;
+        foreach ($organisationData as $organisation) {
+            $organisations[$organisation->getId()] = $organisation;
         }
-        return $organizations;
+        return $organisations;
     }
 
     public static function getRepresentatives(EntityManager $em)

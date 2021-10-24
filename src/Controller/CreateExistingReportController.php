@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annotation;
 use App\Entity\DeletedAnnotation;
-use App\Entity\Organization;
+use App\Entity\Organisation;
 use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateExistingReportController extends AbstractController
 {
     /**
-     * @Route("/create/existing/{baseId}", name="create_existing")
+     * @Route("/{_locale}/create/existing/{baseId}", name="create_existing")
      */
     public function createExisting(Request $request, $baseId)
     {

@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav main-nav navbar-right">
             <li{% if current_page == 'reports' %} class="active"{% endif %}>
-                <a href="{{ path('main') }}">Rapporten</a>
+                <a href="{{ path('main') }}">{{ 'reports' | trans }}</a>
             </li>
-            <li{% if current_page == 'organizations' %} class="active"{% endif %}>
-                <a href="{{ path('organizations') }}">Organisaties</a>
+            <li{% if current_page == 'organisations' %} class="active"{% endif %}>
+                <a href="{{ path('organisations') }}">{{ 'organisations' | trans }}</a>
             </li>
             <li{% if current_page == 'representatives' %} class="active"{% endif %}>
-                <a href="{{ path('representatives') }}">Vertegenwoordigers</a>
+                <a href="{{ path('representatives') }}">{{ 'representatives' | trans }}</a>
             </li>
         </ul>
     </div>

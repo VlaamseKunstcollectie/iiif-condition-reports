@@ -1,0 +1,124 @@
+reports: Reports
+organisations: Organisations
+representatives: Representatives
+information_owner: Information owner
+
+add_organisation: Add organisation
+alter_organisation: Alter organisation
+
+Zelfgekozen alias (optioneel): Alias of your choice (optional)
+
+inventory_number: Inventory number
+title: Title
+creator: Creator
+last_modification: Last modification
+
+no_results_found: No results found
+no_inventory_numbers_found: No inventory numbers found
+no_reports_found: No reports found
+create_report: Create report
+view_report: View report
+print: Print
+save: Save
+
+report_reason: Report reason
+object_identification: Object identification
+involved_actors: Involved actors
+physical_characteristics: Physical characteristics
+condition_and_conservation: Condition and conservation
+recommendations: Recommendations
+annotations: Annotations
+
+stone: Stone
+metal: Metal
+glass: Glass
+ceramic: Ceramic
+plaster: Plaster
+textile: Textile
+paper: Paper
+wood: Wood
+plastic: Plastic
+
+absent: Absent
+glaze: Glaze
+varnish: Varnish
+wax_layer: Wax layer
+painting: Painting
+monochrome: Monochrome
+polychrome: Polychrome
+patination: Patination
+chop_marks: Chop marks
+polishing: Polishing
+natural: Natural
+artificial: Artificial
+
+not_applicable: Not applicable
+welded: Welded
+soldered: Soldered
+dived_wood: Dived wood
+glue: Glue
+screws: Screws
+nails: Nails
+bolts: Bolts
+
+good: Good
+reasonable: Reasonable
+bad: Bad
+not_transportable: Not transportable
+not_displayable: Not displayable
+
+surface_dirt: Surface dirt
+crusted_dirt: Crusted dirt
+spots: Spots
+fingerprints: Fingerprints
+old_restoration: Old restoration
+salts: Slats
+insect_damage: Insect damage
+mold: Mold
+water_damage: Water damage
+corrosion: Corrosion
+gaps: Gaps
+flaking: Flaking
+powdering: Powdering
+discolorations: Discolorations
+wearage: Wearage
+scratches: Scratches
+twists: Twists
+dents: Dents
+structural_damage: Structural damage
+cracks: Cracks
+hair_tears: Hair tears
+holes: Holes
+wrinkled: Wrinkled
+delamination: Delamination
+missing_parts: Missing parts
+removable_parts: Removable parts
+brittle: Brittle
+
+removing_dust: Removing dust
+superficial_cleaning: Superficial cleaning
+insect_repellent_treatment: Insect repellent treatment
+removing_mold_spores: Removing mold spores
+reinforcing: Reinforcing
+regluing_loose_parts: Regluing loose parts
+fixating_loose_parts: Fixating loose parts
+stabilizing_socket: Stabilizing socket
+adding_protective_layer: Adding protective layer
+adding_barcode: Adding barcode
+
+thorough_cleaning: Thorough cleaning
+local_cleaning: Local cleaning
+polychromy_research: Polychromy research
+reconstruction_of_original: reconstruction of original
+removing_material_tension: Removing material tension
+removing_old_restoration: Removing old restoration
+replacing_construction: Replacing construction
+protective_layer: Protective layer
+adding_fastening_system: Adding fastening system
+retouching: Retouching
+filling_gap_elements: Filling gap elements
+
+setup_method: Setup method
+material_technical_research: Material technical research
+analysis: Analysis
+necessary_background_information: Necessary background information

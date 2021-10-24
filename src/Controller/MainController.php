@@ -15,10 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ReportsController extends AbstractController
+class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="main")
+     * @Route("/")
+     * @Route("/{_locale}", name="main")
      */
     public function reports(Request $request)
     {
@@ -119,7 +120,7 @@ class ReportsController extends AbstractController
                 $searchResults[$id]['creator_nl'] = '';
             }
         }
-        usort($searchResults, array('App\Controller\ReportsController', 'cmp'));
+        usort($searchResults, array('App\Controller\MainController', 'cmp'));
 
         return $this->render('reports.html.twig', [
             'current_page' => 'reports',

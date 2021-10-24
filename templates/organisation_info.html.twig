@@ -1,21 +1,21 @@
 <div class="report-header-2">Instelling</div>
 {% if not readonly %}
     <script>
-        var {{ type }}Organizations = {{ organizations | json_encode | raw }};
+        var {{ type }}Organisations = {{ organisations | json_encode | raw }};
 
-        function fill{{ type }}Organization(id) {
-            for(var key in {{ type }}Organizations[id]) {
+        function fill{{ type }}Organisation(id) {
+            for(var key in {{ type }}Organisations[id]) {
                 var element = document.querySelector("input[name='{{ type }}_" + key + "']");
                 if(element != null) {
-                    element.value = {{ type }}Organizations[id][key];
+                    element.value = {{ type }}Organisations[id][key];
                 }
             }
         }
     </script>
-    <select onchange="fill{{  type }}Organization(this.options[this.selectedIndex].value)">
+    <select onchange="fill{{  type }}Organisation(this.options[this.selectedIndex].value)">
         <option></option>
-        {% for organization in organizations %}
-            <option value="{{ organization.id }}">{{ organization.alias }}</option>
+        {% for organisation in organisations %}
+            <option value="{{ organisation.id }}">{{ organisation.alias }}</option>
         {% endfor %}
     </select>
 {% endif %}
