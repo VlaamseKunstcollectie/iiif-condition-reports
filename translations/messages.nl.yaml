@@ -1,0 +1,261 @@
+Reports: Rapporten
+Organisations: Organisaties
+Representatives: Vertegenwoordigers
+
+Organisation: Organisatie
+Representative: Vertegenwoordiger
+
+Search: Zoeken
+Search type: Type zoekopdracht
+Search by inventory number ...: Zoek op inventarisnummer ...
+Exact: Exact
+Partly: Gedeeltelijk
+Starts with: Begint met
+
+Identification of the reason for the report : Identificatie van de aanleiding voor het rapport
+Information loan project: Informatie bruikleenproject
+if applicable: indien van toepassing
+Name exhibition/loan project: Naam tentoonstelling/bruikleenproject
+Link to webpage if applicable: Link naar eventuele webpagina
+Start date loan: Startdatum bruikleen
+End date loan: Einddatum bruikleen
+Loan number: Bruikleennummer
+Responsibility: Verantwoordelijkheid
+Object name: Objectnaam
+Measurements: Afmetingen
+Weight: Gewicht
+Dating: Datering
+Copyright: Copyright
+
+Information owner: Informatie eigenaar
+
+Material type: Materiaalsoort
+Carrier: Drager
+Pedestal: Sokkel
+Material specification: Materiaalspecificatie
+Finishing layer: Afwerklaag
+Material specification (if possible): Materiaalspecificatie (indien mogelijk)
+Construction techniques: Vervaardigingstechnieken
+Form: Vorm
+Relief: Reliëf
+Full plastic: Volplastisch
+Construction/composition: Constructie/samenstelling
+Work: Werk
+Number of parts: Aantal onderdelen
+Loose: Los
+Fixed: Vast
+To be mounted with: Te monteren met
+Original: Origineel
+Not original: Niet origineel
+Connections: Verbindingen
+Between separate parts of the sculpture: Tussen afzonderlijke delen van het beeld
+Between sculpture and pedestal: Tussen beeld en sokkel
+
+Condition of the object: Conditie van het object
+General condition: Algemene conditie
+Specific condition of the object: Specifieke toestand van het object
+Specifications: Specificaties
+Conservation: Conservatie
+Conservation for transport needed: Conservering voor transport nodig
+Yes: Ja
+No: Nee
+
+Object requirements: Objectvereisten
+
+Show all: Toon alles
+Hide all: Verberg alles
+Current annotations: Huidige annotaties
+Add IIIF image URL: Voeg IIIF afbeelding URL toe
+Load: Laad
+Add image URL: Voeg afbeelding URL toe
+IIIF image is being loaded ...: IIIF afbeelding wordt opgehaald ...
+Image is being downloaded ...: Afbeelding wordt gedownload...
+
+Incoming object (depacking): Inkomend object (depacking)
+Acquisition (collection donor/seller/...): Verwerving (collectie schenker/verkoper/...)
+Long term loan (third party collection): Langdurige bruikleen (collectie derden)
+Temporary loan (third party collection): Tijdelijke bruikleen (collectie derden)
+Returning loan (own collection): Terugkomende bruikleen (eigen collectie)
+Restoration: Restauratie
+Outgoing object (packing): Uitgaand object (packing)
+Outgoing loan (own collection): Uitgaande bruikleen (eigen collectie)
+Returning loan (third party collection): Terugkerende bruikleen (collectie derden)
+Decommissioning/rejection: Ontzameling/afstoting
+Movement to another building/institution: Verplaatsing naar ander gebouw/instelling
+To location/depot: Naar standplaats/depot
+To exhibition room: Naar tentoonstellingsruimte
+To restoration room: Naar restauratieruimte
+To packing room: Naar verpakkingsruimte
+Movement within the same building: Verplaatsing binnen eenzelfde gebouw
+Active and preventative conservation: Actieve en preventieve conservering
+Preventative or periodic check: Preventieve of periodieke controle
+Check after event (flooding, accident, vandalism, abnormal climate fluctuation, ...): Controle na gebeurtenis (overstroming, ongeval, vandalisme, abnormale klimaatschommeling, ...)
+Check after notification of altered state or damage: Controle na melding van gewijzigde toestand of schade
+Risk management (environment, art handling): Risicobeheer (omgeving, arthandling)
+Material technical research: Materiaaltechnisch onderzoek
+Valuation: Waardebepaling
+Insurance and indemnity: Verzekering en indemniteit
+Loss and damage: Verlies en schade
+Damage claim: Schadeclaim
+Fill in another reason ...: Vul een andere aanleiding in ...
+
+Add organisation: Organisatie toevoegen
+Alter organisation: Organisatie wijzigen
+Add representative: Vertegenwoordiger toevoegen
+
+Alias: Alias
+Name: Naam
+Function: Functie
+Logo: Logo
+VAT number: BTW-nummer
+Address: Adres
+Postal code: Postcode
+City: Gemeente
+Country: Land
+E-mail: E-mail
+Website: Website
+Telephone: Telefoon
+Cell phone: GSM
+Notes: Notities
+Alias of your choice (optional): Zelfgekozen alias (optioneel)
+Name of the organisation: Naam van de organisatie
+Name of the representative: Naam van de vertegenwoordiger
+Ex. own organisation, borrower, courier ...: Bv. eigen organisatie, bruikleennemer, koerier ...
+URL of company logo: URL van bedrijfslogo
+Street + house number: Straat + huisnummer
+Ex. 9000: Bv. 9000
+Ex. Ghent: Bv. Gent
+Ex. Belgium: Bv. België
+contact@example.com: contact@voorbeeld.com
+https://www.example.com: https://www.voorbeeld.com
+Own notes about this organisation: Eigen notities over deze organisatie
+Own notes about this person: Eigen notities over deze persoon
+Ex. restorer, courier ...: Bv. restaurateur, koerier ...
+
+Inventory number: Inventarisnummer
+Title: Titel
+Creator: Vervaardiger
+Last modification: Laatste wijziging
+Created: Aangemaakt
+
+No results found: Geen resultaten gevonden
+No inventory numbers found: Geen inventarisnummers gevonden
+No reports found: Geen rapporten gevonden
+Create report: Rapport aanmaken
+View report: Rapport bekijken
+Print: Afdrukken
+Save: Opslaan
+
+Reason: Aanleiding
+
+Report reason: Aanleiding rapport
+Object identification: Objectidentificatie
+Involved actors: Betrokken actoren
+Physical characteristics: Fysieke kenmerken
+Condition and conservation: Conditie en conservering
+Recommendations: Aanbevelingen
+Annotations: Annotaties
+
+Conservation treatment: Conservatiebehandeling
+Degree of urgency (very urgent) 1 - 2 - 3 (not urgent): Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)
+Other: Andere
+Restoration treatment: Restauratiebehandeling
+Estimated work hours: Schatting werkuren
+Further research needed: Verder onderzoek nodig
+
+Previous: Vorige
+Next: Volgende
+
+stone: Steen
+metal: Metaal
+glass: Glas
+ceramic: Keramiek/aardewerk
+plaster: Gips
+textile: Textiel
+paper: Papier
+wood: Hout
+plastic: Kunststof
+
+absent: Niet aanwezig
+glaze: Glazuur
+varnish: Vernis
+wax_layer: Waslaag
+painting: Beschildering
+monochrome: Monochroom
+polychrome: Polychroom
+patination: Patinering
+chop_marks: Kapsporen
+polishing: Polijsting
+natural: Natuurlijk
+artificial: Kunstmatig
+
+not_applicable: Niet van toepassing
+welded: Gelast
+soldered: Gesoldeerd
+dived_wood: Doken hout
+glue: Verlijming
+screws: Schroeven
+nails: Nagels
+bolts: Bouten
+
+good: Goed
+reasonable: Redelijk
+bad: Slecht
+not_transportable: Niet vervoerbaar
+not_displayable: Niet tentoonstelbaar
+
+surface_dirt: Oppervlaktevuil
+crusted_dirt: Geïncrusteerd vuil
+spots: Vlekken
+fingerprints: Vingerafdrukken
+old_restoration: Oude ingrepen/restauratie
+salts: Zouten
+insect_damage: Insectenaantasting
+mold: Schimmel
+water_damage: Waterschade
+corrosion: Corrosie
+gaps: Lacunes
+flaking: Schilfering
+powdering: Poederen
+discolorations: Verkleuringen
+wearage: Slijtage
+scratches: Krassen
+twists: Scheluw
+dents: Blutsen/deuken
+structural_damage: Structurele schade
+cracks: Barsten/spleten
+hair_tears: Haarscheurtjes
+holes: Gaten
+wrinkled: Gekreukt
+delamination: Delaminatie
+missing_parts: Ontbrekende delen
+removable_parts: Afneembare delen
+brittle: Bros
+
+removing_dust: Ontstoffen
+superficial_cleaning: Oppervlakkige reiniging
+insect_repellent_treatment: Insectenwerende behandeling
+removing_mold_spores: Schimmelsporen verwijderen
+reinforcing: Versteviging/steunconstructie
+regluing_loose_parts: Herlijmen van aparte delen
+fixating_loose_parts: Fixeren losse delen
+stabilizing_socket: Stabiliseren van de sokkel
+adding_protective_layer: Beschermlaag aanbrengen
+adding_barcode: Barcode aanbrengen
+
+thorough_cleaning: Grondig reinigen
+local_cleaning: Plaatselijk reinigen
+polychromy_research: Polychromieonderzoek
+reconstruction_of_original: Reconstructie van het origineel
+removing_material_tension: Materiaal spanning wegnemen
+removing_old_restoration: Verwijderen van oude restauraties
+replacing_construction: Constructie vervangen
+protective_layer: Protectielaag
+adding_fastening_system: Bevestigingssysteem voorzien
+retouching: Retoucheren
+filling_gap_elements: Elementen opvullen van lacunes
+
+setup_method: Opstellingswijze
+material_technical_research: Materiaaltechnisch onderzoek
+analysis: Analyse
+necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek

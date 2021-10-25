@@ -1,0 +1,19 @@
+{% if not readonly %}
+    <label for="{{ name }}">{{ label }}</label>
+    <textarea cols="{{ cols | default(100) }}" oninput="fix{{ name }}textareaheight()" name="{{ name }}" id="textarea_{{ name }}">{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}</textarea>
+    <script>
+        function fix{{ name }}textareaheight() {
+            var ele = document.getElementById('textarea_{{ name }}');
+            ele.style.height = "16px";
+            ele.style.height = (ele.scrollHeight + 2) + "px";
+        }
+        document.addEventListener("DOMContentLoaded", fix{{ name }}textareaheight);
+        if(typeof eventsToTrigger === 'undefined') {
+            var eventsToTrigger = [];
+        }
+        eventsToTrigger.push('fix{{ name }}textareaheight');
+    </script>
+{% elseif prefilled_data[name] is defined %}
+    <span class="readonly-label">{{ label }}: </span>
+    <span class="readonly-input">{{ prefilled_data[name] | replace({'\n': '<br>'}) | raw }}</span>
+{% endif %}

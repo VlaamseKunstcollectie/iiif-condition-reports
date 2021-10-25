@@ -1,0 +1,7 @@
+{% if readonly %}
+    {% if prefilled_data[name] is defined and prefilled_data[name] == value %}
+        <input name="{{ name }}" id="radio_{{ value }}" value="{{ value }}" type="radio" checked disabled/> <label for="radio_{{ value }}">{{ label }}</label>
+    {% endif %}
+{% else %}
+    <input name="{{ name }}" id="radio_{{ value }}" value="{{ value }}" type="radio"{% if prefilled_data[name] is defined and prefilled_data[name] == value %} checked{% endif %}/> <label for="radio_{{ value }}">{{ label }}</label>
+{% endif %}
