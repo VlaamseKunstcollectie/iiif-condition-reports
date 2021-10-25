@@ -41,7 +41,7 @@ class MainController extends AbstractController
         $search = new Search();
         $form = $this->createFormBuilder($search)
             ->add('match_type', ChoiceType::class, [ 'label' => $t->trans('Search type'), 'choices' => [ $t->trans('Exact') => 0, $t->trans('Partly') => 1, $t->trans('Starts with') => 2 ]])
-            ->add('inventory_number', TextType::class, [ 'label' => $t->trans('Inventory number'), 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => $t->trans('Search inventory number ...')] ])
+            ->add('inventory_number', TextType::class, [ 'label' => $t->trans('Inventory number'), 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => $t->trans('Search by inventory number ...')] ])
             ->add('submit', SubmitType::class, [ 'label' => $t->trans('Search') ])
             ->getForm();
         $form->handleRequest($request);
