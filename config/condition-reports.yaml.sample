@@ -1,0 +1,111 @@
+---
+parameters:
+
+  report_reasons:
+    1:
+      name: Incoming object (depacking)
+      options:
+        100: Acquisition (collection donor/seller/...)
+        101: Long term loan (third party collection)
+        102: Temporary loan (third party collection)
+        103: Returning loan (own collection)
+        104: Restoration
+    2:
+      name: Outgoing object (packing)
+      options:
+        201: Outgoing loan (own collection)
+        202: Returning loan (third party collection)
+        203: Decommissioning/rejection
+        204: Restoration
+    3:
+      name: Movement to another building/institution
+      options:
+        301: To location/depot
+        302: To exhibition room
+        303: To restoration room
+        304: To packing room
+    4:
+      name: Movement within the same building
+      options:
+        401: To location/depot
+        402: To exhibition room
+        403: To restoration room
+        404: To packing room
+    5:
+      name: Active and preventative conservation
+      options:
+        501: Preventative or periodic check
+        502: Check after event (flooding, accident, vandalism, abnormal climate fluctuation, ...)
+        503: Check after notification of altered state or damage
+        504: Risk management (environment, art handling)
+        505: Material technical research
+    6:
+      name: Valuation
+      options:
+        601: Insurance and indemnity
+        602: Loss and damage
+        603: Damage claim
+
+  locales:
+    - en
+    - nl
+
+  datahub_url: 'http://datahub.kmska.be'
+  datahub_language: nl
+  datahub_namespace: 'lido'
+  datahub_metadataprefix: 'oai_lido'
+  placeholder_images:
+    - 'https://iiif.kmska.be/c/iiif/2/public@27254.tif'
+
+  datahub_data_definition:
+    id:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/repositoryWrap/repositorySet/workID[@type="object-number"]'
+    title_nl:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="nl"]'
+    title_en:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@xml:lang="en"]'
+    description_nl:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet/descriptiveNoteValue'
+    creator_nl:
+      parent_xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole'
+      xpath_main: 'actor/nameActorSet/appellationValue[@pref="preferred"]'
+      xpath_sub: 'roleActor/term[@xml:lang="nl"]'
+    creator_en:
+      parent_xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole'
+      xpath_main: 'actor/nameActorSet/appellationValue[@pref="preferred"]'
+      xpath_sub: 'roleActor/term[@xml:lang="en"]'
+    creator_role:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventActor[not(actorInRole/attributionQualifierActor)]/actorInRole/roleActor/term'
+    earliest_date:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/earliestDate'
+    latest_date:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/eventWrap/eventSet/event[eventType/term="production"]/eventDate/date/latestDate'
+    publisher:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/recordWrap/recordSource/legalBodyName/appellationValue'
+    copyright:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/rightsWorkWrap/rightsWorkSet/creditLine'
+    handling_nl:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="nl"]'
+    handling_en:
+      xpath: 'descriptiveMetadata[@xml:lang="{language}"]/objectIdentificationWrap/objectDescriptionWrap/objectDescriptionSet[@type="handling"]/descriptiveNoteValue[@xml:lang="en"]'
+    iiif_manifest_url:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="IIIF Manifest"]/resourceID[@source="ImagehubKMSKA"]'
+    iiif_image_url:
+      xpath: 'administrativeMetadata[@xml:lang="{language}"]/resourceWrap/resourceSet[resourceType/term="thumbnail"]/resourceID[@source="ImagehubKMSKA"]'
+
+  service_url: 'https://conditierapporten.vlaamsekunstcollectie.be/iiif/3/'
+
+  validate_manifests: false
+  validator_url: 'http://localhost:8080/validate?url='
+
+  authentication_url: 'https://imagehub.kmska.be/public/authenticate'
+  authentication_whitelist:
+    - '127.0.0.1'
+  authentication_service_description:
+    confirmLabel: 'Login'
+    description: 'The Flemish Art Collection requires that you log in with your museum account to view this content.'
+    failureDescription: 'Authentication failed'
+    failureHeader: 'Authentication Failed'
+    header: 'Please log in'
+    label: 'Login to the Flemish Art Collection'
+    profile: 'http://iiif.io/api/auth/1/login'

@@ -1,0 +1,1215 @@
+html {
+    overflow-y: scroll;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    line-height: 1.5;
+    text-size-adjust: 100%;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+a {
+    text-decoration: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+#wrap {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.reports,
+.orgs,
+.reps {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.header-report,
+.header {
+    font-weight: bold;
+    font-size: 36px;
+}
+
+#wrap > .header {
+    margin-top: 30px;
+}
+
+.header-report {
+    margin: 30px 15px 0 15px;
+}
+
+.reports-row,
+.orgs-row,
+.reps-row {
+    display: flex;
+    padding: 15px;
+    border: 1px solid #dbdbdb;
+    margin-top: 20px;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    background-color: white;
+}
+
+:not(.reports-row) + .reports-row,
+:not(.orgs-row) + .orgs-row,
+:not(.reps-row) + .reps-row {
+    margin-top: 0;
+}
+
+.object-row {
+    display: flex;
+    margin: 15px;
+}
+
+.reports-row-thumbnail,
+.orgs-row-thumbnail,
+.object-row-thumbnail {
+    width: 180px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.reports-row-thumbnail img,
+.orgs-row-thumbnail img,
+.object-row-thumbnail img {
+    max-width: 150px;
+}
+
+.reports-row-metadata,
+.orgs-row-metadata,
+.reps-row-metadata,
+.object-row-metadata {
+    flex-grow: 1;
+}
+
+.reports-row-metadata > div,
+.orgs-row-metadata > div,
+.reps-row-metadata > div,
+.object-row-metadata > div {
+    display: flex;
+    margin-bottom: 6px;
+}
+
+.reports-row-metadata > div:last-child,
+.orgs-row-metadata > div:last-child,
+.reps-row-metadata > div:last-child,
+.reps-row-metadata > div:last-child {
+    margin-bottom: 0;
+}
+
+.reports-row-metadata div div,
+.orgs-row-metadata div div,
+.reps-row-metadata div div,
+.object-row-metadata div div {
+    margin-left: 20px;
+}
+
+.reports-row-metadata div div:first-child,
+.orgs-row-metadata div div:first-child,
+.reps-row-metadata div div:first-child,
+.object-row-metadata div div:first-child {
+    color: #777777;
+    margin-left: 0;
+    text-align: right;
+    width: 120px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.reports-row-actions,
+.orgs-row-actions,
+.reps-row-actions {
+    text-align: right;
+    margin-left: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.reports-row-actions div,
+.orgs-row-actions div,
+.reps-row-actions div {
+    margin-bottom: 15px;
+}
+
+.orgs .orgs-header,
+.reps .reps-header {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.reports-row-actions .button,
+.orgs .button,
+.reps .button {
+    border-radius: 4px;
+    color: white;
+    display: inline-block;
+}
+
+.orgs .orgs-header .button,
+.reps .reps-header .button {
+    background-color: #5f585d;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 11px 12px;
+}
+
+.orgs .orgs-header .button:hover,
+.reps .reps-header .button:hover {
+    background-color: #464b6b;
+}
+
+.orgs .orgs-header .button .fas,
+.reps .reps-header .button .fas,
+.orgs .orgs-header .button .far,
+.reps .reps-header .button .far {
+    font-size: 14px;
+    color: white;
+    padding-right: 5px;
+}
+
+.reports .reports-row-actions .fas,
+.orgs .orgs-row-actions .fas,
+.reps .reps-row-actions .fas,
+.reports .reports-row-actions .far,
+.orgs .orgs-row-actions .far,
+.reps .reps-row-actions .far {
+    width: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 20px;
+    color: #747db3;
+}
+
+.reports .reports-row-actions .button:hover .fas,
+.orgs .orgs-row-actions .button:hover .fas,
+.reps .reps-row-actions .button:hover .fas,
+.reports .reports-row-actions .button:hover .far,
+.orgs .orgs-row-actions .button:hover .far,
+.reps .reps-row-actions .button:hover .far {
+    color: #464b6b;
+}
+
+.orgs .orgs-header .button:hover .fas,
+.reps .orgs-header .button:hover .fas,
+.orgs .orgs-header .button:hover .far,
+.reps .orgs-header .button:hover .far {
+    color: white;
+}
+
+.reports-header .table-cell {
+    padding-top: 0;
+}
+
+.search {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    color: #37559d;
+}
+
+.search a {
+    color: #5165ff;
+}
+
+.search-header {
+    display: grid;
+    text-decoration: none;
+    color: black;
+    grid-template-columns: repeat(4, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+}
+
+.search-row {
+    display: grid;
+    text-decoration: none;
+    color: inherit;
+    grid-template-columns: repeat(4, 200px);
+    place-items: start;
+    border-bottom: 2px solid #ccd2ff;
+}
+
+.search-row:hover, .search-row:focus {
+    background: #f2f3ff;
+    outline: none;
+}
+
+.half {
+    display: inline-block;
+    width: 40%;
+}
+
+#openseadragon-annotorious {
+    display: flex;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    height: 800px;
+    flex: 1;
+    background-color: #f8f8f8;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    border-left: none;
+}
+
+.openseadragon-annotorious-print {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    z-index: -1;
+    height: 900px;
+    width: 770px;
+}
+
+#annotation-viewer {
+    display: grid;
+}
+
+#annotation-history {
+    width: 210px;
+    float: left;
+    display: inline;
+}
+
+#annotation-history > button {
+    height: 52px;
+}
+
+#annotation-history-timestamps {
+    height: 800px;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    border-left: none;
+    overflow-y: scroll;
+}
+
+#annotation-viewer-full {
+    width: 100%;
+    height: 100%;
+}
+
+.openseadragon-canvas {
+    outline: none;
+}
+
+.a9s-selection-mask {
+    fill: rgba(0,0,0,0.4) !important;
+    pointer-events: none;
+}
+
+#wrap {
+    display: block;
+    clear: both;
+    float: none;
+}
+
+#report-navigation {
+    display: flex;
+    height: 51px;
+    margin-top: 30px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+#report-navigation > button {
+    box-shadow:none;
+    border:none;
+    background-color: #f8f8f8;
+    border: 1px solid #dbdbdb;
+    margin-left: -1px;
+}
+
+#report-navigation > button.active {
+    font-weight: bold;
+    border-bottom: 1px solid white;
+    border-top: 2px solid #747db3;
+    background-color: white;
+}
+
+#report-navigation > button::before {
+    display: block;
+    content: attr(title);
+    font-weight: bold;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#report-navigation button:hover {
+    cursor: pointer;
+}
+
+#report-navigation #annotate-form-button {
+    margin-right: 5px;
+}
+
+#report-navigation .save {
+    margin-left: auto;
+}
+
+#report-navigation .print {
+    margin-left: 5px;
+}
+
+#report-navigation .save .fa-save,
+#report-navigation .print .fa-print {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 30px;
+    color: #747db3;
+}
+
+#report-navigation .save button,
+#report-navigation .print button {
+    width: 46px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
+#report-navigation .save button:hover .fa-save,
+#report-navigation .print button:hover .fa-print {
+    color: #3a3f5a;
+}
+
+#wrap .readonly-header {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+#wrap .readonly-header button,
+#report-navigation .save button {
+    cursor: pointer;
+    display: flex;
+    flex-wrap: nowrap;
+    width: auto;
+    background-color: #5f585d;
+    color: white;
+    margin-left: auto;
+    margin-bottom: 5px;
+    padding: 11px 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
+#wrap .readonly-header button {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#wrap .readonly-header button:hover,
+#report-navigation .save button:hover {
+    background-color: #3a3f5a;
+}
+
+#wrap .readonly-header .fa-print,
+#report-navigation .save .fa-save {
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+    padding: 0;
+}
+
+#wrap .readonly-header button:hover .fa-print,
+#report-navigation .save button:hover .fa-save {
+    color: white;
+}
+
+#report-form,
+#organisation-form,
+#representative-form {
+    margin-top: -1px;
+    margin-bottom: 30px;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+}
+
+#organisation-form,
+#representative-form {
+    padding: 5px 15px 15px 15px;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#organisation-form,
+#representative-form {
+    margin-top: 15px;
+}
+
+div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+#report-form > .form-tab > .form-group > .form-subgroup,
+#organisation-form > .form-group > .form-subgroup,
+#representative-form > .form-group > .form-subgroup {
+    display: flex;
+}
+
+#report-form > .form-tab > .form-group > .form-subgroup > .form-item,
+#organisation-form > .form-group > .form-subgroup > div,
+#representative-form > .form-group > .form-subgroup > div {
+    margin-left: 15px;
+    flex-grow: 1;
+}
+
+#report-form > .form-tab > .form-group > .form-subgroup > .form-item:first-child,
+#organisation-form > .form-group > .form-subgroup > div:first-child,
+#representative-form > .form-group > .form-subgroup > div:first-child {
+    margin-left: 0;
+}
+
+#report-form .form-group {
+    padding: 5px 15px 15px 15px;
+    border: 1px solid #dbdbdb;
+    margin-top: 20px;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#report-form :not(.form-group) + .form-group {
+    margin-top: 0;
+}
+
+#report-form .nobreak + .form-group {
+    margin-top: 20px;
+}
+
+#report-form .report-row {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 100%;
+}
+
+#report-form .report-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#report-form label,
+#organisation-form label,
+#representative-form label {
+    display: block;
+    padding-top: 10px;
+    flex-shrink: 0;
+}
+
+#report-form select,
+#report-form input,
+#report-form textarea,
+#organisation-form select,
+#organisation-form input,
+#organisation-form textarea,
+#representative-form select,
+#representative-form input,
+#representative-form textarea {
+    margin-top: 2px;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid rgb(204, 204, 204);
+    width: 100%;
+    box-sizing: border-box;
+    height: 35px;
+    background-color: #f8f8f8;
+}
+
+#report-form .form-checkbox,
+#report-form .form-checkbox-custom,
+#report-form .form-checkbox-conservation,
+#report-form .form-checkbox-conservation-custom,
+#report-form .form-radio {
+    display: flex;
+}
+
+#report-form .form-checkbox,
+#report-form .form-radio {
+    padding-top: 10px;
+}
+
+#report-form .form-checkbox input[type=checkbox],
+#report-form .form-checkbox-custom input[type=checkbox],
+#report-form .form-checkbox-conservation input[type=checkbox],
+#report-form .form-checkbox-conservation-custom input[type=checkbox],
+#report-form .form-radio input[type=radio] {
+    height: 14px;
+    line-height: 14px;
+    width: auto;
+    margin-right: 10px;
+}
+
+#report-form .form-checkbox-custom input[type=checkbox],
+#report-form .form-checkbox-conservation input[type=checkbox],
+#report-form .form-checkbox-conservation-custom input[type=checkbox] {
+    margin-top: 12px;
+}
+
+#report-form .form-checkbox label,
+#report-form .form-radio label {
+    padding-top: 0;
+}
+
+#report-form .form-checkbox-conservation label {
+    flex: 0 0 300px;
+}
+
+#report-form .form-checkbox-conservation input[type=number],
+#report-form .form-checkbox-conservation-custom input[type=number] {
+    flex: 0 0 50px;
+    margin-right: 10px;
+}
+
+#report-form .checkbox-conservation-custom-label-and-input {
+    display: flex;
+    flex: 0 0 300px;
+    padding-right: 10px;
+}
+
+#report-form .form-checkbox-conservation label,
+#report-form .form-checkbox-conservation-custom label {
+    padding-right: 10px;
+}
+
+#report-form .report-header,
+#organisation-form .report-header,
+#representative-form .report-header {
+    padding-top: 30px;
+    padding-bottom: 10px;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+#report-form .report-header:first-child,
+#organisation-form .report-header:first-child,
+#representative-form .report-header:first-child {
+    padding-top: 0;
+}
+
+#report-form .report-header-2 {
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+#report-form .report-legend {
+    font-style: italic;
+    padding-left: 333px;
+}
+
+#report-form label[for=construction_work_custom_checkbox_custom] {
+    min-width: 106px;
+    padding-right: 10px;
+}
+
+#report-form #annotation-form {
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    border-left: 1px solid #dbdbdb;
+}
+
+#report-form .annotation-form {
+    display: flex;
+}
+
+#report-form #annotation-history button {
+    background-color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#report-form #annotation-history .show-all {
+    background-color: #f8f8f8;
+    text-align: left;
+    width: 210px;
+    border: 1px solid #dbdbdb;
+    border-left: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+#report-form #annotation-history .show,
+#report-form #annotation-history .hide {
+    display: flex;
+}
+
+#report-form #annotation-history .fa-eye {
+    font-size: 21px;
+    color: black;
+    margin-right: 10px;
+}
+
+#report-form #annotation-history .show .fa-eye {
+    color: #cccccc;
+}
+
+#report-form #annotation-tools {
+    display: flex;
+    background-color: #f8f8f8;
+    height: 50px;
+    border: 1px solid #dbdbdb;
+    border-left: none;
+}
+
+#report-form #annotation-tools > div {
+    display: flex;
+    border-right: 1px solid #dbdbdb;
+    padding-right: 15px;
+}
+
+#report-form #annotation-tools > div:last-child {
+    border: none;
+}
+
+#report-form #annotation-tools p {
+    font-weight: bold;
+    line-height: 50px;
+    padding-left: 15px;
+}
+
+#report-form #annotation-tools button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 0 10px 15px;
+}
+
+#report-form #annotation-tools svg {
+    height: 30px;
+}
+
+#report-form #annotation-tools .drawing-tool-inactive svg path {
+    fill: #cccccc;
+}
+
+#report-form #annotation-tools svg path {
+    fill: black;
+}
+
+#report-form #annotation-tools #choose-colour-red,
+#report-form #annotation-tools #choose-colour-green,
+#report-form #annotation-tools #choose-colour-blue,
+#report-form #annotation-tools #choose-colour-orange {
+    display: none;
+}
+
+#report-form #annotation-tools #choose-colour-red + label,
+#report-form #annotation-tools #choose-colour-green + label,
+#report-form #annotation-tools #choose-colour-blue + label,
+#report-form #annotation-tools #choose-colour-orange + label {
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin: 10px 0 10px 15px;
+}
+
+#report-form #annotation-tools #choose-colour-red + label {
+    background-color: rgb(255,0,0);
+}
+
+#report-form #annotation-tools #choose-colour-green + label {
+    background-color: rgb(0,255,0);
+}
+
+#report-form #annotation-tools #choose-colour-blue + label {
+    background-color: rgb(0,0,255);
+}
+
+#report-form #annotation-tools #choose-colour-orange + label {
+    background-color: rgb(255,165,0);
+}
+
+#report-form #annotation-tools #choose-colour-red:checked + label {
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+}
+
+#report-form #annotation-tools #choose-colour-green:checked + label {
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+}
+
+#report-form #annotation-tools #choose-colour-blue:checked + label {
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+}
+
+#report-form #annotation-tools #choose-colour-orange:checked + label {
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
+}
+
+#annotate-file,
+#annotate-camera {
+    display: none;
+}
+
+#annotate-file-label,
+#annotate-camera-label {
+    width: 150px;
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.select2 {
+    width: 155px !important;
+}
+
+.select2-container--open .select2-dropdown--below {
+    top: -6px;
+}
+
+.select2-dropdown {
+    margin-left: 15px;
+}
+
+.select2-selection {
+    width: 155px;
+}
+
+.select2-container .select2-selection--single {
+    margin-top: 6px;
+    margin-left: 15px;
+    height: 38px !important;
+    padding: 3px;
+}
+
+.select2-results__option {
+    height: 30px;
+    line-height: 30px;
+}
+
+.select2-results__option svg,
+#report-form #annotation-tools .select2-selection__rendered svg {
+    height: 30px;
+    width: 130px;
+}
+
+.fill-disconnected-cross-id-3 {
+    margin-top: 2px;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+    overflow-y: hidden !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0 !important;
+    padding-right: 18px !important;
+    text-overflow: clip !important;
+}
+
+.select2-selection__arrow {
+    top: 12px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    width: auto !important;
+    margin-right: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-left: 5px !important;
+}
+
+.fill-pattern-line {
+    stroke: red !important;
+}
+
+#democlass {
+    stroke: red !important;
+}
+
+#report-form .buttons {
+    display: flex;
+}
+
+#report-form .previous-button,
+#report-form .next-button {
+    display: block;
+}
+
+#report-form .next-button {
+    margin-left: auto;
+}
+
+#report-form .previous-button button,
+#report-form .next-button button,
+#organisation-form #form_submit,
+#representative-form #form_submit {
+    background-color: #747db3;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    color: white;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#report-form .previous-button button:hover,
+#report-form .next-button button:hover,
+#organisation-form #form_submit:hover,
+#representative-form #form_submit:hover {
+    background-color: #3a3f5a;
+}
+
+#report-image {
+    margin-left: 15px;
+    margin-right: 15px;
+    display: none;
+}
+
+nav {
+    background: #747db3;
+    min-height: 51px;
+}
+
+.container-fluid {
+    max-width: 1230px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav ul {
+    float: right !important;
+    margin-left: -15px;
+}
+
+nav li {
+    float: left;
+    list-style: none;
+}
+
+nav li a {
+    line-height: normal;
+    float: none;
+    display: inline-block;
+    font-size: 17.5px;
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+}
+
+nav li:first-child a {
+    margin-left: 0px !important;
+}
+
+nav li:last-child a {
+    margin-right: 0px !important;
+}
+
+nav li a:hover {
+    color: #232536;
+}
+
+.search-form {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e7e7e7;
+    min-height: 50px;
+}
+
+form {
+    width: 1230px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#form {
+    float: left;
+    display: inline-table;
+    height: 34px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#form div {
+    background-color: white;
+    display: table-cell;
+    height: 20px;
+    padding: 6px 12px 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+}
+
+#form #form_match_type_div {
+    border-radius: 4px 0 0 4px;
+    border-right: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    cursor: pointer;
+}
+
+#form #form_inventory_number_div {
+    border-right: 0;
+    padding: 0;
+}
+
+#form #form_submit_div {
+    border-radius: 0 4px 4px 0;
+    background: #5F585D;
+    border: 1px solid #5F585D;
+    border-left: 0;
+    cursor: pointer;
+}
+
+#form #form_submit_div:hover {
+    background-color: #464b6b;
+}
+
+#form label {
+    display: none;
+}
+
+#form_match_type {
+    cursor: inherit;
+}
+
+#form_match_type,
+#form_inventory_number {
+    border: none;
+}
+
+#form_inventory_number {
+    width: 400px;
+    padding: 6px 12px 6px 12px;
+}
+
+#form_match_type:focus-visible,
+#form_inventory_number:focus-visible {
+    outline: 0;
+}
+
+#form_submit {
+    border: none;
+    background: none;
+    color: white;
+    cursor: inherit;
+}
+
+#readonly-container {
+    width: 1230px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.readonly {
+    margin-top: 30px;
+}
+
+.readonly #report-form .report-header:first-child {
+    padding-top: 30px;
+}
+
+.readonly #report-form > div:first-child > .nobreak:first-child > .report-header {
+    padding-top: 0;
+}
+
+.readonly #report-form .form-group {
+    padding: 15px;
+}
+
+.readonly #report-form .form-group .report-header-2 {
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+
+.readonly #report-form .form-group .report-column:last-child {
+    margin-left: 15px;
+}
+
+.readonly #report-form .form-item {
+    display: flex;
+    white-space: pre-wrap;
+}
+
+.readonly #report-form .form-item.relief {
+    display: block;
+    white-space: normal;
+}
+
+.readonly #report-form .form-item.form-creator,
+.readonly #report-form .form-item .number-of-parts,
+.readonly #report-form .form-item .treatment-hours,
+.readonly #report-form .no-spaces {
+    white-space: normal;
+}
+
+.readonly #report-form .readonly-label {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.readonly #report-form #material-form .form-checkbox-custom .readonly-label,
+.readonly #report-form #condition-form .form-checkbox-conservation-custom .readonly-label {
+    width: auto;
+}
+
+.readonly #report-form #condition-form .form-checkbox-conservation {
+    flex: 1;
+}
+
+.readonly #report-form #condition-form .form-checkbox-conservation .readonly-label {
+    flex-basis: 300px;
+}
+
+.readonly #report-form #condition-form .form-checkbox-conservation .readonly-input,
+.readonly #report-form #condition-form .form-checkbox-conservation-custom label {
+    min-width: 7.797px;
+}
+
+.readonly #report-form .report-legend {
+    padding-left: 323px;
+}
+
+.readonly #report-form .readonly-input {
+    font-style: italic;
+}
+
+.readonly #report-form .form-checkbox,
+.readonly #report-form .form-checkbox-custom label,
+.readonly #report-form .form-checkbox-conservation label,
+.readonly #report-form .form-checkbox-conservation-custom label,
+.readonly #report-form .form-radio {
+    padding-top: 0;
+}
+
+.readonly #report-form .form-checkbox-custom input,
+.readonly #report-form .form-checkbox-conservation input,
+.readonly #report-form .form-checkbox-conservation-custom input {
+    margin-top: 2px;
+}
+
+.readonly #report-form .form-checkbox-conservation-custom {
+    flex-grow: 1;
+}
+
+.readonly #report-form .form-checkbox-conservation .readonly-input,
+.readonly #report-form .form-checkbox-conservation-custom .readonly-input {
+    margin-right: 10px;
+}
+
+.readonly #report-form .checkbox-conservation-custom-label-and-input {
+    padding-right: 0;
+}
+
+.readonly #report-form .report-row + div {
+    margin-top: 30px;
+}
+
+.readonly #report-form .no-spaces {
+    display: flex;
+}
+
+.readonly #report-form .no-spaces .readonly-input {
+    display: block;
+}
+
+.readonly #report-form #annotation-history .show-all {
+    border-right: none;
+}
+
+@media screen and (max-width: 1200px) {
+    form,
+    #readonly-container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    body, #form_inventory_number_div {
+        width: 100%;
+    }
+
+    #form_inventory_number {
+        width: inherit;
+        box-sizing: border-box;
+    }
+}
+
+    .report-header{
+        break-after: avoid-page !important;
+    }
+
+@media print {
+    nav,
+    .readonly-header,
+    #annotation-history,
+    #thumbnails,
+    .openseadragon-container div:not(.openseadragon-canvas),
+    #print-button,
+    #iiif-manifest-url {
+        display: none !important;
+    }
+
+    #readonly-container {
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #openseadragon-annotorious {
+        width: 0;
+        height: 0;
+    }
+
+    .openseadragon-annotorious-print {
+        grid-row-start: auto;
+        grid-column-start: auto;
+        z-index: 0;
+    }
+
+    #report-form {
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+
+    #report-form .form-group {
+        box-shadow: none;
+        border: 1px solid #cccccc;
+    }
+
+    .form-group,
+    #annotate-form,
+    .nobreak {
+        break-inside: avoid;
+    }
+
+    .report-header {
+        break-after: avoid-page !important;
+    }
+
+    .report-header > .form-group {
+        break-inside: avoid !important;
+    }
+}

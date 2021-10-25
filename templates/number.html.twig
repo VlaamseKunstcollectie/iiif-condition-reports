@@ -1,0 +1,5 @@
+{% if readonly %}
+    {% if prefilled_data[name] is defined %}<span class="readonly-label">{{ label }}: </span><span class="readonly-input">{{ prefilled_data[name] }}</span>{% endif %}
+{% else %}
+    <label for="{{ name }}">{{ label }}</label> <input name="{{ name }}" type="number" value="{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}"/>
+{% endif %}
