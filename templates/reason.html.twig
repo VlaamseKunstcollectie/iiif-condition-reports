@@ -1,68 +1,56 @@
 {% if not readonly or prefilled_data.reason is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
 <div id="reason-form"{% if not readonly %} class="form-tab"{% endif %}>
 
-    {% set has_custom_reason = false %}
-    {% if prefilled_data.reason is defined %}
-        {% set has_custom_reason = true %}
-        {% for key, reason_type in report_reasons %}
-            {% for id, reason in reason_type.options %}
-                {% if prefilled_data.reason == id %}
-                    {% set has_custom_reason = false %}
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
-
     {% if not readonly %}
     <script>
-        function toggleField(hideId, showId) {
-            var hideObj = document.getElementById(hideId);
-            hideObj.disabled = true;
-            hideObj.style.display = 'none';
-            var showObj = document.getElementById(showId);
-            showObj.disabled = false;
-            showObj.style.display = 'inline';
-            showObj.placeholder = 'Vul een andere aanleiding in ...';
-            showObj.focus();
+        function toggleField(id, show) {
+            var obj = document.getElementById(id);
+            if(show) {
+                obj.disabled = false;
+                obj.style.display = 'inline';
+            } else {
+                obj.value = '';
+                obj.disabled = true;
+                obj.style.display = 'none';
+            }
         }
     </script>
-    <div class="report-header">Identificatie van de aanleiding voor het rapport</div>
+    <div class="report-header">{{ 'Identification of the reason for the report' | trans }}</div>
     <div class="form-group">
         <div class="form-subgroup">
             <div class="form-item">
-                <label for="reason">Aanleiding</label>
-                <select id="reason-dropdown" name="reason" onchange="if(this.options[this.selectedIndex].value == 'customOption') {
-                        toggleField('reason-dropdown', 'reason-custom');
-                        this.selectedIndex = '0';
-                    }"{% if has_custom_reason %} disabled style="display: none;"{% endif %}>
+                <label for="reason-dropdown">{{ 'Reason' | trans }}</label>
+                <select id="reason-dropdown" name="reason" onchange="toggleField('reason-custom', this.options[this.selectedIndex].value === 'customOption');">
                     <option></option>
-                    {% set has_reason = false %}
                     {% for key, reason_type in report_reasons %}
-                        <optgroup label="{{ reason_type.name }}">
+                        <optgroup label="{{ reason_type.name | trans }}">
                             {% for id, reason in reason_type.options %}
-                                <option value="{{ id }}"{% if prefilled_data.reason is defined and prefilled_data.reason == id %} selected{% set has_reason = true %}{% endif %}>{{ reason }}</option>
+                                <option value="{{ id }}"{% if prefilled_data.reason is defined and prefilled_data.reason == id %} selected{% endif %}>{{ reason | trans }}</option>
                             {% endfor %}
                         </optgroup>
                     {% endfor %}
-                    <option value="customOption">Andere</option>
+                    <option value="customOption"{% if prefilled_data.reason_custom is defined %} selected{% endif %}>{{ 'Other' | trans }}</option>
                 </select>
-                <input type="text" id="reason-custom" name="reason" {% if has_custom_reason%}value="{{ prefilled_data.reason }}" {% else %}style="display:none;" disabled="disabled" {% endif %}onblur="if(this.value == ''){ toggleField('reason-custom', 'reason-dropdown'); }">
+                <input type="text" id="reason-custom" placeholder="{{ 'Fill in another reason ...' | trans }}" name="reason_custom"
+                       {% if prefilled_data.reason_custom is defined %}value="{{ prefilled_data.reason_custom }}" {% else %}style="display:none;" disabled="disabled" {% endif %}onblur="if(this.value == ''){ toggleField('reason-custom', false); }">
             </div>
         </div>
     </div>
-    {% elseif prefilled_data.reason is defined %}
-    <div class="report-header">Identificatie van de aanleiding voor het rapport</div>
+    {% elseif prefilled_data.reason is defined or prefilled_data.reason_custom is defined %}
+    <div class="report-header">{{ 'Identification of the reason for the report' | trans }}</div>
     <div class="form-group">
         <div class="form-subgroup">
             <div class="form-item">
-                <span class="readonly-label">Aanleiding: </span>
-                {% if has_custom_reason %}
-                    <span class="readonly-input">{{ prefilled_data.reason }}</span>
+                <span class="readonly-label">{{ 'Reason' | trans }}:</span>
+                {% if prefilled_data.reason_custom is defined %}
+                    <span class="readonly-input">{{ prefilled_data.reason_custom }}</span>
+                {% elseif prefilled_data.reason == 'customOption' %}
+                    <span class="readonly-input">{{ 'Other' | trans }}</span>
                 {% else %}
                     {% for key, reason_type in report_reasons %}
                         {% for id, reason in reason_type.options %}
                             {% if prefilled_data.reason == id %}
-                                <span class="readonly-input">{{ reason }}</span>
+                                <span class="readonly-input">{{ reason | trans }}</span>
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
@@ -75,18 +63,18 @@
     {% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined
         or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined
         or prefilled_data.exhibition_rep_name is defined %}
-        <div class="report-header">Informatie bruikleenproject{% if not readonly %} (indien van toepassing){% endif %}</div>
+        <div class="report-header">{{ 'Information loan project' | trans }}{% if not readonly %} ({{ 'if applicable' | trans }}){% endif %}</div>
         {% if not readonly or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined
             or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined %}
             <div class="form-group">
                 <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Naam tentoonstelling/bruikleenproject' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link naar eventuele webpagina', 'is_url': true } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_title', 'label': 'Name exhibition/loan project' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_url', 'label': 'Link to webpage if applicable' | trans, 'is_url': true } %}</div>
                 </div>
                 <div class="form-subgroup">
-                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_start', 'label': 'Startdatum bruikleen' } %}</div>
-                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_end', 'label': 'Einddatum bruikleen' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Bruikleennummer' } %}</div>
+                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_start', 'label': 'Start date loan' | trans } %}</div>
+                    <div class="form-item">{% include 'date_input.html.twig' with { 'name': 'exhibition_date_end', 'label': 'End date loan' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'exhibition_id', 'label': 'Loan number' | trans } %}</div>
                 </div>
             </div>
         {% endif %}
@@ -99,7 +87,7 @@
     {% if not readonly %}
     <div class="buttons">
         <div class="next-button">
-            <button type="button" onclick="showDiv('basic-info-form')">Volgende</button>
+            <button type="button" onclick="showDiv('basic-info-form')">{{ 'Next' | trans }}</button>
         </div>
     </div>
     {% endif %}

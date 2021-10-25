@@ -16,18 +16,18 @@
 </div>
 <div class="reports">
     {% if search_results is empty %}
-        <p>{{ 'no_results_found' | trans }}.</p>
+        <p>{{ 'No results found' | trans }}.</p>
     {% else %}
         {% for result in search_results %}
             <div class="reports-row">
                 <div class="reports-row-thumbnail"><img src="{% if result.thumbnail is empty %}{{ asset('images/no_image_available.png') }}{% else %}{{ result.thumbnail }}{% endif %}" alt="" /></div>
                 <div class="reports-row-metadata">
                     <div class="reports-row-inventory-number">
-                        <div>{{ 'inventory_number' | trans }}:</div>
+                        <div>{{ 'Inventory number' | trans }}:</div>
                         <div>{{ result.inventory_number }}</div>
                     </div>
                     <div class="reports-row-title">
-                        <div>{{ 'title' | trans }}:</div>
+                        <div>{{ 'Title' | trans }}:</div>
                         <div>
                             {% if app.request.locale == 'en' and result.title_en is defined and result.title_en is not empty %}
                                 {{ result.title_en }}
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <div class="reports-row-creator">
-                        <div>{{ 'creator' | trans }}:</div>
+                        <div>{{ 'Creator' | trans }}:</div>
                         <div>
                             {% for creator in result.creator_nl|split('\n') %}
                                 {{ creator }}{% if not loop.last %}<br>{% endif %}
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="reports-row-timestamp">
-                        <div>{{ 'last_modification' | trans }}:</div>
+                        <div>{{ 'Last modification' | trans }}:</div>
                         <div>{{ result.timestamp }}</div>
                     </div>
                 </div>

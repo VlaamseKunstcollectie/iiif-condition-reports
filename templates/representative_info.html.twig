@@ -1,4 +1,4 @@
-<div class="report-header-2">Vertegenwoordiger</div>
+<div class="report-header-2">{{ 'Representative' | trans }}</div>
 {% if not readonly %}
     <script>
         var {{ type }}Representatives = {{ representatives | json_encode | raw }};
@@ -21,17 +21,17 @@
 {% endif %}
 <div class="form-subgroup">
     <div class="form-item">
-        {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Naam' } %}
+        {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Name' | trans } %}
     </div>
     <div class="form-item">
-        {% include 'textfield.html.twig' with { 'name': type ~ '_function', 'label': 'Verantwoordelijkheid' } %}
+        {% include 'textfield.html.twig' with { 'name': type ~ '_function', 'label': 'Responsibility' | trans } %}
     </div>
 </div>
 <div class="form-subgroup">
     <div class="form-item">
-        {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' } %}
+        {% include 'textfield.html.twig' with { 'name': type ~ '_email', 'label': 'E-mail' | trans } %}
     </div>
     <div class="form-item">
-        {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Telefoon' } %}
+        {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Telephone' | trans } %}
     </div>
 </div>

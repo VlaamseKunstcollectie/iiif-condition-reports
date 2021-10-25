@@ -1,34 +1,3 @@
-reports: Reports
-organisations: Organisations
-representatives: Representatives
-information_owner: Information owner
-
-add_organisation: Add organisation
-alter_organisation: Alter organisation
-
-Zelfgekozen alias (optioneel): Alias of your choice (optional)
-
-inventory_number: Inventory number
-title: Title
-creator: Creator
-last_modification: Last modification
-
-no_results_found: No results found
-no_inventory_numbers_found: No inventory numbers found
-no_reports_found: No reports found
-create_report: Create report
-view_report: View report
-print: Print
-save: Save
-
-report_reason: Report reason
-object_identification: Object identification
-involved_actors: Involved actors
-physical_characteristics: Physical characteristics
-condition_and_conservation: Condition and conservation
-recommendations: Recommendations
-annotations: Annotations
-
 stone: Stone
 metal: Metal
 glass: Glass

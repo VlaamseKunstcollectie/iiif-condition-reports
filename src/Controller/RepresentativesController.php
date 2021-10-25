@@ -32,9 +32,21 @@ class RepresentativesController extends AbstractController
             $searchResults[] = $representative;
         }
 
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('representatives', array('_locale' => $l)),
+                'active' => $l === $locale
+            );
+        }
+
         return $this->render('representatives.html.twig', [
             'current_page' => 'representatives',
-            'representatives' => $searchResults
+            'representatives' => $searchResults,
+            'translated_routes' => $translatedRoutes
         ]);
 
     }

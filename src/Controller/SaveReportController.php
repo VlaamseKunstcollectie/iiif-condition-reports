@@ -17,10 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class SaveReportController extends AbstractController
 {
     /**
-     * @Route("/save", name="save")
+     * @Route("/{_locale}/save", name="save")
      */
     public function save(Request $request)
     {
+        $locale = $request->get('_locale');
         if($request->getMethod() === 'POST') {
             $reportData = array();
             $fields = explode('&', $request->getContent());
@@ -239,13 +240,13 @@ class SaveReportController extends AbstractController
                 }
                 //TODO add signature
 
-                return $this->redirectToRoute('view', [ 'id' => $report->getId() ]);
+                return $this->redirectToRoute('view', array('_locale' => $locale, 'id' => $report->getId()));
             } else {
                 //TODO appropriate error message
-                return $this->redirectToRoute('main');
+                return $this->redirectToRoute('main', array('_locale' => $locale));
             }
         } else {
-            return $this->redirectToRoute('main');
+            return $this->redirectToRoute('main', array('_locale' => $locale));
         }
     }
 }

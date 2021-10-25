@@ -31,9 +31,21 @@ class OrganisationsController extends AbstractController
             $searchResults[] = $organisation;
         }
 
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('organisations', array('_locale' => $l)),
+                'active' => $l === $locale
+            );
+        }
+
         return $this->render('organisations.html.twig', [
             'current_page' => 'organisations',
-            'organisations' => $searchResults
+            'organisations' => $searchResults,
+            'translated_routes' => $translatedRoutes
         ]);
 
     }

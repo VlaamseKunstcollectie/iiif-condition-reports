@@ -3,48 +3,52 @@ parameters:
 
   report_reasons:
     1:
-      name: Inkomend object (depacking)
+      name: Incoming object (depacking)
       options:
-        100: Verwerving (collectie schenker/verkoper/...)
-        101: Langdurige bruikleen (collectie derden)
-        102: Tijdelijke bruikleen (collectie derden)
-        103: Terugkomende bruikleen (eigen collectie)
-        104: Restauratie
+        100: Acquisition (collection donor/seller/...)
+        101: Long term loan (third party collection)
+        102: Temporary loan (third party collection)
+        103: Returning loan (own collection)
+        104: Restoration
     2:
-      name: Uitgaand object (packing)
+      name: Outgoing object (packing)
       options:
-        201: Uitgaande bruikleen (eigen collectie)
-        202: Terugkerende bruikleen (collectie derden)
-        203: Ontzameling/afstoting
-        204: Restauratie
+        201: Outgoing loan (own collection)
+        202: Returning loan (third party collection)
+        203: Decommissioning/rejection
+        204: Restoration
     3:
-      name: Verplaatsing naar ander gebouw/instelling
+      name: Movement to another building/institution
       options:
-        301: Naar standplaats/depot
-        302: Naar tentoonstellingsruimte
-        303: Naar restauratieruimte
-        304: Naar verpakkingsruimte
+        301: To location/depot
+        302: To exhibition room
+        303: To restoration room
+        304: To packing room
     4:
-      name: Verplaatsing binnen eenzelfde gebouw
+      name: Movement within the same building
       options:
-        401: Naar standplaats/depot
-        402: Naar tentoonstellingsruimte
-        403: Naar restauratieruimte
-        404: Naar verpakkingsruimte
+        401: To location/depot
+        402: To exhibition room
+        403: To restoration room
+        404: To packing room
     5:
-      name: Actieve en preventieve conservering
+      name: Active and preventative conservation
       options:
-        501: Preventieve of periodieke controle
-        502: Controle na gebeurtenis (overstroming, ongeval, vandalisme, abnormale klimaatschommeling, ...)
-        503: Controle na melding van gewijzigde toestand of schade
-        504: Risicobeheer (omgeving, arthandling)
-        505: Materiaaltechnisch onderzoek
+        501: Preventative or periodic check
+        502: Check after event (flooding, accident, vandalism, abnormal climate fluctuation, ...)
+        503: Check after notification of altered state or damage
+        504: Risk management (environment, art handling)
+        505: Material technical research
     6:
-      name: Waardebepaling
+      name: Valuation
       options:
-        601: Verzekering en indemniteit
-        602: Verlies en schade
-        603: Schadeclaim
+        601: Insurance and indemnity
+        602: Loss and damage
+        603: Damage claim
+
+  locales:
+    - en
+    - nl
 
   datahub_url: 'http://datahub.kmska.be'
   datahub_language: nl

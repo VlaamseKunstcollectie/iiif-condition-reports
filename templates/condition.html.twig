@@ -4,13 +4,13 @@
     'corrosion', 'gaps', 'flaking', 'powdering', 'discolorations', 'wearage', 'scratches', 'twists', 'dents', 'structural_damage',
     'cracks', 'hair_tears', 'holes', 'wrinkled', 'delamination', 'missing_parts', 'removable_parts', 'brittle', 'custom' ] %}
 {% set has_carrier_damage = false %}
-{% set has_finish_layer_damage = false %}
+{% set has_finishing_layer_damage = false %}
 {% for damage in damages %}
     {% if prefilled_data['carrier_damage_' ~ damage] is defined %}
         {% set has_carrier_damage = true %}
     {% endif %}
-    {% if prefilled_data['finish_layer_damage_' ~ damage] is defined %}
-        {% set has_finish_layer_damage = true %}
+    {% if prefilled_data['finishing_layer_damage_' ~ damage] is defined %}
+        {% set has_finishing_layer_damage = true %}
     {% endif %}
 {% endfor %}
 
@@ -40,15 +40,15 @@
     {% endif %}
 {% endfor %}
 
-{% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
+{% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finishing_layer_damage or prefilled_data.condition_specification is defined or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
 <div id="condition-form"{% if not readonly %} class="form-tab"{% endif %}>
 
-    {% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
-        <div class="report-header">Conditie van het object</div>
+    {% if not readonly or prefilled_data.general_condition is defined or has_carrier_damage or has_finishing_layer_damage or prefilled_data.condition_specification is defined %}
+        <div class="report-header">{{ 'Condition of the object' | trans }}</div>
     {% endif %}
     {% if not readonly or prefilled_data.general_condition is defined %}
         <div class="form-group">
-            <div class="report-header-2">Algemene conditie</div>
+            <div class="report-header-2">{{ 'General condition' | trans }}</div>
             <div class="form-subgroup">
                 <div class="form-item">
                     {% for general_condition in general_conditions %}
@@ -59,14 +59,14 @@
         </div>
     {% endif %}
 
-    {% if not readonly or has_carrier_damage or has_finish_layer_damage or prefilled_data.condition_specification is defined %}
+    {% if not readonly or has_carrier_damage or has_finishing_layer_damage or prefilled_data.condition_specification is defined %}
         <div class="form-group">
-            <div class="report-header-2">Specifieke toestand van het object</div>
-            {% if not readonly or has_carrier_damage or has_finish_layer_damage %}
+            <div class="report-header-2">{{ 'Specific condition of the object' | trans }}</div>
+            {% if not readonly or has_carrier_damage or has_finishing_layer_damage %}
                 <div class="form-subgroup report-row">
                 {% if not readonly or has_carrier_damage %}
                     <div class="form-item report-column">
-                        <div class="report-header-2">Drager</div>
+                        <div class="report-header-2">{{ 'Carrier' | trans }}</div>
                         {% for damage in damages %}
                             {% if damage == 'custom' %}
                                 <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom' } %}</div>
@@ -77,36 +77,36 @@
                     </div>
                 {% endif %}
 
-                {% if not readonly or has_finish_layer_damage %}
+                {% if not readonly or has_finishing_layer_damage %}
                     <div class="form-item report-column">
-                        <div class="report-header-2">Afwerkingslaag</div>
+                        <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
                         {% for damage in damages %}
                             {% if damage == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finish_layer_damage_custom' } %}</div>
+                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_damage_custom' } %}</div>
                             {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finish_layer_damage_' ~ damage, 'label': damage | trans } %}</div>
+                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_damage_' ~ damage, 'label': damage | trans } %}</div>
                             {% endif %}
                         {% endfor %}
                     </div>
                 {% endif %}
                 </div>
             {% endif %}
-            <div class="no-spaces">{% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specificaties' } %}</div>
+            <div class="no-spaces">{% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specifications' | trans } %}</div>
         </div>
     {% endif %}
 
     {% if not readonly or prefilled_data.conservation_before_transport_yes is defined or prefilled_data.conservation_before_transport_no is defined
         or has_conservation_treatment or has_restoration_treatment or has_research_needed %}
-        <div class="report-header">Conservatie</div>
+        <div class="report-header">{{ 'Conservation' | trans }}</div>
     {% endif %}
 
     {% if not readonly or prefilled_data.conservation_before_transport is defined %}
         <div class="form-group">
-            <div class="report-header-2">Conservering voor transport nodig</div>
+            <div class="report-header-2">{{ 'Conservation for transport needed' | trans }}</div>
             <div class="form-subgroup">
                 <div class="form-item">
-                    <div class="form-radio">{% include 'radio.html.twig' with { 'name': 'conservation_before_transport', 'value': 'yes', 'label': 'Ja' } %}</div>
-                    <div class="form-radio">{% include 'radio.html.twig' with { 'name': 'conservation_before_transport', 'value': 'no', 'label': 'Nee' } %}</div>
+                    <div class="form-radio">{% include 'radio.html.twig' with { 'name': 'conservation_before_transport', 'value': 'yes', 'label': 'Yes' | trans } %}</div>
+                    <div class="form-radio">{% include 'radio.html.twig' with { 'name': 'conservation_before_transport', 'value': 'no', 'label': 'No' | trans } %}</div>
                 </div>
             </div>
         </div>
@@ -114,13 +114,13 @@
 
     {% if not readonly or has_conservation_treatment %}
         <div class="form-group">
-            <div class="report-header-2">Conservatiebehandeling</div>
-            <div class="report-legend">Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</div>
+            <div class="report-header-2">{{ 'Conservation treatment' | trans }}</div>
+            <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
             {% for conservation_treatment in conservation_treatments %}
                 <div class="form-subgroup">
                     <div class="form-item">
                         {% if conservation_treatment == 'custom' %}
-                            <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conservation_treatment_custom', 'label': 'Andere' } %}</div>
+                            <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conservation_treatment_custom', 'label': 'Other' | trans } %}</div>
                         {% else %}
                             <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'conservation_treatment_' ~ conservation_treatment, 'label': conservation_treatment | trans } %}</div>
                         {% endif %}
@@ -129,7 +129,7 @@
             {% endfor %}
             <div class="form-subgroup">
                 <div class="form-item">
-                    <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'conservation_treatment_hours', 'label': 'Schatting werkuren' } %}</div>
+                    <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'conservation_treatment_hours', 'label': 'Estimated work hours' | trans } %}</div>
                 </div>
             </div>
         </div>
@@ -137,13 +137,13 @@
 
     {% if not readonly or has_restoration_treatment %}
         <div class="form-group">
-            <div class="report-header-2">Restauratiebehandeling</div>
-            <div class="report-legend">Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)</div>
+            <div class="report-header-2">{{ 'Restoration treatment' | trans }}</div>
+            <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
             {% for restoration_treatment in restoration_treatments %}
                 <div class="form-subgroup">
                     <div class="form-item">
                         {% if restoration_treatment == 'custom' %}
-                            <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restoration_treatment_custom', 'label': 'Andere' } %}</div>
+                            <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restoration_treatment_custom', 'label': 'Other' | trans } %}</div>
                         {% else %}
                             <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'restoration_treatment_' ~ restoration_treatment, 'label': restoration_treatment | trans } %}</div>
                         {% endif %}
@@ -152,7 +152,7 @@
             {% endfor %}
             <div class="form-subgroup">
                 <div class="form-item">
-                    <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'restoration_treatment_hours', 'label': 'Schatting werkuren' } %}</div>
+                    <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'restoration_treatment_hours', 'label': 'Estimated work hours' | trans } %}</div>
                 </div>
             </div>
         </div>
@@ -160,7 +160,7 @@
 
     {% if not readonly or has_research_needed %}
         <div class="form-group">
-            <div class="report-header-2">Verder onderzoek nodig</div>
+            <div class="report-header-2">{{ 'Further research needed' | trans }}</div>
             {% for research in researches %}
                 <div class="form-subgroup">
                     <div class="form-item">
@@ -173,10 +173,10 @@
     {% if not readonly %}
     <div class="buttons">
         <div class="previous-button">
-            <button type="button" onclick="showDiv('material-form')">Vorige</button>
+            <button type="button" onclick="showDiv('material-form')">{{ 'Previous' | trans }}</button>
         </div>
         <div class="next-button">
-            <button type="button" onclick="showDiv('recommendations-form')">Volgende</button>
+            <button type="button" onclick="showDiv('recommendations-form')">{{ 'Next' | trans }}</button>
         </div>
     </div>
     {% endif %}

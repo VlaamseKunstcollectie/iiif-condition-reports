@@ -1,11 +1,11 @@
 {% include 'header.html.twig' %}
 {{ form(form) }}
 {% if search_results is empty %}
-    <p>{{ 'no_inventory_numbers_found' | trans }}.</p>
+    <p>{{ 'No inventory numbers found' | trans }}.</p>
 {% else %}
     <div class="inventory-numbers">
         <div class="inventory-numbers-header">
-            <div class="table-cell">{{ 'inventory_number' | trans }}</div>
+            <div class="table-cell">{{ 'Inventory number' | trans }}</div>
         </div>
         {% for result in search_results %}
             <a class="reports-row" href="{{ path(action, { type : type, inventorynumber : result.inventory_number }) }}">

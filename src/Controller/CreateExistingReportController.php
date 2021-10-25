@@ -56,8 +56,18 @@ class CreateExistingReportController extends AbstractController
             }
         }
         $reportReasons = $this->getParameter('report_reasons');
-        $request->setLocale('nl');
 
-        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $reportReasons, $highestId));
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('create_existing', array('_locale' => $l, 'baseId' => $baseId)),
+                'active' => $l === $locale
+            );
+        }
+
+        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $reportReasons, $highestId, $translatedRoutes));
     }
 }

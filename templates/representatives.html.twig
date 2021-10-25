@@ -2,33 +2,33 @@
 <!--<h1>Beheer vertegenwoordigers</h1>-->
 <div class="reps">
     <div class="reps-header">
-        <div class="header">Vertegenwoordigers</div>
+        <div class="header">{{ 'Representatives' | trans }}</div>
         <a class="button" href="{{ path('representative', { type : 'new' }) }}">
             <i class="fas fa-plus"></i>
-            Vertegenwoordiger toevoegen
+            {{ 'Add representative' | trans }}
         </a>
     </div>
     {% for representative in representatives %}
         <div class="reps-row">
             <div class="reps-row-metadata">
                 <div class="reps-row-alias">
-                    <div>Alias:</div>
+                    <div>{{ 'Alias' | trans }}:</div>
                     <div>{{ representative.alias }}</div>
                 </div>
                 <div class="reps-row-name">
-                    <div>Naam:</div>
+                    <div>{{ 'Name' | trans }}:</div>
                     <div>{{ representative.name }}</div>
                 </div>
                 <div class="reps-row-function">
-                    <div>Functie:</div>
+                    <div>{{ 'Function' | trans }}:</div>
                     <div>{{ representative.function }}</div>
                 </div>
                 <div class="reps-row-email">
-                    <div>E-mail:</div>
+                    <div>{{ 'E-mail' | trans }}:</div>
                     <div>{{ representative.email }}</div>
                 </div>
                 <div class="reps-row-phone">
-                    <div>Telefoon:</div>
+                    <div>{{ 'Telephone' | trans }}:</div>
                     <div>{{ representative.phone }}</div>
                 </div>
             </div>
@@ -37,7 +37,8 @@
                     <!--Wijzig-->
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de vertegenwoordiger {{ representative.alias }} wilt verwijderen?')">
+                <a class="table-cell" href="{{ path('representative', { id: representative.id, action: 'delete' }) }}"
+                   onclick="return confirm('{% if app.request.locale == 'nl' %}Bent u zeker dat u de vertegenwoordiger {{ representative.alias }} wilt verwijderen?{% else %}Are you sure you want to delete the representative {{ representative.alias }}?{% endif %}')">
                     <!--Verwijder-->
                     <i class="fas fa-trash-alt"></i>
                 </a>

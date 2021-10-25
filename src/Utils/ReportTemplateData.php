@@ -16,27 +16,29 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $reportReasons, $id)
+    public static function getViewData(EntityManager $em, $reportReasons, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
         $data['readonly'] = true;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
+        $data['translated_routes'] = $translatedRoutes;
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id)
+    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
+        $data['translated_routes'] = $translatedRoutes;
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id)
+    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id, $translatedRoutes)
     {
         $prefilledData = self::getDatahubData($em, $id, array());
         $images = self::getImages($em, $prefilledData, '../..');
@@ -53,7 +55,8 @@ class ReportTemplateData
             'representatives' => self::getRepresentatives($em),
             'readonly' => false,
             'pattern_size' => 20,
-            'stroke_width' => 2
+            'stroke_width' => 2,
+            'translated_routes' => $translatedRoutes
         ];
     }
 

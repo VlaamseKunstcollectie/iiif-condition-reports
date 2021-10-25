@@ -21,8 +21,18 @@ class CreateBlankReportController extends AbstractController
     {
         $em = $this->container->get('doctrine')->getManager();
         $reportReasons = $this->getParameter('report_reasons');
-        $request->setLocale('nl');
 
-        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateBlank($em, $reportReasons, $id));
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('create_blank', array('_locale' => $l, 'id' => $id)),
+                'active' => $l === $locale
+            );
+        }
+
+        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateBlank($em, $reportReasons, $id, $translatedRoutes));
     }
 }

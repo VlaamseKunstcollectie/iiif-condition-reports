@@ -15,9 +15,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RepresentativeController extends AbstractController
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/{_locale}/representative/{id}/{action}", name="representative", defaults={ "id"="", "action"="" })
      */
@@ -46,14 +54,15 @@ class RepresentativeController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('representatives');
         } else {
+            $t = $this->translator;
             $form = $this->createFormBuilder($representative)
-                ->add('alias', TextType::class, ['required' => false, 'label' => 'Alias', 'attr' => ['placeholder' => 'Zelfgekozen alias (optioneel)']])
-                ->add('name', TextType::class, ['label' => 'Naam'])
-                ->add('function', TextType::class, ['required' => false, 'label' => 'Functie', 'attr' => ['placeholder' => 'Bv. restaurateur, koerier, ...']])
-                ->add('email', TextType::class, ['required' => false, 'label' => 'E-mail', 'attr' => ['placeholder' => 'contact@voorbeeld.com']])
-                ->add('phone', TextType::class, ['required' => false, 'label' => 'Telefoon', 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
-                ->add('notes', TextareaType::class, ['required' => false, 'label' => 'Notities', 'attr' => ['placeholder' => 'Eigen notities over deze persoon']])
-                ->add('submit', SubmitType::class, ['label' => 'Opslaan'])
+                ->add('alias', TextType::class, ['required' => false, 'label' => $t->trans('Alias'), 'attr' => ['placeholder' => $t->trans('Alias of your choice (optional)')]])
+                ->add('name', TextType::class, ['label' => $t->trans('Name'), 'attr' => ['placeholder' => $t->trans('Name of the representative')]])
+                ->add('function', TextType::class, ['required' => false, 'label' => $t->trans('Function'), 'attr' => ['placeholder' => $t->trans('Ex. restorator, courier ...')]])
+                ->add('email', TextType::class, ['required' => false, 'label' => $t->trans('E-mail'), 'attr' => ['placeholder' => $t->trans('contact@example.com')]])
+                ->add('phone', TextType::class, ['required' => false, 'label' => $t->trans('Telephone'), 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
+                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this person')]])
+                ->add('submit', SubmitType::class, ['label' => $t->trans('Save')])
                 ->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -65,10 +74,22 @@ class RepresentativeController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('representatives');
             } else {
+                $locale = $request->get('_locale');
+                $locales = $this->getParameter('locales');
+                $translatedRoutes = array();
+                foreach($locales as $l) {
+                    $translatedRoutes[] = array(
+                        'lang' => $l,
+                        'url' => $this->generateUrl('representative', array('_locale' => $l, 'id' => $id, 'action' => $action)),
+                        'active' => $l === $locale
+                    );
+                }
+
                 return $this->render('representative.html.twig', [
                     'current_page' => 'representatives',
                     'new' => empty($id),
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'translated_routes' => $translatedRoutes
                 ]);
             }
         }

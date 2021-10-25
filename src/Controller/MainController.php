@@ -14,20 +14,35 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MainController extends AbstractController
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/")
      * @Route("/{_locale}", name="main")
      */
     public function reports(Request $request)
     {
+        $t = $this->translator;
+        $locale = $request->get('_locale');
+        //Set default locale if locale is missing
+        if($locale === null) {
+            return $this->redirectToRoute('main', array('_locale' => $t->getLocale()));
+        }
+
         $search = new Search();
         $form = $this->createFormBuilder($search)
-            ->add('match_type', ChoiceType::class, [ 'label' => 'Type zoekopdracht', 'choices' => [ 'Exact' => 0, 'Gedeeltelijk' => 1, 'Begint met' => 2 ]])
-            ->add('inventory_number', TextType::class, [ 'label' => 'Inventarisnummer', 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => 'Zoek op inventarisnummer ...'] ])
-            ->add('submit', SubmitType::class, [ 'label' => 'Zoeken' ])
+            ->add('match_type', ChoiceType::class, [ 'label' => $t->trans('Search type'), 'choices' => [ $t->trans('Exact') => 0, $t->trans('Partly') => 1, $t->trans('Starts with') => 2 ]])
+            ->add('inventory_number', TextType::class, [ 'label' => $t->trans('Inventory number'), 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => $t->trans('Search inventory number ...')] ])
+            ->add('submit', SubmitType::class, [ 'label' => $t->trans('Search') ])
             ->getForm();
         $form->handleRequest($request);
         $searchResults = array();
@@ -122,10 +137,21 @@ class MainController extends AbstractController
         }
         usort($searchResults, array('App\Controller\MainController', 'cmp'));
 
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('main', array('_locale' => $l)),
+                'active' => $l === $locale
+            );
+        }
+
         return $this->render('reports.html.twig', [
             'current_page' => 'reports',
             'form' => $form->createView(),
-            'search_results' => $searchResults
+            'search_results' => $searchResults,
+            'translated_routes' => $translatedRoutes
         ]);
     }
 

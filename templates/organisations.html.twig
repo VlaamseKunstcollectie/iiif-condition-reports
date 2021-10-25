@@ -2,10 +2,10 @@
 <!--<h1>Beheer organisaties</h1>-->
 <div class="orgs">
     <div class="orgs-header">
-        <div class="header">{{ 'organisations' | trans }}</div>
+        <div class="header">{{ 'Organisations' | trans }}</div>
         <a class="button" href="{{ path('organisation', { type : 'new' }) }}">
             <i class="fas fa-plus"></i>
-            Organisatie toevoegen
+            {{ 'Add organisation' | trans }}
         </a>
     </div>
     {% for organisation in organisations %}
@@ -13,15 +13,15 @@
             <div class="orgs-row-thumbnail"><img src="{{  organisation.logo }}" alt="" /></div>
             <div class="orgs-row-metadata">
                 <div class="orgs-row-alias">
-                    <div>Alias:</div>
+                    <div>{{ 'Alias' | trans }}:</div>
                     <div>{{ organisation.alias }}</div>
                 </div>
                 <div class="orgs-row-name">
-                    <div>Naam:</div>
+                    <div>{{ 'Name' | trans }}:</div>
                     <div>{{ organisation.name }}</div>
                 </div>
                 <div class="orgs-row-function">
-                    <div>Functie:</div>
+                    <div>{{ 'Function' | trans }}:</div>
                     <div>{{ organisation.function }}</div>
                 </div>
             </div>
@@ -30,7 +30,8 @@
                     <!--Wijzig-->
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <a class="button" href="{{ path('organisation', { id: organisation.id, action: 'delete' }) }}" onclick="return confirm('Bent u zeker dat u de organisatie {{ organisation.alias }} wilt verwijderen?')">
+                <a class="button" href="{{ path('organisation', { id: organisation.id, action: 'delete' }) }}"
+                   onclick="return confirm('{% if app.request.locale == 'nl' %}Bent u zeker dat u de organisatie {{ organisation.alias }} wilt verwijderen?{% else %}Are you sure you want to delete the organisation {{ organisation.alias }}?{% endif %}')">
                     <!--Verwijder-->
                     <i class="fas fa-trash-alt"></i>
                 </a>

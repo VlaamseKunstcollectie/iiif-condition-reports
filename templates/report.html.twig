@@ -19,10 +19,10 @@
     <div id="readonly-container">
         <div id="wrap" class="readonly">
             <div class="readonly-header">
-                <div class="header">{{ 'view_report' | trans }}</div>
+                <div class="header">{{ 'View report' | trans }}</div>
                 <button type="button" id="print-button" onclick="window.print()">
                     <i class="fas fa-print"></i>
-                    {{ 'print' | trans }}
+                    {{ 'Print' | trans }}
                 </button>
             </div>
             {% include 'report_form.html.twig' %}
@@ -70,18 +70,18 @@
         <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
         <input type="hidden" id="publisher" name="publisher"{% if prefilled_data.publisher is defined %} value="{{ prefilled_data.publisher }}"{% endif %}>
         <input type="hidden" id="title_en" name="title_en"{% if prefilled_data.title_en is defined %} value="{{ prefilled_data.title_en }}"{% endif %}>
-        <div class="header-report">{{ 'create_report' | trans }}</div>
+        <div class="header-report">{{ 'Create report' | trans }}</div>
         <div class="object-row">
             <div class="object-row-thumbnail">
                 <img src="{% if prefilled_data.thumbnail is not defined %}{{ asset('images/no_image_available.png') }}{% else %}{{ prefilled_data.thumbnail }}{% endif %}" alt="">
             </div>
             <div class="object-row-metadata">
                 <div class="object-row-inventory-number">
-                    <div>{{ 'inventory_number' | trans }}: </div>
+                    <div>{{ 'Inventory number' | trans }}: </div>
                     <div>{{ prefilled_data.inventory_number }}</div>
                 </div>
                 <div class="object-row-title">
-                    <div>{{ 'title' | trans }}:</div>
+                    <div>{{ 'Title' | trans }}:</div>
                     <div>
                         {% if app.request.locale == 'en' and prefilled_data.title_en is defined and prefilled_data.title_en is not empty %}
                             {{ prefilled_data.title_en }}
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="object-row-creator">
-                    <div>{{ 'creator' | trans }}: </div>
+                    <div>{{ 'Creator' | trans }}: </div>
                     <div>
                     {% for creator in prefilled_data.creator_nl|split('\n') %}
                         {{ creator }}{% if not loop.last %}<br>{% endif %}
@@ -102,17 +102,17 @@
         </div>
         <div id="wrap">
             <div id="report-navigation">
-                <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'report_reason' | trans }}">{{ 'report_reason' | trans }}</button>
-                <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'object_identification' | trans }}">{{ 'object_identification' | trans }}</button>
-                <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form')" title="{{ 'involved_actors' | trans }}">{{ 'involved_actors' | trans }}</button>
-                <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form')" title="{{ 'physical_characteristics' | trans }}">{{ 'physical_characteristics' | trans }}</button>
-                <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form')" title="{{ 'condition_and_conservation' | trans }}">{{ 'condition_and_conversation' | trans }}</button>
-                <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form')" title="{{ 'recommendations' | trans }}">{{ 'recommendations' | trans }}</button>
-                <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form')" title="{{ 'annotations' | trans }}">{{ 'annotations' | trans }}</button>
+                <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'Report_reason' | trans }}">{{ 'Report reason' | trans }}</button>
+                <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>
+                <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form')" title="{{ 'Involved actors' | trans }}">{{ 'Involved actors' | trans }}</button>
+                <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form')" title="{{ 'Physical characteristics' | trans }}">{{ 'Physical characteristics' | trans }}</button>
+                <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form')" title="{{ 'Condition and conservation' | trans }}">{{ 'Condition and conservation' | trans }}</button>
+                <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form')" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
+                <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form')" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
                 <div class="save">
                     <button type="submit">
                         <i class="fas fa-save"></i>
-                        {{ 'save' | trans }}
+                        {{ 'Save' | trans }}
                     </button>
                 </div>
             </div>

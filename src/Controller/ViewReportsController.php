@@ -52,9 +52,21 @@ class ViewReportsController extends AbstractController
             }
         }
 
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        $translatedRoutes = array();
+        foreach($locales as $l) {
+            $translatedRoutes[] = array(
+                'lang' => $l,
+                'url' => $this->generateUrl('view_reports', array('_locale' => $l, 'baseId' => $baseId)),
+                'active' => $l === $locale
+            );
+        }
+
         return $this->render('view_reports.html.twig', [
             'current_page' => 'reports',
-            'search_results' => $searchResults
+            'search_results' => $searchResults,
+            'translated_routes' => $translatedRoutes
         ]);
     }
 }
