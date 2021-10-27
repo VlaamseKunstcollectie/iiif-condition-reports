@@ -120,3 +120,7 @@ CREATE TABLE IF NOT EXISTS `iiif_manifests` (
   PRIMARY KEY (`id`)
 );
 ```
+
+## Architecture concept
+
+![Alt text](architectuurConditierapporten.png?raw=true)
