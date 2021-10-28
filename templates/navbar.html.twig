@@ -1,11 +1,6 @@
 <nav class="navbar navbar-static-top navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav main-nav navbar-right">
-            {% for translated_route in translated_routes %}
-                <li{% if translated_route.active %} class="active-lang"{% endif %}>
-                <a href="{{ translated_route.url }}">{{ translated_route.lang }}</a>
-                </li>
-            {% endfor %}
             <li{% if current_page == 'reports' %} class="active"{% endif %}>
                 <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
             </li>
@@ -14,6 +9,32 @@
             </li>
             <li{% if current_page == 'representatives' %} class="active"{% endif %}>
                 <a href="{{ path('representatives') }}">{{ 'Representatives' | trans }}</a>
+            </li>
+            <li>
+                <div id="lang-select">
+                    <div id="lang-select-selected" onclick="clickedLangButton(this)">{{ app.request.locale | upper }}</div>
+                    <div id="lang-select-items" class="lang-select-hide">
+                        {% for translated_route in translated_routes %}
+                            {% if translated_route.lang != app.request.locale %}
+                                <div onclick="window.location.href = '{{ translated_route.url }}'">{{ translated_route.lang | upper }}</div>
+                            {% endif %}
+                        {% endfor %}
+                  </div>
+                </div>
+                <script>
+                    function clickedLangButton(ele) {
+                        document.getElementById("lang-select-items").classList.toggle("lang-select-hide");
+                        document.getElementById("lang-select-selected").classList.toggle("lang-select-arrow-active");
+                    }
+
+                    function closeLangSelect(ele) {
+                        if(ele.target != document.getElementById("lang-select-selected")) {
+                            document.getElementById("lang-select-items").classList.add("lang-select-hide");
+                            document.getElementById("lang-select-selected").classList.remove("lang-select-arrow-active");
+                        }
+                    }
+                    document.addEventListener("click", closeLangSelect);
+                </script>
             </li>
         </ul>
     </div>

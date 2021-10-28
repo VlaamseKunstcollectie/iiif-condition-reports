@@ -16,6 +16,10 @@ body {
     background-color: #f8f8f8;
 }
 
+.main-container {
+    min-height: calc(100vh - 88px);
+}
+
 a {
     text-decoration: none;
 }
@@ -910,7 +914,13 @@ nav li a {
     font-size: 17.5px;
     color: white;
     text-decoration: none;
-    padding: 15px;
+    margin: 15px;
+    margin-bottom: 0;
+    padding-bottom: 11px;
+}
+
+nav li.active a {
+    border-bottom: 4px solid white;
 }
 
 nav li:first-child a {
@@ -921,8 +931,73 @@ nav li:last-child a {
     margin-right: 0px !important;
 }
 
-nav li a:hover {
-    color: #232536;
+#lang-select {
+    position: relative;
+    font-family: Arial;
+    width: fit-content;
+    margin-left: 15px;
+    margin-right: 6px;
+}
+
+#lang-select-selected {
+    margin: 15px;
+    background-color: #747db3;
+    padding-right: 10px !important;
+}
+
+#lang-select-selected:after {
+    position: absolute;
+    content: "";
+    top: 7px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+#lang-select-selected.lang-select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 0;
+}
+
+.lang-select-hide {
+    display: none;
+}
+
+#lang-select-items div,
+#lang-select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#lang-select-items div:first-of-type {
+    background-color: white;
+    color: #333333;
+    margin-top: 15px;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    text-align: center;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#lang-select-selected {
+    padding: 0;
+}
+
+#lang-select-items {
+    position: absolute;
+    background-color: #747db3;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+#lang-select-items div:hover {
+    background-color: #f8f8f8;
 }
 
 .search-form {
@@ -1136,6 +1211,27 @@ form {
 
 .readonly #report-form #annotation-history .show-all {
     border-right: none;
+}
+
+footer {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px 30px 15px;
+}
+
+footer p {
+    padding-top: 15px;
+    border-top: 1px solid #dbdbdb;
+}
+
+footer a {
+    color: #747db3;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: #464b6b;
 }
 
 @media screen and (max-width: 1200px) {
