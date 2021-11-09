@@ -1,21 +1,18 @@
-DROP TABLE IF EXISTS inventory_numbers;
-CREATE TABLE `inventory_numbers` (
+CREATE TABLE IF NOT EXISTS `inventory_numbers` (
   `inventory_number` VARCHAR(100) NOT NULL,
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`inventory_number`),
   KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS datahub_data;
-CREATE TABLE `datahub_data` (
+CREATE TABLE IF NOT EXISTS `datahub_data` (
   `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `value` TEXT NOT NULL,
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS reports;
-CREATE TABLE `reports` (
+CREATE TABLE IF NOT EXISTS `reports` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `base_id` INT UNSIGNED DEFAULT NULL,
   `inventory_id` INT UNSIGNED NOT NULL,
@@ -23,32 +20,28 @@ CREATE TABLE `reports` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS report_history;
-CREATE TABLE `report_history` (
+CREATE TABLE IF NOT EXISTS `report_history` (
   `id` INT UNSIGNED NOT NULL,
   `previous_id` INT UNSIGNED NOT NULL,
   `sort_order` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `previous_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS report_data;
-CREATE TABLE `report_data` (
+CREATE TABLE IF NOT EXISTS `report_data` (
   `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(100) NOT NULL,
   `value` TEXT NOT NULL,
   PRIMARY KEY (`id`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS images;
-CREATE TABLE `images` (
+CREATE TABLE IF NOT EXISTS `images` (
   `hash` CHAR(64) NOT NULL,
   `image` TEXT NOT NULL,
   `thumbnail` TEXT NOT NULL,
   PRIMARY KEY(`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS annotations;
-CREATE TABLE `annotations` (
+CREATE TABLE IF NOT EXISTS `annotations` (
   `image` CHAR(64) NOT NULL,
   `report_id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
@@ -56,16 +49,14 @@ CREATE TABLE `annotations` (
   PRIMARY KEY (`image`, `report_id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS deleted_annotations;
-CREATE TABLE `deleted_annotations` (
+CREATE TABLE IF NOT EXISTS `deleted_annotations` (
   `image` CHAR(64) NOT NULL,
   `report_id` INT UNSIGNED NOT NULL,
   `annotation_id` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`image`, `report_id`, `annotation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS organisations;
-CREATE TABLE `organisations` (
+CREATE TABLE IF NOT EXISTS `organisations` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -84,8 +75,7 @@ CREATE TABLE `organisations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS representatives;
-CREATE TABLE `representatives` (
+CREATE TABLE IF NOT EXISTS `representatives` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alias` VARCHAR(255) DEFAULT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -96,7 +86,6 @@ CREATE TABLE `representatives` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-DROP TABLE IF EXISTS iiif_manifests;
 CREATE TABLE IF NOT EXISTS `iiif_manifests` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `manifest_id` VARCHAR(255) NOT NULL,
