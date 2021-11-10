@@ -15,12 +15,12 @@ class Organisation
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $alias;
+    public $alias;
 
     /**
      * @ORM\Column(type="string", length=255)

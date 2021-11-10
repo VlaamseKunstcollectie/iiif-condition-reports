@@ -18,6 +18,11 @@ class Representative
     public $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    public $organisation;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     public $alias;
@@ -55,6 +60,16 @@ class Representative
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     public function getAlias()

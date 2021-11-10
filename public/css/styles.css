@@ -473,7 +473,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #organisation-form > .form-group > .form-subgroup > div,
 #representative-form > .form-group > .form-subgroup > div {
     margin-left: 15px;
-    flex-grow: 1;
+    flex: 1;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item:first-child,

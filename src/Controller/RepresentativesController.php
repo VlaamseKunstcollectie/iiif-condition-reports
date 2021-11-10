@@ -21,11 +21,21 @@ class RepresentativesController extends AbstractController
     {
         $em = $this->container->get('doctrine')->getManager();
 
+        $organisationNames = [];
+        $orgs = $em->createQueryBuilder()
+            ->select('o')
+            ->from(Organisation::class, 'o')
+            ->getQuery()
+            ->getResult();
+        foreach ($orgs as $org) {
+            $organisationNames[$org->id] = $org->alias;
+        }
+
         $searchResults = array();
         $representatives = $em->createQueryBuilder()
             ->select('r')
             ->from(Representative::class, 'r')
-            ->orderBy('r.alias')
+            ->orderBy('r.organisation, r.alias')
             ->getQuery()
             ->getResult();
         foreach ($representatives as $representative) {
@@ -46,6 +56,7 @@ class RepresentativesController extends AbstractController
         return $this->render('representatives.html.twig', [
             'current_page' => 'representatives',
             'representatives' => $searchResults,
+            'organisation_names' => $organisationNames,
             'translated_routes' => $translatedRoutes
         ]);
 

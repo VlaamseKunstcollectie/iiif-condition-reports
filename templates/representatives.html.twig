@@ -11,6 +11,14 @@
     {% for representative in representatives %}
         <div class="reps-row">
             <div class="reps-row-metadata">
+                <div class="reps-row-org">
+                    <div>{{ 'Organisation' | trans }}:</div>
+                    {% if organisation_names[representative.organisation] is defined %}
+                        <div>{{ organisation_names[representative.organisation] }}</div>
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+                </div>
                 <div class="reps-row-alias">
                     <div>{{ 'Alias' | trans }}:</div>
                     <div>{{ representative.alias }}</div>
