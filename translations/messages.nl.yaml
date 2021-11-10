@@ -13,6 +13,11 @@ Exact: Exact
 Partly: Gedeeltelijk
 Starts with: Begint met
 
+Object type: Objecttype
+Painting: Schildering
+Work on paper: Werk op papier
+Sculpture: Beeldhouwwerk
+
 Identification of the reason for the report : Identificatie van de aanleiding voor het rapport
 Information loan project: Informatie bruikleenproject
 if applicable: indien van toepassing
@@ -246,7 +251,7 @@ removing_mold_spores: Schimmelsporen verwijderen
 reinforcing: Versteviging/steunconstructie
 regluing_loose_parts: Herlijmen van aparte delen
 fixating_loose_parts: Fixeren losse delen
-stabilizing_socket: Stabiliseren van de sokkel
+stabilizing_pedestal: Stabiliseren van de sokkel
 adding_protective_layer: Beschermlaag aanbrengen
 adding_barcode: Barcode aanbrengen
 

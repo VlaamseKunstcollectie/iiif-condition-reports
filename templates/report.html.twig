@@ -65,6 +65,18 @@
                 highlightButton.classList.remove("inactive");
                 highlightButton.classList.add("active");
             }
+
+            function toggleObjectTypeField(hideId, showId) {
+                var hideObj = document.getElementById(hideId);
+                hideObj.disabled = true;
+                hideObj.style.display = 'none';
+                hideObj.removeAttribute('name');
+                var showObj = document.getElementById(showId);
+                showObj.disabled = false;
+                showObj.style.display = 'inline';
+                showObj.name = "object_type";
+                showObj.focus();
+            }
         </script>
 
         <form action="{{ path('save') }}" method="POST">
@@ -103,7 +115,16 @@
                     </div>
                 </div>
             </div>
-            <div id="wrap">
+            <label for="object-type">{{ 'Object type' | trans }}</label>
+            <select id="object-type" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
+                <option value="" selected="selected"></option>
+                <option value="Painting">{{ 'Painting' | trans }}</option>
+                <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
+                <option value="Sculpture">{{ 'Sculpture' | trans }}</option>
+                <option value="customOption">{{ 'Other' | trans }}</option>
+            </select>
+            <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" onblur="if(this.value === ''){ toggleField('object-type-custom', 'object-type', false); document.getElementById('object-type').selectedIndex = 0; } else { document.getElementById('wrap').style.display = 'block'; }">
+            <div id="wrap" style="display: none;">
                 <div id="report-navigation">
                     <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'Report reason' | trans }}">{{ 'Report reason' | trans }}</button>
                     <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>

@@ -1,12 +1,12 @@
 {% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
 {% set has_material = false %}
-{% set has_socket = false %}
+{% set has_pedestal = false %}
 {% for material in materials %}
     {% if prefilled_data['material_' ~ material] is defined %}
         {% set has_material = true %}
     {% endif %}
-    {% if prefilled_data['socket_' ~ material] is defined %}
-        {% set has_socket = true %}
+    {% if prefilled_data['pedestal_' ~ material] is defined %}
+        {% set has_pedestal = true %}
     {% endif %}
 {% endfor %}
 
@@ -20,26 +20,26 @@
 
 {% set connections = [ 'not_applicable', 'welded', 'soldered', 'dived_wood', 'glue', 'screws', 'nails', 'bolts', 'custom' ] %}
 {% set has_connection_work = false %}
-{% set has_connection_socket = false %}
+{% set has_connection_pedestal = false %}
 {% for connection in connections %}
     {% if prefilled_data['connections_work_' ~ connection] is defined %}
         {% set has_connection_work = true %}
     {% endif %}
-    {% if prefilled_data['connections_socket_' ~ connection] is defined %}
-        {% set has_connection_socket = true %}
+    {% if prefilled_data['connections_pedestal_' ~ connection] is defined %}
+        {% set has_connection_pedestal = true %}
     {% endif %}
 {% endfor %}
 
-{% if not readonly or has_material or has_socket or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined or prefilled_data.form_relief is defined or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined or prefilled_data.construction_work_number_of_parts is defined or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined or prefilled_data.construction_socket_loose is defined or prefilled_data.construction_socket_fixed is defined or prefilled_data.construction_socket_original is defined or prefilled_data.construction_socket_not_original is defined or prefilled_data.construction_socket_custom is defined or has_connection_work or has_connection_socket %}
+{% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined or prefilled_data.form_relief is defined or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined or prefilled_data.construction_work_number_of_parts is defined or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined or prefilled_data.construction_pedestal_loose is defined or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined or has_connection_work or has_connection_pedestal %}
 <div id="material-form"{% if not readonly %} class="form-tab"{% endif %}>
 
-    {% if not readonly or has_material or has_socket or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined %}
+    {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined %}
         <div class="report-header">{{ 'Material type' | trans }}</div>
     {% endif %}
 
-    {% if not readonly or has_material or has_socket or prefilled_data.material_specification is defined %}
+    {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined %}
     <div class="form-group">
-        {% if not readonly or has_material or has_socket %}
+        {% if not readonly or has_material or has_pedestal %}
             <div class="form-subgroup report-row">
                 {% if not readonly or has_material %}
                     <div class="form-item report-column">
@@ -54,14 +54,14 @@
                     </div>
                 {% endif %}
 
-                {% if not readonly or has_socket %}
+                {% if not readonly or has_pedestal %}
                     <div class="form-item report-column">
-                        <div class="report-header-2">{{ 'Socket' | trans }}</div>
+                        <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
                         {% for material in materials %}
                             {% if material == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'socket_custom' } %}</div>
+                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'pedestal_custom' } %}</div>
                             {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'socket_' ~ material, 'label': material | trans } %}</div>
+                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'pedestal_' ~ material, 'label': material | trans } %}</div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -130,10 +130,10 @@
 
     {% if not readonly or prefilled_data.construction_work_number_of_parts is defined
         or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined
-        or prefilled_data.construction_work_custom is defined or prefilled_data.construction_socket_loose is defined
-        or prefilled_data.construction_socket_fixed is defined or prefilled_data.construction_socket_original is defined
-        or prefilled_data.construction_socket_not_original is defined or prefilled_data.construction_socket_custom is defined %}
-        <div class="report-header">{{ 'Constrution/composition' | trans }}</div>
+        or prefilled_data.construction_work_custom is defined or prefilled_data.construction_pedestal_loose is defined
+        or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
+        or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined %}
+        <div class="report-header">{{ 'Construction / composition' | trans }}</div>
         <div class="form-group">
             <div class="form-subgroup report-row">
                 {% if not readonly or prefilled_data.construction_work_number_of_parts is defined
@@ -147,22 +147,22 @@
                         <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'construction_work_custom', 'label': 'To be mounted with' | trans } %}</div>
                     </div>
                 {% endif %}
-                {% if not readonly or prefilled_data.construction_socket_loose is defined
-                    or prefilled_data.construction_socket_fixed is defined or prefilled_data.construction_socket_original is defined
-                    or prefilled_data.construction_socket_not_original is defined or prefilled_data.construction_socket_custom is defined %}
+                {% if not readonly or prefilled_data.construction_pedestal_loose is defined
+                    or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
+                    or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined %}
                     <div class="form-item report-column">
                         <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
-                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_socket_loose', 'label': 'Loose' | trans } %}</div>
-                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_socket_fixed', 'label': 'Fixed' | trans } %}</div>
-                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_socket_original', 'label': 'Original' | trans } %}</div>
-                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_socket_not_original', 'label': 'Not original' | trans } %}</div>
+                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_loose', 'label': 'Loose' | trans } %}</div>
+                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_fixed', 'label': 'Fixed' | trans } %}</div>
+                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_original', 'label': 'Original' | trans } %}</div>
+                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_not_original', 'label': 'Not original' | trans } %}</div>
                     </div>
                 {% endif %}
             </div>
         </div>
     {% endif %}
 
-    {% if not readonly or has_connection_work or has_connection_socket %}
+    {% if not readonly or has_connection_work or has_connection_pedestal %}
         <div class="report-header">{{ 'Connections' | trans }}</div>
         <div class="form-group">
             <div class="form-subgroup report-row">
@@ -178,14 +178,14 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                {% if not readonly or has_connection_socket %}
+                {% if not readonly or has_connection_pedestal %}
                     <div class="form-item report-column">
                         <div class="report-header-2">{{ 'Between sculpture and pedestal' | trans }}</div>
                         {% for connection in connections %}
                             {% if connection == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_socket_custom' } %}</div>
+                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_pedestal_custom' } %}</div>
                             {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_socket_' ~ connection, 'label': connection | trans } %}</div>
+                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_pedestal_' ~ connection, 'label': connection | trans } %}</div>
                             {% endif %}
                         {% endfor %}
                     </div>

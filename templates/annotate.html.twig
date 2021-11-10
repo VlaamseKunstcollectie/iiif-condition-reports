@@ -463,6 +463,7 @@ window.onload = function() {
             }
             document.getElementById("annotation_data").value = JSON.stringify(annotations);
         });
+        document.getElementById("object-type").selectedIndex = 0;
     {% else %}
         var cur = window.currentImage;
         {% for image in images %}

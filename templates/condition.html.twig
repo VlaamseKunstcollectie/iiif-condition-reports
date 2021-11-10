@@ -15,7 +15,7 @@
 {% endfor %}
 
 {% set conservation_treatments = [ 'removing_dust', 'superficial_cleaning', 'insect_repellent_treatment', 'removing_mold_spores', 'reinforcing',
-                                    'regluing_loose_parts', 'fixating_loose_parts', 'stabilizing_socket', 'adding_protective_layer', 'adding_barcode', 'custom' ] %}
+                                    'regluing_loose_parts', 'fixating_loose_parts', 'stabilizing_pedestal', 'adding_protective_layer', 'adding_barcode', 'custom' ] %}
 {% set has_conservation_treatment = false %}
 {% for conservation_treatment in conservation_treatments %}
     {% if prefilled_data['conservation_treatment_' ~ conservation_treatment] is defined %}
