@@ -85,7 +85,7 @@ class Organisation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $notes;
+    public $notes;
 
     public function getId()
     {
