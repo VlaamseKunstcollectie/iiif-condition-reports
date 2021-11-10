@@ -30,7 +30,7 @@ class Representative
     /**
      * @ORM\Column(type="string", length=255)
      */
-    public $function;
+    public $role;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -77,14 +77,14 @@ class Representative
         $this->name = $name;
     }
 
-    public function getFunction()
+    public function getRole()
     {
-        return $this->function;
+        return $this->role;
     }
 
-    public function setFunction($function)
+    public function setRole($role)
     {
-        $this->function = $function;
+        $this->role = $role;
     }
 
     public function getEmail()

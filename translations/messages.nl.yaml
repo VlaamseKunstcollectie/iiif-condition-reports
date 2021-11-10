@@ -20,7 +20,6 @@ Link to webpage if applicable: Link naar eventuele webpagina
 Start date loan: Startdatum bruikleen
 End date loan: Einddatum bruikleen
 Loan number: Bruikleennummer
-Responsibility: Verantwoordelijkheid
 
 Location: Standplaats
 Object name: Objectnaam
@@ -107,7 +106,7 @@ Add representative: Vertegenwoordiger toevoegen
 
 Alias: Alias
 Name: Naam
-Function: Functie
+Role: Rol
 Logo: Logo
 VAT number: BTW-nummer
 Address: Adres
