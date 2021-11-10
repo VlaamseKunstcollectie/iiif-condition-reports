@@ -1,4 +1,4 @@
-<div class="report-header-2">{{ 'Representative' | trans }}</div>
+<div class="report-header-2">{% if representative_title is defined %}{{ representative_title | trans }}{% else %}{{ 'Representative' | trans }}{% endif %}</div>
 {% if not readonly %}
     <script>
         var {{ type }}Representatives = {{ representatives | json_encode | raw }};

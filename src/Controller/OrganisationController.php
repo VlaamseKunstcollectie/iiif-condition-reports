@@ -74,7 +74,7 @@ class OrganisationController extends AbstractController
                 ->add('website', TextType::class, ['required' => false, 'label' => $t->trans('Website'), 'attr' => ['placeholder' => $t->trans('https://www.example.com')]])
                 ->add('phone', TextType::class, ['required' => false, 'label' => $t->trans('Telephone'), 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
                 ->add('mobile', TextType::class, ['required' => false, 'label' => $t->trans('Cell phone'), 'attr' => ['placeholder' => 'xxxx xx.xx.xx']])
-                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this organisation')]])
+                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this organisation'), 'oninput' => 'fixTextareaheight()']])
                 ->add('submit', SubmitType::class, ['label' => $t->trans('Save')])
                 ->getForm();
             $form->handleRequest($request);

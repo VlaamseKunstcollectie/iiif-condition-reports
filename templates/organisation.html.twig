@@ -11,6 +11,14 @@
 		showObj.name = "form[role]";
 		showObj.focus();
 	}
+	function fixTextareaheight() {
+		var ele = document.getElementById('form_notes');
+		ele.style.height = "16px";
+		ele.style.height = (ele.scrollHeight + 2) + "px";
+	}
+	window.onload = function() {
+		fixTextareaheight();
+	};
 </script>
 {{ form_start(form) }}
 	<div id="wrap">

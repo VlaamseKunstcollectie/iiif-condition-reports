@@ -78,7 +78,7 @@
         {% endif %}
         {% if not readonly or prefilled_data.exhibition_rep_name is defined %}
             <div class="form-group">
-                {% include 'representative_info.html.twig' with { 'type': 'exhibition_rep' }%}
+                {% include 'representative_info.html.twig' with { 'type': 'exhibition_rep', 'representative_title': 'Responsible loan project' }%}
             </div>
         {% endif %}
     {% endif %}
