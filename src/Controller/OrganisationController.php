@@ -6,6 +6,7 @@ use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
 use App\Entity\Organisation;
 use App\Entity\Report;
+use App\Utils\CustomChoiceType;
 use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -53,10 +54,16 @@ class OrganisationController extends AbstractController
             return $this->redirectToRoute('organisations');
         } else {
             $t = $this->translator;
+            $roles = $this->getParameter('organisation_roles');
+            $organisationRoles = [];
+            foreach($roles as $role) {
+                $organisationRoles[$role] = $role;
+            }
+            $customRole = $organisation->getRole() != null && $organisation->getRole() !== '' && !array_key_exists($organisation->getRole(), $organisationRoles) ? $organisation->getRole() : '';
             $form = $this->createFormBuilder($organisation)
                 ->add('alias', TextType::class, ['required' => false, 'label' => $t->trans('Alias'), 'attr' => ['placeholder' => $t->trans('Alias of your choice (optional)')]])
                 ->add('name', TextType::class, ['label' => $t->trans('Name'), 'attr' => ['placeholder' => $t->trans('Name of the organisation')]])
-                ->add('role', TextType::class, ['required' => false, 'label' => $t->trans('Role'), 'attr' => ['placeholder' => $t->trans('Ex. own organisation, borrower, courier ...')]])
+                ->add('role', TextType::class, ['required' => false, 'label' => $t->trans('Role')])
                 ->add('logo', TextType::class, ['required' => false, 'label' => $t->trans('Logo'), 'attr' => ['placeholder' => $t->trans('URL of company logo')]])
                 ->add('vat', TextType::class, ['required' => false, 'label' => $t->trans('VAT number'), 'attr' => ['placeholder' => 'BE0xxx.xxx.xxx']])
                 ->add('address', TextType::class, ['required' => false, 'label' => $t->trans('Adress'), 'attr' => ['placeholder' => $t->trans('Street + house number')]])
@@ -95,6 +102,9 @@ class OrganisationController extends AbstractController
                     'current_page' => 'organisations',
                     'new' => empty($id),
                     'form' => $form->createView(),
+                    'organisation_roles' => $organisationRoles,
+                    'role' => $organisation->getRole(),
+                    'custom_role' => $customRole,
                     'translated_routes' => $translatedRoutes
                 ]);
             }

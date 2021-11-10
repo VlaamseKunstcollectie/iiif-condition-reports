@@ -50,6 +50,14 @@ parameters:
     - en
     - nl
 
+  organisation_roles:
+    - Lender
+    - Borrower
+    - Courier
+    - Art handler
+    - Restorer
+    - Insurer
+
   datahub_url: 'http://datahub.kmska.be'
   datahub_language: nl
   datahub_namespace: 'lido'

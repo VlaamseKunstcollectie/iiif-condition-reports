@@ -121,7 +121,6 @@ Notes: Notities
 Alias of your choice (optional): Zelfgekozen alias (optioneel)
 Name of the organisation: Naam van de organisatie
 Name of the representative: Naam van de vertegenwoordiger
-Ex. own organisation, borrower, courier ...: Bv. eigen organisatie, bruikleennemer, koerier ...
 URL of company logo: URL van bedrijfslogo
 Street + house number: Straat + huisnummer
 Ex. 9000: Bv. 9000
@@ -132,6 +131,12 @@ https://www.example.com: https://www.voorbeeld.com
 Own notes about this organisation: Eigen notities over deze organisatie
 Own notes about this person: Eigen notities over deze persoon
 Ex. restorer, courier ...: Bv. restaurateur, koerier ...
+Lender: Bruikleengever
+Borrower: Bruikleennemer
+Courier: Koerier
+Restorer: Restaurateur
+Insurer: Verzekeraar
+Fill in another role ...: Vul een andere rol in ...
 
 Inventory number: Inventarisnummer
 Title: Titel

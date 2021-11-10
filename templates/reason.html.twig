@@ -3,16 +3,14 @@
 
     {% if not readonly %}
     <script>
-        function toggleField(id, show) {
-            var obj = document.getElementById(id);
-            if(show) {
-                obj.disabled = false;
-                obj.style.display = 'inline';
-            } else {
-                obj.value = '';
-                obj.disabled = true;
-                obj.style.display = 'none';
-            }
+        function toggleField(hideId, showId) {
+            var hideObj = document.getElementById(hideId);
+            hideObj.disabled = true;
+            hideObj.style.display = 'none';
+            var showObj = document.getElementById(showId);
+            showObj.disabled = false;
+            showObj.style.display = 'inline';
+            showObj.focus();
         }
     </script>
     <div class="report-header">{{ 'Identification of the reason for the report' | trans }}</div>
@@ -20,7 +18,7 @@
         <div class="form-subgroup">
             <div class="form-item">
                 <label for="reason-dropdown">{{ 'Reason' | trans }}</label>
-                <select id="reason-dropdown" name="reason" onchange="toggleField('reason-custom', this.options[this.selectedIndex].value === 'customOption');">
+                <select id="reason-dropdown" name="reason" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleField('reason-dropdown', 'reason-custom'); }">
                     <option></option>
                     {% for key, reason_type in report_reasons %}
                         <optgroup label="{{ reason_type.name | trans }}">
@@ -32,7 +30,7 @@
                     <option value="customOption"{% if prefilled_data.reason_custom is defined %} selected{% endif %}>{{ 'Other' | trans }}</option>
                 </select>
                 <input type="text" id="reason-custom" placeholder="{{ 'Fill in another reason ...' | trans }}" name="reason_custom"
-                       {% if prefilled_data.reason_custom is defined %}value="{{ prefilled_data.reason_custom }}" {% else %}style="display:none;" disabled="disabled" {% endif %}onblur="if(this.value == ''){ toggleField('reason-custom', false); }">
+                       {% if prefilled_data.reason_custom is defined %}value="{{ prefilled_data.reason_custom }}" {% else %}style="display: none;" disabled="disabled" {% endif %}onblur="if(this.value === ''){ toggleField('reason-custom', 'reason-dropdown', false); document.getElementById('reason-dropdown').selectedIndex = 0; }">
             </div>
         </div>
     </div>
