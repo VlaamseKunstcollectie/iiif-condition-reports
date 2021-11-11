@@ -1,6 +1,5 @@
-{% if not readonly or prefilled_data.reason is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
+{% if not readonly or prefilled_data.reason is defined or prefilled_data.reason_custom is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
 <div id="reason-form"{% if not readonly %} class="form-tab"{% endif %}>
-
     {% if not readonly %}
     <script>
         function toggleField(hideId, showId) {
@@ -18,7 +17,7 @@
         <div class="form-subgroup">
             <div class="form-item">
                 <label for="reason-dropdown">{{ 'Reason' | trans }}</label>
-                <select id="reason-dropdown" name="reason" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleField('reason-dropdown', 'reason-custom'); }">
+                <select id="reason-dropdown"{% if prefilled_data.reason_custom is defined %} style="display: none;"{% endif %} name="reason" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleField('reason-dropdown', 'reason-custom'); }">
                     <option></option>
                     {% for key, reason_type in report_reasons %}
                         <optgroup label="{{ reason_type.name | trans }}">
