@@ -31,6 +31,27 @@
         </div>
 {% else %}
 <body onbeforeunload="return ''">
+    {% if prefilled_data.object_type is not defined or prefilled_data.object_type is empty %}
+        <div id="object-type-div">
+            <div id="object-type-select-div">
+                <div class="header-report">{{ 'Create report' | trans }}</div>
+                <a id="object-type-close" href="{{ path('main') }}"><i class="fas fa-times"></i></a>
+                <div id="object-type-select-div-center">
+                    <label for="object-type-select">{{ 'Object type' | trans }}</label>
+                    <select id="object-type-select" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type-select', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
+                        <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
+                        <option value="Painting">{{ 'Painting' | trans }}</option>
+                        <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
+                        <option value="Sculpture">{{ 'Sculpture' | trans }}</option>
+                        <option value="customOption">{{ 'Other' | trans }}</option>
+                    </select>
+                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled"
+                           onblur="if(this.value === ''){ toggleObjectTypeField('object-type-custom', 'object-type-select'); document.getElementById('object-type-select').selectedIndex = 0; } else { document.getElementById('wrap').style.display = 'block'; }">
+                </div>
+                <button onclick="checkSelectedObjectType();">{{ 'Save' | trans }}</button>
+            </div>
+        </div>
+    {% endif %}
     <div class="main-container">
         {% include 'navbar.html.twig' %}
         <script>
@@ -77,9 +98,26 @@
                 showObj.name = "object_type";
                 showObj.focus();
             }
+
+            function checkSelectedObjectType() {
+                var objectTypeSelect = document.getElementById('object-type-select');
+                if(objectTypeSelect.selectedIndex > 0) {
+                    if(objectTypeSelect.options[objectTypeSelect.selectedIndex] === 'customOption') {
+                        var objectTypeCustom = document.getElementById('object-type-custom');
+                        if(objectTypeCustom.value !== '') {
+                            document.getElementById('object_type').value = objectTypeCustom.value;
+                            document.getElementById('object-type-div').style = "display: none;";
+                        }
+                    } else {
+                        document.getElementById('object_type').value = objectTypeSelect.options[objectTypeSelect.selectedIndex];
+                        document.getElementById('object-type-div').style = "display: none;";
+                    }
+                }
+            }
         </script>
 
         <form action="{{ path('save') }}" method="POST">
+            <input type="hidden" id="object_type" name="object_type"{% if prefilled_data.object_type is defined and prefilled_data.object_type is not empty %} value="{{ prefilled_data.object_type }}"{% endif %}>
             <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
             <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
             <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
@@ -115,16 +153,7 @@
                     </div>
                 </div>
             </div>
-            <label for="object-type">{{ 'Object type' | trans }}</label>
-            <select id="object-type" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
-                <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
-                <option value="Painting">{{ 'Painting' | trans }}</option>
-                <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
-                <option value="Sculpture">{{ 'Sculpture' | trans }}</option>
-                <option value="customOption">{{ 'Other' | trans }}</option>
-            </select>
-            <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" onblur="if(this.value === ''){ toggleField('object-type-custom', 'object-type', false); document.getElementById('object-type').selectedIndex = 0; } else { document.getElementById('wrap').style.display = 'block'; }">
-            <div id="wrap" style="display: none;">
+            <div id="wrap">
                 <div id="report-navigation">
                     <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'Report reason' | trans }}">{{ 'Report reason' | trans }}</button>
                     <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>

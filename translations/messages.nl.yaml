@@ -3,6 +3,7 @@ Organisations: Organisaties
 Representatives: Vertegenwoordigers
 
 Organisation: Organisatie
+Institution / organisation: Instelling / organisatie
 Representative: Vertegenwoordiger
 Choose a role: Kies een rol
 
@@ -30,6 +31,10 @@ Start date loan: Startdatum bruikleen
 End date loan: Einddatum bruikleen
 Loan number: Bruikleennummer
 
+Information borrower / restorer: Informatie bruikleennemer / restaurateur
+Information courier / art handler: Informatie koerier / art handler
+Information other third party: Informatie andere derde partij
+
 Location: Standplaats
 Object name: Objectnaam
 Measurements: Afmetingen
@@ -37,7 +42,7 @@ Weight: Gewicht
 Dating: Datering
 Copyright: Copyright
 
-Information owner: Informatie eigenaar
+Information owner / lender: Informatie eigenaar / bruikleengever
 
 Material type: Materiaalsoort
 Carrier: Drager
