@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
     /**
-     * @Route("/upload", name="upload")
+     * @Route("/{_locale}/upload", name="upload")
      */
     public function upload(Request $request)
     {

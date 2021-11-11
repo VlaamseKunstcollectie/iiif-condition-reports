@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoadIIIFImageController extends AbstractController
 {
     /**
-     * @Route("/loadiiifimage", name="loadiiifimage")
+     * @Route("/{_locale}/loadiiifimage", name="loadiiifimage")
      */
     public function loadiiifimage(Request $request)
     {

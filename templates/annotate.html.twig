@@ -225,7 +225,7 @@ function loadIIIFImage() {
             addImage(response);
         }
     };
-    xhr.open('GET', '/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('annotate-iiif-image').value));
+    xhr.open('GET', '/{{ app.request.locale }}/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('annotate-iiif-image').value));
     xhr.send();
     document.getElementById('annotate-iiif-image').value = "";
 }
@@ -240,7 +240,7 @@ function loadImage() {
             addImage(response);
         }
     };
-    xhr.open('GET', '/download?image=' + encodeURIComponent(document.getElementById('annotate-image').value));
+    xhr.open('GET', '/{{ app.request.locale }}/download?image=' + encodeURIComponent(document.getElementById('annotate-image').value));
     xhr.send();
     document.getElementById('annotate-image').value = "";
 }
@@ -301,7 +301,7 @@ function clickedThumbnail(hash, image) {
 
 $('input#annotate-file').change(function() {
 
-    $(this).simpleUpload("/upload", {
+    $(this).simpleUpload("/{{ app.request.locale }}/upload", {
 
         start: function(file) {
             document.getElementById('annotate-file').value = "";
@@ -334,7 +334,7 @@ $('input#annotate-file').change(function() {
 
 $('input#annotate-camera').change(function() {
 
-    $(this).simpleUpload("/upload", {
+    $(this).simpleUpload("/{{ app.request.locale }}/upload", {
 
         start: function(file) {
             document.getElementById('annotate-camera').value = "";

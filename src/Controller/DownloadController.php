@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DownloadController extends AbstractController
 {
     /**
-     * @Route("/download", name="download")
+     * @Route("/{_locale}/download", name="download")
      */
     public function download(Request $request)
     {
@@ -46,6 +46,7 @@ class DownloadController extends AbstractController
 
             $image = new Image();
             $image->setImage('/' . $filename);
+            $image->setThumbnail('/' . $thumbnail);
             $em = $this->container->get('doctrine')->getManager();
             $em->getConnection()->getConfiguration()->setSQLLogger(null);
             $em->persist($image);
