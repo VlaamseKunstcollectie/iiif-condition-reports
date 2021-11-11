@@ -117,7 +117,7 @@
             </div>
             <label for="object-type">{{ 'Object type' | trans }}</label>
             <select id="object-type" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
-                <option value="" selected="selected"></option>
+                <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
                 <option value="Painting">{{ 'Painting' | trans }}</option>
                 <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
                 <option value="Sculpture">{{ 'Sculpture' | trans }}</option>
