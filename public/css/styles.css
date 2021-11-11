@@ -1300,7 +1300,8 @@ footer a:hover {
     #thumbnails,
     .openseadragon-container div:not(.openseadragon-canvas),
     #print-button,
-    #iiif-manifest-url {
+    #iiif-manifest-url,
+    .footer {
         display: none !important;
     }
 
