@@ -561,7 +561,7 @@ var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
 for(const image in deletedAnnos) {
     for(const reportId in deletedAnnos[image]) {
         var deleted = [];
-        for(const id in annos[image][reportId]) {
+        for(const id in deletedAnnos[image][reportId]) {
             deleted.push(id);
         }
         window.deletedAnnotations[image][reportId] = deleted;
