@@ -34,11 +34,11 @@
     {% if prefilled_data.object_type is not defined or prefilled_data.object_type is empty %}
         <div id="object-type-div">
             <div id="object-type-select-div">
-                <div class="header-report">{{ 'Create report' | trans }}</div>
+                <div class="header-popup">{{ 'Create report' | trans }}</div>
                 <a id="object-type-close" href="{{ path('main') }}"><i class="fas fa-times"></i></a>
-                <div id="object-type-select-div-center">
+                <div id="object-type-select-div-div">
                     <label for="object-type-select">{{ 'Object type' | trans }}</label>
-                    <select id="object-type-select" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type-select', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
+                    <select required id="object-type-select" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type-select', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
                         <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
                         <option value="Painting">{{ 'Painting' | trans }}</option>
                         <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
@@ -48,7 +48,9 @@
                     <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled"
                            onblur="if(this.value === ''){ toggleObjectTypeField('object-type-custom', 'object-type-select'); document.getElementById('object-type-select').selectedIndex = 0; } else { document.getElementById('wrap').style.display = 'block'; }">
                 </div>
-                <button onclick="checkSelectedObjectType();">{{ 'Save' | trans }}</button>
+                <div class="save">
+                    <button onclick="checkSelectedObjectType();">{{ 'Save' | trans }}</button>
+                </div>
             </div>
         </div>
     {% endif %}

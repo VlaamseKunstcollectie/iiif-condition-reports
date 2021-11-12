@@ -1,7 +1,4 @@
 <div id="report-form">
-    {% if readonly and prefilled_data.manifest is defined %}
-        <a id="iiif-manifest-url" href="{{ prefilled_data.manifest }}"><strong style="color: blue;">IIIF Manifest</strong></a>
-    {% endif %}
     {% include 'reason.html.twig' %}
     {% include 'basic_info.html.twig' %}
     {% include 'actors.html.twig' %}
