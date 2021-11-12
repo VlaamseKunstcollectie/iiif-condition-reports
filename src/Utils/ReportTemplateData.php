@@ -29,7 +29,7 @@ class ReportTemplateData
 
     public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id, $translatedRoutes)
     {
-        $data = self::getExistingReportData($em, $id, '../..');
+        $data = self::getExistingReportData($em, $id, '../../..');
         $data['report_reasons'] = $reportReasons;
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
@@ -41,7 +41,7 @@ class ReportTemplateData
     public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id, $translatedRoutes)
     {
         $prefilledData = self::getDatahubData($em, $id, array());
-        $images = self::getImages($em, $prefilledData, '../..');
+        $images = self::getImages($em, $prefilledData, '../../..');
 
         return [
             'current_page' => 'reports',
