@@ -30,10 +30,19 @@
     {% endif %}
 {% endfor %}
 
-{% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined or prefilled_data.form_relief is defined or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined or prefilled_data.construction_work_number_of_parts is defined or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined or prefilled_data.construction_pedestal_loose is defined or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined or has_connection_work or has_connection_pedestal %}
+{% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined
+    or has_finishing_layer or prefilled_data.finishing_layer_specification is defined
+    or prefilled_data.material_production is defined or prefilled_data.form_relief is defined
+    or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined
+    or prefilled_data.construction_work_number_of_parts is defined or prefilled_data.construction_work_loose is defined
+    or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined
+    or prefilled_data.construction_pedestal_loose is defined or prefilled_data.construction_pedestal_fixed is defined
+    or prefilled_data.construction_pedestal_original is defined or prefilled_data.construction_pedestal_not_original is defined
+    or prefilled_data.construction_pedestal_custom is defined or has_connection_work or has_connection_pedestal %}
 <div id="material-form"{% if not readonly %} class="form-tab"{% endif %}>
 
-    {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined %}
+    {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer
+        or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined %}
         <div class="report-header">{{ 'Material type' | trans }}</div>
     {% endif %}
 
