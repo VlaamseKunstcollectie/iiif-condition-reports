@@ -80,11 +80,12 @@ Object requirements: Objectvereisten
 Show all: Toon alles
 Hide all: Verberg alles
 Current annotations: Huidige annotaties
-Add IIIF image URL: Voeg IIIF afbeelding URL toe
 Load: Laad
-Add image URL: Voeg afbeelding URL toe
-IIIF image is being loaded ...: IIIF afbeelding wordt opgehaald ...
-Image is being downloaded ...: Afbeelding wordt gedownload ...
+Add image: Voeg afbeelding toe
+IIIF image through URL: IIIF afbeelding via URL
+Image through URL: Afbeelding via URL
+Image on device: Afbeelding op toestel
+Image through camera: Afbeelding via camera
 
 Incoming object (depacking): Inkomend object (depacking)
 Acquisition (collection donor/seller/...): Verwerving (collectie schenker/verkoper/...)

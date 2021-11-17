@@ -174,13 +174,19 @@
             <div id="annotation-images">
                 {% if not readonly %}
                     <div id="add-images">
-                        <select>
+                        <select id="add-image-select" onchange="selectedImageToAdd(this)">
                             <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
-                            <option value="iiif">{{ 'From IIIF image URL' | trans }}</option>
-                            <option value="url">{{ 'From image URL' | trans }}</option>
-                            <option value="device">{{ 'From device' | trans }}</option>
-                            <option value="camera">{{ 'From camera' | trans }}</option>
+                            <option value="iiif">{{ 'IIIF image through URL' | trans }}</option>
+                            <option value="url">{{ 'Image through URL' | trans }}</option>
+                            <option value="device">{{ 'Image on device' | trans }}</option>
+                            <option value="camera">{{ 'Image through camera' | trans }}</option>
                         </select>
+                        <div id="add-image-div" style="display: none">
+                            <input type="text" id="add-image-url" placeholder="{{ 'Fill in image URL ...' | trans }}">
+                            <button type="button" id="add-image-url-button" onclick="triggerImageAdd()">{{ 'Load' | trans }}</button>
+                            <input type="file" id="annotate-file" name="annotate-file" accept="image/*" style="display: none">
+                            <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment" style="display: none">
+                        </div>
                     </div>
                 {% endif %}
                 <div id="thumbnails">
@@ -190,28 +196,6 @@
                         </div>
                     {% endfor %}
                 </div>
-                {% if not readonly %}
-                    <label for="annotate-iiif-image">{{ 'Add IIIF image URL' | trans }}</label>
-                    <input type="text" id="annotate-iiif-image">
-                    <button type="button" onclick="loadIIIFImage()">{{ 'Load' | trans }}</button>
-                    <label for="annotate-image">{{ 'Add image URL' | trans }}</label>
-                    <input type="text" id="annotate-image">
-                    <button type="button" onclick="loadImage()">{{ 'Load' | trans }}</button>
-
-                    <input type="file" id="annotate-file" name="annotate-file" accept="image/*">
-                    <label id="annotate-file-label" for="annotate-file">
-                        <span id="annotate-file-progress"></span>
-                        <i class="fas fa-plus"></i>
-                    </label>
-
-                    <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment">
-                    <label id="annotate-camera-label" for="annotate-camera">
-                        <span id="annotate-camera-progress"></span>
-                        <i class="fas fa-camera"></i>
-                    </label>
-
-                    <input type="hidden" id="annotation_data" name="annotation_data">
-                {% endif %}
             </div>
         {% endif %}
     </div>
@@ -232,34 +216,88 @@
 
 <script>
 
+function selectedImageToAdd(selectElement) {
+    var addImageDivInput = document.getElementById("add-image-div");
+    switch(selectElement.options[selectElement.selectedIndex].value) {
+        case 'iiif': {
+            addImageDivInput.style = "display: block";
+            var addImageUrl = document.getElementById("add-image-url");
+            addImageUrl.placeholder = "{{ 'Insert IIIF image URL ...' | trans }}";
+            addImageUrl.value = "";
+            break;
+        }
+        case 'url': {
+            addImageDivInput.style = "display: block";
+            var addImageUrl = document.getElementById("add-image-url");
+            addImageUrl.placeholder = "{{ 'Insert image URL ...' | trans }}";
+            addImageUrl.value = "";
+            break;
+        }
+        case 'device': {
+            addImageDivInput.style = "display: none";
+            document.getElementById("annotate-file").click();
+            break;
+        }
+        case 'camera': {
+            addImageDivInput.style = "display: none";
+            document.getElementById("annotate-camera").click();
+            break;
+        }
+    }
+}
+
+function triggerImageAdd() {
+    var selectElement = document.getElementById("add-image-select");
+    switch(selectElement.options[selectElement.selectedIndex].value) {
+        case 'iiif': {
+            var value = document.getElementById("add-image-url").value;
+            if (value !== '') {
+                loadIIIFImage();
+            }
+            break;
+        }
+        case 'url': {
+            var value = document.getElementById("add-image-url").value;
+            if (value != '') {
+                loadImage();
+            }
+            break;
+        }
+    }
+}
+
 function loadIIIFImage() {
     const xhr = new XMLHttpRequest();
-    document.getElementById('annotate-iiif-image').placeholder = "{{ 'IIIF image is being loaded ...' | trans }}";
+    document.getElementById('add-image-url').placeholder = "{{ 'IIIF image is being loaded ...' | trans }}";
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            document.getElementById('annotate-iiif-image').placeholder = "";
+            document.getElementById('add-image-url').placeholder = "";
             const response = JSON.parse(xhr.responseText);
             addImage(response);
         }
     };
-    xhr.open('GET', '/{{ app.request.locale }}/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('annotate-iiif-image').value));
+    xhr.open('GET', '/{{ app.request.locale }}/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('add-image-url').value));
     xhr.send();
-    document.getElementById('annotate-iiif-image').value = "";
+    document.getElementById('add-image-url').value = "";
+    document.getElementById('add-image-select').selectedIndex = 0;
+    document.getElementById('add-image-div').style = "display: none";
 }
 
 function loadImage() {
     const xhr = new XMLHttpRequest();
-    document.getElementById('annotate-image').placeholder = "{{ 'Image is being downloaded ...' | trans }}";
+    document.getElementById('add-image-url').placeholder = "{{ 'Image is being downloaded ...' | trans }}";
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            document.getElementById('annotate-image').placeholder = "";
+            document.getElementById('add-image-url').placeholder = "";
             const response = JSON.parse(xhr.responseText);
             addImage(response);
         }
     };
-    xhr.open('GET', '/{{ app.request.locale }}/download?image=' + encodeURIComponent(document.getElementById('annotate-image').value));
+    xhr.open('GET', '/{{ app.request.locale }}/download?image=' + encodeURIComponent(document.getElementById('add-image-url').value));
     xhr.send();
-    document.getElementById('annotate-image').value = "";
+    document.getElementById('add-image-url').value = "";
+    document.getElementById("add-image-select").selectedIndex = 0;
+    document.getElementById('add-image-div').style = "display: none";
 }
 
 function clickedThumbnail(hash, image) {
@@ -321,19 +359,20 @@ $('input#annotate-file').change(function() {
     $(this).simpleUpload("/{{ app.request.locale }}/upload", {
 
         start: function(file) {
+            document.getElementById("add-image-select").selectedIndex = 0;
             document.getElementById('annotate-file').value = "";
-            document.getElementById('annotate-file-progress').innerHTML = "Uploading...";
+//            document.getElementById('annotate-file-progress').innerHTML = "Uploading...";
         },
 
         progress: function(progress){
             //received progress
-            document.getElementById('annotate-file-progress').innerHTML = Math.round(progress) + "%";
+//            document.getElementById('annotate-file-progress').innerHTML = Math.round(progress) + "%";
             console.log("upload progress: " + Math.round(progress) + "%");
         },
 
         success: function(data){
             //upload successful
-            document.getElementById('annotate-file-progress').innerHTML = "";
+//            document.getElementById('annotate-file-progress').innerHTML = "";
             console.log("upload successful!");
             console.log(data);
 
@@ -343,7 +382,7 @@ $('input#annotate-file').change(function() {
         error: function(error){
             //upload failed
             console.log(error);
-            document.getElementById('annotate-file-progress').innerHTML = "";
+//            document.getElementById('annotate-file-progress').innerHTML = "";
             console.log("upload error: " + error.name + ": " + error.message);
         }
     });
@@ -354,19 +393,20 @@ $('input#annotate-camera').change(function() {
     $(this).simpleUpload("/{{ app.request.locale }}/upload", {
 
         start: function(file) {
+            document.getElementById("add-image-select").selectedIndex = 0;
             document.getElementById('annotate-camera').value = "";
-            document.getElementById('annotate-camera-progress').innerHTML = "Uploading...";
+//            document.getElementById('annotate-camera-progress').innerHTML = "Uploading...";
         },
 
         progress: function(progress){
             //received progress
-            document.getElementById('annotate-camera-progress').innerHTML = Math.round(progress) + "%";
+//            document.getElementById('annotate-camera-progress').innerHTML = Math.round(progress) + "%";
             console.log("upload progress: " + Math.round(progress) + "%");
         },
 
         success: function(data){
             //upload successful
-            document.getElementById('annotate-camera-progress').innerHTML = "";
+//            document.getElementById('annotate-camera-progress').innerHTML = "";
             console.log("upload successful!");
             console.log(data);
 
@@ -376,7 +416,7 @@ $('input#annotate-camera').change(function() {
         error: function(error){
             //upload failed
             console.log(error);
-            document.getElementById('annotate-camera-progress').innerHTML = "";
+//            document.getElementById('annotate-camera-progress').innerHTML = "";
             console.log("upload error: " + error.name + ": " + error.message);
         }
     });
@@ -482,6 +522,10 @@ window.onload = function() {
         var objectTypeSelect = document.getElementById("object-type-select");
         if (objectTypeSelect != null) {
             objectTypeSelect.selectedIndex = 0;
+        }
+        var addImageSelect = document.getElementById("add-image-select");
+        if (addImageSelect != null) {
+            addImageSelect.selectedIndex = 0;
         }
     {% else %}
         var cur = window.currentImage;
