@@ -1,6 +1,6 @@
 <div id="annotate-form"{% if not readonly %} class="form-tab"{% endif %}>
     {% if readonly %}
-    <div class="report-header">{{ 'Annotations' | trans }}</div>
+        <div class="report-header">{{ 'Annotations' | trans }}</div>
     {% endif %}
     <div id="annotation-form">
         <div id="annotation-history">
@@ -176,18 +176,19 @@
                     <div id="add-images">
                         <select id="add-image-select" onchange="selectedImageToAdd(this)">
                             <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
-                            <option value="iiif">{{ 'IIIF image through URL' | trans }}</option>
-                            <option value="url">{{ 'Image through URL' | trans }}</option>
-                            <option value="device">{{ 'Image on device' | trans }}</option>
                             <option value="camera">{{ 'Image through camera' | trans }}</option>
+                            <option value="device">{{ 'Image on device' | trans }}</option>
+                            <option value="url">{{ 'Image through URL' | trans }}</option>
+                            <option value="iiif">{{ 'IIIF image through URL' | trans }}</option>
                         </select>
                         <div id="add-image-div" style="display: none">
+                            <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment" style="display: none">
+                            <input type="file" id="annotate-file" name="annotate-file" accept="image/*" style="display: none">
                             <input type="text" id="add-image-url" placeholder="{{ 'Fill in image URL ...' | trans }}">
                             <button type="button" id="add-image-url-button" onclick="triggerImageAdd()">{{ 'Load' | trans }}</button>
-                            <input type="file" id="annotate-file" name="annotate-file" accept="image/*" style="display: none">
-                            <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment" style="display: none">
                         </div>
                     </div>
+                    <input type="hidden" id="annotation_data" name="annotation_data">
                 {% endif %}
                 <div id="thumbnails">
                     {% for image in images %}
@@ -662,7 +663,6 @@ function toggleAnnotations(id) {
     storeCurrentAnnotations();
     window.annotationsVisible[window.currentImage][id] = !window.annotationsVisible[window.currentImage][id];
     var buttonId = "show-hide-annos-" + window.currentImage + "-" + id;
-    console.log(buttonId);
     var showAnnotationsButton = document.getElementById(buttonId);
     if(!window.annotationsVisible[window.currentImage][id]) {
         //showAnnotationsButton.innerHTML = "Toon";
