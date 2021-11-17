@@ -106,11 +106,15 @@
                 var hideObj = document.getElementById(hideId);
                 hideObj.disabled = true;
                 hideObj.style.display = 'none';
-                hideObj.removeAttribute('name');
+                if(alterName) {
+                    hideObj.removeAttribute('name');
+                }
                 var showObj = document.getElementById(showId);
                 showObj.disabled = false;
                 showObj.style.display = 'inline';
-                showObj.name = "object_type";
+                if(alterName) {
+                    showObj.name = "object_type";
+                }
                 showObj.focus();
             }
 
@@ -129,6 +133,25 @@
                         document.getElementById('object-type-select').selectedIndex = objectTypeSelect.selectedIndex;
                         document.getElementById('object-type-div').style = "display: none;";
                     }
+                }
+            }
+
+            function objectTypeChanged(selectedValue) {
+                var defaultMeasurementsEle = document.getElementById('measurements-default');
+                var workOnPaperMeasurementsEle = document.getElementById('measurements-work-on-paper');
+                var sculptureMeasurementsEle = document.getElementById('measurements-sculpture');
+                if (selectedValue === 'work_on_paper') {
+                    defaultMeasurementsEle.style = "display: none";
+                    workOnPaperMeasurementsEle.style = "display: block";
+                    sculptureMeasurementsEle.style = "display: none";
+                } else if (selectedValue === 'sculpture') {
+                    defaultMeasurementsEle.style = "display: none";
+                    workOnPaperMeasurementsEle.style = "display: none";
+                    sculptureMeasurementsEle.style = "display: block";
+                } else {
+                    defaultMeasurementsEle.style = "display: block";
+                    workOnPaperMeasurementsEle.style = "display: none";
+                    sculptureMeasurementsEle.style = "display: none";
                 }
             }
         </script>

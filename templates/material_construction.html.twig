@@ -1,7 +1,9 @@
 {% set has_measurement = false %}
 {% set measurements = [] %}
-{% if prefilled_data.object_type == 'painting' %}
-    {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
+{% if prefilled_data.object_type == 'work_on_paper' %}
+    {% set measurements = [ 'height_paper', 'width_paper', 'height_passe_partout', 'width_passe_partout', 'height_box', 'width_box', 'depth_box', 'weight_total' ] %}
+{% elseif prefilled_data.object_type == 'sculpture' %}
+    {% set measurements = [ 'height_part_a', 'width_part_a', 'depth_part_a', 'weight_part_a', 'height_part_b', 'width_part_b', 'depth_part_b', 'weight_part_b' ] %}
 {% else %}
     {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
 {% endif %}
@@ -57,13 +59,58 @@
 
     {% if not readonly or has_measurement %}
         <div class="report-header">{{ 'Measurements and weight' | trans }}</div>
-        <div class="form-group">
+        <div class="form-group" id="measurements-default"{% if prefilled_data.object_type is defined and (prefilled_data.object_type == 'work_on_paper' or prefilled_data.object_type == 'sculpture') %} style="display: none"{% endif %}>
             <div class="form-subgroup">
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans } %}</div>
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans } %}</div>
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth', 'label': 'Depth' | trans } %}</div>
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Weight' | trans } %}</div>
             </div>
+        </div>
+        <div class="form-group" id="measurements-work-on-paper"{% if prefilled_data.object_type is not defined or prefilled_data.object_type != 'work_on_paper' %} style="display: none"{% endif %}>
+            {% if not readonly or prefilled_data.height_paper is defined or prefilled_data.width_paper is defined %}
+                <div class="report-header-2">{{ 'Paper' | trans }}</div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_paper', 'label': 'Height' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_paper', 'label': 'Width' | trans } %}</div>
+                </div>
+            {% endif %}
+            {% if not readonly or prefilled_data.height_passe_partout is defined or prefilled_data.width_passe_partout is defined %}
+                <div class="report-header-2">{{ 'Passe-partout' | trans }}</div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_passe_partout', 'label': 'Height' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_passe_partout', 'label': 'Width' | trans } %}</div>
+                </div>
+            {% endif %}
+            {% if not readonly or prefilled_data.height_box is defined or prefilled_data.width_box is defined or prefilled_data.depth_box is defined or prefilled_data.weight_total is defined %}
+                <div class="report-header-2">{{ 'Box' | trans }}</div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_box', 'label': 'Height' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_box', 'label': 'Width' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_box', 'label': 'Depth' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight_total', 'label': 'Total weight' | trans } %}</div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group" id="measurements-sculpture"{% if prefilled_data.object_type is not defined or prefilled_data.object_type != 'sculpture' %} style="display: none"{% endif %}>
+            {% if not readonly or prefilled_data.height_part_a is defined or prefilled_data.width_part_a is defined or prefilled_data.depth_part_a is defined or prefilled_data.weight_part_a is defined %}
+                <div class="report-header-2">{{ 'Separate part A' | trans }}</div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_part_a', 'label': 'Height' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_part_a', 'label': 'Width' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_part_a', 'label': 'Depth' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight_part_a', 'label': 'Weight' | trans } %}</div>
+                </div>
+            {% endif %}
+            {% if not readonly or prefilled_data.height_part_b is defined or prefilled_data.width_part_b is defined or prefilled_data.depth_part_b is defined or prefilled_data.weight_part_b is defined %}
+                <div class="report-header-2">{{ 'Separate part B' | trans }}</div>
+                <div class="form-subgroup">
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_part_b', 'label': 'Height' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_part_b', 'label': 'Width' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_part_b', 'label': 'Depth' | trans } %}</div>
+                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight_part_b', 'label': 'Weight' | trans } %}</div>
+                </div>
+            {% endif %}
         </div>
     {% endif %}
 

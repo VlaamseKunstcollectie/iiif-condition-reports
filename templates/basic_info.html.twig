@@ -26,6 +26,7 @@
                         } else if(this.selectedIndex > 0) {
                             document.getElementById('wrap').style.display = 'block';
                         }
+                        objectTypeChanged(this.options[this.selectedIndex].value);
                     ">
                         <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
                         <option value="painting"{% if prefilled_data.object_type == 'painting' %} selected="selected"{% endif %}>{{ 'Painting' | trans }}</option>
