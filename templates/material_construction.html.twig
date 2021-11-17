@@ -1,11 +1,10 @@
 {% set has_measurement = false %}
-{% set measurements = [] %}
-{% if prefilled_data.object_type == 'work_on_paper' %}
+{% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
+{% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
+{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'work_on_paper' %}
     {% set measurements = [ 'height_paper', 'width_paper', 'height_passe_partout', 'width_passe_partout', 'height_box', 'width_box', 'depth_box', 'weight_total' ] %}
-{% elseif prefilled_data.object_type == 'sculpture' %}
+{% elseif prefilled_data.object_type is defined and prefilled_data.object_type == 'sculpture' %}
     {% set measurements = [ 'height_part_a', 'width_part_a', 'depth_part_a', 'weight_part_a', 'height_part_b', 'width_part_b', 'depth_part_b', 'weight_part_b' ] %}
-{% else %}
-    {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
 {% endif %}
 {% for measurement in measurements %}
     {% if prefilled_data[measurement] is defined %}
@@ -13,7 +12,6 @@
     {% endif %}
 {% endfor %}
 
-{% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
 {% set has_material = false %}
 {% set has_pedestal = false %}
 {% for material in materials %}

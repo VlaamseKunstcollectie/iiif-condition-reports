@@ -121,17 +121,19 @@
             function checkSelectedObjectType() {
                 var objectTypeSelect = document.getElementById('object-type-popup-select');
                 if(objectTypeSelect.selectedIndex > 0) {
-                    if(objectTypeSelect.options[objectTypeSelect.selectedIndex] === 'customOption') {
+                    if(objectTypeSelect.options[objectTypeSelect.selectedIndex].value === 'customOption') {
                         var objectTypeCustom = document.getElementById('object-type-popup-custom');
                         if(objectTypeCustom.value !== '') {
                             document.getElementById('object_type').value = objectTypeCustom.value;
                             document.getElementById('object_type').style = "display: block";
                             document.getElementById('object-type-div').style = "display: none;";
                             document.getElementById('object-type-select').style = "display: none;";
+                            objectTypeChanged(objectTypeCustom.value);
                         }
                     } else {
                         document.getElementById('object-type-select').selectedIndex = objectTypeSelect.selectedIndex;
                         document.getElementById('object-type-div').style = "display: none;";
+                        objectTypeChanged(objectTypeSelect.options[objectTypeSelect.selectedIndex].value);
                     }
                 }
             }
