@@ -22,17 +22,21 @@
                             <button type="button" onclick="resetAnnotations();" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span></button>
                             <div id="annotation-history-timestamps">
                                 {% if not readonly %}
-                                    <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-{{ image.hash }}-999999999" class="hide">
-                                        <i class="far fa-eye"></i>
-                                        <span>{{ 'Current annotations' | trans }}</span>
-                                    </button>
+                                    <div id="annos-{{ image.hash }}-999999999">
+                                        <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-{{ image.hash }}-999999999" class="hide">
+                                            <i class="far fa-eye"></i>
+                                            <span>{{ 'Current annotations' | trans }}</span>
+                                        </button>
+                                    </div>
                                 {% endif %}
                                 {% if annotation_history[image.hash] is defined %}
                                     {% for id, timestamp in annotation_history[image.hash] %}
-                                        <button type="button" onclick="toggleAnnotations('{{ id }}')" id="show-hide-annos-{{ image.hash }}-{{ id }}" class="hide">
-                                            <i class="far fa-eye"></i>
-                                            <span>{{ timestamp }}</span>
-                                        </button>
+                                        <div id="annos-{{ image.hash }}-{{ id }}">
+                                            <button type="button" onclick="toggleAnnotations('{{ id }}')" id="show-hide-annos-{{ image.hash }}-{{ id }}" class="hide">
+                                                <i class="far fa-eye"></i>
+                                                <span>{{ timestamp }}</span>
+                                            </button>
+                                        </div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
@@ -314,8 +318,10 @@ function clickedThumbnail(hash, image) {
         ids.push(id);
     }
     for(var i = ids.length - 1; i >= 0; i--) {
-        var button = document.createElement("button");
         const id = ids[i];
+        var newDiv = document.createElement("div");
+        newDiv.id = "annos-" + hash + "-" + id;
+        var button = document.createElement("button");
         button.onclick = function () {
             toggleAnnotations(id);
         };
@@ -332,7 +338,27 @@ function clickedThumbnail(hash, image) {
         }
         button.appendChild(iEye);
         button.appendChild(span);
-        div.appendChild(button);
+        newDiv.appendChild(button);
+
+        if(hash in window.addedAnnotations) {
+            if(id in window.addedAnnotations[hash]) {
+                var annos = window.addedAnnotations[hash][id];
+                for(const id in annos) {
+                    if(annos[id].hasOwnProperty('body')
+                        && annos[id].body != null && annos[id].body.length > 0
+                        && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
+                        && annos[id].body[0].value !== '') {
+                        var span = document.createElement("span");
+                        span.innerHTML = annos[id].body[0].value;
+                        newDiv.appendChild(span);
+                    }
+                    if (!window.annoIds.includes(id)) {
+                        window.annoIds.push(id);
+                    }
+                }
+            }
+        }
+        div.appendChild(newDiv);
     }
 
     window.osd_anno.world.removeAll();
@@ -611,8 +637,17 @@ var annotations = {{ annotations | json_encode | raw }};
 for(const image in annotations) {
     for(const reportId in annotations[image]) {
         var reportAnnos = {};
+        var histEle = document.getElementById("annos-" + image + "-" + reportId);
         for(const id in annotations[image][reportId]) {
             reportAnnos[id] = JSON.parse(annotations[image][reportId][id]);
+            if(histEle != null && reportAnnos[id].hasOwnProperty('body')
+                && reportAnnos[id].body != null && reportAnnos[id].body.length > 0
+                && reportAnnos[id].body[0].hasOwnProperty('value') && reportAnnos[id].body[0].value != null
+                && reportAnnos[id].body[0].value !== '') {
+                var span = document.createElement("span");
+                span.innerHTML = reportAnnos[id].body[0].value;
+                histEle.appendChild(span);
+            }
             if (!window.annoIds.includes(id)) {
                 window.annoIds.push(id);
             }
