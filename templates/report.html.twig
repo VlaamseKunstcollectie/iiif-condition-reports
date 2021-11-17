@@ -37,16 +37,29 @@
                 <div class="header-popup">{{ 'Create report' | trans }}</div>
                 <a id="object-type-close" href="{{ path('main') }}"><i class="fas fa-times"></i></a>
                 <div id="object-type-select-div-div">
-                    <label for="object-type-select">{{ 'Object type' | trans }}</label>
-                    <select required id="object-type-select" name="object_type" onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleObjectTypeField('object-type-select', 'object-type-custom'); } else if(this.selectedIndex > 0) { document.getElementById('wrap').style.display = 'block'; }">
+                    <label for="object-type-popup-select">{{ 'Object type' | trans }}</label>
+                    <select required id="object-type-popup-select" onchange="
+                        if(this.options[this.selectedIndex].value === 'customOption') {
+                            toggleObjectTypeField('object-type-popup-select', 'object-type-popup-custom', false);
+                        } else if(this.selectedIndex > 0) {
+                            document.getElementById('wrap').style.display = 'block';
+                            document.getElementById('object-type-select').selectedIndex = this.selectedIndex;
+                        }
+                    ">
                         <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
-                        <option value="Painting">{{ 'Painting' | trans }}</option>
-                        <option value="Work on paper">{{ 'Work on paper' | trans }}</option>
-                        <option value="Sculpture">{{ 'Sculpture' | trans }}</option>
+                        <option value="painting">{{ 'Painting' | trans }}</option>
+                        <option value="work_on_paper">{{ 'Work on paper' | trans }}</option>
+                        <option value="sculpture">{{ 'Sculpture' | trans }}</option>
                         <option value="customOption">{{ 'Other' | trans }}</option>
                     </select>
-                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled"
-                           onblur="if(this.value === ''){ toggleObjectTypeField('object-type-custom', 'object-type-select'); document.getElementById('object-type-select').selectedIndex = 0; } else { document.getElementById('wrap').style.display = 'block'; }">
+                    <input type="text" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" onblur="
+                        if(this.value === '') {
+                            toggleObjectTypeField('object-type-popup-custom', 'object-type-popup-select', false);
+                            document.getElementById('object-type-select').selectedIndex = 0;
+                        } else {
+                            document.getElementById('wrap').style.display = 'block';
+                        }
+                    ">
                 </div>
                 <div class="save">
                     <button onclick="checkSelectedObjectType();">{{ 'Save' | trans }}</button>
@@ -89,7 +102,7 @@
                 highlightButton.classList.add("active");
             }
 
-            function toggleObjectTypeField(hideId, showId) {
+            function toggleObjectTypeField(hideId, showId, alterName) {
                 var hideObj = document.getElementById(hideId);
                 hideObj.disabled = true;
                 hideObj.style.display = 'none';
@@ -102,16 +115,18 @@
             }
 
             function checkSelectedObjectType() {
-                var objectTypeSelect = document.getElementById('object-type-select');
+                var objectTypeSelect = document.getElementById('object-type-popup-select');
                 if(objectTypeSelect.selectedIndex > 0) {
                     if(objectTypeSelect.options[objectTypeSelect.selectedIndex] === 'customOption') {
-                        var objectTypeCustom = document.getElementById('object-type-custom');
+                        var objectTypeCustom = document.getElementById('object-type-popup-custom');
                         if(objectTypeCustom.value !== '') {
                             document.getElementById('object_type').value = objectTypeCustom.value;
+                            document.getElementById('object_type').style = "display: block";
                             document.getElementById('object-type-div').style = "display: none;";
+                            document.getElementById('object-type-select').style = "display: none;";
                         }
                     } else {
-                        document.getElementById('object_type').value = objectTypeSelect.options[objectTypeSelect.selectedIndex];
+                        document.getElementById('object-type-select').selectedIndex = objectTypeSelect.selectedIndex;
                         document.getElementById('object-type-div').style = "display: none;";
                     }
                 }
@@ -119,7 +134,6 @@
         </script>
 
         <form action="{{ path('save') }}" method="POST">
-            <input type="hidden" id="object_type" name="object_type"{% if prefilled_data.object_type is defined and prefilled_data.object_type is not empty %} value="{{ prefilled_data.object_type }}"{% endif %}>
             <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
             <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
             <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>

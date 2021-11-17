@@ -1,3 +1,7 @@
+painting: Painting
+work_on_paper: Work on paper
+sculpture: Sculpture
+
 stone: Stone
 metal: Metal
 glass: Glass
@@ -12,7 +16,7 @@ absent: Absent
 glaze: Glaze
 varnish: Varnish
 wax_layer: Wax layer
-painting: Painting
+painting_1: Painting
 monochrome: Monochrome
 polychrome: Polychrome
 patination: Patination

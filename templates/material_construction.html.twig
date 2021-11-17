@@ -1,3 +1,16 @@
+{% set has_measurement = false %}
+{% set measurements = [] %}
+{% if prefilled_data.object_type == 'painting' %}
+    {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
+{% else %}
+    {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
+{% endif %}
+{% for measurement in measurements %}
+    {% if prefilled_data[measurement] is defined %}
+        {% set has_measurement = true %}
+    {% endif %}
+{% endfor %}
+
 {% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
 {% set has_material = false %}
 {% set has_pedestal = false %}
@@ -10,7 +23,7 @@
     {% endif %}
 {% endfor %}
 
-{% set finishing_layers = [ 'absent', 'glaze', 'varnish', 'wax_layer', 'painting', 'monochrome', 'polychrome', 'patination', 'chop_marks', 'polishing', 'natural', 'artificial', 'custom' ] %}
+{% set finishing_layers = [ 'absent', 'glaze', 'varnish', 'wax_layer', 'painting_1', 'monochrome', 'polychrome', 'patination', 'chop_marks', 'polishing', 'natural', 'artificial', 'custom' ] %}
 {% set has_finishing_layer = false %}
 {% for finishing_layer in finishing_layers %}
     {% if prefilled_data['finishing_layer_' ~ finishing_layer] is defined %}
@@ -30,7 +43,8 @@
     {% endif %}
 {% endfor %}
 
-{% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined
+{% if not readonly or has_measurement
+    or has_material or has_pedestal or prefilled_data.material_specification is defined
     or has_finishing_layer or prefilled_data.finishing_layer_specification is defined
     or prefilled_data.material_production is defined or prefilled_data.form_relief is defined
     or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined
@@ -41,78 +55,90 @@
     or prefilled_data.construction_pedestal_custom is defined or has_connection_work or has_connection_pedestal %}
 <div id="material-form"{% if not readonly %} class="form-tab"{% endif %}>
 
+    {% if not readonly or has_measurement %}
+        <div class="report-header">{{ 'Measurements and weight' | trans }}</div>
+        <div class="form-group">
+            <div class="form-subgroup">
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans } %}</div>
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans } %}</div>
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth', 'label': 'Depth' | trans } %}</div>
+                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Weight' | trans } %}</div>
+            </div>
+        </div>
+    {% endif %}
+
     {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined or has_finishing_layer
         or prefilled_data.finishing_layer_specification is defined or prefilled_data.material_production is defined %}
         <div class="report-header">{{ 'Material type' | trans }}</div>
     {% endif %}
 
     {% if not readonly or has_material or has_pedestal or prefilled_data.material_specification is defined %}
-    <div class="form-group">
-        {% if not readonly or has_material or has_pedestal %}
-            <div class="form-subgroup report-row">
-                {% if not readonly or has_material %}
-                    <div class="form-item report-column">
-                        <div class="report-header-2">{{ 'Carrier' | trans }}</div>
-                        {% for material in materials %}
-                            {% if material == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom' } %}</div>
-                            {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'material_' ~ material, 'label': material | trans } %}</div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
+        <div class="form-group">
+            {% if not readonly or has_material or has_pedestal %}
+                <div class="form-subgroup report-row">
+                    {% if not readonly or has_material %}
+                        <div class="form-item report-column">
+                            <div class="report-header-2">{{ 'Carrier' | trans }}</div>
+                            {% for material in materials %}
+                                {% if material == 'custom' %}
+                                    <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom' } %}</div>
+                                {% else %}
+                                    <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'material_' ~ material, 'label': material | trans } %}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-                {% if not readonly or has_pedestal %}
-                    <div class="form-item report-column">
-                        <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
-                        {% for material in materials %}
-                            {% if material == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'pedestal_custom' } %}</div>
-                            {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'pedestal_' ~ material, 'label': material | trans } %}</div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endif %}
+                    {% if not readonly or has_pedestal %}
+                        <div class="form-item report-column">
+                            <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
+                            {% for material in materials %}
+                                {% if material == 'custom' %}
+                                    <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'pedestal_custom' } %}</div>
+                                {% else %}
+                                    <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'pedestal_' ~ material, 'label': material | trans } %}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
 
-        {% if not readonly or prefilled_data.material_specification is defined %}
-            <div>
-                <div class="no-spaces">{% include 'textarea.html.twig' with { 'name': 'material_specification', 'label': 'Material specification' | trans } %}</div>
-            </div>
-        {% endif %}
-    </div>
+            {% if not readonly or prefilled_data.material_specification is defined %}
+                <div>
+                    <div class="no-spaces">{% include 'textarea.html.twig' with { 'name': 'material_specification', 'label': 'Material specification' | trans } %}</div>
+                </div>
+            {% endif %}
+        </div>
     {% endif %}
 
     {% if not readonly or has_finishing_layer or prefilled_data.finishing_layer_specification is defined %}
-    <div class="form-group">
-        {% if not readonly or has_finishing_layer %}
-            <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
-            {% for finishing_layer in finishing_layers %}
-                {% if finishing_layer == 'custom' %}
-                    <div class="form-subgroup report-row">
-                        <div class="form-item">
-                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_custom' } %}</div>
+        <div class="form-group">
+            {% if not readonly or has_finishing_layer %}
+                <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
+                {% for finishing_layer in finishing_layers %}
+                    {% if finishing_layer == 'custom' %}
+                        <div class="form-subgroup report-row">
+                            <div class="form-item">
+                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_custom' } %}</div>
+                            </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="form-subgroup">
-                        <div class="form-item">
-                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_' ~ finishing_layer, 'label': finishing_layer | trans } %}</div>
+                    {% else %}
+                        <div class="form-subgroup">
+                            <div class="form-item">
+                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_' ~ finishing_layer, 'label': finishing_layer | trans } %}</div>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
-        {% if not readonly or prefilled_data.finishing_layer_specification is defined %}
-            <div class="form-subgroup">
-                <div class="form-item no-spaces">{% include 'textarea.html.twig' with { 'name': 'finishing_layer_specification', 'label': 'Material specification (if possible)' | trans } %}</div>
-            </div>
-        {% endif %}
-    </div>
+            {% if not readonly or prefilled_data.finishing_layer_specification is defined %}
+                <div class="form-subgroup">
+                    <div class="form-item no-spaces">{% include 'textarea.html.twig' with { 'name': 'finishing_layer_specification', 'label': 'Material specification (if possible)' | trans } %}</div>
+                </div>
+            {% endif %}
+        </div>
     {% endif %}
 
     {% if not readonly or prefilled_data.material_production is defined %}
@@ -203,14 +229,14 @@
         </div>
     {% endif %}
     {% if not readonly %}
-    <div class="buttons">
-        <div class="previous-button">
-            <button type="button" onclick="showDiv('actors-form')">{{ 'Previous' | trans }}</button>
+        <div class="buttons">
+            <div class="previous-button">
+                <button type="button" onclick="showDiv('actors-form')">{{ 'Previous' | trans }}</button>
+            </div>
+            <div class="next-button">
+                <button type="button" onclick="showDiv('condition-form')">{{ 'Next' | trans }}</button>
+            </div>
         </div>
-        <div class="next-button">
-            <button type="button" onclick="showDiv('condition-form')">{{ 'Next' | trans }}</button>
-        </div>
-    </div>
     {% endif %}
 </div>
 {% endif %}

@@ -546,14 +546,6 @@ window.onload = function() {
             }
             document.getElementById("annotation_data").value = JSON.stringify(annotations);
         });
-        var objectTypeSelect = document.getElementById("object-type-select");
-        if (objectTypeSelect != null) {
-            objectTypeSelect.selectedIndex = 0;
-        }
-        var addImageSelect = document.getElementById("add-image-select");
-        if (addImageSelect != null) {
-            addImageSelect.selectedIndex = 0;
-        }
     {% else %}
         var cur = window.currentImage;
         {% for image in images %}

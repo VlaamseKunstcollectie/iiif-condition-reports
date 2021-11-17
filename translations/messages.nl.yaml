@@ -18,9 +18,12 @@ Partly: Gedeeltelijk
 Starts with: Begint met
 
 Object type: Objecttype
-Painting: Schildering
+Painting: Schilderij
+painting: Schilderij
 Work on paper: Werk op papier
+work_on_paper: Werk op papier
 Sculpture: Beeldhouwwerk
+sculpture: Beeldhouwwerk
 
 Identification of the reason for the report : Identificatie van de aanleiding voor het rapport
 Information loan project: Informatie bruikleenproject
@@ -38,6 +41,9 @@ Information other third party: Informatie andere derde partij
 Location: Standplaats
 Object name: Objectnaam
 Measurements: Afmetingen
+Height: Hoogte
+Width: Breedte
+Depth: Diepte
 Weight: Gewicht
 Dating: Datering
 Copyright: Copyright
@@ -204,7 +210,7 @@ absent: Niet aanwezig
 glaze: Glazuur
 varnish: Vernis
 wax_layer: Waslaag
-painting: Beschildering
+painting_1: Beschildering
 monochrome: Monochroom
 polychrome: Polychroom
 patination: Patinering

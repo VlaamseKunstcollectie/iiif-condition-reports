@@ -1,4 +1,8 @@
-{% if not readonly or prefilled_data.inventory_number is defined or prefilled_data.current_location is defined or prefilled_data.object_name is defined or prefilled_data.dimensions is defined or prefilled_data.weight is defined or prefilled_data.creator_nl is defined or prefilled_data.title_nl is defined or prefilled_data.creation_date is defined or prefilled_data.copyright is defined %}
+{% if not readonly or prefilled_data.inventory_number is defined or prefilled_data.current_location is defined
+    or prefilled_data.object_name is defined or prefilled_data.object_type is defined
+    or prefilled_data.dimensions is defined or prefilled_data.weight is defined
+    or prefilled_data.creator_nl is defined or prefilled_data.title_nl is defined
+    or prefilled_data.creation_date is defined or prefilled_data.copyright is defined %}
 <div id="basic-info-form"{% if not readonly %} class="form-tab"{% endif %}>
     <div class="report-header">{{ 'Object identification' | trans }}</div>
     <div class="form-group">
@@ -12,13 +16,34 @@
             <div class="form-item">
                 {% include 'textfield.html.twig' with { 'name': 'object_name', 'label': 'Object name' | trans } %}
             </div>
-        </div>
-        <div class="form-subgroup">
             <div class="form-item">
-                {% include 'textfield.html.twig' with { 'name': 'dimensions', 'label': 'Measurements' | trans } %}
-            </div>
-            <div class="form-item">
-                {% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Weight' | trans } %}
+                {% if not readonly %}
+                    {% set hasCustomObjectType = prefilled_data.object_type != 'painting' and prefilled_data.object_type != 'work_on_paper' and prefilled_data.object_type != 'sculpture' %}
+                    <label for="object-type-select">{{ 'Object type' | trans }}</label>
+                    <select required id="object-type-select"{% if hasCustomObjectType %} style="display: none"{% else %} name="object_type"{% endif %} onchange="
+                        if(this.options[this.selectedIndex].value === 'customOption') {
+                            toggleObjectTypeField('object-type-select', 'object-type-custom', true);
+                        } else if(this.selectedIndex > 0) {
+                            document.getElementById('wrap').style.display = 'block';
+                        }
+                    ">
+                        <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
+                        <option value="painting"{% if prefilled_data.object_type == 'painting' %} selected="selected"{% endif %}>{{ 'Painting' | trans }}</option>
+                        <option value="work_on_paper"{% if prefilled_data.object_type == 'work_on_paper' %} selected="selected"{% endif %}>{{ 'Work on paper' | trans }}</option>
+                        <option value="sculpture"{% if prefilled_data.object_type == 'sculpture' %} selected="selected"{% endif %}>{{ 'Sculpture' | trans }}</option>
+                        <option value="customOption">{{ 'Other' | trans }}</option>
+                    </select>
+                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if hasCustomObjectType %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;" disabled="disabled"{% endif %} onblur="
+                        if(this.value === '') {
+                           toggleObjectTypeField('object-type-custom', 'object-type-select', true);
+                           document.getElementById('object-type-select').selectedIndex = 0;
+                       } else {
+                           document.getElementById('wrap').style.display = 'block';
+                       }
+                    ">
+                {% else %}
+                    {% include 'textfield.html.twig' with { 'name': 'object_type', 'label': 'Object type' | trans } %}
+                {% endif %}
             </div>
         </div>
         <div class="form-subgroup">
