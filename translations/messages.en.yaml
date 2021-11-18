@@ -12,6 +12,11 @@ paper: Paper
 wood: Wood
 plastic: Plastic
 
+loose: Loose
+fixed: Fixed
+original: Original
+not_original: Not original
+
 absent: Absent
 glaze: Glaze
 varnish: Varnish

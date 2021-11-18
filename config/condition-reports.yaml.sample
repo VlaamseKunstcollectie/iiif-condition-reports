@@ -1,11 +1,13 @@
 ---
 parameters:
 
+  # Do not forget to add the appropriate translations to messages.nl.yaml when editing the report reasons
+  # Each reason always needs a unique ID
   report_reasons:
     1:
       name: Incoming object (depacking)
       options:
-        100: Acquisition (collection donor/seller/...)
+        100: Acquisition (collection donor / seller / ...)
         101: Long term loan (third party collection)
         102: Temporary loan (third party collection)
         103: Returning loan (own collection)
@@ -15,19 +17,19 @@ parameters:
       options:
         201: Outgoing loan (own collection)
         202: Returning loan (third party collection)
-        203: Decommissioning/rejection
+        203: Decommissioning / rejection
         204: Restoration
     3:
-      name: Movement to another building/institution
+      name: Movement to another building / institution
       options:
-        301: To location/depot
+        301: To location / depot
         302: To exhibition room
         303: To restoration room
         304: To packing room
     4:
       name: Movement within the same building
       options:
-        401: To location/depot
+        401: To location / depot
         402: To exhibition room
         403: To restoration room
         404: To packing room
@@ -45,6 +47,57 @@ parameters:
         601: Insurance and indemnity
         602: Loss and damage
         603: Damage claim
+
+  # Do not forget to add the appropriate translations to messages.en.yaml and messages.nl.yaml when editing the report fields
+  # Supported types: default, painting, work_on_paper and sculpture
+  # You must always provide a default list as fallback, each list should end in 'custom'
+  report_fields:
+    materials:
+      default:
+        - textile
+        - wood
+        - metal
+        - ceramic
+        - ivory
+        - paper
+        - custom
+      sculpture:
+        - stone
+        - metal
+        - glass
+        - ceramic
+        - plaster
+        - textile
+        - paper
+        - wood
+        - plastic
+        - custom
+    finishing_layers:
+      default:
+        - absent
+        - glaze
+        - varnish
+        - wax_layer
+        - painting_1
+        - monochrome
+        - polychrome
+        - patination
+        - chop_marks
+        - polishing
+        - natural
+        - artificial
+        - custom
+    connections:
+      default:
+        - not_applicable
+        - welded
+        - soldered
+        - dived_wood
+        - glue
+        - screws
+        - nails
+        - bolts
+        - custom
 
   locales:
     - en

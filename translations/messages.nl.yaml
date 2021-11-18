@@ -70,14 +70,11 @@ Full plastic: Volplastisch
 Construction / composition: Constructie / samenstelling
 Work: Werk
 Number of parts: Aantal onderdelen
-Loose: Los
-Fixed: Vast
 To be mounted with: Te monteren met
-Original: Origineel
-Not original: Niet origineel
 Connections: Verbindingen
 Between separate parts of the sculpture: Tussen afzonderlijke delen van het beeld
 Between sculpture and pedestal: Tussen beeld en sokkel
+Between carrier and frame: Tussen drager en lijst
 
 Condition of the object: Conditie van het object
 General condition: Algemene conditie
@@ -103,7 +100,7 @@ Insert URL of image ...: Vul URL in van afbeelding ...
 Insert URL of IIIF image ...: Vul URL in van IIIF afbeelding ...
 
 Incoming object (depacking): Inkomend object (depacking)
-Acquisition (collection donor/seller/...): Verwerving (collectie schenker/verkoper/...)
+Acquisition (collection donor / seller / ...): Verwerving (collectie schenker / verkoper / ...)
 Long term loan (third party collection): Langdurige bruikleen (collectie derden)
 Temporary loan (third party collection): Tijdelijke bruikleen (collectie derden)
 Returning loan (own collection): Terugkomende bruikleen (eigen collectie)
@@ -111,9 +108,9 @@ Restoration: Restauratie
 Outgoing object (packing): Uitgaand object (packing)
 Outgoing loan (own collection): Uitgaande bruikleen (eigen collectie)
 Returning loan (third party collection): Terugkerende bruikleen (collectie derden)
-Decommissioning/rejection: Ontzameling/afstoting
-Movement to another building/institution: Verplaatsing naar ander gebouw/instelling
-To location/depot: Naar standplaats/depot
+Decommissioning / rejection: Ontzameling / afstoting
+Movement to another building / institution: Verplaatsing naar ander gebouw / instelling
+To location / depot: Naar standplaats / depot
 To exhibition room: Naar tentoonstellingsruimte
 To restoration room: Naar restauratieruimte
 To packing room: Naar verpakkingsruimte
@@ -203,15 +200,26 @@ Further research needed: Verder onderzoek nodig
 Previous: Vorige
 Next: Volgende
 
+Frame: Lijst
+
 stone: Steen
 metal: Metaal
 glass: Glas
-ceramic: Keramiek/aardewerk
+ceramic: Keramiek / aardewerk
 plaster: Gips
 textile: Textiel
 paper: Papier
 wood: Hout
 plastic: Kunststof
+
+loose: Los
+Loose: Los
+fixed: Vast
+Fixed: Vast
+original: Origineel
+Original: Origineel
+not_original: Niet origineel
+Not original: Niet origineel
 
 absent: Niet aanwezig
 glaze: Glazuur
@@ -245,7 +253,7 @@ surface_dirt: Oppervlaktevuil
 crusted_dirt: Geïncrusteerd vuil
 spots: Vlekken
 fingerprints: Vingerafdrukken
-old_restoration: Oude ingrepen/restauratie
+old_restoration: Oude ingrepen / restauratie
 salts: Zouten
 insect_damage: Insectenaantasting
 mold: Schimmel
@@ -258,9 +266,9 @@ discolorations: Verkleuringen
 wearage: Slijtage
 scratches: Krassen
 twists: Scheluw
-dents: Blutsen/deuken
+dents: Blutsen / deuken
 structural_damage: Structurele schade
-cracks: Barsten/spleten
+cracks: Barsten / spleten
 hair_tears: Haarscheurtjes
 holes: Gaten
 wrinkled: Gekreukt
@@ -273,7 +281,7 @@ removing_dust: Ontstoffen
 superficial_cleaning: Oppervlakkige reiniging
 insect_repellent_treatment: Insectenwerende behandeling
 removing_mold_spores: Schimmelsporen verwijderen
-reinforcing: Versteviging/steunconstructie
+reinforcing: Versteviging / steunconstructie
 regluing_loose_parts: Herlijmen van aparte delen
 fixating_loose_parts: Fixeren losse delen
 stabilizing_pedestal: Stabiliseren van de sokkel
@@ -295,4 +303,4 @@ filling_gap_elements: Elementen opvullen van lacunes
 setup_method: Opstellingswijze
 material_technical_research: Materiaaltechnisch onderzoek
 analysis: Analyse
-necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek
+necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk / kunsthistorisch onderzoek

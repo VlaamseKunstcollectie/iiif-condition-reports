@@ -5,7 +5,7 @@
         <span class="readonly-input">{{ prefilled_data[name] }}</span>
     {% endif %}
 {% else %}
-    <input id="{{ name }}_checkbox_custom" name="{{ name }}_checkbox" type="checkbox"{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %} checked{% endif %} onclick="if(!document.getElementById('{{ name }}_checkbox_custom').checked) { document.getElementById('{{ name }}_checkbox_custom_text').value = ''; }"/>
+    <input id="{{ name }}_checkbox_custom" name="{{ name }}_checkbox" type="checkbox"{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %} checked{% endif %}{% if disabled is defined and disabled %} disabled{% endif %} onclick="if(!document.getElementById('{{ name }}_checkbox_custom').checked) { document.getElementById('{{ name }}_checkbox_custom_text').value = ''; }"/>
     {% if label is defined %}<label for="{{ name }}_checkbox_custom">{{ label }}</label>{% endif %}
-    <input type="text" id="{{ name }}_checkbox_custom_text" oninput="document.getElementById('{{ name }}_checkbox_custom').checked = this.value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
+    <input type="text" id="{{ name }}_checkbox_custom_text"{% if disabled is defined and disabled %} disabled{% endif %} oninput="document.getElementById('{{ name }}_checkbox_custom').checked = this.value != '';" name="{{ name }}" value="{% if prefilled_data[name] is defined and prefilled_data[name] is not empty %}{{ prefilled_data[name] }}{% endif %}"/>
 {% endif %}

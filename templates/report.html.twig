@@ -13,6 +13,7 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/simpleupload.1.1.min.js') }}"></script>
 </head>
+{% set object_types = ['default', 'painting', 'work_on_paper', 'sculpture'] %}
 {% if readonly %}
 <body>
     <div class="main-container">
@@ -78,7 +79,7 @@
             // We have to do this for textareas whose height can only be dermined when visible
             function showDiv(showId) {
                 for(var i = 0; i < divIds.length; i++) {
-                    if(divIds[i] != showId) {
+                    if(divIds[i] !== showId) {
                         var hideObj = document.getElementById(divIds[i]);
                         hideObj.style.position = 'absolute';
                         hideObj.style.top = '-9999px';
@@ -131,56 +132,57 @@
                             objectTypeCustomEle.style = 'display: block';
                             objectTypeCustomEle.name = 'object_type';
                             objectTypeCustomEle.disabled = false;
-                            document.getElementById('object-type-div').style = 'display: none;';
+                            document.getElementById('object-type-div').style = 'display: none';
                             objectTypeSelectEle.style = 'display: none';
                             objectTypeSelectEle.removeAttribute('name');
                             objectTypeSelectEle.disabled = true;
                             objectTypeChanged(objectTypeCustom.value);
                         }
                     } else {
-                        document.getElementById('object-type-div').style = "display: none;";
+                        document.getElementById('object-type-div').style = "display: none";
                         objectTypeChanged(objectTypeSelect.options[objectTypeSelect.selectedIndex].value);
                     }
                 }
             }
 
             function objectTypeChanged(selectedValue) {
-                var defaultMeasurements = document.getElementById('measurements-default');
-                var workOnPaperMeasurements = document.getElementById('measurements-work-on-paper');
-                var sculptureMeasurements = document.getElementById('measurements-sculpture');
-                var materialsPedestal = document.getElementById('materials-pedestal');
-                var constructionPedestal = document.getElementById('construction-pedestal');
-                var connectionPedestal = document.getElementById('connection-pedestal');
-                if (selectedValue === 'work_on_paper') {
-                    hide(defaultMeasurements);
-                    show(workOnPaperMeasurements);
-                    hide(sculptureMeasurements);
-                    hide(materialsPedestal);
-                    hide(constructionPedestal);
-                    hide(connectionPedestal);
-                } else if (selectedValue === 'sculpture') {
-                    hide(defaultMeasurements);
-                    hide(workOnPaperMeasurements);
-                    show(sculptureMeasurements);
-                    show(materialsPedestal);
-                    show(constructionPedestal);
-                    show(connectionPedestal);
-                } else {
-                    show(defaultMeasurements);
-                    hide(workOnPaperMeasurements);
-                    hide(sculptureMeasurements);
-                    hide(materialsPedestal);
-                    hide(constructionPedestal);
-                    hide(connectionPedestal);
+                var objectTypes = {{ object_types | json_encode | raw }};
+                if(!objectTypes.includes(selectedValue)) {
+                    selectedValue = 'default';
                 }
-            }
-
-            function hide(element) {
-                element.style = "display: none";
-            }
-
-            function show(element) {
-                element.style = "display: block";
+                var divs = [ 'measurements', 'materials', 'materials-frame', 'finishing-layer', 'connection-work' ];
+                for(var i = 0; i < objectTypes.length; i++) {
+                    for(var j = 0; j < divs.length; j++) {
+                        var div = document.getElementById(divs[j] + '-' + objectTypes[i]);
+                        if(div != null) {
+                            var inputs = div.querySelectorAll('input');
+                            for(var k = 0; k < inputs.length; k++) {
+                                inputs[k].disabled = objectTypes[i] !== selectedValue;
+                            }
+                            if(objectTypes[i] === selectedValue) {
+                                div.style = "display: block";
+                            } else {
+                                div.style = "display: none";
+                            }
+                        }
+                    }
+                }
+                var frameNameDiv = document.getElementById('construction-frame-name');
+                if(frameNameDiv != null) {
+                    if (selectedValue === 'sculpture') {
+                        frameNameDiv.innerHTML = '{{ 'Pedestal' | trans }}';
+                    } else {
+                        frameNameDiv.innerHTML = '{{ 'Frame' | trans }}';
+                    }
+                }
+                var connectionPedestalDiv = document.getElementById('connection-pedestal');
+                if(connectionPedestalDiv != null) {
+                    if (selectedValue === 'sculpture') {
+                        connectionPedestalDiv.style = "display: block";
+                    } else {
+                        connectionPedestalDiv.style = "display: none";
+                    }
+                }
             }
         </script>
 

@@ -16,6 +16,7 @@ class ViewReportController extends AbstractController
     {
         $em = $this->get('doctrine')->getManager();
         $reportReasons = $this->getParameter('report_reasons');
+        $reportFields = $this->getParameter('report_fields');
 
         $locale = $request->get('_locale');
         $locales = $this->getParameter('locales');
@@ -28,6 +29,6 @@ class ViewReportController extends AbstractController
             );
         }
 
-        return $this->render('report.html.twig', ReportTemplateData::getViewData($em, $reportReasons, $id, $translatedRoutes));
+        return $this->render('report.html.twig', ReportTemplateData::getViewData($em, $reportReasons, $reportFields, $id, $translatedRoutes));
     }
 }

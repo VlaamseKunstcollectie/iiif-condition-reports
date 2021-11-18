@@ -16,10 +16,11 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getViewData(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
+        $data['report_fields'] = $reportFields;
         $data['readonly'] = true;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
@@ -27,10 +28,11 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../../..');
         $data['report_reasons'] = $reportReasons;
+        $data['report_fields'] = $reportFields;
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
@@ -38,8 +40,24 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
     {
+        // Prevent creation of a blank report if there is already a report for this inventory number
+        $canCreate = true;
+        $reportData = $em->createQueryBuilder()
+            ->select('r.id')
+            ->from(Report::class, 'r')
+            ->where('r.inventoryId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+        foreach ($reportData as $data) {
+            $canCreate = false;
+        }
+        if(!$canCreate) {
+            return null;
+        }
+
         $prefilledData = self::getDatahubData($em, $id, array());
         $images = self::getImages($em, $prefilledData, '../../..');
 
@@ -51,6 +69,7 @@ class ReportTemplateData
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
+            'report_fields' => $reportFields,
             'organisations' => self::getOrganisations($em),
             'representatives' => self::getRepresentatives($em),
             'readonly' => false,
