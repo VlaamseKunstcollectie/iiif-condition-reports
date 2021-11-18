@@ -18,26 +18,18 @@
             </div>
             <div class="form-item">
                 {% if not readonly %}
-                    {% set hasCustomObjectType = prefilled_data.object_type is defined and prefilled_data.object_type != 'painting' and prefilled_data.object_type != 'work_on_paper' and prefilled_data.object_type != 'sculpture' %}
                     <label for="object-type-select">{{ 'Object type' | trans }}</label>
-                    <select required id="object-type-select"{% if hasCustomObjectType %} style="display: none"{% else %} name="object_type"{% endif %} onchange="
-                        if(this.options[this.selectedIndex].value === 'customOption') {
-                            toggleObjectTypeField('object-type-select', 'object-type-custom', true);
-                        }
-                        objectTypeChanged(this.options[this.selectedIndex].value);
-                    ">
-                        <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
-                        <option value="painting"{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'painting' %} selected="selected"{% endif %}>{{ 'Painting' | trans }}</option>
-                        <option value="work_on_paper"{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'work_on_paper' %} selected="selected"{% endif %}>{{ 'Work on paper' | trans }}</option>
-                        <option value="sculpture"{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'sculpture' %} selected="selected"{% endif %}>{{ 'Sculpture' | trans }}</option>
-                        <option value="customOption">{{ 'Other' | trans }}</option>
-                    </select>
-                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if hasCustomObjectType %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %} onblur="
-                        if(this.value === '') {
-                           toggleObjectTypeField('object-type-custom', 'object-type-select', true);
-                           document.getElementById('object-type-select').selectedIndex = 0;
-                       }
-                    ">
+                    <div class="flex">
+                        <select required id="object-type-select"{% if prefilled_data.object_type is not defined or this_object_type != 'default' %} name="object_type"{% endif %}
+                                onchange="toggleObjectTypeField(this, 'object-type-custom', this.options[this.selectedIndex].value === 'customOption', true); objectTypeChanged(this.options[this.selectedIndex].value);">
+                            <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
+                            <option value="painting"{% if this_object_type == 'painting' %} selected="selected"{% endif %}>{{ 'Painting' | trans }}</option>
+                            <option value="work_on_paper"{% if this_object_type == 'work_on_paper' %} selected="selected"{% endif %}>{{ 'Work on paper' | trans }}</option>
+                            <option value="sculpture"{% if this_object_type == 'sculpture' %} selected="selected"{% endif %}>{{ 'Sculpture' | trans }}</option>
+                            <option value="customOption">{{ 'Other' | trans }}</option>
+                        </select>
+                        <input type="text" class="custom-input" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if prefilled_data.object_type is defined and this_object_type == 'default' %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %}>
+                    </div>
                 {% else %}
                     {% include 'textfield.html.twig' with { 'name': 'object_type', 'label': 'Object type' | trans } %}
                 {% endif %}

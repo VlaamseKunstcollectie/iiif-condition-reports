@@ -420,7 +420,7 @@ textarea {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     background-color: white;
-    width: 340px;
+    width: 400px;
     height: auto;
     border: 1px solid rgb(219, 219, 219);
     padding: 30px;
@@ -430,6 +430,14 @@ textarea {
     font-size: 21px;
     font-weight: 700;
     padding-bottom: 15px;
+}
+
+.custom-input {
+    margin-left: 5px;
+}
+
+.flex {
+    display: flex;
 }
 
 #object-type-close {

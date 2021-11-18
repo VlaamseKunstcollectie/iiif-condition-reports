@@ -1,23 +1,37 @@
 {% include 'header.html.twig' %}
 <script>
-	function toggleField(hideId, showId) {
-		var hideObj = document.getElementById(hideId);
-		hideObj.disabled = true;
-		hideObj.style.display = 'none';
-		hideObj.removeAttribute('name');
-		var showObj = document.getElementById(showId);
-		showObj.disabled = false;
-		showObj.style.display = 'inline';
-		showObj.name = "form[role]";
-		showObj.focus();
+	function toggleCustomRole(selectEle, customRoleId, show) {
+		var customRole = document.getElementById(customRoleId);
+		if(customRole != null) {
+			if(show) {
+				selectEle.removeAttribute('name');
+				customRole.name = 'form[role]';
+				customRole.disabled = false;
+				customRole.style = 'display: block';
+				customRole.focus();
+			} else {
+				selectEle.name = 'form[role]';
+				customRole.removeAttribute('name');
+				customRole.disabled = true;
+				customRole.style = 'display: none';
+			}
+		}
 	}
+
 	function fixTextareaheight() {
 		var ele = document.getElementById('form_notes');
 		ele.style.height = "16px";
 		ele.style.height = (ele.scrollHeight + 2) + "px";
 	}
+
 	window.onload = function() {
 		fixTextareaheight();
+		{% if custom_role is empty and role is empty %}
+			var roleDropdown = document.getElementById('role-dropdown');
+			if(roleDropdown != null) {
+				roleDropdown.selectedIndex = 0;
+			}
+		{% endif %}
 	};
 </script>
 {{ form_start(form) }}
@@ -30,15 +44,17 @@
 	                {{ form_row(form.name) }}
 					<div>
 						<label for="role-dropdown">{{ 'Role' | trans }}</label>
-						<select id="role-dropdown"{% if custom_role is empty %} name="form[role]"{% else %} style="display: none;"{% endif %} onchange="if(this.options[this.selectedIndex].value === 'customOption') { toggleField('role-dropdown', 'role-custom'); }">
-							<option disabled selected hidden>{{ 'Choose a role' | trans }}</option>
-							{% for key, role_ in organisation_roles %}
-								<option value="{{ key }}"{% if role == key %} selected{% endif %}>{{ role_ | trans }}</option>
-							{% endfor %}
-							<option value="customOption"{% if custom_role is not empty %} selected{% endif %}>{{ 'Other' | trans }}</option>
-						</select>
-						<input type="text" id="role-custom" placeholder="{{ 'Fill in another role ...' | trans }}"
-							   {% if custom_role is not empty %} name="form[role]" value="{{ custom_role }}" {% else %}style="display: none;" disabled="disabled" {% endif %}onblur="if(this.value === ''){ toggleField('role-custom', 'role-dropdown'); document.getElementById('role-dropdown').selectedIndex = 0; }">
+						<div class="flex">
+							<select id="role-dropdown"{% if custom_role is empty %} name="form[role]"{% endif %} onchange="toggleCustomRole(this, 'role-custom', this.options[this.selectedIndex].value === 'customOption')">
+								<option disabled selected hidden>{{ 'Choose a role' | trans }}</option>
+								{% for key, role_ in organisation_roles %}
+									<option value="{{ key }}"{% if role == key %} selected{% endif %}>{{ role_ | trans }}</option>
+								{% endfor %}
+								<option value="customOption"{% if custom_role is not empty %} selected{% endif %}>{{ 'Other' | trans }}</option>
+							</select>
+							<input type="text" id="role-custom" placeholder="{{ 'Fill in another role ...' | trans }}"
+								   {% if custom_role is not empty %} name="form[role]" value="{{ custom_role }}" {% else %}style="display: none;" disabled="disabled" {% endif %}>
+						</div>
 					</div>
 					{% do form.role.setRendered() %}
 				</div>

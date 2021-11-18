@@ -7,15 +7,6 @@
 {% set these_materials = materials.default %}
 {% set these_finishing_layers = finishing_layers.default %}
 {% set these_connections = connections.default %}
-{% set this_object_type = 'default' %}
-
-{% if prefilled_data.object_type is defined %}
-    {% for object_type in object_types %}
-        {% if prefilled_data.object_type == object_type %}
-            {% set this_object_type = object_type %}
-        {% endif %}
-    {% endfor %}
-{% endif %}
 
 {% for object_type in object_types %}
     {% if report_fields.materials[object_type] is defined %}

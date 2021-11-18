@@ -573,6 +573,12 @@ window.onload = function() {
         if (addImageSelect != null) {
             addImageSelect.selectedIndex = 0;
         }
+        var reasonDropdown = document.getElementById("reason-dropdown");
+        if(reasonDropdown != null) {
+            {% if prefilled_data.reason_custom is not defined %}
+                reasonDropdown.selectedIndex = 0;
+            {% endif %}
+        }
     {% else %}
         var cur = window.currentImage;
         {% for image in images %}
