@@ -43,7 +43,7 @@
                             toggleObjectTypeField('object-type-popup-select', 'object-type-popup-custom', false);
                         } else if(this.selectedIndex > 0) {
                             document.getElementById('wrap').style.display = 'block';
-                            document.getElementById('object-type-select').selectedIndex = this.selectedIndex;
+                            document.getElementById('object-type-popup-select').selectedIndex = this.selectedIndex;
                         }
                     ">
                         <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
@@ -55,7 +55,7 @@
                     <input type="text" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" onblur="
                         if(this.value === '') {
                             toggleObjectTypeField('object-type-popup-custom', 'object-type-popup-select', false);
-                            document.getElementById('object-type-select').selectedIndex = 0;
+                            document.getElementById('object-type-popup-select').selectedIndex = 0;
                         } else {
                             document.getElementById('wrap').style.display = 'block';
                         }
@@ -121,17 +121,23 @@
             function checkSelectedObjectType() {
                 var objectTypeSelect = document.getElementById('object-type-popup-select');
                 if(objectTypeSelect.selectedIndex > 0) {
+                    var objectTypeSelectEle = document.getElementById('object-type-select');
+                    objectTypeSelectEle.selectedIndex = objectTypeSelect.selectedIndex;
                     if(objectTypeSelect.options[objectTypeSelect.selectedIndex].value === 'customOption') {
                         var objectTypeCustom = document.getElementById('object-type-popup-custom');
                         if(objectTypeCustom.value !== '') {
-                            document.getElementById('object_type').value = objectTypeCustom.value;
-                            document.getElementById('object_type').style = "display: block";
-                            document.getElementById('object-type-div').style = "display: none;";
-                            document.getElementById('object-type-select').style = "display: none;";
+                            var objectTypeCustomEle = document.getElementById('object-type-custom');
+                            objectTypeCustomEle.value = objectTypeCustom.value;
+                            objectTypeCustomEle.style = 'display: block';
+                            objectTypeCustomEle.name = 'object_type';
+                            objectTypeCustomEle.disabled = false;
+                            document.getElementById('object-type-div').style = 'display: none;';
+                            objectTypeSelectEle.style = 'display: none';
+                            objectTypeSelectEle.removeAttribute('name');
+                            objectTypeSelectEle.disabled = true;
                             objectTypeChanged(objectTypeCustom.value);
                         }
                     } else {
-                        document.getElementById('object-type-select').selectedIndex = objectTypeSelect.selectedIndex;
                         document.getElementById('object-type-div').style = "display: none;";
                         objectTypeChanged(objectTypeSelect.options[objectTypeSelect.selectedIndex].value);
                     }
@@ -139,22 +145,42 @@
             }
 
             function objectTypeChanged(selectedValue) {
-                var defaultMeasurementsEle = document.getElementById('measurements-default');
-                var workOnPaperMeasurementsEle = document.getElementById('measurements-work-on-paper');
-                var sculptureMeasurementsEle = document.getElementById('measurements-sculpture');
+                var defaultMeasurements = document.getElementById('measurements-default');
+                var workOnPaperMeasurements = document.getElementById('measurements-work-on-paper');
+                var sculptureMeasurements = document.getElementById('measurements-sculpture');
+                var materialsPedestal = document.getElementById('materials-pedestal');
+                var constructionPedestal = document.getElementById('construction-pedestal');
+                var connectionPedestal = document.getElementById('connection-pedestal');
                 if (selectedValue === 'work_on_paper') {
-                    defaultMeasurementsEle.style = "display: none";
-                    workOnPaperMeasurementsEle.style = "display: block";
-                    sculptureMeasurementsEle.style = "display: none";
+                    hide(defaultMeasurements);
+                    show(workOnPaperMeasurements);
+                    hide(sculptureMeasurements);
+                    hide(materialsPedestal);
+                    hide(constructionPedestal);
+                    hide(connectionPedestal);
                 } else if (selectedValue === 'sculpture') {
-                    defaultMeasurementsEle.style = "display: none";
-                    workOnPaperMeasurementsEle.style = "display: none";
-                    sculptureMeasurementsEle.style = "display: block";
+                    hide(defaultMeasurements);
+                    hide(workOnPaperMeasurements);
+                    show(sculptureMeasurements);
+                    show(materialsPedestal);
+                    show(constructionPedestal);
+                    show(connectionPedestal);
                 } else {
-                    defaultMeasurementsEle.style = "display: block";
-                    workOnPaperMeasurementsEle.style = "display: none";
-                    sculptureMeasurementsEle.style = "display: none";
+                    show(defaultMeasurements);
+                    hide(workOnPaperMeasurements);
+                    hide(sculptureMeasurements);
+                    hide(materialsPedestal);
+                    hide(constructionPedestal);
+                    hide(connectionPedestal);
                 }
+            }
+
+            function hide(element) {
+                element.style = "display: none";
+            }
+
+            function show(element) {
+                element.style = "display: block";
             }
         </script>
 

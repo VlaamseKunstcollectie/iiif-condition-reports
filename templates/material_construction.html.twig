@@ -1,9 +1,13 @@
+{% set is_sculpture = false %}
+{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'sculpture' %}
+    {% set is_sculpture = true %}
+{% endif %}
 {% set has_measurement = false %}
 {% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
 {% set materials = [ 'stone', 'metal', 'glass', 'ceramic', 'plaster', 'textile', 'paper', 'wood', 'plastic', 'custom' ] %}
 {% if prefilled_data.object_type is defined and prefilled_data.object_type == 'work_on_paper' %}
     {% set measurements = [ 'height_paper', 'width_paper', 'height_passe_partout', 'width_passe_partout', 'height_box', 'width_box', 'depth_box', 'weight_total' ] %}
-{% elseif prefilled_data.object_type is defined and prefilled_data.object_type == 'sculpture' %}
+{% elseif is_sculpture %}
     {% set measurements = [ 'height_part_a', 'width_part_a', 'depth_part_a', 'weight_part_a', 'height_part_b', 'width_part_b', 'depth_part_b', 'weight_part_b' ] %}
 {% endif %}
 {% for measurement in measurements %}
@@ -18,7 +22,7 @@
     {% if prefilled_data['material_' ~ material] is defined %}
         {% set has_material = true %}
     {% endif %}
-    {% if prefilled_data['pedestal_' ~ material] is defined %}
+    {% if is_sculpture and prefilled_data['pedestal_' ~ material] is defined %}
         {% set has_pedestal = true %}
     {% endif %}
 {% endfor %}
@@ -38,7 +42,7 @@
     {% if prefilled_data['connections_work_' ~ connection] is defined %}
         {% set has_connection_work = true %}
     {% endif %}
-    {% if prefilled_data['connections_pedestal_' ~ connection] is defined %}
+    {% if is_sculpture and prefilled_data['connections_pedestal_' ~ connection] is defined %}
         {% set has_connection_pedestal = true %}
     {% endif %}
 {% endfor %}
@@ -49,15 +53,15 @@
     or prefilled_data.material_production is defined or prefilled_data.form_relief is defined
     or prefilled_data.form_full_plastic is defined or prefilled_data.form_custom is defined
     or prefilled_data.construction_work_number_of_parts is defined or prefilled_data.construction_work_loose is defined
-    or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined
-    or prefilled_data.construction_pedestal_loose is defined or prefilled_data.construction_pedestal_fixed is defined
-    or prefilled_data.construction_pedestal_original is defined or prefilled_data.construction_pedestal_not_original is defined
-    or prefilled_data.construction_pedestal_custom is defined or has_connection_work or has_connection_pedestal %}
+    or prefilled_data.construction_work_fixed is defined or prefilled_data.construction_work_custom is defined or has_connection_work
+    or (is_sculpture and (prefilled_data.construction_pedestal_loose is defined or prefilled_data.construction_pedestal_fixed is defined
+        or prefilled_data.construction_pedestal_original is defined or prefilled_data.construction_pedestal_not_original is defined
+        or prefilled_data.construction_pedestal_custom is defined or has_connection_pedestal)) %}
 <div id="material-form"{% if not readonly %} class="form-tab"{% endif %}>
 
     {% if not readonly or has_measurement %}
         <div class="report-header">{{ 'Measurements and weight' | trans }}</div>
-        <div class="form-group" id="measurements-default"{% if prefilled_data.object_type is defined and (prefilled_data.object_type == 'work_on_paper' or prefilled_data.object_type == 'sculpture') %} style="display: none"{% endif %}>
+        <div class="form-group" id="measurements-default"{% if prefilled_data.object_type is defined and (prefilled_data.object_type == 'work_on_paper' or is_sculpture) %} style="display: none"{% endif %}>
             <div class="form-subgroup">
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans } %}</div>
                 <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans } %}</div>
@@ -90,7 +94,7 @@
                 </div>
             {% endif %}
         </div>
-        <div class="form-group" id="measurements-sculpture"{% if prefilled_data.object_type is not defined or prefilled_data.object_type != 'sculpture' %} style="display: none"{% endif %}>
+        <div class="form-group" id="measurements-sculpture"{% if is_sculpture %} style="display: none"{% endif %}>
             {% if not readonly or prefilled_data.height_part_a is defined or prefilled_data.width_part_a is defined or prefilled_data.depth_part_a is defined or prefilled_data.weight_part_a is defined %}
                 <div class="report-header-2">{{ 'Separate part A' | trans }}</div>
                 <div class="form-subgroup">
@@ -135,7 +139,7 @@
                     {% endif %}
 
                     {% if not readonly or has_pedestal %}
-                        <div class="form-item report-column">
+                        <div class="form-item report-column" id="materials-pedestal"{% if not is_sculpture %} style="display: none"{% endif %}>
                             <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
                             {% for material in materials %}
                                 {% if material == 'custom' %}
@@ -210,9 +214,10 @@
 
     {% if not readonly or prefilled_data.construction_work_number_of_parts is defined
         or prefilled_data.construction_work_loose is defined or prefilled_data.construction_work_fixed is defined
-        or prefilled_data.construction_work_custom is defined or prefilled_data.construction_pedestal_loose is defined
-        or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
-        or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined %}
+        or prefilled_data.construction_work_custom is defined
+        or (is_sculpture and(prefilled_data.construction_pedestal_loose is defined
+            or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
+            or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined)) %}
         <div class="report-header">{{ 'Construction / composition' | trans }}</div>
         <div class="form-group">
             <div class="form-subgroup report-row">
@@ -227,10 +232,11 @@
                         <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'construction_work_custom', 'label': 'To be mounted with' | trans } %}</div>
                     </div>
                 {% endif %}
-                {% if not readonly or prefilled_data.construction_pedestal_loose is defined
-                    or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
-                    or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined %}
-                    <div class="form-item report-column">
+                {% if not readonly
+                    or (is_sculpture and (prefilled_data.construction_pedestal_loose is defined
+                        or prefilled_data.construction_pedestal_fixed is defined or prefilled_data.construction_pedestal_original is defined
+                        or prefilled_data.construction_pedestal_not_original is defined or prefilled_data.construction_pedestal_custom is defined)) %}
+                    <div class="form-item report-column" id="construction-pedestal"{% if not is_sculpture %} style="display: none"{% endif %}>
                         <div class="report-header-2">{{ 'Pedestal' | trans }}</div>
                         <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_loose', 'label': 'Loose' | trans } %}</div>
                         <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'construction_pedestal_fixed', 'label': 'Fixed' | trans } %}</div>
@@ -259,7 +265,7 @@
                     </div>
                 {% endif %}
                 {% if not readonly or has_connection_pedestal %}
-                    <div class="form-item report-column">
+                    <div class="form-item report-column" id="connection-pedestal"{% if not is_sculpture %} style="display: none"{% endif %}>
                         <div class="report-header-2">{{ 'Between sculpture and pedestal' | trans }}</div>
                         {% for connection in connections %}
                             {% if connection == 'custom' %}

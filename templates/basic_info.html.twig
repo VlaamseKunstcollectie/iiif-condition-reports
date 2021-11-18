@@ -23,8 +23,6 @@
                     <select required id="object-type-select"{% if hasCustomObjectType %} style="display: none"{% else %} name="object_type"{% endif %} onchange="
                         if(this.options[this.selectedIndex].value === 'customOption') {
                             toggleObjectTypeField('object-type-select', 'object-type-custom', true);
-                        } else if(this.selectedIndex > 0) {
-                            document.getElementById('wrap').style.display = 'block';
                         }
                         objectTypeChanged(this.options[this.selectedIndex].value);
                     ">
@@ -34,12 +32,10 @@
                         <option value="sculpture"{% if prefilled_data.object_type is defined and prefilled_data.object_type == 'sculpture' %} selected="selected"{% endif %}>{{ 'Sculpture' | trans }}</option>
                         <option value="customOption">{{ 'Other' | trans }}</option>
                     </select>
-                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if hasCustomObjectType %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;" disabled="disabled"{% endif %} onblur="
+                    <input type="text" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if hasCustomObjectType %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %} onblur="
                         if(this.value === '') {
                            toggleObjectTypeField('object-type-custom', 'object-type-select', true);
                            document.getElementById('object-type-select').selectedIndex = 0;
-                       } else {
-                           document.getElementById('wrap').style.display = 'block';
                        }
                     ">
                 {% else %}
