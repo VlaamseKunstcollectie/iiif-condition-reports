@@ -48,18 +48,61 @@ parameters:
         602: Loss and damage
         603: Damage claim
 
-  # There must always be a 'default' object type as fallback
+  # There must always be a 'default' object type as fallback at the end
   object_types:
-    - default
     - painting
     - work_on_paper
     - sculpture
+    - default
 
   # Do not forget to add the appropriate translations to messages.en.yaml and messages.nl.yaml when editing the report fields
   # Supported types: default, painting, work_on_paper and sculpture
   # You must always provide a default list as fallback (which ideally contains all elements of the other object types) and each list should end in 'custom'
   # Spaces are not allowed in any of the list elements, only letters, numbers and underscores
   report_fields:
+    # Measurements has a slightly more complex structure than the other fields. It is split into separate parts, each with its own header and items with labels.
+    measurements:
+      default:
+        - header: ''
+          items:
+            height: Height
+            width: Width
+            depth: Depth
+            weight: Weight
+      work_on_paper:
+        - header: Paper
+          items:
+            height: Height
+            width: Width
+        - header: Passe-partout
+          items:
+            height_passe_partout: Height
+            width_passe_partout: Width
+        - header: Box
+          items:
+            height_box: Height
+            width_box: Width
+            depth_box: Depth
+            weight: Total weight
+      sculpture:
+        - header: Separate part A
+          items:
+            height_part_a: Height
+            width_part_a: Width
+            depth_part_a: Depth
+            weight_part_a: Weight
+        - header: Separate part B
+          items:
+            height_part_b: Height
+            width_part_b: Width
+            depth_part_b: Depth
+            weight_part_b: Weight
+        - header: Complete sculpture
+          items:
+            height: Height
+            width: Width
+            depth: Depth
+            weight: Total weight
     materials:
       default:
         - stone

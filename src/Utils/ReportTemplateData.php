@@ -16,10 +16,11 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
+    public static function getViewData(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../..');
         $data['report_reasons'] = $reportReasons;
+        $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;
         $data['readonly'] = true;
         $data['pattern_size'] = 20;
@@ -28,10 +29,11 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
+    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
     {
         $data = self::getExistingReportData($em, $id, '../../..');
         $data['report_reasons'] = $reportReasons;
+        $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
@@ -40,7 +42,7 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $reportFields, $id, $translatedRoutes)
+    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
     {
         // Prevent creation of a blank report if there is already a report for this inventory number
         $canCreate = true;
@@ -69,6 +71,7 @@ class ReportTemplateData
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
+            'object_types' => $objectTypes,
             'report_fields' => $reportFields,
             'organisations' => self::getOrganisations($em),
             'representatives' => self::getRepresentatives($em),

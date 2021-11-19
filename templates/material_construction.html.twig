@@ -1,14 +1,22 @@
 {% set construction_frame = [ 'loose', 'fixed', 'original', 'not_original' ] %}
 
+{% set measurements = { 'default': [] } %}
 {% set materials = { 'default': [] } %}
 {% set finishing_layers = { 'default': [] } %}
 {% set connections = { 'default': [] } %}
 
+{% set these_measurements = measurements.default %}
 {% set these_materials = materials.default %}
 {% set these_finishing_layers = finishing_layers.default %}
 {% set these_connections = connections.default %}
 
 {% for object_type in object_types %}
+    {% if report_fields.measurements[object_type] is defined %}
+        {% set measurements = measurements | merge({ (object_type): report_fields.measurements[object_type] }) %}
+    {% else %}
+        {% set measurements = measurements | merge({ (object_type): report_fields.measurements['default'] }) %}
+    {% endif %}
+
     {% if report_fields.materials[object_type] is defined %}
         {% set materials = materials | merge({ (object_type): report_fields.materials[object_type] }) %}
     {% else %}
@@ -28,23 +36,20 @@
     {% endif %}
 
     {% if prefilled_data.object_type is defined and prefilled_data.object_type == object_type %}
+        {% set these_measurements = measurements[object_type] %}
         {% set these_materials = materials[object_type] %}
         {% set these_finishing_layers = finishing_layers[object_type] %}
         {% set these_connections = connections[object_type] %}
     {% endif %}
 {% endfor %}
 
-{% set measurements = [ 'height', 'width', 'depth', 'weight' ] %}
-{% if this_object_type == 'work_on_paper' %}
-    {% set measurements = [ 'height_paper', 'width_paper', 'height_passe_partout', 'width_passe_partout', 'height_box', 'width_box', 'depth_box', 'weight_total' ] %}
-{% elseif this_object_type == 'sculpture' %}
-    {% set measurements = [ 'height_part_a', 'width_part_a', 'depth_part_a', 'weight_part_a', 'height_part_b', 'width_part_b', 'depth_part_b', 'weight_part_b' ] %}
-{% endif %}
 {% set has_measurement = false %}
-{% for measurement in measurements %}
-    {% if prefilled_data[measurement] is defined %}
-        {% set has_measurement = true %}
-    {% endif %}
+{% for measurement_part in these_measurements %}
+    {% for item, label in measurement_part.items %}
+        {% if prefilled_data[item] is defined %}
+            {% set has_measurement = true %}
+        {% endif %}
+    {% endfor %}
 {% endfor %}
 
 {% set has_material = false %}
@@ -95,67 +100,33 @@
 
     {% if not readonly or has_measurement %}
         <div class="report-header">{{ 'Measurements and weight' | trans }}</div>
-        <div class="form-group" id="measurements-default"{% if this_object_type != 'default' %} style="display: none"{% endif %}>
-            <div class="form-subgroup">
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans, 'disabled': this_object_type != 'default' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans, 'disabled': this_object_type != 'default' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth', 'label': 'Depth' | trans, 'disabled': this_object_type != 'default' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Weight' | trans, 'disabled': this_object_type != 'default' } %}</div>
+        {% for object_type in object_types %}
+            <div class="form-group" id="measurements-{{ object_type }}"{% if this_object_type != object_type %} style="display: none"{% endif %}>
+                {% set has_measurement_item = false %}
+                {% if this_object_type == object_type %}
+                    {% for measurement_part in measurements[object_type] %}
+                        {% for item, label in measurement_part.items %}
+                            {% if prefilled_data[item] is defined %}
+                                {% set has_measurement_item = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if not readonly or has_measurement_item %}
+                    {% for measurement_part in measurements[object_type] %}
+                        {% if measurement_part.header is not empty %}
+                            <div class="report-header-2">{{ measurement_part.header | trans }}</div>
+                        {% endif %}
+                        <div class="form-subgroup">
+                            {% for item, label in measurement_part.items %}
+                                <div class="form-item">{% include 'textfield.html.twig' with { 'name': item, 'label': label | trans, 'disabled': this_object_type != object_type } %}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
-        </div>
-        <div class="form-group" id="measurements-painting"{% if this_object_type != 'default' and this_object_type != 'painting' %} style="display: none"{% endif %}>
-            <div class="form-subgroup">
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans, 'disabled': this_object_type != 'painting' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans, 'disabled': this_object_type != 'painting' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth', 'label': 'Depth' | trans, 'disabled': this_object_type != 'painting' } %}</div>
-                <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Weight' | trans, 'disabled': this_object_type != 'painting' } %}</div>
-            </div>
-        </div>
-        <div class="form-group" id="measurements-work_on_paper"{% if this_object_type != 'work_on_paper' %} style="display: none"{% endif %}>
-            {% if not readonly or prefilled_data.height_paper is defined or prefilled_data.width_paper is defined %}
-                <div class="report-header-2">{{ 'Paper' | trans }}</div>
-                <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height', 'label': 'Height' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width', 'label': 'Width' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                </div>
-            {% endif %}
-            {% if not readonly or prefilled_data.height_passe_partout is defined or prefilled_data.width_passe_partout is defined %}
-                <div class="report-header-2">{{ 'Passe-partout' | trans }}</div>
-                <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_passe_partout', 'label': 'Height' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_passe_partout', 'label': 'Width' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                </div>
-            {% endif %}
-            {% if not readonly or prefilled_data.height_box is defined or prefilled_data.width_box is defined or prefilled_data.depth_box is defined or prefilled_data.weight_total is defined %}
-                <div class="report-header-2">{{ 'Box' | trans }}</div>
-                <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_box', 'label': 'Height' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_box', 'label': 'Width' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_box', 'label': 'Depth' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight', 'label': 'Total weight' | trans, 'disabled': this_object_type != 'work_on_paper' } %}</div>
-                </div>
-            {% endif %}
-        </div>
-        <div class="form-group" id="measurements-sculpture"{% if this_object_type != 'sculpture' %} style="display: none"{% endif %}>
-            {% if not readonly or prefilled_data.height_part_a is defined or prefilled_data.width_part_a is defined or prefilled_data.depth_part_a is defined or prefilled_data.weight_part_a is defined %}
-                <div class="report-header-2">{{ 'Separate part A' | trans }}</div>
-                <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_part_a', 'label': 'Height' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_part_a', 'label': 'Width' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_part_a', 'label': 'Depth' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight_part_a', 'label': 'Weight' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                </div>
-            {% endif %}
-            {% if not readonly or prefilled_data.height_part_b is defined or prefilled_data.width_part_b is defined or prefilled_data.depth_part_b is defined or prefilled_data.weight_part_b is defined %}
-                <div class="report-header-2">{{ 'Separate part B' | trans }}</div>
-                <div class="form-subgroup">
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'height_part_b', 'label': 'Height' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'width_part_b', 'label': 'Width' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'depth_part_b', 'label': 'Depth' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': 'weight_part_b', 'label': 'Weight' | trans, 'disabled': this_object_type != 'sculpture' } %}</div>
-                </div>
-            {% endif %}
-        </div>
+        {% endfor %}
     {% endif %}
 
     {% if not readonly or has_material or has_frame or prefilled_data.material_specification is defined or has_finishing_layer

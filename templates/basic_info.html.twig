@@ -23,10 +23,13 @@
                         <select required id="object-type-select"{% if prefilled_data.object_type is not defined or this_object_type != 'default' %} name="object_type"{% endif %}
                                 onchange="toggleObjectTypeField(this, 'object-type-custom', this.options[this.selectedIndex].value === 'customOption', true); objectTypeChanged(this.options[this.selectedIndex].value);">
                             <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
-                            <option value="painting"{% if this_object_type == 'painting' %} selected="selected"{% endif %}>{{ 'Painting' | trans }}</option>
-                            <option value="work_on_paper"{% if this_object_type == 'work_on_paper' %} selected="selected"{% endif %}>{{ 'Work on paper' | trans }}</option>
-                            <option value="sculpture"{% if this_object_type == 'sculpture' %} selected="selected"{% endif %}>{{ 'Sculpture' | trans }}</option>
-                            <option value="customOption">{{ 'Other' | trans }}</option>
+                            {% for object_type in object_types %}
+                                {% if object_type == 'default' %}
+                                    <option value="customOption">{{ 'Other' | trans }}</option>
+                                {% else %}
+                                    <option value="{{ object_type }}"{% if this_object_type == object_type %} selected="selected"{% endif %}>{{ object_type | trans }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                         <input type="text" class="custom-input" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if prefilled_data.object_type is defined and this_object_type == 'default' %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %}>
                     </div>

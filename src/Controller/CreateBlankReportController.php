@@ -21,6 +21,7 @@ class CreateBlankReportController extends AbstractController
     {
         $em = $this->container->get('doctrine')->getManager();
         $reportReasons = $this->getParameter('report_reasons');
+        $objectTypes = $this->getParameter('object_types');
         $reportFields = $this->getParameter('report_fields');
 
         $locale = $request->get('_locale');
@@ -34,7 +35,7 @@ class CreateBlankReportController extends AbstractController
             );
         }
 
-        $data = ReportTemplateData::getDataToCreateBlank($em, $reportReasons, $reportFields, $id, $translatedRoutes);
+        $data = ReportTemplateData::getDataToCreateBlank($em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes);
         if($data === null) {
             return $this->redirectToRoute('main', array('_locale' => $locale));
         } else {

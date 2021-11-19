@@ -13,7 +13,6 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/simpleupload.1.1.min.js') }}"></script>
 </head>
-{% set object_types = ['default', 'painting', 'work_on_paper', 'sculpture'] %}
 {% set this_object_type = 'default' %}
 {% if prefilled_data.object_type is defined %}
     {% for object_type in object_types %}
@@ -61,10 +60,13 @@
                             }
                         ">
                             <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
-                            <option value="painting">{{ 'Painting' | trans }}</option>
-                            <option value="work_on_paper">{{ 'Work on paper' | trans }}</option>
-                            <option value="sculpture">{{ 'Sculpture' | trans }}</option>
-                            <option value="customOption">{{ 'Other' | trans }}</option>
+                            {% for object_type in object_types %}
+                                {% if object_type == 'default' %}
+                                    <option value="customOption">{{ 'Other' | trans }}</option>
+                                {% else %}
+                                    <option value="{{ object_type }}">{{ object_type | trans }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                         <input type="text" class="custom-input" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled">
                     </div>

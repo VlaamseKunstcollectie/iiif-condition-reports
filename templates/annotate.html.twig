@@ -553,15 +553,11 @@ window.onload = function() {
         {% if prefilled_data.object_type is defined %}
             var objectTypeSelect = document.getElementById("object-type-select");
             if (objectTypeSelect != null) {
-                {% if prefilled_data.object_type == 'painting' %}
-                    objectTypeSelect.selectedIndex = 1;
-                {% elseif prefilled_data.object_type == 'work_on_paper' %}
-                    objectTypeSelect.selectedIndex = 2;
-                {% elseif prefilled_data.object_type == 'sculpture' %}
-                    objectTypeSelect.selectedIndex = 3;
-                {% else %}
-                    objectTypeSelect.selectedIndex = 4;
-                {% endif %}
+                {% for object_type in object_types %}
+                    {% if this_object_type == object_type %}
+                        objectTypeSelect.selectedIndex = {{ loop.index }};
+                    {% endif %}
+                {% endfor %}
             }
         {% else %}
             var objectTypeSelect = document.getElementById("object-type-select");

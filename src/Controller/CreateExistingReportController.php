@@ -56,6 +56,7 @@ class CreateExistingReportController extends AbstractController
             }
         }
         $reportReasons = $this->getParameter('report_reasons');
+        $objectTypes = $this->getParameter('object_types');
         $reportFields = $this->getParameter('report_fields');
 
         $locale = $request->get('_locale');
@@ -69,6 +70,6 @@ class CreateExistingReportController extends AbstractController
             );
         }
 
-        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $reportReasons, $reportFields, $highestId, $translatedRoutes));
+        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $reportReasons, $objectTypes, $reportFields, $highestId, $translatedRoutes));
     }
 }
