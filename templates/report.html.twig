@@ -205,6 +205,16 @@
                         connectionPedestalDiv.style = "display: none";
                     }
                 }
+                var addFrameEle = document.getElementById('add-image-frame');
+                if(addFrameEle != null) {
+                    addFrameEle.disabled = selectedValue === 'sculpture';
+                    addFrameEle.hidden = selectedValue === 'sculpture';
+                }
+                var addBacksideEle = document.getElementById('add-image-backside');
+                if(addBacksideEle != null) {
+                    addBacksideEle.disabled = selectedValue === 'sculpture';
+                    addBacksideEle.hidden = selectedValue === 'sculpture';
+                }
             }
         </script>
 

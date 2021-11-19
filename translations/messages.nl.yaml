@@ -87,20 +87,6 @@ Conservation for transport needed: Conservering voor transport nodig
 Yes: Ja
 No: Nee
 
-Object requirements: Objectvereisten
-
-Show all: Toon alles
-Hide all: Verberg alles
-Current annotations: Huidige annotaties
-Load: Laad
-Add image: Voeg afbeelding toe
-Image through camera: Afbeelding via camera
-Image on device: Afbeelding op toestel
-Image through URL: Afbeelding via URL
-IIIF image through URL: IIIF afbeelding via URL
-Insert URL of image ...: Vul URL in van afbeelding ...
-Insert URL of IIIF image ...: Vul URL in van IIIF afbeelding ...
-
 Incoming object (depacking): Inkomend object (depacking)
 Acquisition (collection donor / seller / ...): Verwerving (collectie schenker / verkoper / ...)
 Long term loan (third party collection): Langdurige bruikleen (collectie derden)
@@ -268,6 +254,21 @@ Polyethylene film: Polyethyleenfolie
 Silk paper: Zijdepapier
 Not packed: Niet verpakt
 Only local protection: Enkel plaatselijke bescherming
+
+Show all: Toon alles
+Hide all: Verberg alles
+Current annotations: Huidige annotaties
+Load: Laad
+Add image: Voeg afbeelding toe
+Simplified image of a frame: Vereenvoudigde afbeelding van een lijst
+Simplified image of a backside: Vereenvoudigde afbeelding van een achterkant
+Image through camera: Afbeelding via camera
+Image on device: Afbeelding op toestel
+Image through URL: Afbeelding via URL
+IIIF image through URL: IIIF afbeelding via URL
+Insert URL of image ...: Vul URL in van afbeelding ...
+Insert URL of IIIF image ...: Vul URL in van IIIF afbeelding ...
+
 
 stone: Steen
 metal: Metaal

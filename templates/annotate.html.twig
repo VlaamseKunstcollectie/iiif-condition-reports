@@ -114,59 +114,7 @@
         </div>
 
         <div id="annotation-viewer">
-            <div id="openseadragon-annotorious">
-                <!-- Patterns that can be used in the annotations -->
-                <svg style="position: absolute; top: -9999px; left: -9999px;">
-                    <pattern id="rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="red" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width * 2 }}"></line>
-                        <line stroke="red" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width * 2}}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size * 3 / 2 }}px">
-                        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                </svg>
-            </div>
+            <div id="openseadragon-annotorious"></div>
             {% if readonly %}
                 {% for image in images %}
                     <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
@@ -180,6 +128,8 @@
                     <div id="add-images">
                         <select id="add-image-select" onchange="selectedImageToAdd(this)" autocomplete="off">
                             <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
+                            <option value="frame" id="add-image-frame"{% if this_object_type == 'sculpture' %} disabled hidden{% endif %}>{{ 'Simplified image of a frame' | trans }}</option>
+                            <option value="backside" id="add-image-backside"{% if this_object_type == 'sculpture' %} disabled hidden{% endif %}>{{ 'Simplified image of a backside' | trans }}</option>
                             <option value="camera">{{ 'Image through camera' | trans }}</option>
                             <option value="device">{{ 'Image on device' | trans }}</option>
                             <option value="url">{{ 'Image through URL' | trans }}</option>
@@ -224,11 +174,24 @@
 function selectedImageToAdd(selectElement) {
     var addImageDivInput = document.getElementById("add-image-div");
     switch(selectElement.options[selectElement.selectedIndex].value) {
-        case 'iiif': {
-            addImageDivInput.style = "display: block";
-            var addImageUrl = document.getElementById("add-image-url");
-            addImageUrl.placeholder = "{{ 'Insert IIIF image URL ...' | trans }}";
-            addImageUrl.value = "";
+        case 'frame': {
+            addImage({{ frame_picture | json_encode | raw }});
+            document.getElementById('add-image-select').selectedIndex = 0;
+            break;
+        }
+        case 'backside': {
+            addImage({{ backside_picture | json_encode | raw }});
+            document.getElementById('add-image-select').selectedIndex = 0;
+            break;
+        }
+        case 'camera': {
+            addImageDivInput.style = "display: none";
+            document.getElementById("annotate-camera").click();
+            break;
+        }
+        case 'device': {
+            addImageDivInput.style = "display: none";
+            document.getElementById("annotate-file").click();
             break;
         }
         case 'url': {
@@ -238,14 +201,11 @@ function selectedImageToAdd(selectElement) {
             addImageUrl.value = "";
             break;
         }
-        case 'device': {
-            addImageDivInput.style = "display: none";
-            document.getElementById("annotate-file").click();
-            break;
-        }
-        case 'camera': {
-            addImageDivInput.style = "display: none";
-            document.getElementById("annotate-camera").click();
+        case 'iiif': {
+            addImageDivInput.style = "display: block";
+            var addImageUrl = document.getElementById("add-image-url");
+            addImageUrl.placeholder = "{{ 'Insert IIIF image URL ...' | trans }}";
+            addImageUrl.value = "";
             break;
         }
     }

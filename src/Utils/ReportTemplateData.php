@@ -16,12 +16,15 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
+    public static function getViewData(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
-        $data = self::getExistingReportData($em, $id, '../..');
+        $imageRelPath = '../..';
+        $data = self::getExistingReportData($em, $id, $imageRelPath);
         $data['report_reasons'] = $reportReasons;
         $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;
+        $data['frame_picture'] = array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']);
+        $data['backside_picture'] = array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']);
         $data['readonly'] = true;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
@@ -29,12 +32,15 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
+    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
-        $data = self::getExistingReportData($em, $id, '../../..');
+        $imageRelPath = '../../..';
+        $data = self::getExistingReportData($em, $id, $imageRelPath);
         $data['report_reasons'] = $reportReasons;
         $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;
+        $data['frame_picture'] = array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']);
+        $data['backside_picture'] = array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']);
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
@@ -42,7 +48,7 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $id, $translatedRoutes)
+    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
         // Prevent creation of a blank report if there is already a report for this inventory number
         $canCreate = true;
@@ -61,7 +67,9 @@ class ReportTemplateData
         }
 
         $prefilledData = self::getDatahubData($em, $id, array());
-        $images = self::getImages($em, $prefilledData, '../../..');
+
+        $imageRelPath = '../../..';
+        $images = self::getImages($em, $prefilledData, $imageRelPath);
 
         return [
             'current_page' => 'reports',
@@ -71,6 +79,8 @@ class ReportTemplateData
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
+            'frame_picture' => array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']),
+            'backside_picture' => array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']),
             'object_types' => $objectTypes,
             'report_fields' => $reportFields,
             'organisations' => self::getOrganisations($em),
