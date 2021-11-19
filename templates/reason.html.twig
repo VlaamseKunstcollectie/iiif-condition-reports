@@ -22,7 +22,7 @@
             <div class="form-item">
                 <label for="reason-dropdown">{{ 'Reason' | trans }}</label>
                 <div class="flex">
-                    <select id="reason-dropdown" name="reason" onchange="toggleCustomReason('reason-custom', this.options[this.selectedIndex].value === 'customOption');">
+                    <select id="reason-dropdown" name="reason" onchange="toggleCustomReason('reason-custom', this.options[this.selectedIndex].value === 'customOption');" autocomplete="off">
                         <option></option>
                         {% for key, reason_type in report_reasons %}
                             <optgroup label="{{ reason_type.name | trans }}">
@@ -34,7 +34,7 @@
                         <option value="customOption"{% if prefilled_data.reason_custom is defined %} selected{% endif %}>{{ 'Other' | trans }}</option>
                     </select>
                     <input type="text" class="custom-input" id="reason-custom" placeholder="{{ 'Fill in another reason ...' | trans }}" name="reason_custom"
-                           {% if prefilled_data.reason_custom is defined %}value="{{ prefilled_data.reason_custom }}" {% else %}style="display: none;" disabled="disabled" {% endif %}">
+                           {% if prefilled_data.reason_custom is defined %}value="{{ prefilled_data.reason_custom }}" {% else %}style="display: none;" disabled="disabled"{% endif %} autocomplete="off">
                 </div>
             </div>
         </div>

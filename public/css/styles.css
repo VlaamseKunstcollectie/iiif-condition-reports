@@ -440,6 +440,10 @@ textarea {
     display: flex;
 }
 
+.number-box {
+    margin-left: 15px;
+}
+
 #object-type-close {
     position: fixed;
     top: 5px;
@@ -610,7 +614,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form .form-checkbox-custom,
 #report-form .form-checkbox-conservation,
 #report-form .form-checkbox-conservation-custom,
-#report-form .form-radio {
+#report-form .form-radio,
+#report-form .form-radio-custom {
     display: flex;
 }
 
@@ -623,7 +628,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form .form-checkbox-custom input[type=checkbox],
 #report-form .form-checkbox-conservation input[type=checkbox],
 #report-form .form-checkbox-conservation-custom input[type=checkbox],
-#report-form .form-radio input[type=radio] {
+#report-form .form-radio input[type=radio],
+#report-form .form-radio-custom input[type=radio] {
     height: 14px;
     line-height: 14px;
     width: auto;
@@ -632,7 +638,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .form-checkbox-custom input[type=checkbox],
 #report-form .form-checkbox-conservation input[type=checkbox],
-#report-form .form-checkbox-conservation-custom input[type=checkbox] {
+#report-form .form-checkbox-conservation-custom input[type=checkbox],
+#report-form .form-radio-custom input[type=radio] {
     margin-top: 12px;
 }
 
@@ -1292,7 +1299,8 @@ form {
 
 .readonly #report-form .form-checkbox-custom input,
 .readonly #report-form .form-checkbox-conservation input,
-.readonly #report-form .form-checkbox-conservation-custom input {
+.readonly #report-form .form-checkbox-conservation-custom input,
+.readonly #report-form .form-radio-custom input {
     margin-top: 2px;
 }
 

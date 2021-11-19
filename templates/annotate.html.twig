@@ -100,7 +100,7 @@
                 </div>
                 <div>
                     <!--<p>Opvulling: </p>-->
-                    <select id="fill-dropdown" onchange="selectDropdown()">
+                    <select id="fill-dropdown" onchange="selectDropdown()" autocomplete="off">
                         <option value="">Geen opvulling</option>
                         <option value="rect">Geen opvulling</option>
                         <option value="diagonal-rect">Geen opvulling</option>
@@ -178,7 +178,7 @@
             <div id="annotation-images">
                 {% if not readonly %}
                     <div id="add-images">
-                        <select id="add-image-select" onchange="selectedImageToAdd(this)">
+                        <select id="add-image-select" onchange="selectedImageToAdd(this)" autocomplete="off">
                             <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
                             <option value="camera">{{ 'Image through camera' | trans }}</option>
                             <option value="device">{{ 'Image on device' | trans }}</option>

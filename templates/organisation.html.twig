@@ -45,7 +45,7 @@
 					<div>
 						<label for="role-dropdown">{{ 'Role' | trans }}</label>
 						<div class="flex">
-							<select id="role-dropdown"{% if custom_role is empty %} name="form[role]"{% endif %} onchange="toggleCustomRole(this, 'role-custom', this.options[this.selectedIndex].value === 'customOption')">
+							<select id="role-dropdown"{% if custom_role is empty %} name="form[role]"{% endif %} onchange="toggleCustomRole(this, 'role-custom', this.options[this.selectedIndex].value === 'customOption')" autocomplete="off">
 								<option disabled selected hidden>{{ 'Choose a role' | trans }}</option>
 								{% for key, role_ in organisation_roles %}
 									<option value="{{ key }}"{% if role == key %} selected{% endif %}>{{ role_ | trans }}</option>
@@ -53,7 +53,7 @@
 								<option value="customOption"{% if custom_role is not empty %} selected{% endif %}>{{ 'Other' | trans }}</option>
 							</select>
 							<input type="text" id="role-custom" placeholder="{{ 'Fill in another role ...' | trans }}"
-								   {% if custom_role is not empty %} name="form[role]" value="{{ custom_role }}" {% else %}style="display: none;" disabled="disabled" {% endif %}>
+								   {% if custom_role is not empty %} name="form[role]" value="{{ custom_role }}" {% else %}style="display: none;" disabled="disabled" {% endif %} autocomplete="off">
 						</div>
 					</div>
 					{% do form.role.setRendered() %}

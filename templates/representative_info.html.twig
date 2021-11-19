@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
+    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)" autocomplete="off">
         <option></option>
         {% for representative in representatives %}
             <option value="{{ representative.id }}">{{ representative.alias }}</option>

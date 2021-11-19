@@ -21,7 +21,7 @@
                     <label for="object-type-select">{{ 'Object type' | trans }}</label>
                     <div class="flex">
                         <select required id="object-type-select"{% if prefilled_data.object_type is not defined or this_object_type != 'default' %} name="object_type"{% endif %}
-                                onchange="toggleObjectTypeField(this, 'object-type-custom', this.options[this.selectedIndex].value === 'customOption', true); objectTypeChanged(this.options[this.selectedIndex].value);">
+                                onchange="toggleObjectTypeField(this, 'object-type-custom', this.options[this.selectedIndex].value === 'customOption', true); objectTypeChanged(this.options[this.selectedIndex].value);" autocomplete="off">
                             <option value=""{% if prefilled_data.object_type is not defined %} selected="selected"{% endif %} disabled hidden>{{ 'Select the object type' | trans }}</option>
                             {% for object_type in object_types %}
                                 {% if object_type == 'default' %}
@@ -31,7 +31,7 @@
                                 {% endif %}
                             {% endfor %}
                         </select>
-                        <input type="text" class="custom-input" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if prefilled_data.object_type is defined and this_object_type == 'default' %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %}>
+                        <input type="text" class="custom-input" id="object-type-custom" placeholder="{{ 'Fill in another object type ...' | trans }}"{% if prefilled_data.object_type is defined and this_object_type == 'default' %} name="object_type" value="{{ prefilled_data.object_type }}"{% else %} style="display: none;"{% endif %} autocomplete="off">
                     </div>
                 {% else %}
                     {% include 'textfield.html.twig' with { 'name': 'object_type', 'label': 'Object type' | trans } %}

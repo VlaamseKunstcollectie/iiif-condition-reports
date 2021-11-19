@@ -58,7 +58,7 @@
                                     document.getElementById('object-type-select').selectedIndex = this.selectedIndex;
                                 }
                             }
-                        ">
+                        " autocomplete="off">
                             <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
                             {% for object_type in object_types %}
                                 {% if object_type == 'default' %}
@@ -68,7 +68,7 @@
                                 {% endif %}
                             {% endfor %}
                         </select>
-                        <input type="text" class="custom-input" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled">
+                        <input type="text" class="custom-input" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" autocomplete="off">
                     </div>
                 </div>
                 <div class="save">

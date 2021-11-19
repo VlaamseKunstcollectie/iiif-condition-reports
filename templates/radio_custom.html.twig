@@ -1,0 +1,15 @@
+{% if onclick is defined %}
+    {% include 'radio.html.twig' with { 'name': name, 'value': 'custom', 'onclick': onclick } %}
+{% else %}
+    {% include 'radio.html.twig' with { 'name': name, 'value': 'custom' } %}
+{% endif %}
+
+{% if readonly %}
+    {% if prefilled_data[name ~ '_radio_custom_text'] is defined and prefilled_data[name ~ '_radio_custom_text'] is not empty %}
+        <span class="readonly-input">{{ prefilled_data[name ~ '_radio_custom_text'] }}</span>
+    {% endif %}
+{% else %}
+    <input type="text" id="{{ name }}_radio_custom_text" oninput="document.getElementById('radio_{{ name }}_custom').checked = this.value !== '';" name="{{ name }}_radio_custom_text"
+           value="{% if prefilled_data[name ~ '_radio_custom_text'] is defined and prefilled_data[name ~ '_radio_custom_text'] is not empty %}{{ prefilled_data[name ~ '_radio_custom_text'] }}{% endif %}"
+            {% if readonly %} disabled{% endif %} autocomplete="off"/>
+{% endif %}
