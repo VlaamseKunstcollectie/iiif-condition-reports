@@ -51,6 +51,7 @@ parameters:
   # Do not forget to add the appropriate translations to messages.en.yaml and messages.nl.yaml when editing the report fields
   # Supported types: default, painting, work_on_paper and sculpture
   # You must always provide a default list as fallback, each list should end in 'custom'
+  # Spaces are not allowed in any of the lists, only letters, numbers and underscores
   report_fields:
     materials:
       default:
@@ -97,6 +98,81 @@ parameters:
         - screws
         - nails
         - bolts
+        - custom
+    damages:
+      default:
+        - surface_dirt
+        - crusted_dirt
+        - spots
+        - fingerprints
+        - old_restoration
+        - salts
+        - insect_damage
+        - mold
+        - water_damage
+        - corrosion
+        - gaps
+        - flaking
+        - powdering
+        - discolorations
+        - wearage
+        - scratches
+        - twists
+        - dents
+        - structural_damage
+        - cracks
+        - hair_tears
+        - holes
+        - wrinkled
+        - delamination
+        - missing_parts
+        - removable_parts
+        - brittle
+        - custom
+    conservation_treatments:
+      default:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      sculpture:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - stabilizing_pedestal
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+    restoration_treatments:
+      default:
+        - thorough_cleaning
+        - local_cleaning
+        - polychromy_research
+        - reconstruction_of_original
+        - removing_material_tension
+        - removing_old_restoration
+        - replacing_construction
+        - protective_layer
+        - adding_fastening_system
+        - retouching
+        - filling_gap_elements
+        - custom
+    researches:
+      default:
+        - setup_method
+        - material_technical_research
+        - analysis
+        - necessary_background_information
         - custom
 
   locales:

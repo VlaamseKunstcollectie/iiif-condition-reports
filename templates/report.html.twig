@@ -167,7 +167,10 @@
                 if(!objectTypes.includes(selectedValue)) {
                     selectedValue = 'default';
                 }
-                var divs = [ 'measurements', 'materials', 'materials-frame', 'finishing-layer', 'connection-work' ];
+                var divs = [
+                    'measurements', 'materials', 'materials-frame', 'finishing-layer', 'connection-work',
+                    'damages', 'damages-finishing-layer', 'conservation-treatment', 'restoration-treatment', 'research'
+                ];
                 for(var i = 0; i < objectTypes.length; i++) {
                     for(var j = 0; j < divs.length; j++) {
                         var div = document.getElementById(divs[j] + '-' + objectTypes[i]);
