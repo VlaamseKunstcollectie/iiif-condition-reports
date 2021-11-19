@@ -48,18 +48,42 @@ parameters:
         602: Loss and damage
         603: Damage claim
 
+  # There must always be a 'default' object type as fallback
+  object_types:
+    - default
+    - painting
+    - work_on_paper
+    - sculpture
+
   # Do not forget to add the appropriate translations to messages.en.yaml and messages.nl.yaml when editing the report fields
   # Supported types: default, painting, work_on_paper and sculpture
-  # You must always provide a default list as fallback, each list should end in 'custom'
-  # Spaces are not allowed in any of the lists, only letters, numbers and underscores
+  # You must always provide a default list as fallback (which ideally contains all elements of the other object types) and each list should end in 'custom'
+  # Spaces are not allowed in any of the list elements, only letters, numbers and underscores
   report_fields:
     materials:
       default:
+        - stone
+        - metal
+        - glass
+        - ceramic
+        - plaster
+        - textile
+        - paper
+        - wood
+        - plastic
+        - custom
+      painting:
         - textile
         - wood
         - metal
         - ceramic
-        - ivory
+        - paper
+        - custom
+      work_on_paper:
+        - textile
+        - wood
+        - metal
+        - ceramic
         - paper
         - custom
       sculpture:
@@ -138,6 +162,27 @@ parameters:
         - reinforcing
         - regluing_loose_parts
         - fixating_loose_parts
+        - stabilizing_pedestal
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      painting:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      work_on_paper:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
         - adding_protective_layer
         - adding_barcode
         - custom
