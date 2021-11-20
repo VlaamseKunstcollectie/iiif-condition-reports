@@ -24,11 +24,12 @@
                             <button type="button" onclick="resetAnnotations();" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span></button>
                             <div id="annotation-history-timestamps">
                                 {% if not readonly %}
-                                    <div id="annos-{{ image.hash }}-999999999">
+                                    <div id="annos-{{ image.hash }}-999999999" class="show-hide-current-annos">
                                         <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-{{ image.hash }}-999999999" class="hide">
                                             <i class="far fa-eye"></i>
                                             <span>{{ 'Current annotations' | trans }}</span>
                                         </button>
+                                        <div></div>
                                     </div>
                                 {% endif %}
                                 {% if annotation_history[image.hash] is defined %}
@@ -38,6 +39,7 @@
                                                 <i class="far fa-eye"></i>
                                                 <span>{{ timestamp }}</span>
                                             </button>
+                                            <div></div>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
@@ -150,7 +152,7 @@
                 {% endif %}
                 <div id="thumbnails">
                     {% for image in images %}
-                        <div class="thumbnail-image" id="thumbnail-image-{{ image.hash }}"{% if not readonly %} onmouseover="this.querySelector('div').style.visibility = 'visible';" onmouseout="this.querySelector('div').style.visibility = 'hidden';"{% endif %}>
+                        <div class="thumbnail-image" id="thumbnail-image-{{ image.hash }}">
                             <img src="{{ image.thumbnail }}" alt="" onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
                             {% if not readonly %}
                                 <div class="delete-image-button" onclick="confirmDeleteImage('{{ image.hash }}')">
@@ -431,7 +433,7 @@ function clickedThumbnail(hash, image) {
     window.allAnnotationsVisible = true;
     resetAnnotations();
 
-    var div = document.getElementById("annotation-history-timestamps");
+    var div = document.getElementById('annotation-history-timestamps');
     while (div.firstChild) {
         div.removeChild(div.firstChild);
     }
@@ -441,20 +443,21 @@ function clickedThumbnail(hash, image) {
     }
     for(var i = ids.length - 1; i >= 0; i--) {
         const id = ids[i];
-        var newDiv = document.createElement("div");
-        newDiv.id = "annos-" + hash + "-" + id;
-        var button = document.createElement("button");
+        var newDiv = document.createElement('div');
+        newDiv.id = 'annos-' + hash + '-' + id;
+        var button = document.createElement('button');
         button.onclick = function () {
             toggleAnnotations(id);
         };
-        button.type = "button";
-        button.id = "show-hide-annos-" + hash + "-" + id;
-        button.className = "hide";
-        var iEye = document.createElement("i");
-        iEye.className = "far fa-eye";
-        var span = document.createElement("span");
+        button.type = 'button';
+        button.id = 'show-hide-annos-' + hash + '-' + id;
+        button.className = 'hide';
+        var iEye = document.createElement('i');
+        iEye.className = 'far fa-eye';
+        var span = document.createElement('span');
         if(id === '999999999') {
-            span.innerHTML = "Huidige annotaties";
+            span.innerHTML = '{{ 'Current annotations' | trans }}';
+            newDiv.className = 'show-hide-current-annos';
         } else {
             span.innerHTML = window.annotationHistory[hash][id];
         }
@@ -462,21 +465,32 @@ function clickedThumbnail(hash, image) {
         button.appendChild(span);
         newDiv.appendChild(button);
 
+        var spanDiv = document.createElement('div');
+        newDiv.appendChild(spanDiv);
+
         if(hash in window.addedAnnotations) {
             if(id in window.addedAnnotations[hash]) {
                 var annos = window.addedAnnotations[hash][id];
                 for(const id in annos) {
+                    if (!window.annoIds.includes(id)) {
+                        window.annoIds.push(id);
+                    }
                     if(annos[id].hasOwnProperty('body')
                         && annos[id].body != null && annos[id].body.length > 0
                         && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
                         && annos[id].body[0].value !== '') {
-                        var span = document.createElement("span");
-                        span.innerHTML = annos[id].body[0].value;
-                        newDiv.appendChild(span);
+                        newDiv.style = 'display: block';
+                        addAnnoHistSpan(spanDiv, id, annos[id].body[0].value, true);
                     }
-                    if (!window.annoIds.includes(id)) {
-                        window.annoIds.push(id);
-                    }
+                }
+            }
+        }
+        if(hash in window.deletedAnnotations) {
+            if(id in window.deletedAnnotations[hash]) {
+                var annos = window.deletedAnnotations[hash][id];
+                for(const id in annos) {
+                    newDiv.style = 'display: block';
+                    addAnnoHistSpan(spanDiv, id, '', false);
                 }
             }
         }
@@ -526,9 +540,133 @@ window.onload = function() {
         styleColor: 'red',
         styleFill: '',
         styleClass: 'condition-red'
+        {% if readonly %}
+        , readOnly: true
+        {% endif %}
     };
 
     window.anno = OpenSeadragon.Annotorious(window.osd_anno, window.annoConf);
+
+    window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            var span = document.getElementById('anno-hist-' + annotation.id);
+            if(span != null) {
+                span.classList.add('anno-hist-hover');
+            }
+        }
+    });
+
+    window.anno.on('selectAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            var span = document.getElementById('anno-hist-' + annotation.id);
+            if(span != null) {
+                span.classList.add('anno-hist-hover');
+            }
+        }
+    });
+
+    window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            var span = document.getElementById('anno-hist-' + annotation.id);
+            if(span != null) {
+                span.classList.remove('anno-hist-hover');
+            }
+        }
+    });
+
+    window.anno.on('cancelSelected', function(annotation, ele) {
+        if(annotation != null) {
+            var span = document.getElementById('anno-hist-' + annotation.id);
+            if(span != null) {
+                span.classList.remove('anno-hist-hover');
+            }
+        }
+    });
+
+    window.anno.on('updateAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            var span = document.getElementById('anno-hist-' + annotation.id);
+            if(span != null) {
+                span.style.backgroundColor = 'white';
+            }
+        }
+    });
+
+    window.anno.on('createAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            if(!window.annoIds.includes(annotation.id)) {
+                window.annoIds.push(annotation.id);
+                window.addedAnnotations[window.currentImage]["999999999"][annotation.id] = annotation;
+                window.annoIds.push(annotation.id);
+            }
+            var buttons = document.getElementsByClassName('show-hide-current-annos');
+            for(var i = 0; i < buttons.length; i++) {
+                buttons[i].style = 'display: block';
+                var div = buttons[i].querySelector('div');
+                if(div != null) {
+                    addAnnoHistSpan(div, annotation.id, annotation.body[0].value, true);
+                }
+            }
+        }
+    });
+
+    window.anno.on('deleteAnnotation', function(annotation, ele) {
+        if(annotation != null) {
+            var button = document.getElementById('anno-hist-' + annotation.id);
+            if(button != null) {
+                var parent = button.parentElement.parentElement;
+                if(parent.className === 'show-hide-current-annos') {
+                    button.parentElement.removeChild(button);
+                    if(parent.querySelectorAll('div > span').length === 0) {
+                        parent.style = 'display: none';
+                    }
+                    // TODO find report ID and delete the proper one
+                    //delete window.annotationHistory[hash][reportId][annotation.id];
+                    //delete window.addedAnnotations[hash][reportId][annotation.id];
+                    //delete window.deletedAnnotations[hash][reportId][annotation.id];
+
+                    //TODO something along these lines:
+/*
+                    for (const id in window.annotationHistory[hash]) {
+                        if (id in window.deletedAnnotations[hash]) {
+                            for (const delId of window.deletedAnnotations[hash][id]) {
+                                delete annotations[hash][delId];
+                            }
+                        }
+                        if (id in window.addedAnnotations[hash]) {
+                            for (const [annoId, anno] of Object.entries(window.addedAnnotations[hash][id])) {
+                                annotations[hash][annoId] = anno;
+                            }
+                        }
+                    }
+                        */
+
+                } else {
+                    var alreadyIn = false;
+                    if(window.currentImage in window.deletedAnnotations) {
+                        for(id in window.deletedAnnotations[window.currentImage]) {
+                            if (window.deletedAnnotations[window.currentImage][id].includes(annotation.id)) {
+                                alreadyIn = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!alreadyIn) {
+                        window.deletedAnnotations[window.currentImage]['999999999'].push(annotation.id);
+                        button.classList.remove('anno-hist-hover');
+                        var buttons = document.getElementsByClassName('show-hide-current-annos');
+                        for(var i = 0; i < buttons.length; i++) {
+                            buttons[i].style = 'display: block';
+                            var div = buttons[i].querySelector('div');
+                            if(div != null) {
+                                addAnnoHistSpan(div, annotation.id, '', false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
 
     Annotorious.SelectorPack(window.anno, {});
 
@@ -542,10 +680,6 @@ window.onload = function() {
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
-            if(!window.annotationsVisible[window.currentImage]["999999999"]) {
-                toggleAnnotations("999999999");
-            }
-            storeCurrentAnnotations();
             document.body.onbeforeunload = '';
             var annotations = {};
             for(var i = 0; i < window.images.length; i++) {
@@ -679,18 +813,20 @@ for(const image in annotations) {
     for(const reportId in annotations[image]) {
         var reportAnnos = {};
         var histEle = document.getElementById("annos-" + image + "-" + reportId);
+        var histEleDiv = null;
+        if(histEle != null) {
+            histEleDiv = histEle.querySelector('div');
+        }
         for(const id in annotations[image][reportId]) {
             reportAnnos[id] = JSON.parse(annotations[image][reportId][id]);
-            if(histEle != null && reportAnnos[id].hasOwnProperty('body')
+            if (!window.annoIds.includes(id)) {
+                window.annoIds.push(id);
+            }
+            if(histEleDiv != null && reportAnnos[id].hasOwnProperty('body')
                 && reportAnnos[id].body != null && reportAnnos[id].body.length > 0
                 && reportAnnos[id].body[0].hasOwnProperty('value') && reportAnnos[id].body[0].value != null
                 && reportAnnos[id].body[0].value !== '') {
-                var span = document.createElement("span");
-                span.innerHTML = reportAnnos[id].body[0].value;
-                histEle.appendChild(span);
-            }
-            if (!window.annoIds.includes(id)) {
-                window.annoIds.push(id);
+                addAnnoHistSpan(histEleDiv, id, reportAnnos[id].body[0].value, true);
             }
         }
         window.addedAnnotations[image][reportId] = reportAnnos;
@@ -701,8 +837,16 @@ var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
 for(const image in deletedAnnos) {
     for(const reportId in deletedAnnos[image]) {
         var deleted = [];
+        var histEle_ = document.getElementById("annos-" + image + "-" + reportId);
+        var histEleDiv_ = null;
+        if(histEle_ != null) {
+            histEleDiv_ = histEle_.querySelector('div');
+        }
         for(const id in deletedAnnos[image][reportId]) {
             deleted.push(id);
+            if(histEleDiv_ != null) {
+                addAnnoHistSpan(histEleDiv_, id, '', false);
+            }
         }
         window.deletedAnnotations[image][reportId] = deleted;
     }
@@ -711,6 +855,57 @@ for (const id in window.annotationHistory[window.currentImage]) {
     window.annotationsVisible[window.currentImage][id] = true;
 }
 window.allAnnotationsVisible = true;
+
+function addAnnoHistSpan(div, id, text, added) {
+    var span = document.createElement("span");
+
+    var number = 1;
+    for(var i = 0; i < window.annoIds.length; i++) {
+        if(window.annoIds[i] === id) {
+            number = i + 1;
+            break;
+        }
+    }
+
+    if(added) {
+        span.id = 'anno-hist-' + id;
+        span.className = 'anno-hist';
+        span.innerHTML = number + '. ' + text;
+    } else {
+        span.className = 'anno-hist-deleted';
+        {% if app.request.locale == 'en' %}
+            span.innerHTML = '({{ 'Deleted' | trans }} ' + number + ')';
+        {% else %}
+            span.innerHTML = '(' + number + ' {{ 'deleted' | trans }})';
+        {% endif %}
+    }
+    span.onmouseover = function() {
+        var eles = document.getElementsByClassName('a9s-outer');
+        for(var i = 0; i < eles.length; i++) {
+            if(eles[i].parentElement.getAttribute('data-id') === id) {
+                eles[i].parentElement.classList.add('selected');
+            }
+        }
+    };
+    span.onmouseout = function() {
+        var eles = document.getElementsByClassName('a9s-outer');
+        for(var i = 0; i < eles.length; i++) {
+            if(eles[i].parentElement.getAttribute('data-id') === id) {
+                eles[i].parentElement.classList.remove('selected');
+            }
+        }
+    };
+    span.onclick = function() {
+        if(window.anno.selectAnnotation(id) !== undefined) {
+            this.classList.add('anno-hist-hover');
+        }
+    };
+    if(div.childNodes.length === 0) {
+        div.appendChild(span);
+    } else {
+        div.insertBefore(span, div.firstChild);
+    }
+}
 
 function refreshAnnotations(viewer) {
     var annotations = {};
@@ -736,7 +931,6 @@ function refreshAnnotations(viewer) {
 }
 
 function toggleAnnotations(id) {
-    storeCurrentAnnotations();
     window.annotationsVisible[window.currentImage][id] = !window.annotationsVisible[window.currentImage][id];
     var buttonId = "show-hide-annos-" + window.currentImage + "-" + id;
     var showAnnotationsButton = document.getElementById(buttonId);
@@ -775,34 +969,16 @@ function setShowHideAllButton() {
     }
 }
 
-function storeCurrentAnnotations() {
-    {% if not readonly %}
-        if(window.annotationsVisible[window.currentImage]["999999999"]) {
-            window.addedAnnotations[window.currentImage]["999999999"] = {};
-            var annos = window.anno.getAnnotations();
-            for (var i = 0; i < annos.length; i++) {
-                if (!window.annoIds.includes(annos[i].id)) {
-                    window.addedAnnotations[window.currentImage]["999999999"][annos[i].id] = annos[i];
-                    window.annoIds.push(annos[i].id);
-                }
-            }
-        }
-    {% endif %}
-}
-
 function resetAnnotations() {
-    storeCurrentAnnotations();
     window.allAnnotationsVisible = !window.allAnnotationsVisible;
     setShowHideAllButton();
     for (const id in window.annotationHistory[window.currentImage]) {
         window.annotationsVisible[window.currentImage][id] = window.allAnnotationsVisible;
         var showAllButton = document.getElementById("show-hide-annos-" + window.currentImage + "-" + id);
         if(window.allAnnotationsVisible) {
-            //showAllButton.innerHTML = "Verberg";
             showAllButton.classList.remove("show");
             showAllButton.classList.add("hide");
         } else {
-            //showAllButton.innerHTML = "Toon";
             showAllButton.classList.remove("hide");
             showAllButton.classList.add("show");
         }
