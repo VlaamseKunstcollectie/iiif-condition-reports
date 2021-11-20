@@ -282,10 +282,17 @@ textarea {
     border-bottom: 1px solid #dbdbdb;
 }
 
-.openseadragon-annotorious-print {
+.no-print-break {
     grid-row-start: 1;
     grid-column-start: 1;
-    z-index: -1;
+    height: 800px;
+    width: 770px;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+.openseadragon-annotorious-print {
     height: 800px;
     width: 770px;
 }
@@ -884,6 +891,31 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     border-radius: 8px;
 }
 
+.thumbnail-image {
+    position: relative;
+    width: 150px;
+}
+
+.trash-background-image {
+    position: absolute;
+    top: 10px;
+    left: 107px;
+}
+
+.trash-icon {
+    position: absolute;
+    top: 16px;
+    left: 115px;
+    width: 35px;
+    line-height: 35px;
+    font-size: 20px;
+}
+
+.delete-image-button {
+    visibility: hidden;
+    cursor: pointer;
+}
+
 .select2 {
     width: 155px !important;
 }
@@ -1412,11 +1444,13 @@ footer a:hover {
         display: block;
     }
 
-    .openseadragon-annotorious-print {
+    .no-print-break {
         grid-row-start: auto;
         grid-column-start: auto;
-        z-index: 0;
         break-inside: avoid !important;
+        position: static;
+        top: 0;
+        left: 0;
     }
 
     #report-form {

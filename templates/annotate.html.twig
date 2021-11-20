@@ -6,14 +6,16 @@
         <div id="annotation-history">
             {% set default_image = '' %}
             {% set has_history = false %}
-            {% for image in images %}
-                <input type="hidden" name="images[]" value="{{ image | json_encode | replace({'"': '\\"'}) }}">
-                {% if annotation_history[image.hash] is defined %}
-                    {% for id, timestamp in annotation_history[image.hash] %}
-                        {% set has_history = true %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+            <div id="hidden-images">
+                {% for image in images %}
+                    <input type="hidden" id="hidden-image-{{ image.hash }}" name="images[]" value="{{ image | json_encode | replace({'"': '\\"'}) }}">
+                    {% if annotation_history[image.hash] is defined %}
+                        {% for id, timestamp in annotation_history[image.hash] %}
+                            {% set has_history = true %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% if has_history or not readonly %}
                 {% for image in images %}
                     {% if loop.first %}
@@ -117,7 +119,9 @@
             <div id="openseadragon-annotorious"></div>
             {% if readonly %}
                 {% for image in images %}
-                    <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                    <div class="no-print-break">
+                        <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>
@@ -146,8 +150,16 @@
                 {% endif %}
                 <div id="thumbnails">
                     {% for image in images %}
-                        <div onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
-                            <img src="{{ image.thumbnail }}" alt="">
+                        <div class="thumbnail-image" id="thumbnail-image-{{ image.hash }}"{% if not readonly %} onmouseover="this.querySelector('div').style.visibility = 'visible';" onmouseout="this.querySelector('div').style.visibility = 'hidden';"{% endif %}>
+                            <img src="{{ image.thumbnail }}" alt="" onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
+                            {% if not readonly %}
+                                <div class="delete-image-button" onclick="confirmDeleteImage('{{ image.hash }}')">
+                                    <svg class="trash-background-image" height="33" width="33">
+                                        <rect width="33" height="33" rx="4" fill="white"></rect>
+                                    </svg>
+                                    <i class="fas fa-trash-alt trash-icon"></i>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -171,6 +183,7 @@
 
 <script>
 
+{% if not readonly %}
 function selectedImageToAdd(selectElement) {
     var addImageDivInput = document.getElementById("add-image-div");
     switch(selectElement.options[selectElement.selectedIndex].value) {
@@ -265,80 +278,29 @@ function loadImage() {
     document.getElementById('add-image-div').style = "display: none";
 }
 
-function clickedThumbnail(hash, image) {
-    window.allAnnotationsVisible = true;
-    resetAnnotations();
-
-    var div = document.getElementById("annotation-history-timestamps");
-    while (div.firstChild) {
-        div.removeChild(div.firstChild);
-    }
-    var ids = [];
-    for(const id in window.annotationHistory[hash]) {
-        ids.push(id);
-    }
-    for(var i = ids.length - 1; i >= 0; i--) {
-        const id = ids[i];
-        var newDiv = document.createElement("div");
-        newDiv.id = "annos-" + hash + "-" + id;
-        var button = document.createElement("button");
-        button.onclick = function () {
-            toggleAnnotations(id);
-        };
-        button.type = "button";
-        button.id = "show-hide-annos-" + hash + "-" + id;
-        button.className = "hide";
-        var iEye = document.createElement("i");
-        iEye.className = "far fa-eye";
-        var span = document.createElement("span");
-        if(id === '999999999') {
-            span.innerHTML = "Huidige annotaties";
-        } else {
-            span.innerHTML = window.annotationHistory[hash][id];
-        }
-        button.appendChild(iEye);
-        button.appendChild(span);
-        newDiv.appendChild(button);
-
-        if(hash in window.addedAnnotations) {
-            if(id in window.addedAnnotations[hash]) {
-                var annos = window.addedAnnotations[hash][id];
-                for(const id in annos) {
-                    if(annos[id].hasOwnProperty('body')
-                        && annos[id].body != null && annos[id].body.length > 0
-                        && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
-                        && annos[id].body[0].value !== '') {
-                        var span = document.createElement("span");
-                        span.innerHTML = annos[id].body[0].value;
-                        newDiv.appendChild(span);
-                    }
-                    if (!window.annoIds.includes(id)) {
-                        window.annoIds.push(id);
-                    }
+function confirmDeleteImage(hash) {
+    if(confirm('{{ 'Are you sure you want to delete this image and its annotations?' | trans }}')) {
+        var ele = document.getElementById('thumbnail-image-' + hash);
+        if(ele != null) {
+            ele.parentNode.removeChild(ele);
+            if(window.currentImage === hash) {
+                window.allAnnotationsVisible = true;
+                resetAnnotations();
+                var div = document.getElementById("annotation-history-timestamps");
+                while (div.firstChild) {
+                    div.removeChild(div.firstChild);
                 }
+                window.osd_anno.world.removeAll();
             }
+            delete window.annotationHistory[hash];
+            delete window.addedAnnotations[hash];
+            delete window.deletedAnnotations[hash];
         }
-        div.appendChild(newDiv);
+        var hiddenImageInput = document.getElementById('hidden-image-' + hash);
+        if(hiddenImageInput != null) {
+            hiddenImageInput.parentNode.removeChild(hiddenImageInput);
+        }
     }
-
-    window.osd_anno.world.removeAll();
-    if(image.endsWith('/info.json')) {
-        window.osd_anno.addTiledImage({
-            'tileSource': image
-        });
-    } else {
-        window.osd_anno.addTiledImage({
-            'tileSource': {
-                'type': 'image',
-                'url': image
-            }
-        });
-    }
-
-
-    window.currentImage = hash;
-    window.allAnnotationsVisible = false;
-    resetAnnotations();
 }
 
 $('input#annotate-file').change(function() {
@@ -428,18 +390,116 @@ function addImage(image) {
         '999999999': true
     };
 
-    const inputDiv = document.createElement("input");
-    inputDiv.type = "hidden";
-    inputDiv.name = "images[]";
+    const inputDiv = document.createElement('input');
+    inputDiv.type = 'hidden';
+    inputDiv.name = 'images[]';
+    inputDiv.id = 'hidden-image-' + image.hash;
     inputDiv.value = JSON.stringify(image);
-    document.getElementById("thumbnails").appendChild(inputDiv);
+    document.getElementById('hidden-images').appendChild(inputDiv);
 
-    const thumbnailDiv = document.createElement("div");
-    thumbnailDiv.onclick = function() {
+    const img = document.createElement('img');
+    img.src = image.thumbnail;
+    img.alt = '';
+    img.onclick = function() {
         clickedThumbnail(image.hash, image.image);
     };
-    thumbnailDiv.innerHTML = '<img src="' + image.thumbnail + '" alt="">';
-    document.getElementById("thumbnails").appendChild(thumbnailDiv);
+
+    const deleteButton = document.createElement('div');
+    deleteButton.className = 'delete-image-button';
+    deleteButton.onclick = function() {
+        confirmDeleteImage(image.hash);
+    };
+    deleteButton.innerHTML = '<svg class="trash-background-image" height="33" width="33"><rect width="33" height="33" rx="4" fill="white"></rect></svg><i class="fas fa-trash-alt trash-icon"></i>';
+
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'thumbnail-image';
+    thumbnailDiv.id = 'thumbnail-image-' + image.hash;
+    thumbnailDiv.onmouseover = function() {
+        this.querySelector('div').style.visibility = 'visible';
+    };
+    thumbnailDiv.onmouseout = function() {
+        this.querySelector('div').style.visibility = 'hidden';
+    };
+    thumbnailDiv.appendChild(img);
+    thumbnailDiv.appendChild(deleteButton);
+
+    document.getElementById('thumbnails').appendChild(thumbnailDiv);
+}
+{% endif %}
+
+function clickedThumbnail(hash, image) {
+    window.allAnnotationsVisible = true;
+    resetAnnotations();
+
+    var div = document.getElementById("annotation-history-timestamps");
+    while (div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+    var ids = [];
+    for(const id in window.annotationHistory[hash]) {
+        ids.push(id);
+    }
+    for(var i = ids.length - 1; i >= 0; i--) {
+        const id = ids[i];
+        var newDiv = document.createElement("div");
+        newDiv.id = "annos-" + hash + "-" + id;
+        var button = document.createElement("button");
+        button.onclick = function () {
+            toggleAnnotations(id);
+        };
+        button.type = "button";
+        button.id = "show-hide-annos-" + hash + "-" + id;
+        button.className = "hide";
+        var iEye = document.createElement("i");
+        iEye.className = "far fa-eye";
+        var span = document.createElement("span");
+        if(id === '999999999') {
+            span.innerHTML = "Huidige annotaties";
+        } else {
+            span.innerHTML = window.annotationHistory[hash][id];
+        }
+        button.appendChild(iEye);
+        button.appendChild(span);
+        newDiv.appendChild(button);
+
+        if(hash in window.addedAnnotations) {
+            if(id in window.addedAnnotations[hash]) {
+                var annos = window.addedAnnotations[hash][id];
+                for(const id in annos) {
+                    if(annos[id].hasOwnProperty('body')
+                        && annos[id].body != null && annos[id].body.length > 0
+                        && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
+                        && annos[id].body[0].value !== '') {
+                        var span = document.createElement("span");
+                        span.innerHTML = annos[id].body[0].value;
+                        newDiv.appendChild(span);
+                    }
+                    if (!window.annoIds.includes(id)) {
+                        window.annoIds.push(id);
+                    }
+                }
+            }
+        }
+        div.appendChild(newDiv);
+    }
+
+    window.osd_anno.world.removeAll();
+    if(image.endsWith('/info.json')) {
+        window.osd_anno.addTiledImage({
+            'tileSource': image
+        });
+    } else {
+        window.osd_anno.addTiledImage({
+            'tileSource': {
+                'type': 'image',
+                'url': image
+            }
+        });
+    }
+
+    window.currentImage = hash;
+    window.allAnnotationsVisible = false;
+    resetAnnotations();
 }
 
 window.onload = function() {
@@ -723,6 +783,7 @@ function storeCurrentAnnotations() {
             for (var i = 0; i < annos.length; i++) {
                 if (!window.annoIds.includes(annos[i].id)) {
                     window.addedAnnotations[window.currentImage]["999999999"][annos[i].id] = annos[i];
+                    window.annoIds.push(annos[i].id);
                 }
             }
         }

@@ -44,6 +44,8 @@ class DownloadController extends AbstractController
             $thumbnail = $folder . '/' . $filenameNoExt . '_thm.jpg';
             copy($image, $filename);
 
+            $thumbnail = IIIFUtil::generateThumbnail($filename, $thumbnail);
+
             $image = new Image();
             $image->setImage('/' . $filename);
             $image->setThumbnail('/' . $thumbnail);
@@ -52,7 +54,6 @@ class DownloadController extends AbstractController
             $em->persist($image);
             $em->flush();
 
-            IIIFUtil::generateThumbnail($filename, $thumbnail);
             $response = new Response(json_encode(array('hash' => $image->getHash(), 'image' => '/' . $filename, 'thumbnail' => '/' . $thumbnail)));
             $response->headers->set('Content-Type', 'application/json');
             return $response;
