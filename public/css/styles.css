@@ -717,6 +717,10 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     display: flex;
 }
 
+.show-hide-current-annos {
+    display: none;
+}
+
 #report-form #annotation-history button {
     background-color: white;
     padding: 10px;
@@ -912,8 +916,26 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .delete-image-button {
-    visibility: hidden;
     cursor: pointer;
+}
+
+.anno-hist {
+    display: block;
+    box-sizing: border-box;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.anno-hist-hover,
+.anno-hist:hover {
+    background-color: grey;
+}
+
+.anno-hist-deleted {
+    display: block;
+    box-sizing: border-box;
+    padding-left: 20px;
+    color: grey;
 }
 
 .select2 {
