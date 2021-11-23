@@ -23,14 +23,24 @@
                 </div>
                 <script>
                     function clickedLangButton(ele) {
-                        document.getElementById("lang-select-items").classList.toggle("lang-select-hide");
-                        document.getElementById("lang-select-selected").classList.toggle("lang-select-arrow-active");
+                        var langSelectItem = document.getElementById('lang-select-items');
+                        if(langSelectItem != null) {
+                            langSelectItem.classList.toggle('lang-select-hide');
+                        }
+                        var langSelectSelected = document.getElementById('lang-select-selected');
+                        if(langSelectSelected != null) {
+                            langSelectSelected.classList.toggle('lang-select-arrow-active');
+                        }
                     }
 
                     function closeLangSelect(ele) {
-                        if(ele.target != document.getElementById("lang-select-selected")) {
-                            document.getElementById("lang-select-items").classList.add("lang-select-hide");
-                            document.getElementById("lang-select-selected").classList.remove("lang-select-arrow-active");
+                        var langSelectSelected = document.getElementById('lang-select-selected');
+                        if (langSelectSelected != null && (ele == null || ele.target == null || ele.target !== langSelectSelected)) {
+                            langSelectSelected.classList.remove('lang-select-arrow-active');
+                            var langSelectItems = document.getElementById('lang-select-items');
+                            if(langSelectItems != null) {
+                                langSelectItems.classList.add('lang-select-hide');
+                            }
                         }
                     }
                     document.addEventListener("click", closeLangSelect);

@@ -731,13 +731,29 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-history .show-all {
     background-color: #f8f8f8;
     text-align: left;
-    width: 210px;
+    width: 140px;
     border: 1px solid #dbdbdb;
     border-left: none;
     font-weight: bold;
     display: flex;
     align-items: center;
     height: 52px;
+}
+
+#report-form #annotation-history #show-hide-numbers {
+    background-color: #f8f8f8;
+    text-align: left;
+    width: 70px;
+    border: 1px solid #dbdbdb;
+    border-left: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    height: 52px;
+}
+
+.highlighted-number {
+    fill: #fff000;
 }
 
 #report-form #annotation-history .show,
@@ -936,6 +952,10 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     box-sizing: border-box;
     padding-left: 20px;
     color: grey;
+}
+
+.annotation-number {
+    font-size: 200px;
 }
 
 .select2 {
