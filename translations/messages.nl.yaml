@@ -271,6 +271,13 @@ Insert URL of IIIF image ...: Vul URL in van IIIF afbeelding ...
 Are you sure you want to delete this image and its annotations?: Bent u zeker dat u deze afbeelding en de bijhorende annotaties wilt verwijderen?
 Deleted: Verwijderd
 deleted: verwijderd
+Select layer: Selecteer laag
+Paint layer: Verflaag
+Combinations: Combinaties
+Carrier + paint layer: Drager + verflaag
+Carrier + finishing layer: Drager + afwerklaag
+Paint layer + finishing layer: Verflaag + afwerklaag
+Carrier + paint + finishing layer: Drager + verf + afwerklaag
 
 stone: Steen
 metal: Metaal

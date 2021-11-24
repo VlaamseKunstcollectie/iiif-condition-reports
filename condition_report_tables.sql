@@ -93,3 +93,7 @@ CREATE TABLE IF NOT EXISTS `iiif_manifests` (
   `data` LONGTEXT NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- TODO: proper (and rights-free) images of frame and backside!
+INSERT INTO images VALUES('350e868ce231caec24997fd00892a19495c3c822bdfc44f06e4b3574354344ec', '/annotation_images/1637361020124.jpg', '/annotation_images/1637361020124_thm.jpg');
+INSERT INTO images VALUES('3c6dfddfdaf6d945069502fa4329f506ba9e222ab8c540bb67c80712387e536d', '/annotation_images/1637361403233.png', '/annotation_images/1637361403233_thm.jpg');

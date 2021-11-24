@@ -959,7 +959,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2 {
-    width: 155px !important;
+    width: 280px !important;
 }
 
 .select2-container--open .select2-dropdown--below {
@@ -971,7 +971,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2-selection {
-    width: 155px;
+    width: 220px;
 }
 
 .select2-container .select2-selection--single {
@@ -982,28 +982,31 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2-results__option {
-    height: 30px;
-    line-height: 30px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .select2-results__option svg,
 #report-form #annotation-tools .select2-selection__rendered svg {
-    height: 30px;
-    width: 130px;
+    height: 20px;
+    width: 235px;
 }
 
-.fill-disconnected-cross-id-3 {
-    margin-top: 2px;
+.select2-results__option--disabled {
+    display: none !important;
 }
 
+.select2-results__option--group,
 .select2-container--default .select2-results > .select2-results__options {
-    overflow-y: hidden !important;
+    max-height: none !important;
+    height: auto !important;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     padding-left: 0 !important;
     padding-right: 18px !important;
     text-overflow: clip !important;
+    margin-top: 5px !important;
 }
 
 .select2-selection__arrow {
@@ -1017,14 +1020,6 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
     margin-left: 5px !important;
-}
-
-.fill-pattern-line {
-    stroke: red !important;
-}
-
-#democlass {
-    stroke: red !important;
 }
 
 #report-form .buttons {

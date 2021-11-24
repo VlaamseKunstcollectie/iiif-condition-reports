@@ -95,23 +95,18 @@
                     </button>
                 </div>
                 <div>
-                    <!--<p>Kleur: </p>-->
-                    <input type="radio" onclick="window.annoConf.styleColor='red'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'red';" id="choose-colour-red" name="choose-colour" value="red" checked/>
-                    <label for="choose-colour-red"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='green'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'green';" id="choose-colour-green" name="choose-colour" value="green"/>
-                    <label for="choose-colour-green"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='blue'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'blue';" id="choose-colour-blue" name="choose-colour" value="blue"/>
-                    <label for="choose-colour-blue"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='orange'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'orange';" id="choose-colour-orange" name="choose-colour" value="orange"/>
-                    <label for="choose-colour-orange"></label>
-                </div>
-                <div>
-                    <!--<p>Opvulling: </p>-->
-                    <select id="fill-dropdown" onchange="selectDropdown()" autocomplete="off">
-                        <option value="">Geen opvulling</option>
-                        <option value="rect">Geen opvulling</option>
-                        <option value="diagonal-rect">Geen opvulling</option>
-                        <option value="disconnected-cross">Geen opvulling</option>
+                    <select id="style-dropdown" onchange="styleDropdown()" autocomplete="off">
+                        <option value="" selected disabled hidden>{{ 'Select layer' | trans }}</option>
+                        <option value="blue">{{ 'Carrier' | trans }}</option>
+                        <option value="red">{{ 'Paint layer' | trans }}</option>
+                        <option value="green">{{ 'Finishing layer' | trans }}</option>
+                        <option value="orange">{{ 'Frame' | trans }}</option>
+                        <optgroup label="{{ 'Combinations' | trans }}">
+                            <option value="red-blue">{{ 'Carrier + paint layer' | trans }}</option>
+                            <option value="green-blue">{{ 'Carrier + finishing layer' | trans }}</option>
+                            <option value="red-green">{{ 'Paint layer + finishing layer' | trans }}</option>
+                            <option value="red-green-blue">{{ 'Carrier + paint + finishing layer' | trans }}</option>
+                        </optgroup>
                     </select>
                 </div>
             {% endif %}
@@ -806,12 +801,6 @@ function addImage(image) {
     const thumbnailDiv = document.createElement('div');
     thumbnailDiv.className = 'thumbnail-image';
     thumbnailDiv.id = 'thumbnail-image-' + image.hash;
-    thumbnailDiv.onmouseover = function() {
-        this.querySelector('div').style.visibility = 'visible';
-    };
-    thumbnailDiv.onmouseout = function() {
-        this.querySelector('div').style.visibility = 'hidden';
-    };
     thumbnailDiv.appendChild(img);
     thumbnailDiv.appendChild(deleteButton);
 
@@ -1204,8 +1193,9 @@ function resetAnnotations() {
         }
     }
 
-    $('#fill-dropdown').select2({
+    $('#style-dropdown').select2({
         minimumResultsForSearch: Infinity,
+        closeOnSelect: false,
         templateResult: function(option) {
             return optionFill(option);
         },
@@ -1217,24 +1207,31 @@ function resetAnnotations() {
     function optionFill(option) {
         switch(option.id) {
             default:
-                return option.text;
-            case 'rect':
-                return $('<span><svg><pattern id="fill-rect-id-1" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="5" y1="0" x2="5" y2="10" stroke-width="1" /><line class="fill-pattern-line" x1="0" y1="5" x2="10" y2="5" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-rect-id-1);" /></svg></span>');
-            case "diagonal-rect":
-                return $('<span><svg><pattern id="fill-cross-id-2" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="10" y2="10" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="10" x1="10" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-cross-id-2);" /></svg></span>');
-            case "disconnected-cross":
-                return $('<span><svg class="fill-disconnected-cross-id-3"><pattern id="fill-disconnected-cross-id-3" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="6" y2="6" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="6" x1="6" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-disconnected-cross-id-3);" /></svg></span>');
+            case '':
+                return $('<span><svg><text x="0" y="12">' + option.text + '</text></svg></span></input>');
+            case 'red':
+                return $('<input type="checkbox" style="width: 15px; height: 15px;" disabled><span><svg><rect x="6" y="6" width="10px" height="10px" fill="#FF0000" /><text x="26" y="18">' + option.text + '</text></svg></span>');
+            case 'green':
+                return $('<span><svg><rect x="0" y="6" width="10px" height="10px" fill="#00FF00" /><text x="20" y="12">' + option.text + '</text></svg></span>');
+            case 'blue':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#0000FF" /><text x="20" y="12">' + option.text + '</text></svg></span>');
+            case 'orange':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FFA500" /><text x="20" y="12">' + option.text + '</text></svg></span>');
+            case 'red-green':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#00FF00" /><text x="30" y="12">' + option.text + '</text></svg></span>');
+            case 'red-blue':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#0000FF" /><text x="30" y="12">' + option.text + '</text></svg></span>');
+            case 'green-blue':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#00FF00" /><rect x="10" y="2" width="10px" height="10px" fill="#0000FF" /><text x="30" y="12">' + option.text + '</text></svg></span>');
+            case 'red-green-blue':
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#00FF00" /><rect x="20" y="2" width="10px" height="10px" fill="#0000FF" /><text x="40" y="12">' + option.text + '</text></svg></span>');
         }
     }
 
-    function selectDropdown() {
-        var fill = document.getElementById('fill-dropdown').value;
-        if (fill === '') {
-            window.annoConf.styleFill = fill;
-            window.annoConf.styleClass = 'condition-' + window.annoConf.styleColor;
-        } else {
-            window.annoConf.styleFill = fill + '-';
-            window.annoConf.styleClass = 'condition-' + fill + '-' + window.annoConf.styleColor;
+    function styleDropdown() {
+        var style = document.getElementById('style-dropdown').value;
+        if (style !== '') {
+            window.annoConf.styleClass = 'condition-' + style;
         }
     }
 
