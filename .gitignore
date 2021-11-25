@@ -12,8 +12,7 @@ config/condition-reports.yaml
 .env
 .idea/
 public/annotation_images/*
-!public/annotation_images/1637361020124.jpg
-!public/annotation_images/1637361020124_thm.jpg
-!public/annotation_images/1637361403233.png
-!public/annotation_images/1637361403233_thm.jpg
-
+!public/annotation_images/frame.svg
+!public/annotation_images/frame_150px.svg
+!public/annotation_images/frame_back.svg
+!public/annotation_images/frame_back_150px.svg

@@ -9,6 +9,7 @@
         "ext-curl": "*",
         "ext-dom": "20031129",
         "ext-exif": "*",
+        "ext-fileinfo": "^7.4",
         "ext-iconv": "*",
         "ext-imagick": "^3.5",
         "ext-json": "*",
