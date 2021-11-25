@@ -70,10 +70,10 @@
     {% if not readonly %}
     <div class="buttons">
         <div class="previous-button">
-            <button type="button" onclick="showDiv('reason-form')">{{ 'Previous' | trans }}</button>
+            <button type="button" onclick="showDiv('reason-form', true)">{{ 'Previous' | trans }}</button>
         </div>
         <div class="next-button">
-            <button type="button" onclick="showDiv('actors-form')">{{ 'Next' | trans }}</button>
+            <button type="button" onclick="showDiv('actors-form', true)">{{ 'Next' | trans }}</button>
         </div>
     </div>
     {% endif %}

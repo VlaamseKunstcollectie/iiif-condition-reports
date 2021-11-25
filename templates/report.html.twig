@@ -86,7 +86,7 @@
 
             // Execute any functions that are to be loaded on page load
             // We have to do this for textareas whose height can only be dermined when visible
-            function showDiv(showId) {
+            function showDiv(showId, scrollToTop) {
                 for(var i = 0; i < divIds.length; i++) {
                     if(divIds[i] !== showId) {
                         var hideObj = document.getElementById(divIds[i]);
@@ -110,6 +110,9 @@
                 var highlightButton = document.getElementById(showId.concat("-button"));
                 highlightButton.classList.remove("inactive");
                 highlightButton.classList.add("active");
+                if(scrollToTop) {
+                    window.scrollTo(0, 0);
+                }
             }
 
             function toggleObjectTypeField(select, inputId, show, alterName) {
@@ -256,13 +259,13 @@
             </div>
             <div id="wrap">
                 <div id="report-navigation">
-                    <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'Report reason' | trans }}">{{ 'Report reason' | trans }}</button>
-                    <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>
-                    <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form')" title="{{ 'Involved actors' | trans }}">{{ 'Involved actors' | trans }}</button>
-                    <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form')" title="{{ 'Physical characteristics' | trans }}">{{ 'Physical characteristics' | trans }}</button>
-                    <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form')" title="{{ 'Condition and conservation' | trans }}">{{ 'Condition and conservation' | trans }}</button>
-                    <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form')" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
-                    <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form')" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
+                    <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form', false)" title="{{ 'Report reason' | trans }}">{{ 'Report reason' | trans }}</button>
+                    <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form', false)" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>
+                    <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form', false)" title="{{ 'Involved actors' | trans }}">{{ 'Involved actors' | trans }}</button>
+                    <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form', false)" title="{{ 'Physical characteristics' | trans }}">{{ 'Physical characteristics' | trans }}</button>
+                    <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form', false)" title="{{ 'Condition and conservation' | trans }}">{{ 'Condition and conservation' | trans }}</button>
+                    <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form', false)" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
+                    <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form', false)" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
                     <div class="save">
                         <button type="submit">
                             <i class="fas fa-save"></i>

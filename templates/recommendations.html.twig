@@ -277,10 +277,10 @@
 	{% if not readonly %}
 	<div class="buttons">
         <div class="previous-button">
-            <button type="button" onclick="showDiv('condition-form')">{{ 'Previous' | trans }}</button>
+            <button type="button" onclick="showDiv('condition-form', true)">{{ 'Previous' | trans }}</button>
         </div>
         <div class="next-button">
-            <button type="button" onclick="showDiv('annotate-form')">{{ 'Next' | trans }}</button>
+            <button type="button" onclick="showDiv('annotate-form', true)">{{ 'Next' | trans }}</button>
         </div>
     </div>
 	{% endif %}
