@@ -95,32 +95,51 @@
                     </button>
                 </div>
                 <div>
-                    <select id="style-dropdown" onchange="styleDropdown()" autocomplete="off">
-                        <option value="" selected disabled hidden>{{ 'Select layer' | trans }}</option>
-                        <option value="blue">{{ 'Carrier' | trans }}</option>
-                        <option value="red">{{ 'Paint layer' | trans }}</option>
-                        <option value="green">{{ 'Finishing layer' | trans }}</option>
-                        <option value="orange">{{ 'Frame' | trans }}</option>
-                        <optgroup label="{{ 'Combinations' | trans }}">
-                            <option value="red-blue">{{ 'Carrier + paint layer' | trans }}</option>
-                            <option value="green-blue">{{ 'Carrier + finishing layer' | trans }}</option>
-                            <option value="red-green">{{ 'Paint layer + finishing layer' | trans }}</option>
-                            <option value="red-green-blue">{{ 'Carrier + paint + finishing layer' | trans }}</option>
-                        </optgroup>
-                    </select>
+                    <div class="damage-types-multiselect">
+                        <div class="damage-types-select-box" onclick="showCheckboxes()">
+                            <select>
+                                <option>{{ 'Select layer' | trans }}</option>
+                            </select>
+                            <div class="damage-types-over-select"></div>
+                        </div>
+                        <div id="damage-types-checkboxes">
+                            <label for="damage-types-carrier">
+                                <input type="checkbox" id="damage-types-carrier" />{{ 'Carrier' | trans }}</label>
+                            <label for="damage-types-paint-layer">
+                                <input type="checkbox" id="damage-types-paint-layer" />{{ 'Paint layer' | trans }}</label>
+                            <label for="damage-types-finishing-layer">
+                                <input type="checkbox" id="damage-types-finishing-layer" />{{ 'Finishing layer' | trans }}</label>
+                            <label for="damage-types-frame">
+                                <input type="checkbox" id="damage-types-frame" />{{ 'Frame' | trans }}</label>
+                        </div>
+                    </div>
+                    <script>
+                        var expanded = false;
+
+                        function showCheckboxes() {
+                            var checkboxes = document.getElementById("damage-types-checkboxes");
+                            if (!expanded) {
+                                checkboxes.style.display = "block";
+                                expanded = true;
+                            } else {
+                                checkboxes.style.display = "none";
+                                expanded = false;
+                            }
+                        }
+                    </script>
                 </div>
-                {% set annotations = [] %}
-                {% for key, annotation in report_fields.annotations %}
-                    {% set anno = key | trans %}
-                    {% set annotations = annotations | merge({ (key): anno }) %}
+                {% set damage_types = [] %}
+                {% for key, damage_type in report_fields.damage_types %}
+                    {% set damage_type = key | trans %}
+                    {% set damage_types = damage_types | merge({ (key): damage_type }) %}
                 {% endfor %}
-                {% set annotations = annotations | sort %}
-                <script>console.log({{ annotations | json_encode | raw }})</script>
+                {% set damage_types = damage_types | sort %}
                 {% for object_type in object_types %}
-                    <div class="annotation-select" id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} style="display: none"{% endif %}>
-                        <select onchange="selectedDamageType(this)" autocomplete="off">
-                            {% for key, annotation in annotations %}
-                                {% if object_type == 'default' or object_type in attribute(report_fields.annotations, key).applies_to %}
+                    <div id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} style="display: none"{% endif %}>
+                        <select class="annotation-select" onchange="selectedDamageType(this)" autocomplete="off">
+                            <option value="" selected disabled hidden>{{ 'Select damage type' | trans }}</option>
+                            {% for key, damage_type in damage_types %}
+                                {% if object_type == 'default' or object_type in attribute(report_fields.damage_types, key).applies_to %}
                                     <option value="{{ key }}">{{ key | trans }}</option>
                                 {% endif %}
                             {% endfor %}
@@ -1217,7 +1236,6 @@ function resetAnnotations() {
 
     $('#style-dropdown').select2({
         minimumResultsForSearch: Infinity,
-        closeOnSelect: false,
         templateResult: function(option) {
             return optionFill(option);
         },
@@ -1232,9 +1250,9 @@ function resetAnnotations() {
             case '':
                 return $('<span><svg><text x="0" y="12">' + option.text + '</text></svg></span></input>');
             case 'red':
-                return $('<span><svg><rect x="6" y="6" width="10px" height="10px" fill="#FF0000" /><text x="26" y="18">' + option.text + '</text></svg></span>');
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><text x="20" y="12">' + option.text + '</text></svg></span>');
             case 'green':
-                return $('<span><svg><rect x="0" y="6" width="10px" height="10px" fill="#00FF00" /><text x="20" y="12">' + option.text + '</text></svg></span>');
+                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#00FF00" /><text x="20" y="12">' + option.text + '</text></svg></span>');
             case 'blue':
                 return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#0000FF" /><text x="20" y="12">' + option.text + '</text></svg></span>');
             case 'orange':
@@ -1268,6 +1286,7 @@ function resetAnnotations() {
             var selectElements = document.getElementsByClassName('annotation-select');
             for (var j = 0; j < selectElements.length; j++) {
                 selectElements[j].selectedIndex = 0;
+                console.log(selectElements[j]);
             }
         }
     }, 100);

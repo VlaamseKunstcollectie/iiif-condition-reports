@@ -873,6 +873,42 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
 }
 
+.damage-types-multiselect {
+    width: 200px;
+}
+
+.damage-types-select-box {
+    position: relative;
+}
+
+.damage-types-select-box select {
+    width: 100%;
+    font-weight: bold;
+}
+
+.damage-types-over-select {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#damage-types-checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+    z-index: 1;
+    position: absolute
+}
+
+#damage-types-checkboxes label {
+    display: block;
+}
+
+#damage-types-checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
 #report-form #annotation-images {
     border-bottom: 1px solid #dbdbdb;
 }

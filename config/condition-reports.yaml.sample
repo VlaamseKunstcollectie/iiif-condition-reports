@@ -262,7 +262,7 @@ parameters:
         - analysis
         - necessary_background_information
         - custom
-    annotations:
+    damage_types:
       abrasions:
         aat: http://vocab.getty.edu/page/aat/300053077
         applies_to:
