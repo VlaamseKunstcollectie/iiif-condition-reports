@@ -873,20 +873,20 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
 }
 
-.damage-types-multiselect {
+.layer-multiselect {
     width: 200px;
 }
 
-.damage-types-select-box {
+.layer-select-box {
     position: relative;
 }
 
-.damage-types-select-box select {
+.layer-select-box select {
     width: 100%;
     font-weight: bold;
 }
 
-.damage-types-over-select {
+.layer-over-select {
     position: absolute;
     left: 0;
     right: 0;
@@ -894,18 +894,18 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     bottom: 0;
 }
 
-#damage-types-checkboxes {
+#layer-checkboxes {
     display: none;
     border: 1px #dadada solid;
     z-index: 1;
     position: absolute
 }
 
-#damage-types-checkboxes label {
+#layer-checkboxes label {
     display: block;
 }
 
-#damage-types-checkboxes label:hover {
+#layer-checkboxes label:hover {
     background-color: #1e90ff;
 }
 

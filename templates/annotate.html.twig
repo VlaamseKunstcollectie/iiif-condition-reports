@@ -95,38 +95,20 @@
                     </button>
                 </div>
                 <div>
-                    <div class="damage-types-multiselect">
-                        <div class="damage-types-select-box" onclick="showCheckboxes()">
+                    <div class="layer-multiselect">
+                        <div class="layer-select-box" onclick="showLayerCheckboxes()">
                             <select>
                                 <option>{{ 'Select layer' | trans }}</option>
                             </select>
-                            <div class="damage-types-over-select"></div>
+                            <div class="layer-over-select"></div>
                         </div>
-                        <div id="damage-types-checkboxes">
-                            <label for="damage-types-carrier">
-                                <input type="checkbox" id="damage-types-carrier" />{{ 'Carrier' | trans }}</label>
-                            <label for="damage-types-paint-layer">
-                                <input type="checkbox" id="damage-types-paint-layer" />{{ 'Paint layer' | trans }}</label>
-                            <label for="damage-types-finishing-layer">
-                                <input type="checkbox" id="damage-types-finishing-layer" />{{ 'Finishing layer' | trans }}</label>
-                            <label for="damage-types-frame">
-                                <input type="checkbox" id="damage-types-frame" />{{ 'Frame' | trans }}</label>
+                        <div id="layer-checkboxes">
+                            <label for="layer-carrier"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox()"/>{{ 'Carrier' | trans }}</label>
+                            <label for="layer-paint-layer"><input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox()"/>{{ 'Paint layer' | trans }}</label>
+                            <label for="layer-finishing-layer"><input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox()"/>{{ 'Finishing layer' | trans }}</label>
+                            <label for="layer-frame"><input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox()"/>{{ 'Frame' | trans }}</label>
                         </div>
                     </div>
-                    <script>
-                        var expanded = false;
-
-                        function showCheckboxes() {
-                            var checkboxes = document.getElementById("damage-types-checkboxes");
-                            if (!expanded) {
-                                checkboxes.style.display = "block";
-                                expanded = true;
-                            } else {
-                                checkboxes.style.display = "none";
-                                expanded = false;
-                            }
-                        }
-                    </script>
                 </div>
                 {% set damage_types = [] %}
                 {% for key, damage_type in report_fields.damage_types %}
@@ -592,6 +574,7 @@ window.onload = function() {
 
 window.drawingEnabled = false;
 window.numberOverlays = true;
+window.layerSelectExpanded = false;
 
 window.images = {{ images | json_encode | raw }};
 window.currentImage = '{{ default_image }}';
@@ -677,6 +660,42 @@ for (const id in window.annotationHistory[window.currentImage]) {
 }
 window.allAnnotationsVisible = true;
 {% if not readonly %}
+function showLayerCheckboxes() {
+    var checkboxes = document.getElementById('layer-checkboxes');
+    window.layerSelectExpanded = !window.layerSelectExpanded;
+    if (window.layerSelectExpanded) {
+        checkboxes.style.display = 'block';
+    } else {
+        checkboxes.style.display = 'none';
+    }
+}
+
+function checkLayerCheckbox() {
+    var checkboxCarrier = document.getElementById('layer-carrier');
+    var checkboxPaintLayer = document.getElementById('layer-paint-layer');
+    var checkboxFinishingLayer = document.getElementById('layer-finishing-layer');
+    var checkboxFrame = document.getElementById('layer-frame');
+    if(checkboxCarrier != null && checkboxPaintLayer != null && checkboxFinishingLayer != null && checkboxFrame != null) {
+        if(checkboxFrame.checked) {
+            checkboxCarrier.checked = false;
+            checkboxPaintLayer.checked = false;
+            checkboxFinishingLayer.checked = false;
+            window.annoConf.styleClass = 'condition-orange';
+        } else if(checkboxCarrier.checked) {
+            if(checkboxPaintLayer.checked) {
+                if(checkboxFinishingLayer.checked) {
+                    window.annoConf.styleClass = 'condition-red-green-blue';
+                } else {
+                    window.annoConf.styleClass = 'condition-red-blue';
+                }
+            } else {
+
+            }
+        } else if(checkboxPaintLayer.checked) {
+        }
+    }
+}
+
 function selectedImageToAdd(selectElement) {
     var addImageDivInput = document.getElementById('add-image-div');
     switch(selectElement.options[selectElement.selectedIndex].value) {
@@ -846,6 +865,7 @@ function addImage(image) {
 }
 
 function selectedDamageType(selectElement) {
+//TODO
 }
 {% endif %}
 
@@ -1231,47 +1251,6 @@ function resetAnnotations() {
                 }
                 document.head.appendChild(style);
             }
-        }
-    }
-
-    $('#style-dropdown').select2({
-        minimumResultsForSearch: Infinity,
-        templateResult: function(option) {
-            return optionFill(option);
-        },
-        templateSelection: function(option) {
-            return optionFill(option);
-        }
-    });
-
-    function optionFill(option) {
-        switch(option.id) {
-            default:
-            case '':
-                return $('<span><svg><text x="0" y="12">' + option.text + '</text></svg></span></input>');
-            case 'red':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><text x="20" y="12">' + option.text + '</text></svg></span>');
-            case 'green':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#00FF00" /><text x="20" y="12">' + option.text + '</text></svg></span>');
-            case 'blue':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#0000FF" /><text x="20" y="12">' + option.text + '</text></svg></span>');
-            case 'orange':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FFA500" /><text x="20" y="12">' + option.text + '</text></svg></span>');
-            case 'red-green':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#00FF00" /><text x="30" y="12">' + option.text + '</text></svg></span>');
-            case 'red-blue':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#0000FF" /><text x="30" y="12">' + option.text + '</text></svg></span>');
-            case 'green-blue':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#00FF00" /><rect x="10" y="2" width="10px" height="10px" fill="#0000FF" /><text x="30" y="12">' + option.text + '</text></svg></span>');
-            case 'red-green-blue':
-                return $('<span><svg><rect x="0" y="2" width="10px" height="10px" fill="#FF0000" /><rect x="10" y="2" width="10px" height="10px" fill="#00FF00" /><rect x="20" y="2" width="10px" height="10px" fill="#0000FF" /><text x="40" y="12">' + option.text + '</text></svg></span>');
-        }
-    }
-
-    function styleDropdown() {
-        var style = document.getElementById('style-dropdown').value;
-        if (style !== '') {
-            window.annoConf.styleClass = 'condition-' + style;
         }
     }
 
