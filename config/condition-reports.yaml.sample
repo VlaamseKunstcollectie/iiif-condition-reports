@@ -262,6 +262,327 @@ parameters:
         - analysis
         - necessary_background_information
         - custom
+    annotations:
+      abrasions:
+        aat: http://vocab.getty.edu/page/aat/300053077
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      accretion:
+        aat: http://vocab.getty.edu/page/aat/300255449
+        applies_to:
+          - painting
+          - sculpture
+      adhesive_tape:
+        aat: http://vocab.getty.edu/page/aat/300310136
+        applies_to:
+          - painting
+          - frame
+      animal_glue:
+        aat: http://vocab.getty.edu/page/aat/300192836
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      blanching:
+        aat: http://vocab.getty.edu/page/aat/300252414
+        applies_to:
+          - painting
+          - sculpture
+      blisters:
+        aat: http://vocab.getty.edu/page/aat/300228340
+        applies_to:
+          - painting
+          - sculpture
+      bloom:
+        aat: http://vocab.getty.edu/page/aat/300186215
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      blur:
+        aat: http://vocab.getty.edu/page/aat/300263272
+        applies_to:
+          - painting
+      bowing:
+        aat: http://vocab.getty.edu/page/aat/300389996
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      condensation:
+        aat: http://vocab.getty.edu/page/aat/300224979
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      consolidated:
+        aat: http://vocab.getty.edu/page/aat/300219960
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      corrosion:
+        aat: http://vocab.getty.edu/page/aat/300054107
+        applies_to:
+          - painting
+          - sculpture
+      crackle:
+        aat: http://vocab.getty.edu/page/aat/300228345
+        applies_to:
+          - painting
+      cracks:
+        aat: http://vocab.getty.edu/page/aat/300209168
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      creases:
+        aat: http://vocab.getty.edu/page/aat/300228802
+        applies_to:
+          - painting
+          - work_on_paper
+      crizzling:
+        aat: http://vocab.getty.edu/page/aat/300218594
+        applies_to:
+          - sculpture
+      cupping:
+        aat: http://vocab.getty.edu/page/aat/300220569
+        applies_to:
+          - painting
+          - frame
+      dampness:
+        aat: http://vocab.getty.edu/page/aat/300068676
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      darkening:
+        aat: http://vocab.getty.edu/page/aat/300379491
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      deformation:
+        aat: http://vocab.getty.edu/page/aat/300072976
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      degradation:
+        aat: http://vocab.getty.edu/page/aat/300228676
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      delamination:
+        aat: http://vocab.getty.edu/page/aat/300054128
+        applies_to:
+          - painting
+          - sculpture
+      dents:
+        aat: http://vocab.getty.edu/page/aat/300400799
+        applies_to:
+          - painting
+          - sculpture
+      deterioration:
+        aat: http://vocab.getty.edu/page/aat/300054106
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      discoloration:
+        aat: http://vocab.getty.edu/page/aat/300053045
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      distortion:
+        aat: http://vocab.getty.edu/page/aat/300056332
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      excrements:
+        aat: http://vocab.getty.edu/page/aat/300191590
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      fading:
+        aat: http://vocab.getty.edu/page/aat/300053048
+        applies_to:
+          - painting
+          - work_on_paper
+      filling:
+        aat: http://vocab.getty.edu/page/aat/300053092
+        applies_to:
+          - painting
+      finger_marks:
+        aat: http://vocab.getty.edu/page/aat/300251471
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      flaking:
+        aat: http://vocab.getty.edu/page/aat/300054129
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      foxing:
+        aat: http://vocab.getty.edu/page/aat/300078853
+        applies_to:
+          - work_on_paper
+      frass:
+        aat: http://vocab.getty.edu/page/aat/300251469
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      insect_damage:
+        aat: http://vocab.getty.edu/page/aat/300230031
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      joints:
+        aat: http://vocab.getty.edu/page/aat/300033608
+        applies_to:
+          - frame
+      keys:
+        aat: http://vocab.getty.edu/page/aat/300219680
+        applies_to:
+          - painting
+      labels:
+        aat: http://vocab.getty.edu/page/aat/300028730
+        applies_to:
+          - painting
+          - frame
+      losses_lacunae:
+        aat: http://vocab.getty.edu/page/aat/300263354
+        applies_to:
+          - painting
+          - work_on_paper
+      mold:
+        aat: http://vocab.getty.edu/page/aat/300378932
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      overpaint:
+        aat: http://vocab.getty.edu/page/aat/300178448
+        applies_to:
+          - painting
+      oxidation:
+        aat: http://vocab.getty.edu/page/aat/300220235
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      pitting:
+        aat: http://vocab.getty.edu/page/aat/300054130
+        applies_to:
+          - painting
+          - sculpture
+      repairing:
+        aat: http://vocab.getty.edu/page/aat/300053737
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      retouching:
+        aat: http://vocab.getty.edu/page/aat/300136723
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      scratches:
+        aat: http://vocab.getty.edu/page/aat/300380562
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      silver_mirroring:
+        aat: http://vocab.getty.edu/page/aat/300054113
+        applies_to:
+          - work_on_paper
+      stains:
+        aat: http://vocab.getty.edu/page/aat/300379497
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      stretchers:
+        aat: http://vocab.getty.edu/page/aat/300022630
+        applies_to:
+          - painting
+      strip_lining:
+        aat: http://vocab.getty.edu/page/aat/300053732
+        applies_to:
+          - painting
+      tears:
+        aat: http://vocab.getty.edu/page/aat/300254138
+        applies_to:
+          - painting
+          - work_on_paper
+      tidelines:
+        aat: http://vocab.getty.edu/page/aat/300068676
+        applies_to:
+          - painting
+          - work_on_paper
+      warping:
+        aat: http://vocab.getty.edu/page/aat/300155059
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      water_damage:
+        aat: http://vocab.getty.edu/page/aat/300379358
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      wax_resin:
+        aat: http://vocab.getty.edu/page/aat/300379360
+        applies_to:
+          - painting
+      wear:
+        aat: http://vocab.getty.edu/page/aat/300219449
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      wood_borers:
+        aat: http://vocab.getty.edu/page/aat/300379588
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      wrinkles:
+        aat: http://vocab.getty.edu/page/aat/300228341
+        applies_to:
+          - painting
+          - work_on_paper
 
   locales:
     - en

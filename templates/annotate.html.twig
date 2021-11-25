@@ -109,6 +109,24 @@
                         </optgroup>
                     </select>
                 </div>
+                {% set annotations = [] %}
+                {% for key, annotation in report_fields.annotations %}
+                    {% set anno = key | trans %}
+                    {% set annotations = annotations | merge({ (key): anno }) %}
+                {% endfor %}
+                {% set annotations = annotations | sort %}
+                <script>console.log({{ annotations | json_encode | raw }})</script>
+                {% for object_type in object_types %}
+                    <div class="annotation-select" id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} style="display: none"{% endif %}>
+                        <select onchange="selectedDamageType(this)" autocomplete="off">
+                            {% for key, annotation in annotations %}
+                                {% if object_type == 'default' or object_type in attribute(report_fields.annotations, key).applies_to %}
+                                    <option value="{{ key }}">{{ key | trans }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endfor %}
             {% endif %}
             {% if readonly and prefilled_data.manifest is defined %}
                 <a id="iiif-manifest-url" href="{{ prefilled_data.manifest }}">IIIF Manifest</a>
@@ -130,6 +148,7 @@
         {% if images | length > 1 or not readonly %}
             <div id="annotation-images">
                 {% if not readonly %}
+                    <!-- TODO fix this, if you change object type from sculpture (in an already made report) to anything else, this will not work -->
                     <div id="add-images">
                         <select id="add-image-select" onchange="selectedImageToAdd(this)" autocomplete="off">
                             <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
@@ -806,6 +825,9 @@ function addImage(image) {
 
     document.getElementById('thumbnails').appendChild(thumbnailDiv);
 }
+
+function selectedDamageType(selectElement) {
+}
 {% endif %}
 
 function clickedThumbnail(hash, image) {
@@ -1242,6 +1264,10 @@ function resetAnnotations() {
             for (var i = 0; i < buttons.length; i++) {
                 buttons[i].classList.add('drawing-tool-inactive');
                 buttons[i].classList.remove('drawing-tool-active');
+            }
+            var selectElements = document.getElementsByClassName('annotation-select');
+            for (var j = 0; j < selectElements.length; j++) {
+                selectElements[j].selectedIndex = 0;
             }
         }
     }, 100);
