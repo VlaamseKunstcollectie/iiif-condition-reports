@@ -103,10 +103,10 @@
                             <div class="layer-over-select"></div>
                         </div>
                         <div id="layer-checkboxes">
-                            <label for="layer-carrier"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox()"/>{{ 'Carrier' | trans }}</label>
-                            <label for="layer-paint-layer"><input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox()"/>{{ 'Paint layer' | trans }}</label>
-                            <label for="layer-finishing-layer"><input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox()"/>{{ 'Finishing layer' | trans }}</label>
-                            <label for="layer-frame"><input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox()"/>{{ 'Frame' | trans }}</label>
+                            <label for="layer-carrier"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox(this)"/>{{ 'Carrier' | trans }}</label>
+                            <label for="layer-paint-layer"><input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox(this)"/>{{ 'Paint layer' | trans }}</label>
+                            <label for="layer-finishing-layer"><input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox(this)"/>{{ 'Finishing layer' | trans }}</label>
+                            <label for="layer-frame"><input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox(this)"/>{{ 'Frame' | trans }}</label>
                         </div>
                     </div>
                 </div>
@@ -670,28 +670,40 @@ function showLayerCheckboxes() {
     }
 }
 
-function checkLayerCheckbox() {
+function checkLayerCheckbox(element) {
     var checkboxCarrier = document.getElementById('layer-carrier');
     var checkboxPaintLayer = document.getElementById('layer-paint-layer');
     var checkboxFinishingLayer = document.getElementById('layer-finishing-layer');
     var checkboxFrame = document.getElementById('layer-frame');
     if(checkboxCarrier != null && checkboxPaintLayer != null && checkboxFinishingLayer != null && checkboxFrame != null) {
-        if(checkboxFrame.checked) {
+        if(checkboxFrame.checked && element === checkboxFrame) {
             checkboxCarrier.checked = false;
             checkboxPaintLayer.checked = false;
             checkboxFinishingLayer.checked = false;
             window.annoConf.styleClass = 'condition-orange';
         } else if(checkboxCarrier.checked) {
+            checkboxFrame.checked = false;
             if(checkboxPaintLayer.checked) {
                 if(checkboxFinishingLayer.checked) {
                     window.annoConf.styleClass = 'condition-red-green-blue';
                 } else {
                     window.annoConf.styleClass = 'condition-red-blue';
                 }
+            } else if(checkboxFinishingLayer.checked) {
+                window.annoConf.styleClass = 'condition-green-blue';
             } else {
-
+                window.annoConf.styleClass = 'condition-blue';
             }
         } else if(checkboxPaintLayer.checked) {
+            checkboxFrame.checked = false;
+            if(checkboxFinishingLayer.checked) {
+                window.annoConf.styleClass = 'condition-red-green';
+            } else {
+                window.annoConf.styleClass = 'condition-red';
+            }
+        } else if(checkboxFinishingLayer.checked) {
+            checkboxFrame.checked = false;
+            window.annoConf.styleClass = 'condition-green';
         }
     }
 }
