@@ -100,7 +100,7 @@
                             <select>
                                 <option>{{ 'Select layer' | trans }}</option>
                             </select>
-                            <div class="layer-over-select"></div>
+                            <div class="layer-over-select" id="layer-over-select"></div>
                         </div>
                         <div id="layer-checkboxes">
                             <div class="layer-checkbox-div"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-carrier">{{ 'Carrier' | trans }}</label></div>
@@ -660,7 +660,20 @@ for (const id in window.annotationHistory[window.currentImage]) {
     window.annotationsVisible[window.currentImage][id] = true;
 }
 window.allAnnotationsVisible = true;
+
 {% if not readonly %}
+
+document.addEventListener("click", closeLayerCheckboxes);
+
+function closeLayerCheckboxes(ele) {
+    var layerCheckboxes = document.getElementById('layer-over-select');
+    var checkboxes = document.getElementById('layer-checkboxes');
+    if (layerCheckboxes != null && checkboxes != null && (ele == null || ele.target == null || ele.target !== layerCheckboxes && ele.target !== checkboxes && ele.target.parentNode !== checkboxes && !(ele.target.parentNode != null && ele.target.parentNode.parentNode === checkboxes))) {
+        checkboxes.style.display = 'none';
+        window.layerSelectExpanded = false;
+    }
+}
+
 function showLayerCheckboxes() {
     var checkboxes = document.getElementById('layer-checkboxes');
     window.layerSelectExpanded = !window.layerSelectExpanded;
