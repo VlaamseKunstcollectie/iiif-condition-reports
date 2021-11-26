@@ -173,8 +173,8 @@
                     selectedValue = 'default';
                 }
                 var divs = [
-                    'measurements', 'materials', 'materials-frame', 'finishing-layer', 'connection-work',
-                    'damages', 'damages-finishing-layer', 'conservation-treatment', 'restoration-treatment', 'research',
+                    'measurements', 'materials', 'finishing-layer', 'connections',
+                    'damages', 'conservation-treatment', 'restoration-treatment', 'research',
                     'annotation-select'
                 ];
                 for(var i = 0; i < objectTypes.length; i++) {
@@ -199,14 +199,6 @@
                         frameNameDiv.innerHTML = '{{ 'Pedestal' | trans }}';
                     } else {
                         frameNameDiv.innerHTML = '{{ 'Frame' | trans }}';
-                    }
-                }
-                var connectionPedestalDiv = document.getElementById('connection-pedestal');
-                if(connectionPedestalDiv != null) {
-                    if (selectedValue === 'sculpture') {
-                        connectionPedestalDiv.style = "display: block";
-                    } else {
-                        connectionPedestalDiv.style = "display: none";
                     }
                 }
                 var addFrameEle = document.getElementById('add-image-frame');
