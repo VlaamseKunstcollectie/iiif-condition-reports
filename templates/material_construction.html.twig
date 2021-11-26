@@ -35,7 +35,7 @@
         {% set connections = connections | merge({ (object_type): report_fields.connections['default'] }) %}
     {% endif %}
 
-    {% if prefilled_data.object_type is defined and prefilled_data.object_type == object_type %}
+    {% if this_object_type is defined and this_object_type == object_type %}
         {% set these_measurements = measurements[object_type] %}
         {% set these_materials = materials[object_type] %}
         {% set these_finishing_layers = finishing_layers[object_type] %}
