@@ -906,70 +906,69 @@ function clickedThumbnail(hash, image) {
     resetAnnotations();
 
     var div = document.getElementById('annotation-history-timestamps');
-    if(div == null) {
-        return;
-    }
-    while (div.firstChild) {
-        div.removeChild(div.firstChild);
-    }
-    var ids = [];
-    for(const id in window.annotationHistory[hash]) {
-        ids.push(id);
-    }
-    for(var i = ids.length - 1; i >= 0; i--) {
-        const id = ids[i];
-        var newDiv = document.createElement('div');
-        newDiv.id = 'annos-' + hash + '-' + id;
-        var button = document.createElement('button');
-        button.onclick = function () {
-            toggleAnnotations(id);
-        };
-        button.type = 'button';
-        button.id = 'show-hide-annos-' + hash + '-' + id;
-        button.className = 'hide';
-        var iEye = document.createElement('i');
-        iEye.className = 'far fa-eye';
-        var span = document.createElement('span');
-        if(id === '999999999') {
-            span.innerHTML = '{{ 'Current annotations' | trans }}';
-            newDiv.className = 'show-hide-current-annos';
-        } else {
-            span.innerHTML = window.annotationHistory[hash][id];
+    if(div != null) {
+        while (div.firstChild) {
+            div.removeChild(div.firstChild);
         }
-        button.appendChild(iEye);
-        button.appendChild(span);
-        newDiv.appendChild(button);
+        var ids = [];
+        for (const id in window.annotationHistory[hash]) {
+            ids.push(id);
+        }
+        for (var i = ids.length - 1; i >= 0; i--) {
+            const id = ids[i];
+            var newDiv = document.createElement('div');
+            newDiv.id = 'annos-' + hash + '-' + id;
+            var button = document.createElement('button');
+            button.onclick = function () {
+                toggleAnnotations(id);
+            };
+            button.type = 'button';
+            button.id = 'show-hide-annos-' + hash + '-' + id;
+            button.className = 'hide';
+            var iEye = document.createElement('i');
+            iEye.className = 'far fa-eye';
+            var span = document.createElement('span');
+            if (id === '999999999') {
+                span.innerHTML = '{{ 'Current annotations' | trans }}';
+                newDiv.className = 'show-hide-current-annos';
+            } else {
+                span.innerHTML = window.annotationHistory[hash][id];
+            }
+            button.appendChild(iEye);
+            button.appendChild(span);
+            newDiv.appendChild(button);
 
-        var spanDiv = document.createElement('div');
-        newDiv.appendChild(spanDiv);
+            var spanDiv = document.createElement('div');
+            newDiv.appendChild(spanDiv);
 
-        if(hash in window.addedAnnotations) {
-            if(id in window.addedAnnotations[hash]) {
-                var annos = window.addedAnnotations[hash][id];
-                for(const id in annos) {
-                    if (!window.annoIds.hasOwnProperty(id)) {
-                        window.annoIds[id] = Object.keys(window.annoIds).length + 1;
+            if (hash in window.addedAnnotations) {
+                if (id in window.addedAnnotations[hash]) {
+                    var annos = window.addedAnnotations[hash][id];
+                    for (const id in annos) {
+                        if (!window.annoIds.hasOwnProperty(id)) {
+                            window.annoIds[id] = Object.keys(window.annoIds).length + 1;
+                        }
+                        if (annos[id].hasOwnProperty('body')
+                            && annos[id].body != null && annos[id].body.length > 0
+                            && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
+                            && annos[id].body[0].value !== '') {
+                            newDiv.style = 'display: block';
+                            addAnnoHistSpan(spanDiv, id, annos[id].body[0].value, true);
+                        }
                     }
-                    if(annos[id].hasOwnProperty('body')
-                        && annos[id].body != null && annos[id].body.length > 0
-                        && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
-                        && annos[id].body[0].value !== '') {
+                }
+            }
+            if (hash in window.deletedAnnotations) {
+                if (id in window.deletedAnnotations[hash]) {
+                    var annos = window.deletedAnnotations[hash][id];
+                    for (const id in annos) {
                         newDiv.style = 'display: block';
-                        addAnnoHistSpan(spanDiv, id, annos[id].body[0].value, true);
+                        addAnnoHistSpan(spanDiv, id, '', false);
                     }
                 }
             }
+            div.appendChild(newDiv);
         }
-        if(hash in window.deletedAnnotations) {
-            if(id in window.deletedAnnotations[hash]) {
-                var annos = window.deletedAnnotations[hash][id];
-                for(const id in annos) {
-                    newDiv.style = 'display: block';
-                    addAnnoHistSpan(spanDiv, id, '', false);
-                }
-            }
-        }
-        div.appendChild(newDiv);
     }
 
     if(image.endsWith('/info.json')) {
