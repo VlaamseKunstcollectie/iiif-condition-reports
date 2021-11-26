@@ -505,7 +505,7 @@ window.anno.setAuthInfo({
 
 window.onload = function() {
 
-    refreshAnnotations(window.anno, window.osd_anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
@@ -562,7 +562,7 @@ window.onload = function() {
         var cur = window.currentImage;
         {% for image in images %}
             window.currentImage = '{{ image.hash }}';
-            refreshAnnotations(window.annoPrint{{ image.hash }}, window.osdPrint{{ image.hash }});
+            refreshAnnotations(window.annoPrint{{ image.hash }}, window.osdPrint{{ image.hash }}, false);
         {% endfor %}
         window.currentImage = cur;
 
@@ -1157,7 +1157,7 @@ function refreshAnnotations(viewer, osd, remove) {
     var annotations = {};
     window.annotationNumber = 1;
     for (const id in window.annotationHistory[window.currentImage]) {
-        if(window.annotationsVisible[window.currentImage][id]) {
+        if(!remove || window.annotationsVisible[window.currentImage][id]) {
             if (id in window.deletedAnnotations[window.currentImage]) {
                 for (const delId of window.deletedAnnotations[window.currentImage][id]) {
                     delete annotations[delId];
@@ -1201,7 +1201,7 @@ function toggleAnnotations(id) {
     }
     window.allAnnotationsVisible = allVisible;
     setShowHideAllButton();
-    refreshAnnotations(window.anno, window.osd_anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 }
 
 function setShowHideAllButton() {
@@ -1248,7 +1248,7 @@ function resetAnnotations() {
             showAllButton.classList.add('show');
         }
     }
-    refreshAnnotations(window.anno, window.osd_anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 }
 
 {% if not readonly %}

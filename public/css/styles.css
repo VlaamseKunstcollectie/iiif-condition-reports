@@ -1496,7 +1496,7 @@ footer a:hover {
     #annotation-history,
     #annotation-tools,
     #thumbnails,
-    .openseadragon-container div:not(.openseadragon-canvas),
+    .openseadragon-container > div:not(.openseadragon-canvas),
     #print-button,
     #iiif-manifest-url,
     .footer {
