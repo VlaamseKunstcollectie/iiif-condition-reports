@@ -28,7 +28,7 @@
 		{% if not readonly or prefilled_data.presentation_guidelines is defined %}
 			<div class="form-subgroup report-row">
 				<div class="form-item report-column">
-					<div class="report-header-2">{{ 'Setup plan / guidelines' | trans }}</div>
+					<div class="report-header-3">{{ 'Setup plan / guidelines' | trans }}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_guidelines', 'value': 'present', 'label': 'Present' | trans } %}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_guidelines', 'value': 'not_present', 'label': 'Not present' | trans } %}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_guidelines', 'value': 'not_necessary', 'label': 'Not necessary' | trans } %}</div>
@@ -39,7 +39,7 @@
 		{% if not readonly or prefilled_data.presentation_tools is defined %}
 			<div class="form-subgroup report-row">
 				<div class="form-item report-column">
-					<div class="report-header-2">{{ 'Tools needed for setup' | trans }}</div>
+					<div class="report-header-3">{{ 'Tools needed for setup' | trans }}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_tools', 'value': 'no', 'label': 'No' | trans } %}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_tools', 'value': 'unclear', 'label': 'Unclear' | trans } %}</div>
 					<div class="form-radio-custom">{% include 'radio_custom.html.twig' with { 'name': 'presentation_tools' } %}</div>
@@ -50,7 +50,7 @@
 		{% if not readonly or prefilled_data.presentation_setup is defined %}
 			<div class="form-subgroup report-row">
 				<div class="form-item report-column">
-					<div class="report-header-2">{{ 'Setup' | trans }}</div>
+					<div class="report-header-3">{{ 'Setup' | trans }}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup', 'value': 'standing', 'onclick': 'if(this.checked) { document.getElementById(\'setup_location_standing\').style = \'display: block\'; document.getElementById(\'setup_location_hanging\').style = \'display: none\'; document.getElementById(\'setup_location_default\').style = \'display: none\'; }', 'label': 'Standing' | trans } %}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup', 'value': 'hanging', 'onclick': 'if(this.checked) { document.getElementById(\'setup_location_standing\').style = \'display: none\'; document.getElementById(\'setup_location_hanging\').style = \'display: block\'; document.getElementById(\'setup_location_default\').style = \'display: none\'; }', 'label': 'Hanging' | trans } %}</div>
 					<div class="form-radio-custom">{% include 'radio_custom.html.twig' with { 'name': 'presentation_setup', 'onclick': 'if(this.checked) { document.getElementById(\'setup_location_standing\').style = \'display: none\'; document.getElementById(\'setup_location_hanging\').style = \'display: none\'; document.getElementById(\'setup_location_default\').style = \'display: block\'; }' } %}</div>
@@ -65,7 +65,7 @@
 		%}
 			<div class="form-subgroup report-row{% if prefilled_data.presentation_setup is not defined or prefilled_data.presentation_setup != 'standing' %} hidden{% endif %}" id="setup_location_standing">
 				<div class="form-item report-column">
-					<div class="report-header-2">{{ 'Setup location' | trans }}</div>
+					<div class="report-header-3">{{ 'Setup location' | trans }}</div>
 					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_standing_free', 'label': 'Free in the room' | trans } %}</div>
 					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_standing_pedestal', 'label': 'On pedestal' | trans } %}</div>
 					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_standing_wall', 'label': 'Against the wall' | trans } %}</div>
@@ -83,7 +83,7 @@
 			%}
 				<div class="form-subgroup report-row" id="setup_location_hanging">
 					<div class="form-item report-column">
-						<div class="report-header-2">{{ 'Setup location' | trans }}</div>
+						<div class="report-header-3">{{ 'Setup location' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_hanging_ceiling', 'label': 'From the ceiling' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_hanging_wall', 'label': 'Against the wall' | trans } %}</div>
 						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'presentation_setup_location_hanging_custom' } %}</div>
@@ -92,7 +92,7 @@
 			{% endif %}
 			<div class="form-subgroup report-row">
 				<div class="form-item report-column">
-					<div class="report-header-2">{{ 'Suspension system' | trans }}</div>
+					<div class="report-header-3">{{ 'Suspension system' | trans }}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup_hanging_suspension', 'value': 'present', 'label': 'Present' | trans } %}</div>
 					<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup_hanging_suspension', 'value': 'not_present', 'label': 'Not present' | trans } %}</div>
 					<div class="form-radio-custom">{% include 'radio_custom.html.twig' with { 'name': 'presentation_setup_hanging_suspension' } %}</div>
@@ -108,7 +108,7 @@
 				or prefilled_data.presentation_setup_location_default_custom is defined)) %}
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
-						<div class="report-header-2">{{ 'Setup location' | trans }}</div>
+						<div class="report-header-3">{{ 'Setup location' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_default_free', 'label': 'Free in the room' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_default_pedestal', 'label': 'On pedestal' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_default_ceiling', 'label': 'From the ceiling' | trans } %}</div>
@@ -123,7 +123,7 @@
 				and prefilled_data.presentation_setup_default_suspension is defined)) %}
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
-						<div class="report-header-2">{{ 'Suspension system' | trans }}</div>
+						<div class="report-header-3">{{ 'Suspension system' | trans }}</div>
 						<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup_default_suspension', 'value': 'present', 'label': 'Present' | trans } %}</div>
 						<div class="form-radio">{% include 'radio.html.twig' with { 'name': 'presentation_setup_default_suspension', 'value': 'not_present', 'label': 'Not present' | trans } %}</div>
 						<div class="form-radio-custom">{% include 'radio_custom.html.twig' with { 'name': 'presentation_setup_default_suspension' } %}</div>
@@ -189,8 +189,8 @@
 	   or prefilled_data.points_of_attention_lashing_straps is defined or prefilled_data.points_of_attention_custom is defined %}
 		<div class="form-group">
 			<div class="report-header-2">{{ 'Manipulation / transport' | trans }}</div>
-			<div class="form-subgroup">
-				<div class="form-item">
+			<div class="form-subgroup report-row">
+				<div class="form-item report-column">
 					<div class="flex">{% include 'number.html.twig' with { 'name': 'transport_number_of_people', 'class': 'number-box', 'label': 'Number of people' | trans } %}</div>
 				</div>
 			</div>
@@ -198,9 +198,9 @@
 			{% if not readonly or prefilled_data.moving_equipment_pneumatic_tire_cart is defined
 				or prefilled_data.moving_equipment_pallet_truck is defined or prefilled_data.moving_equipment_hand_truck is defined
 				or prefilled_data.moving_equipment_custom is defined %}
-				<div class="report-header-2">{{ 'Moving equipment' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Moving equipment' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pneumatic_tire_cart', 'label': 'Cart with pneumatic tires' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pallet_truck', 'label': 'Pallet truck' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_hand_truck', 'label': 'Handtruck' | trans } %}</div>
@@ -211,9 +211,9 @@
 
 			{% if not readonly or prefilled_data.transport_equipment_truck_elevator is defined
 			   or prefilled_data.transport_equipment_custom is defined %}
-				<div class="report-header-2">{{ 'Transport equipment' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Transport equipment' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'transport_equipment_truck_elevator', 'label': 'Truck with elevator' | trans } %}</div>
 						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'transport_equipment_custom' } %}</div>
 					</div>
@@ -223,9 +223,9 @@
 			{% if not readonly or prefilled_data.points_of_attention_upright is defined
 			   or prefilled_data.points_of_attention_lying_down is defined or prefilled_data.points_of_attention_lashing_straps is defined
 			   or prefilled_data.points_of_attention_custom is defined %}
-				<div class="report-header-2">{{ 'Points of attention' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Points of attention' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_upright', 'label': 'Upright' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lying_down', 'label': 'Lying down' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lashing_straps', 'label': 'Lashing straps' | trans } %}</div>
@@ -253,9 +253,9 @@
 			{% if not readonly or prefilled_data.packing_supporting_construction is defined
 				or prefilled_data.packing_pack_upright is defined or prefilled_data.packing_pack_lying_down is defined
 				or prefilled_data.packing_datalogger is defined or prefilled_data.packing_custom is defined %}
-				<div class="report-header-2">{{ 'Advice' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Advice' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_supporting_construction', 'label': 'Supporting construction needed' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_upright', 'label': 'Pack upright' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_lying_down', 'label': 'Pack lying down' | trans } %}</div>
@@ -269,9 +269,9 @@
 			   or prefilled_data.outer_packing_plastic_crate_cushion is defined or prefilled_data.outer_packing_open_crate is defined
 			   or prefilled_data.outer_packing_closed_crate is defined or prefilled_data.outer_packing_climage_box is defined
 			   or prefilled_data.outer_packing_custom is defined %}
-				<div class="report-header-2">{{ 'Outer packing' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Outer packing' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_pallet', 'label': 'Pallet' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_plastic_crate_cushion', 'label': 'Plastic crate with cushion' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_open_crate', 'label': 'Open crate' | trans } %}</div>
@@ -286,9 +286,9 @@
 			   or prefilled_data.inner_packing_ethafoam_support is defined or prefilled_data.inner_packing_polyethylene_film is defined
 			   or prefilled_data.inner_packing_silk_paper is defined or prefilled_data.inner_packing_not_packed is defined
 			   or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom is defined %}
-				<div class="report-header-2">{{ 'Inner packing' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
+						<div class="report-header-3">{{ 'Inner packing' | trans }}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_tyvek', 'label': 'Tyvek' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_ethafoam_support', 'label': 'Ethafoam for supporting construction' | trans } %}</div>
 						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_polyethylene_film', 'label': 'Polyethylene film' | trans } %}</div>

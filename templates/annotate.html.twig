@@ -168,7 +168,7 @@
                             <option value="url">{{ 'Image through URL' | trans }}</option>
                             <option value="iiif">{{ 'IIIF image through URL' | trans }}</option>
                         </select>
-                        <div id="add-image-div" style="display: none">
+                        <div id="add-image-div">
                             <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment" style="display: none">
                             <input type="file" id="annotate-file" name="annotate-file" accept="image/*" style="display: none">
                             <input type="text" id="add-image-url" placeholder="{{ 'Fill in image URL ...' | trans }}">
@@ -760,34 +760,44 @@ function selectedImageToAdd(selectElement) {
     var addImageDivInput = document.getElementById('add-image-div');
     switch(selectElement.options[selectElement.selectedIndex].value) {
         case 'frame': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
             addImage({{ frame_picture | json_encode | raw }});
-            document.getElementById('add-image-select').selectedIndex = 0;
+            selectElement.selectedIndex = 0;
             break;
         }
         case 'backside': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
             addImage({{ backside_picture | json_encode | raw }});
-            document.getElementById('add-image-select').selectedIndex = 0;
+            selectElement.selectedIndex = 0;
             break;
         }
         case 'camera': {
-            addImageDivInput.style = 'display: none';
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
             document.getElementById('annotate-camera').click();
+            selectElement.selectedIndex = 0;
             break;
         }
         case 'device': {
-            addImageDivInput.style = 'display: none';
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
             document.getElementById('annotate-file').click();
+            selectElement.selectedIndex = 0;
             break;
         }
         case 'url': {
-            addImageDivInput.style = 'display: block';
+            addImageDivInput.classList.add('load-new-image-button');
+            selectElement.classList.add('add-image-select-url');
             var addImageUrl = document.getElementById('add-image-url');
             addImageUrl.placeholder = '{{ 'Insert image URL ...' | trans }}';
             addImageUrl.value = '';
             break;
         }
         case 'iiif': {
-            addImageDivInput.style = 'display: block';
+            addImageDivInput.classList.add('load-new-image-button');
+            selectElement.classList.add('add-image-select-url');
             var addImageUrl = document.getElementById('add-image-url');
             addImageUrl.placeholder = '{{ 'Insert IIIF image URL ...' | trans }}';
             addImageUrl.value = '';
@@ -830,7 +840,7 @@ function loadIIIFImage() {
     xhr.send();
     document.getElementById('add-image-url').value = '';
     document.getElementById('add-image-select').selectedIndex = 0;
-    document.getElementById('add-image-div').style = 'display: none';
+    document.getElementById('add-image-div').classList.remove('load-new-image-button');
 }
 
 function loadImage() {
@@ -847,7 +857,7 @@ function loadImage() {
     xhr.send();
     document.getElementById('add-image-url').value = '';
     document.getElementById('add-image-select').selectedIndex = 0;
-    document.getElementById('add-image-div').style = 'display: none';
+    document.getElementById('add-image-div').classList.remove('load-new-image-button');
 }
 
 function confirmDeleteImage(hash) {

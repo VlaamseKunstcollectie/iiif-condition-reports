@@ -406,7 +406,8 @@ textarea {
 }
 
 #report-navigation .save button,
-#report-navigation .print button {
+#report-navigation .print button,
+#report-form #annotation-images #add-image-url-button {
     width: 46px;
     background-color: white;
     border: 1px solid #dbdbdb;
@@ -447,7 +448,7 @@ textarea {
 }
 
 .custom-input {
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .flex {
@@ -475,7 +476,8 @@ textarea {
 
 #wrap .readonly-header button,
 #report-navigation .save button,
-#object-type-select-div .save button {
+#object-type-select-div .save button,
+#report-form #annotation-images #add-image-url-button {
     cursor: pointer;
     display: flex;
     flex-wrap: nowrap;
@@ -495,6 +497,10 @@ textarea {
     padding: 6px 12px;
 }
 
+#report-form #annotation-images #add-image-url-button {
+    padding: 6px 12px;
+}
+
 #wrap .readonly-header button {
     margin-top: auto;
     margin-bottom: auto;
@@ -502,7 +508,8 @@ textarea {
 
 #wrap .readonly-header button:hover,
 #report-navigation .save button:hover,
-#object-type-select-div .save button:hover {
+#object-type-select-div .save button:hover,
+#report-form #annotation-images #add-image-url-button:hover {
     background-color: #3a3f5a;
 }
 
@@ -595,6 +602,10 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     flex: 1;
 }
 
+#report-form #recommendations-form :not(.report-row) + .report-row {
+    margin-top: 0;
+}
+
 #report-form label,
 #organisation-form label,
 #representative-form label {
@@ -622,6 +633,25 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     box-sizing: border-box;
     height: 35px;
     background-color: #f8f8f8;
+}
+
+#report-form input[type=checkbox],
+#organisation-form input[type=checkbox],
+#representative-form input[type=checkbox],
+#object-type-select-div-div input[type=checkbox],
+#report-form input[type=radio],
+#organisation-form input[type=radio],
+#representative-form input[type=radio],
+#object-type-select-div-div input[type=radio] {
+    margin-top: 3px;
+}
+
+#report-form .layer-select-box select,
+#report-form #annotation-select-painting select,
+#report-form #annotation-select-work_on_paper select,
+#report-form #annotation-select-sculpture select,
+#report-form #annotation-select-default select {
+    margin-top: 0;
 }
 
 #report-form .form-checkbox,
@@ -688,7 +718,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #representative-form .report-header {
     padding-top: 30px;
     padding-bottom: 10px;
-    font-size: 150%;
+    font-size: 24px;
     font-weight: bold;
 }
 
@@ -698,9 +728,16 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     padding-top: 0;
 }
 
-#report-form .report-header-2 {
+#report-form .report-header-2,
+#report-form .report-header-3 {
     padding-top: 10px;
     font-weight: bold;
+    font-size: 18px;
+}
+
+#report-form .report-header-3 {
+    font-size: 14px;
+    font-style: italic;
 }
 
 #report-form .report-legend {
@@ -738,7 +775,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-history .show-all {
     background-color: #f8f8f8;
     text-align: left;
-    width: 140px;
+    width: 145px;
     border: 1px solid #dbdbdb;
     border-left: none;
     font-weight: bold;
@@ -750,7 +787,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-history #show-hide-numbers {
     background-color: #f8f8f8;
     text-align: left;
-    width: 70px;
+    width: 65px;
     border: 1px solid #dbdbdb;
     border-left: none;
     font-weight: bold;
@@ -790,6 +827,9 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-tools > div {
     display: flex;
     border-right: 1px solid #dbdbdb;
+}
+
+#report-form #annotation-tools > div:first-child {
     padding-right: 15px;
 }
 
@@ -882,6 +922,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 .layer-multiselect {
     width: 200px;
+    margin: auto 15px;
 }
 
 .layer-select-box {
@@ -890,7 +931,6 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 .layer-select-box select {
     width: 100%;
-    font-weight: bold;
 }
 
 .layer-over-select {
@@ -903,17 +943,44 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #layer-checkboxes {
     display: none;
-    border: 1px #dadada solid;
+    border: 1px #767676 solid;
     z-index: 1;
-    position: absolute
+    position: absolute;
+    background-color: #f8f8f8;
+    min-width: 198px;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 40%);
 }
 
-#layer-checkboxes label {
-    display: block;
+#layer-checkboxes .layer-checkbox-div {
+    display: flex;
+    padding: 0 10px 0 10px;
 }
 
-#layer-checkboxes label:hover {
+#layer-checkboxes .layer-checkbox-div:hover {
     background-color: #1e90ff;
+}
+
+#layer-checkboxes .layer-checkbox-div input {
+    width: auto;
+    height: auto;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+#layer-checkboxes .layer-checkbox-div label {
+    padding-top: 0;
+}
+
+#layer-checkboxes .layer-checkbox-div:hover label {
+    color: white;
+}
+
+#annotation-select-painting,
+#annotation-select-work_on_paper,
+#annotation-select-sculpture,
+#annotation-select-default {
+    margin: auto 15px;
+    min-width: 200px;
 }
 
 #report-form #annotation-images {
@@ -925,6 +992,32 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     background-color: #f8f8f8;
     height: 50px;
     border-bottom: 1px solid #dbdbdb;
+}
+
+#report-form #annotation-images #add-image-select {
+    margin: auto 15px;
+}
+
+#report-form #annotation-images #add-image-select.add-image-select-url {
+    margin-right: 10px;
+}
+
+#report-form #annotation-images #add-image-div {
+    display: none;
+}
+
+#report-form #annotation-images #add-image-div.load-new-image-button {
+    display: flex;
+    width: 2500px;
+}
+
+#report-form #annotation-images #add-image-url-button {
+    margin: auto 15px auto 10px;
+    height: 35px;
+}
+
+#report-form #annotation-images #add-image-url {
+    margin: auto 0;
 }
 
 #report-form #annotation-images #thumbnails {
@@ -1014,7 +1107,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2-selection {
-    width: 220px;
+    width: 210px;
 }
 
 .select2-container .select2-selection--single {
@@ -1344,13 +1437,30 @@ form {
     padding: 15px;
 }
 
-.readonly #report-form .form-group .report-header-2 {
+.readonly #report-form .form-group .report-header-2,
+.readonly #report-form .form-group .report-header-3 {
     padding-top: 0;
     padding-bottom: 10px;
 }
 
+.readonly #report-form #recommendations-form .form-group .report-row {
+    padding-top: 10px;
+}
+
+.readonly #report-form #recommendations-form .form-group :not(.report-row) + .report-row {
+    padding-top: 0;
+}
+
 .readonly #report-form .form-group .report-column:last-child {
     margin-left: 15px;
+}
+
+.readonly #report-form .form-group .report-column:first-child {
+    margin-left: 0;
+}
+
+.readonly #report-form #recommendations-form .form-group .report-column:first-child {
+    margin-left: 0;
 }
 
 .readonly #report-form .form-item {
@@ -1366,7 +1476,8 @@ form {
 .readonly #report-form .form-item.form-creator,
 .readonly #report-form .form-item .number-of-parts,
 .readonly #report-form .form-item .treatment-hours,
-.readonly #report-form .no-spaces {
+.readonly #report-form .no-spaces,
+.readonly #report-form .form-item .readonly-input {
     white-space: normal;
 }
 
@@ -1429,11 +1540,8 @@ form {
     padding-right: 0;
 }
 
-.readonly #report-form .report-row + div {
-    margin-top: 30px;
-}
-
 .readonly #report-form .no-spaces {
+    margin-top: 10px;
     display: flex;
 }
 
@@ -1443,6 +1551,14 @@ form {
 
 .readonly #report-form #annotation-history .show-all {
     border-right: none;
+}
+
+.readonly #report-form .form-group div:nth-child(2) {
+    margin-top: 0;
+}
+
+.readonly #report-form .form-group .form-subgroup:nth-child(1) div:nth-child(1) {
+    margin-top: 0;
 }
 
 footer {

@@ -1,21 +1,6 @@
 {% if not readonly or prefilled_data.reason is defined or prefilled_data.reason_custom is defined or prefilled_data.exhibition_title is defined or prefilled_data.exhibition_url is defined or prefilled_data.exhibition_date is defined or prefilled_data.exhibition_id is defined or prefilled_data.exhibition_info is defined or prefilled_data.exhibition_rep_name is defined %}
 <div id="reason-form"{% if not readonly %} class="form-tab"{% endif %}>
     {% if not readonly %}
-    <script>
-        function toggleCustomReason(customReasonId, show) {
-            var customReason = document.getElementById(customReasonId);
-            if(customReason != null) {
-                if(show) {
-                    customReason.disabled = false;
-                    customReason.style = 'display: block';
-                    customReason.focus();
-                } else {
-                    customReason.disabled = true;
-                    customReason.style = 'display: none';
-                }
-            }
-        }
-    </script>
     <div class="report-header">{{ 'Identification of the reason for the report' | trans }}</div>
     <div class="form-group">
         <div class="form-subgroup">
@@ -39,6 +24,21 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleCustomReason(customReasonId, show) {
+            var customReason = document.getElementById(customReasonId);
+            if(customReason != null) {
+                if(show) {
+                    customReason.disabled = false;
+                    customReason.style = 'display: block';
+                    customReason.focus();
+                } else {
+                    customReason.disabled = true;
+                    customReason.style = 'display: none';
+                }
+            }
+        }
+    </script>
     {% elseif prefilled_data.reason is defined or prefilled_data.reason_custom is defined %}
     <div class="report-header">{{ 'Identification of the reason for the report' | trans }}</div>
     <div class="form-group">
