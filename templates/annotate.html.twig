@@ -103,10 +103,10 @@
                             <div class="layer-over-select"></div>
                         </div>
                         <div id="layer-checkboxes">
-                            <label for="layer-carrier"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox(this)"/>{{ 'Carrier' | trans }}</label>
-                            <label for="layer-paint-layer"><input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox(this)"/>{{ 'Paint layer' | trans }}</label>
-                            <label for="layer-finishing-layer"><input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox(this)"/>{{ 'Finishing layer' | trans }}</label>
-                            <label for="layer-frame"><input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox(this)"/>{{ 'Frame' | trans }}</label>
+                            <input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-carrier">{{ 'Carrier' | trans }}</label>
+                            <input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-paint-layer">{{ 'Paint layer' | trans }}</label>
+                            <input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-finishing-layer">{{ 'Finishing layer' | trans }}</label>
+                            <input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-frame">{{ 'Frame' | trans }}</label>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                             <option value="" selected disabled hidden>{{ 'Select damage type' | trans }}</option>
                             {% for key, damage_type in damage_types %}
                                 {% if object_type == 'default' or object_type in attribute(report_fields.damage_types, key).applies_to %}
-                                    <option value="{{ key }}">{{ key | trans }}</option>
+                                    <option value="{{ key | trans }}">{{ key | trans }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -294,7 +294,8 @@ window.annoConf = {
     locale: 'auto',
     styleColor: 'red',
     styleFill: '',
-    styleClass: 'condition-red'
+    styleClass: 'condition-red',
+    damageType: ''
     {% if readonly %}
     , readOnly: true
     {% endif %}
@@ -877,7 +878,7 @@ function addImage(image) {
 }
 
 function selectedDamageType(selectElement) {
-//TODO
+    window.annoConf.damageType = selectElement.options[selectElement.selectedIndex].value;
 }
 {% endif %}
 
@@ -1277,8 +1278,8 @@ function resetAnnotations() {
             var selectElements = document.getElementsByClassName('annotation-select');
             for (var j = 0; j < selectElements.length; j++) {
                 selectElements[j].selectedIndex = 0;
-                console.log(selectElements[j]);
             }
+            window.annoConf.damageType = '';
         }
     }, 100);
 {% endif %}
