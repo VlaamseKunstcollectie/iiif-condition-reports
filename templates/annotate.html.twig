@@ -318,15 +318,15 @@ window.osd_anno.addHandler('open', function(event) {
 
 window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span != null) {
-            span.classList.add('anno-hist-hover');
-            var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
-            if(number !== null) {
-                var e = document.getElementById('annotation-number-' + number);
-                if(e != null) {
-                    e.classList.add('highlighted-number');
-                }
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        for(var i = 0; i < spans.length; i++) {
+            spans[i].classList.add('anno-hist-hover');
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.add('highlighted-number');
             }
         }
     }
@@ -334,15 +334,15 @@ window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
 
 window.anno.on('selectAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span != null) {
-            span.classList.add('anno-hist-hover');
-            var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
-            if(number !== null) {
-                var e = document.getElementById('annotation-number-' + number);
-                if(e != null) {
-                    e.classList.add('highlighted-number');
-                }
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        for(var i = 0; i < spans.length; i++) {
+            spans[i].classList.add('anno-hist-hover');
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.add('highlighted-number');
             }
         }
     }
@@ -350,15 +350,15 @@ window.anno.on('selectAnnotation', function(annotation, ele) {
 
 window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span != null) {
-            span.classList.remove('anno-hist-hover');
-            var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
-            if(number !== null) {
-                var e = document.getElementById('annotation-number-' + number);
-                if(e != null) {
-                    e.classList.remove('highlighted-number');
-                }
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        for(var i = 0; i < spans.length; i++) {
+            spans[i].classList.remove('anno-hist-hover');
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
             }
         }
     }
@@ -366,15 +366,15 @@ window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
 
 window.anno.on('cancelSelected', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span != null) {
-            span.classList.remove('anno-hist-hover');
-            var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
-            if(number !== null) {
-                var e = document.getElementById('annotation-number-' + number);
-                if(e != null) {
-                    e.classList.remove('highlighted-number');
-                }
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        for(var i = 0; i < spans.length; i++) {
+            spans[i].classList.remove('anno-hist-selected');
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
             }
         }
     }
@@ -382,15 +382,15 @@ window.anno.on('cancelSelected', function(annotation, ele) {
 
 window.anno.on('updateAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span != null) {
-            span.style.backgroundColor = 'white';
-            var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
-            if(number !== null) {
-                var e = document.getElementById('annotation-number-' + number);
-                if(e != null) {
-                    e.classList.remove('highlighted-number');
-                }
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        for(var i = 0; i < spans.length; i++) {
+            spans[i].classList.remove('anno-hist-selected');
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
             }
         }
     }
@@ -420,6 +420,7 @@ window.anno.on('createAnnotation', function(annotation, ele) {
 
 window.anno.on('deleteAnnotation', function(annotation, ele) {
     if(annotation != null) {
+        //TODO improve this massively
         var button = document.getElementById('anno-hist-' + annotation.id);
         if(button != null) {
             var parent = button.parentElement.parentElement;
@@ -1107,87 +1108,166 @@ function addNumberOverlays(osd, remove) {
 }
 
 function addAnnoHistSpan(div, id, text, styleClass, added) {
-    console.log(styleClass);
-    var span = document.createElement('span');
     var number = window.annoIds.hasOwnProperty(id) ? window.annoIds[id] : null;
-    if(added) {
-        span.id = 'anno-hist-' + id;
-        span.className = 'anno-hist';
-        if(number === null) {
-            span.innerHTML = text;
-        } else {
-            span.innerHTML = number + '. ' + text;
+    var divsToAdd = [];
+    if (styleClass != null && added) {
+        var layers = [];
+        switch(styleClass) {
+            case 'condition-red':
+            case 'condition-green':
+            case 'condition-blue':
+            case 'condition-orange':
+                layers.push(styleClass);
+                break;
+            case 'condition-red-green':
+                layers.push('condition-red');
+                layers.push('condition-green');
+                break;
+            case 'condition-red-blue':
+                layers.push('condition-red');
+                layers.push('condition-blue');
+                break;
+            case 'condition-green-blue':
+                layers.push('condition-green');
+                layers.push('condition-blue');
+                break;
+            case 'condition-red-green-blue':
+                layers.push('condition-red');
+                layers.push('condition-green');
+                layers.push('condition-blue');
+                break;
+        }
+        for(var i = 0; i < layers.length; i++) {
+            var layerDiv = div.querySelector('.' + layers[i]);
+            if (layerDiv == null) {
+                layerDiv = document.createElement('div');
+                layerDiv.className = layers[i];
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'anno-hist-layer-span';
+                layerDiv.appendChild(nameSpan);
+                switch(layers[i]) {
+                    case 'condition-red': {
+                        nameSpan.innerHTML = '{{ 'Paint layer' | trans }}';
+                        var finishingLayer = div.querySelector('.condition-green');
+                        if (finishingLayer != null) {
+                            div.insertBefore(layerDiv, finishingLayer);
+                        } else {
+                            var frame = div.querySelector('.condition-orange');
+                            if (frame != null) {
+                                div.insertBefore(layerDiv, frame);
+                            } else {
+                                div.appendChild(layerDiv);
+                            }
+                        }
+                        break;
+                    }
+                    case 'condition-green': {
+                        nameSpan.innerHTML = '{{ 'Finishing layer' | trans }}';
+                        var frame = div.querySelector('.condition-orange');
+                        if (frame != null) {
+                            div.insertBefore(layerDiv, frame);
+                        } else {
+                            div.appendChild(layerDiv);
+                        }
+                        break;
+                    }
+                    case 'condition-blue': {
+                        nameSpan.innerHTML = '{{ 'Carrier' | trans }}';
+                        if(div.childNodes.length === 0) {
+                            div.appendChild(layerDiv);
+                        } else {
+                            div.insertBefore(layerDiv, div.firstChild);
+                        }
+                        break;
+                    }
+                    case 'condition-orange':
+                        nameSpan.innerHTML = '{{ 'Frame' | trans }}';
+                        div.appendChild(layerDiv);
+                        break;
+                }
+            }
+            divsToAdd.push(layerDiv);
         }
     } else {
-        span.className = 'anno-hist-deleted';
-        if(number === null) {
-            span.innerHTML = '({{ 'Deleted' | trans }})';
-        } else {
-            {% if app.request.locale == 'en' %}
-                span.innerHTML = '({{ 'Deleted' | trans }} ' + number + ')';
-            {% else %}
-                span.innerHTML = '(' + number + ' {{ 'deleted' | trans }})';
-            {% endif %}
-        }
+        divsToAdd.push(div);
     }
-    span.onmouseover = function() {
-        var eles = document.getElementsByClassName('a9s-outer');
-        for(var i = 0; i < eles.length; i++) {
-            if(eles[i].parentElement.getAttribute('data-id') === id) {
-                eles[i].parentElement.classList.add('selected');
+    console.log(divsToAdd);
+    for(var i = 0; i < divsToAdd.length; i++) {
+        var span = document.createElement('span');
+        if (added) {
+            span.className = 'anno-hist anno-hist-' + id;
+            if (number === null) {
+                span.innerHTML = text;
+            } else {
+                span.innerHTML = number + '. ' + text;
+            }
+        } else {
+            span.className = 'anno-hist-deleted';
+            if (number === null) {
+                span.innerHTML = '({{ 'Deleted' | trans }})';
+            } else {
+                {% if app.request.locale == 'en' %}
+                span.innerHTML = '({{ 'Deleted' | trans }} ' + number + ')';
+                {% else %}
+                span.innerHTML = '(' + number + ' {{ 'deleted' | trans }})';
+                {% endif %}
             }
         }
-        if(number !== null) {
-            var ele = document.getElementById('annotation-number-' + number);
-            if(ele != null) {
-                ele.classList.add('highlighted-number');
+        span.onmouseover = function () {
+            var eles = document.getElementsByClassName('a9s-outer');
+            for (var i = 0; i < eles.length; i++) {
+                if (eles[i].parentElement.getAttribute('data-id') === id) {
+                    eles[i].parentElement.classList.add('selected');
+                }
             }
-        }
-    };
-    span.onmouseout = function() {
-        var eles = document.getElementsByClassName('a9s-outer');
-        for(var i = 0; i < eles.length; i++) {
-            if(eles[i].parentElement.getAttribute('data-id') === id) {
-                eles[i].parentElement.classList.remove('selected');
+            var spans = document.getElementsByClassName('anno-hist-' + id);
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-hover');
             }
-        }
-        if(number !== null) {
-            var ele = document.getElementById('annotation-number-' + number);
-            if(ele != null) {
-                ele.classList.remove('highlighted-number');
-            }
-        }
-    };
-    span.onclick = function() {
-        if(window.anno.selectAnnotation(id) !== undefined) {
-            this.classList.add('anno-hist-hover');
-            if(number !== null) {
+            if (number !== null) {
                 var ele = document.getElementById('annotation-number-' + number);
-                if(ele != null) {
+                if (ele != null) {
                     ele.classList.add('highlighted-number');
                 }
             }
-        }
-    };
-/*    var layers = [
-    ];
-    if(styleClass != null) {
-        var layerDiv = div.querySelector('.' + styleClass);
-        if(layerDiv == null) {
-            layerDiv = document.createElement('div');
-            layerDiv.className = styleClass;
-            var nameSpan = document.createElement('span');
-            nameSpan.innerHTML = styleClass;
-            layerDiv.appendChild(nameSpan);
-            layerDiv.appendChild(span);
-            div.appendChild(layerDiv);
+        };
+        span.onmouseout = function () {
+            var eles = document.getElementsByClassName('a9s-outer');
+            for (var i = 0; i < eles.length; i++) {
+                if (eles[i].parentElement.getAttribute('data-id') === id) {
+                    eles[i].parentElement.classList.remove('selected');
+                }
+            }
+            var spans = document.getElementsByClassName('anno-hist-' + id);
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('anno-hist-hover');
+            }
+            if (number !== null) {
+                var ele = document.getElementById('annotation-number-' + number);
+                if (ele != null) {
+                    ele.classList.remove('highlighted-number');
+                }
+            }
+        };
+        span.onclick = function () {
+            if (window.anno.selectAnnotation(id) !== undefined) {
+                var spans = document.getElementsByClassName('anno-hist-' + id);
+                for(var i = 0; i < spans.length; i++) {
+                    spans[i].classList.add('anno-hist-selected');
+                }
+                if (number !== null) {
+                    var ele = document.getElementById('annotation-number-' + number);
+                    if (ele != null) {
+                        ele.classList.add('highlighted-number');
+                    }
+                }
+            }
+        };
+        if (divsToAdd[i].childNodes.length < 2) {
+            divsToAdd[i].appendChild(span);
         } else {
-            layerDiv.insertBefore(span, layerDiv.firstChild.nextSibling);
+            divsToAdd[i].insertBefore(span, divsToAdd[i].firstChild.nextSibling);
         }
-    } else */if(div.childNodes.length === 0) {
-        div.appendChild(span);
-    } else {
-        div.insertBefore(span, div.firstChild);
     }
 }
 
