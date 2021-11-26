@@ -168,12 +168,16 @@
 	   or prefilled_data.storage_custom is defined %}
 		<div class="form-group">
 			<div class="report-header-2">{{ 'Storage' | trans }}</div>
-			<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_support', 'label': 'Supporting construction' | trans } %}</div>
-			<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_no_support', 'label': 'No supporting construction' | trans } %}</div>
-			<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_dust_free', 'label': 'Keep dust-free' | trans } %}</div>
-			<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_inner_packing', 'label': 'Inner packing' | trans } %}</div>
-			<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_no_packing', 'label': 'Storage without packing' | trans } %}</div>
-			<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'storage_custom' } %}</div>
+			<div class="form-subgroup report-row">
+				<div class="form-item report-column">
+					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_support', 'label': 'Supporting construction' | trans } %}</div>
+					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_no_support', 'label': 'No supporting construction' | trans } %}</div>
+					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_dust_free', 'label': 'Keep dust-free' | trans } %}</div>
+					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_inner_packing', 'label': 'Inner packing' | trans } %}</div>
+					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'storage_no_packing', 'label': 'Storage without packing' | trans } %}</div>
+					<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'storage_custom' } %}</div>
+				</div>
+			</div>
 		</div>
 	{% endif %}
 
@@ -195,27 +199,39 @@
 				or prefilled_data.moving_equipment_pallet_truck is defined or prefilled_data.moving_equipment_hand_truck is defined
 				or prefilled_data.moving_equipment_custom is defined %}
 				<div class="report-header-2">{{ 'Moving equipment' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pneumatic_tire_cart', 'label': 'Cart with pneumatic tires' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pallet_truck', 'label': 'Pallet truck' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_hand_truck', 'label': 'Handtruck' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'moving_equipment_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pneumatic_tire_cart', 'label': 'Cart with pneumatic tires' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_pallet_truck', 'label': 'Pallet truck' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'moving_equipment_hand_truck', 'label': 'Handtruck' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'moving_equipment_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 
 			{% if not readonly or prefilled_data.transport_equipment_truck_elevator is defined
 			   or prefilled_data.transport_equipment_custom is defined %}
 				<div class="report-header-2">{{ 'Transport equipment' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'transport_equipment_truck_elevator', 'label': 'Truck with elevator' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'transport_equipment_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'transport_equipment_truck_elevator', 'label': 'Truck with elevator' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'transport_equipment_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 
 			{% if not readonly or prefilled_data.points_of_attention_upright is defined
 			   or prefilled_data.points_of_attention_lying_down is defined or prefilled_data.points_of_attention_lashing_straps is defined
 			   or prefilled_data.points_of_attention_custom is defined %}
 				<div class="report-header-2">{{ 'Points of attention' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_upright', 'label': 'Upright' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lying_down', 'label': 'Lying down' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lashing_straps', 'label': 'Lashing straps' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'points_of_attention_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_upright', 'label': 'Upright' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lying_down', 'label': 'Lying down' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'points_of_attention_lashing_straps', 'label': 'Lashing straps' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'points_of_attention_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 		</div>
 	{% endif %}
@@ -238,11 +254,15 @@
 				or prefilled_data.packing_pack_upright is defined or prefilled_data.packing_pack_lying_down is defined
 				or prefilled_data.packing_datalogger is defined or prefilled_data.packing_custom is defined %}
 				<div class="report-header-2">{{ 'Advice' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_supporting_construction', 'label': 'Supporting construction needed' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_upright', 'label': 'Pack upright' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_lying_down', 'label': 'Pack lying down' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_datalogger', 'label': 'Datalogger' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'packing_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_supporting_construction', 'label': 'Supporting construction needed' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_upright', 'label': 'Pack upright' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_pack_lying_down', 'label': 'Pack lying down' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'packing_datalogger', 'label': 'Datalogger' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'packing_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 
 			{% if not readonly or prefilled_data.outer_packing_pallet is defined
@@ -250,12 +270,16 @@
 			   or prefilled_data.outer_packing_closed_crate is defined or prefilled_data.outer_packing_climage_box is defined
 			   or prefilled_data.outer_packing_custom is defined %}
 				<div class="report-header-2">{{ 'Outer packing' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_pallet', 'label': 'Pallet' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_plastic_crate_cushion', 'label': 'Plastic crate with cushion' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_open_crate', 'label': 'Open crate' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_closed_crate', 'label': 'Closed crate' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_climage_box', 'label': 'Climate box' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'outer_packing_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_pallet', 'label': 'Pallet' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_plastic_crate_cushion', 'label': 'Plastic crate with cushion' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_open_crate', 'label': 'Open crate' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_closed_crate', 'label': 'Closed crate' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'outer_packing_climage_box', 'label': 'Climate box' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'outer_packing_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 
 			{% if not readonly or prefilled_data.inner_packing_tyvek is defined
@@ -263,13 +287,17 @@
 			   or prefilled_data.inner_packing_silk_paper is defined or prefilled_data.inner_packing_not_packed is defined
 			   or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom %}
 				<div class="report-header-2">{{ 'Inner packing' | trans }}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_tyvek', 'label': 'Tyvek' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_ethafoam_support', 'label': 'Ethafoam for supporting construction' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_polyethylene_film', 'label': 'Polyethylene film' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_silk_paper', 'label': 'Silk paper' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_not_packed', 'label': 'Not packed' | trans } %}</div>
-				<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_local_protection', 'label': 'Only local protection' | trans } %}</div>
-				<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'inner_packing_custom' } %}</div>
+				<div class="form-subgroup report-row">
+					<div class="form-item report-column">
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_tyvek', 'label': 'Tyvek' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_ethafoam_support', 'label': 'Ethafoam for supporting construction' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_polyethylene_film', 'label': 'Polyethylene film' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_silk_paper', 'label': 'Silk paper' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_not_packed', 'label': 'Not packed' | trans } %}</div>
+						<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'inner_packing_local_protection', 'label': 'Only local protection' | trans } %}</div>
+						<div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'inner_packing_custom' } %}</div>
+					</div>
+				</div>
 			{% endif %}
 		</div>
 	{% endif %}

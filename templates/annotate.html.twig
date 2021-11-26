@@ -140,6 +140,13 @@
                 {% for image in images %}
                     <div class="no-print-break">
                         <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                        {% if annotation_history[image.hash] is defined %}
+                            <div>
+                                {% for id, timestamp in annotation_history[image.hash] %}
+                                    <span>{{ timestamp }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% endif %}
