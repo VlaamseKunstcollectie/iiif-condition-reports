@@ -116,10 +116,10 @@
 
                     {% if not readonly or has_measurement_item %}
                         {% for measurement_part in measurements[object_type] %}
+                            {% if measurement_part.header is not empty %}
+                                <div class="report-header-2">{{ measurement_part.header | trans }}</div>
+                            {% endif %}
                             <div class="form-subgroup">
-                                {% if measurement_part.header is not empty %}
-                                    <div class="report-header-2">{{ measurement_part.header | trans }}</div>
-                                {% endif %}
                                 {% for item, label in measurement_part.items %}
                                     <div class="form-item">{% include 'textfield.html.twig' with { 'name': item, 'label': label | trans, 'disabled': this_object_type != object_type } %}</div>
                                 {% endfor %}
