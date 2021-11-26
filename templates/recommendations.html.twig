@@ -18,7 +18,7 @@
 	or prefilled_data.outer_packing_plastic_crate_cushion is defined or prefilled_data.outer_packing_open_crate is defined or prefilled_data.outer_packing_closed_crate is defined
 	or prefilled_data.outer_packing_climage_box is defined or prefilled_data.outer_packing_custom is defined or prefilled_data.inner_packing_tyvek is defined
 	or prefilled_data.inner_packing_ethafoam_support is defined or prefilled_data.inner_packing_polyethylene_film is defined or prefilled_data.inner_packing_silk_paper is defined
-	or prefilled_data.inner_packing_not_packed is defined or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom
+	or prefilled_data.inner_packing_not_packed is defined or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom is defined
 %}
 <div id="recommendations-form"{% if not readonly %} class="form-tab"{% endif %}>
 	<div class="report-header">{{ 'Recommendations' | trans }}</div>
@@ -245,7 +245,7 @@
    	   or prefilled_data.inner_packing_tyvek is defined or prefilled_data.inner_packing_ethafoam_support is defined
 	   or prefilled_data.inner_packing_polyethylene_film is defined or prefilled_data.inner_packing_silk_paper is defined
 	   or prefilled_data.inner_packing_not_packed is defined or prefilled_data.inner_packing_local_protection is defined
-	   or prefilled_data.inner_packing_custom
+	   or prefilled_data.inner_packing_custom is defined
 	%}
 		<div class="form-group">
 			<div class="report-header-2">{{ 'Packing' | trans }}</div>
@@ -285,7 +285,7 @@
 			{% if not readonly or prefilled_data.inner_packing_tyvek is defined
 			   or prefilled_data.inner_packing_ethafoam_support is defined or prefilled_data.inner_packing_polyethylene_film is defined
 			   or prefilled_data.inner_packing_silk_paper is defined or prefilled_data.inner_packing_not_packed is defined
-			   or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom %}
+			   or prefilled_data.inner_packing_local_protection is defined or prefilled_data.inner_packing_custom is defined %}
 				<div class="report-header-2">{{ 'Inner packing' | trans }}</div>
 				<div class="form-subgroup report-row">
 					<div class="form-item report-column">
