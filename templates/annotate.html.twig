@@ -23,7 +23,7 @@
                         <div id="history">
                             <div class="flex">
                                 <button type="button" onclick="resetAnnotations()" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span></button>
-                                <button type="button" onclick="toggleNumberOverlays()" id="show-hide-numbers"><i class="far fa-eye"></i><span>{{ '1' | trans }}</span></button>
+                                <button type="button" onclick="toggleNumberOverlays(window.osd_anno)" id="show-hide-numbers"><i class="far fa-eye"></i><span>{{ '1' | trans }}</span></button>
                             </div>
                             <div id="annotation-history-timestamps">
                                 {% if not readonly %}
@@ -140,10 +140,12 @@
                 {% for image in images %}
                     <div class="no-print-break">
                         <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                    </div>
+                    <div class="no-print-break">
                         {% if annotation_history[image.hash] is defined %}
-                            <div>
+                            <div id="annotation-history-print">
                                 {% for id, timestamp in annotation_history[image.hash] %}
-                                    <span>{{ timestamp }}</span>
+                                    <div id="annos-print-{{ image.hash }}-{{ id }}">{{ timestamp }}</div>
                                 {% endfor %}
                             </div>
                         {% endif %}
@@ -311,7 +313,7 @@ window.overlays = [];
 window.anno = OpenSeadragon.Annotorious(window.osd_anno, window.annoConf);
 
 window.osd_anno.addHandler('open', function(event) {
-    addNumberOverlays();
+    addNumberOverlays(window.osd_anno, true);
 });
 
 window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
@@ -408,7 +410,7 @@ window.anno.on('createAnnotation', function(annotation, ele) {
                 addAnnoHistSpan(div, annotation.id, annotation.body[0].value, true);
             }
         }
-        addNumberOverlays();
+        addNumberOverlays(window.osd_anno, true);
     }
 });
 
@@ -468,7 +470,7 @@ window.anno.on('deleteAnnotation', function(annotation, ele) {
             }
         }
     }
-    addNumberOverlays();
+    addNumberOverlays(window.osd_anno, true);
 });
 
 Annotorious.SelectorPack(window.anno, {});
@@ -481,7 +483,7 @@ window.anno.setAuthInfo({
 
 {% if readonly %}
     {% for image in images %}
-        window.annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(OpenSeadragon({
+        window.osdPrint{{ image.hash }} = OpenSeadragon({
             id: 'openseadragon-annotorious-print-{{ image.hash }}',
             tileSources: [
                 {% if image.image ends with '/info.json' %}
@@ -493,13 +495,17 @@ window.anno.setAuthInfo({
                 }
                 {% endif %}
             ]
-        }), {});
+        });
+        window.osdPrint{{ image.hash }}.addHandler('open', function(event) {
+            addNumberOverlays(window.osdPrint{{ image.hash }}, false);
+        });
+        window.annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(window.osdPrint{{ image.hash }}, {});
     {% endfor %}
 {% endif %}
 
 window.onload = function() {
 
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno);
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
@@ -556,7 +562,7 @@ window.onload = function() {
         var cur = window.currentImage;
         {% for image in images %}
             window.currentImage = '{{ image.hash }}';
-            refreshAnnotations(window.annoPrint{{ image.hash }});
+            refreshAnnotations(window.annoPrint{{ image.hash }}, window.osdPrint{{ image.hash }});
         {% endfor %}
         window.currentImage = cur;
 
@@ -624,6 +630,7 @@ for(const image in annotations) {
     for(const reportId in annotations[image]) {
         var reportAnnos = {};
         var histEle = document.getElementById('annos-' + image + '-' + reportId);
+        var printHistEleDiv = document.getElementById('annos-print-' + image + '-' + reportId);
         var histEleDiv = null;
         if(histEle != null) {
             histEleDiv = histEle.querySelector('div');
@@ -633,11 +640,24 @@ for(const image in annotations) {
             if (!window.annoIds.hasOwnProperty(id)) {
                 window.annoIds[id] = Object.keys(window.annoIds).length + 1;
             }
-            if(histEleDiv != null && reportAnnos[id].hasOwnProperty('body')
+            if(reportAnnos[id].hasOwnProperty('body')
                 && reportAnnos[id].body != null && reportAnnos[id].body.length > 0
                 && reportAnnos[id].body[0].hasOwnProperty('value') && reportAnnos[id].body[0].value != null
                 && reportAnnos[id].body[0].value !== '') {
-                addAnnoHistSpan(histEleDiv, id, reportAnnos[id].body[0].value, true);
+                if(histEleDiv != null) {
+                    addAnnoHistSpan(histEleDiv, id, reportAnnos[id].body[0].value, true);
+                }
+                if(printHistEleDiv != null) {
+                    var div = document.createElement('div');
+                    var number = window.annoIds.hasOwnProperty(id) ? window.annoIds[id] : null;
+                    var text = reportAnnos[id].body[0].value;
+                    if(number === null) {
+                        div.innerHTML = text;
+                    } else {
+                        div.innerHTML = number + '. ' + text;
+                    }
+                    printHistEleDiv.appendChild(div);
+                }
             }
         }
         window.addedAnnotations[image][reportId] = reportAnnos;
@@ -989,25 +1009,28 @@ function clickedThumbnail(hash, image) {
     resetAnnotations();
 }
 
-function addNumberOverlays() {
-    if(window.osd_anno.world.getItemAt(0) === undefined) {
+function addNumberOverlays(osd, remove) {
+    if(osd.world.getItemAt(0) === undefined) {
+        console.log(osd);
         return;
     }
 
-    for (var i = 0; i < window.overlays.length; i++) {
-        window.osd_anno.removeOverlay(window.overlays[i].id);
-        var ele = document.getElementById(window.overlays[i].id);
-        if (ele != null) {
-            ele.parentElement.removeChild(ele);
+    if(remove) {
+        for (var i = 0; i < window.overlays.length; i++) {
+            osd.removeOverlay(window.overlays[i].id);
+            var ele = document.getElementById(window.overlays[i].id);
+            if (ele != null) {
+                ele.parentElement.removeChild(ele);
+            }
+        }
+        window.overlays = [];
+
+        if (!window.numberOverlays) {
+            return;
         }
     }
-    window.overlays = [];
 
-    if(!window.numberOverlays) {
-        return;
-    }
-
-    var annoEles = window.osd_anno.element.getElementsByClassName('a9s-annotation');
+    var annoEles = osd.element.getElementsByClassName('a9s-annotation');
     for (var j = 0; j < annoEles.length; j++) {
         if (annoEles[j].hasAttribute('data-id')) {
             var annoId = annoEles[j].getAttribute('data-id');
@@ -1047,10 +1070,12 @@ function addNumberOverlays() {
                 document.getElementById('overlays').appendChild(svg);
 
                 var point = new OpenSeadragon.Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
-                point = window.osd_anno.world.getItemAt(0).imageToViewportCoordinates(point);
+                point = osd.world.getItemAt(0).imageToViewportCoordinates(point);
                 var overlay = { id: id, x: point.x, y: point.y, placement: 'CENTER', checkResize: false };
-                window.osd_anno.addOverlay(overlay);
-                window.overlays.push(overlay);
+                osd.addOverlay(overlay);
+                if(remove) {
+                    window.overlays.push(overlay);
+                }
 
                 document.getElementById(id).style.display = 'block';
             }
@@ -1128,7 +1153,7 @@ function addAnnoHistSpan(div, id, text, added) {
     }
 }
 
-function refreshAnnotations(viewer) {
+function refreshAnnotations(viewer, osd, remove) {
     var annotations = {};
     window.annotationNumber = 1;
     for (const id in window.annotationHistory[window.currentImage]) {
@@ -1150,7 +1175,7 @@ function refreshAnnotations(viewer) {
         annos.push(anno);
     }
     viewer.setAnnotations(annos);
-    addNumberOverlays();
+    addNumberOverlays(osd, remove);
 }
 
 function toggleAnnotations(id) {
@@ -1176,7 +1201,7 @@ function toggleAnnotations(id) {
     }
     window.allAnnotationsVisible = allVisible;
     setShowHideAllButton();
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno);
 }
 
 function setShowHideAllButton() {
@@ -1194,7 +1219,7 @@ function setShowHideAllButton() {
     }
 }
 
-function toggleNumberOverlays() {
+function toggleNumberOverlays(osd) {
     window.numberOverlays = !window.numberOverlays;
     var numberOverlaysButton = document.getElementById('show-hide-numbers');
     if(window.numberOverlays) {
@@ -1206,7 +1231,7 @@ function toggleNumberOverlays() {
         numberOverlaysButton.classList.remove('hide');
         numberOverlaysButton.classList.add('show');
     }
-    addNumberOverlays();
+    addNumberOverlays(osd, true);
 }
 
 function resetAnnotations() {
@@ -1223,7 +1248,7 @@ function resetAnnotations() {
             showAllButton.classList.add('show');
         }
     }
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno);
 }
 
 {% if not readonly %}

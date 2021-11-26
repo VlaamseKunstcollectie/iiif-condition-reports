@@ -1520,7 +1520,8 @@ footer a:hover {
         height: 0;
     }
 
-    #annotation-viewer {
+    #annotation-viewer,
+    #annotation-history-print {
         display: block;
     }
 
