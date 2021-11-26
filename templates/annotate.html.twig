@@ -117,7 +117,7 @@
                 {% endfor %}
                 {% set damage_types = damage_types | sort %}
                 {% for object_type in object_types %}
-                    <div id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} style="display: none"{% endif %}>
+                    <div id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} class="hidden"{% endif %}>
                         <select class="annotation-select" onchange="selectedDamageType(this)" autocomplete="off">
                             <option value="" selected disabled hidden>{{ 'Select damage type' | trans }}</option>
                             {% for key, damage_type in damage_types %}

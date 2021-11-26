@@ -63,7 +63,7 @@
 			or prefilled_data.presentation_setup_location_standing_wall is defined or prefilled_data.presentation_setup_location_standing_showcase is defined
 			or prefilled_data.presentation_setup_location_standing_with_hood is defined or prefilled_data.presentation_setup_location_standing_custom is defined))
 		%}
-			<div class="form-subgroup report-row" id="setup_location_standing"{% if prefilled_data.presentation_setup is not defined or prefilled_data.presentation_setup != 'standing' %} style="display: none"{% endif %}>
+			<div class="form-subgroup report-row{% if prefilled_data.presentation_setup is not defined or prefilled_data.presentation_setup != 'standing' %} hidden{% endif %}" id="setup_location_standing">
 				<div class="form-item report-column">
 					<div class="report-header-2">{{ 'Setup location' | trans }}</div>
 					<div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'presentation_setup_location_standing_free', 'label': 'Free in the room' | trans } %}</div>
@@ -76,7 +76,7 @@
 			</div>
 		{% endif %}
 
-		<div id="setup_location_hanging"{% if prefilled_data.presentation_setup is not defined or prefilled_data.presentation_setup != 'hanging' %} style="display: none"{% endif %}>
+		<div id="setup_location_hanging"{% if prefilled_data.presentation_setup is not defined or prefilled_data.presentation_setup != 'hanging' %} class="hidden"{% endif %}>
 			{% if not readonly or (prefilled_data.presentation_setup is defined and prefilled_data.presentation_setup == 'hanging' and
 				(prefilled_data.presentation_setup_location_hanging_ceiling is defined or prefilled_data.presentation_setup_location_hanging_wall is defined
 				or prefilled_data.presentation_setup_location_standing_custom is defined))

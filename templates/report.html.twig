@@ -186,9 +186,9 @@
                                 inputs[k].disabled = objectTypes[i] !== selectedValue;
                             }
                             if(objectTypes[i] === selectedValue) {
-                                div.style = "display: block";
+                                div.classList.remove('hidden');
                             } else {
-                                div.style = "display: none";
+                                div.classList.add('hidden');
                             }
                         }
                     }

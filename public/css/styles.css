@@ -28,6 +28,13 @@ textarea {
     resize: vertical;
 }
 
+.hidden {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
 ::placeholder {
     color: #999;
     opacity: 1; /* Firefox */
