@@ -1034,7 +1034,6 @@ function clickedThumbnail(hash, image) {
 
 function addNumberOverlays(osd, remove) {
     if(osd.world.getItemAt(0) === undefined) {
-        console.log(osd);
         return;
     }
 
@@ -1191,7 +1190,6 @@ function addAnnoHistSpan(div, id, text, styleClass, added) {
     } else {
         divsToAdd.push(div);
     }
-    console.log(divsToAdd);
     for(var i = 0; i < divsToAdd.length; i++) {
         var span = document.createElement('span');
         if (added) {
