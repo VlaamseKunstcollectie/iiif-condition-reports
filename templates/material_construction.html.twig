@@ -138,9 +138,9 @@
         <div class="form-group">
             {% if not readonly or has_material or has_frame %}
                 {% for object_type in object_types %}
-                    <div class="form-subgroup report-row">
+                    <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}">
                         {% if not readonly or has_material %}
-                            <div class="form-item report-column{% if this_object_type != object_type %} hidden{% endif %}" id="materials-{{ object_type }}">
+                            <div class="form-item report-column" id="materials-{{ object_type }}">
                                 <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Work' | trans }}{% else %}{{ 'Carrier' | trans }}{% endif %}</div>
                                 {% for material in materials[object_type] %}
                                     {% if material == 'custom' %}
@@ -152,7 +152,7 @@
                             </div>
                         {% endif %}
                         {% if not readonly or has_frame %}
-                            <div class="form-item report-column{% if this_object_type != object_type %} hidden{% endif %}" id="materials-frame-{{ object_type }}">
+                            <div class="form-item report-column" id="materials-frame-{{ object_type }}">
                                 <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Pedestal' | trans }}{% else %}{{ 'Frame' | trans }}{% endif %}</div>
                                 {% for material in materials[object_type] %}
                                     {% if material == 'custom' %}
@@ -264,9 +264,9 @@
         <div class="report-header">{{ 'Connections' | trans }}</div>
         <div class="form-group">
             {% for object_type in object_types %}
-                <div class="form-subgroup report-row">
+                <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}">
                     {% if not readonly or has_connection_work %}
-                        <div class="form-item report-column{% if this_object_type != object_type %} hidden{% endif %}" id="connection-work-{{ object_type }}">
+                        <div class="form-item report-column" id="connection-work-{{ object_type }}">
                             <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Between separate parts of the sculpture' | trans }}{% else %}{{ 'Between carrier and frame' | trans }}{% endif %}</div>
                             {% for connection in connections[object_type] %}
                                 {% if connection == 'custom' %}
@@ -278,7 +278,7 @@
                         </div>
                     {% endif %}
                     {% if object_type == 'sculpture' and (not readonly or has_connection_pedestal) %}
-                        <div class="form-item report-column{% if this_object_type != object_type %} hidden{% endif %}" id="connection-pedestal">
+                        <div class="form-item report-column" id="connection-pedestal">
                             <div class="report-header-2">{{ 'Between sculpture and pedestal' | trans }}</div>
                             {% for connection in connections['sculpture'] %}
                                 {% if connection == 'custom' %}
