@@ -1179,14 +1179,16 @@ function toggleAnnotations(id) {
 
 function setShowHideAllButton() {
     var showAllAnnotationsButton = document.getElementById('show-hide-all-annos');
-    if(window.allAnnotationsVisible) {
-        showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span>';
-        showAllAnnotationsButton.classList.remove('show');
-        showAllAnnotationsButton.classList.add('hide');
-    } else {
-        showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span>';
-        showAllAnnotationsButton.classList.remove('hide');
-        showAllAnnotationsButton.classList.add('show');
+    if(showAllAnnotationsButton != null) {
+        if (window.allAnnotationsVisible) {
+            showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span>';
+            showAllAnnotationsButton.classList.remove('show');
+            showAllAnnotationsButton.classList.add('hide');
+        } else {
+            showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span>';
+            showAllAnnotationsButton.classList.remove('hide');
+            showAllAnnotationsButton.classList.add('show');
+        }
     }
 }
 
