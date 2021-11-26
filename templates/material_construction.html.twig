@@ -101,31 +101,33 @@
     {% if not readonly or has_measurement %}
         <div class="report-header">{{ 'Measurements and weight' | trans }}</div>
         {% for object_type in object_types %}
-            <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="measurements-{{ object_type }}">
-                {% set has_measurement_item = false %}
-                {% if this_object_type == object_type %}
-                    {% for measurement_part in measurements[object_type] %}
-                        {% for item, label in measurement_part.items %}
-                            {% if prefilled_data[item] is defined %}
-                                {% set has_measurement_item = true %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                {% endif %}
-
-                {% if not readonly or has_measurement_item %}
-                    {% for measurement_part in measurements[object_type] %}
-                        {% if measurement_part.header is not empty %}
-                            <div class="report-header-2">{{ measurement_part.header | trans }}</div>
-                        {% endif %}
-                        <div class="form-subgroup">
+            {% if not readonly or this_object_type == object_type %}
+                <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="measurements-{{ object_type }}">
+                    {% set has_measurement_item = false %}
+                    {% if this_object_type == object_type %}
+                        {% for measurement_part in measurements[object_type] %}
                             {% for item, label in measurement_part.items %}
-                                <div class="form-item">{% include 'textfield.html.twig' with { 'name': item, 'label': label | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% if prefilled_data[item] is defined %}
+                                    {% set has_measurement_item = true %}
+                                {% endif %}
                             {% endfor %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if not readonly or has_measurement_item %}
+                        {% for measurement_part in measurements[object_type] %}
+                            {% if measurement_part.header is not empty %}
+                                <div class="report-header-2">{{ measurement_part.header | trans }}</div>
+                            {% endif %}
+                            <div class="form-subgroup">
+                                {% for item, label in measurement_part.items %}
+                                    <div class="form-item">{% include 'textfield.html.twig' with { 'name': item, 'label': label | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
@@ -138,32 +140,34 @@
         <div class="form-group">
             {% if not readonly or has_material or has_frame %}
                 {% for object_type in object_types %}
-                    <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="materials-{{ object_type }}">
-                        {% if not readonly or has_material %}
-                            <div class="form-item report-column">
-                                <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Work' | trans }}{% else %}{{ 'Carrier' | trans }}{% endif %}</div>
-                                {% for material in materials[object_type] %}
-                                    {% if material == 'custom' %}
-                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom', 'disabled': this_object_type != object_type } %}</div>
-                                    {% else %}
-                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'material_' ~ material, 'label': material | trans, 'disabled': this_object_type != object_type } %}</div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        {% if not readonly or has_frame %}
-                            <div class="form-item report-column">
-                                <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Pedestal' | trans }}{% else %}{{ 'Frame' | trans }}{% endif %}</div>
-                                {% for material in materials[object_type] %}
-                                    {% if material == 'custom' %}
-                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'frame_custom', 'disabled': this_object_type != object_type } %}</div>
-                                    {% else %}
-                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'frame_' ~ material, 'label': material | trans, 'disabled': this_object_type != object_type } %}</div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
+                    {% if not readonly or this_object_type == object_type %}
+                        <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="materials-{{ object_type }}">
+                            {% if not readonly or has_material %}
+                                <div class="form-item report-column">
+                                    <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Work' | trans }}{% else %}{{ 'Carrier' | trans }}{% endif %}</div>
+                                    {% for material in materials[object_type] %}
+                                        {% if material == 'custom' %}
+                                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'material_custom', 'disabled': this_object_type != object_type } %}</div>
+                                        {% else %}
+                                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'material_' ~ material, 'label': material | trans, 'disabled': this_object_type != object_type } %}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if not readonly or has_frame %}
+                                <div class="form-item report-column">
+                                    <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Pedestal' | trans }}{% else %}{{ 'Frame' | trans }}{% endif %}</div>
+                                    {% for material in materials[object_type] %}
+                                        {% if material == 'custom' %}
+                                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'frame_custom', 'disabled': this_object_type != object_type } %}</div>
+                                        {% else %}
+                                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'frame_' ~ material, 'label': material | trans, 'disabled': this_object_type != object_type } %}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
 
@@ -179,24 +183,26 @@
         <div class="form-group">
             {% if not readonly or has_finishing_layer %}
                 {% for object_type in object_types %}
-                    <div id="finishing-layer-{{ object_type }}"{% if this_object_type != object_type %} class="hidden"{% endif %}>
-                        <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
-                        {% for finishing_layer in finishing_layers[object_type] %}
-                            {% if finishing_layer == 'custom' %}
-                                <div class="form-subgroup report-row">
-                                    <div class="form-item">
-                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_custom', 'disabled': this_object_type != object_type } %}</div>
+                    {% if not readonly or this_object_type == object_type %}
+                        <div id="finishing-layer-{{ object_type }}"{% if this_object_type != object_type %} class="hidden"{% endif %}>
+                            <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
+                            {% for finishing_layer in finishing_layers[object_type] %}
+                                {% if finishing_layer == 'custom' %}
+                                    <div class="form-subgroup report-row">
+                                        <div class="form-item">
+                                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_custom', 'disabled': this_object_type != object_type } %}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            {% else %}
-                                <div class="form-subgroup">
-                                    <div class="form-item">
-                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_' ~ finishing_layer, 'label': finishing_layer | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% else %}
+                                    <div class="form-subgroup">
+                                        <div class="form-item">
+                                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_' ~ finishing_layer, 'label': finishing_layer | trans, 'disabled': this_object_type != object_type } %}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
 
@@ -264,32 +270,34 @@
         <div class="report-header">{{ 'Connections' | trans }}</div>
         <div class="form-group">
             {% for object_type in object_types %}
-                <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="connections-{{ object_type }}">
-                    {% if not readonly or has_connection_work %}
-                        <div class="form-item report-column">
-                            <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Between separate parts of the sculpture' | trans }}{% else %}{{ 'Between carrier and frame' | trans }}{% endif %}</div>
-                            {% for connection in connections[object_type] %}
-                                {% if connection == 'custom' %}
-                                    <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_work_custom', 'disabled': this_object_type != object_type } %}</div>
-                                {% else %}
-                                    <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_work_' ~ connection, 'label': connection | trans, 'disabled': this_object_type != object_type } %}</div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    {% if object_type == 'sculpture' and (not readonly or has_connection_pedestal) %}
-                        <div class="form-item report-column">
-                            <div class="report-header-2">{{ 'Between sculpture and pedestal' | trans }}</div>
-                            {% for connection in connections['sculpture'] %}
-                                {% if connection == 'custom' %}
-                                    <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_pedestal_custom' } %}</div>
-                                {% else %}
-                                    <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_pedestal_' ~ connection, 'label': connection | trans } %}</div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
+                {% if not readonly or this_object_type == object_type %}
+                    <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="connections-{{ object_type }}">
+                        {% if not readonly or has_connection_work %}
+                            <div class="form-item report-column">
+                                <div class="report-header-2">{% if object_type == 'sculpture' %}{{ 'Between separate parts of the sculpture' | trans }}{% else %}{{ 'Between carrier and frame' | trans }}{% endif %}</div>
+                                {% for connection in connections[object_type] %}
+                                    {% if connection == 'custom' %}
+                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_work_custom', 'disabled': this_object_type != object_type } %}</div>
+                                    {% else %}
+                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_work_' ~ connection, 'label': connection | trans, 'disabled': this_object_type != object_type } %}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if object_type == 'sculpture' and (not readonly or has_connection_pedestal) %}
+                            <div class="form-item report-column">
+                                <div class="report-header-2">{{ 'Between sculpture and pedestal' | trans }}</div>
+                                {% for connection in connections['sculpture'] %}
+                                    {% if connection == 'custom' %}
+                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'connections_pedestal_custom' } %}</div>
+                                    {% else %}
+                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'connections_pedestal_' ~ connection, 'label': connection | trans } %}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     {% endif %}

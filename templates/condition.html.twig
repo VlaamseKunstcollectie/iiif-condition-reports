@@ -99,33 +99,35 @@
             <div class="report-header-2">{{ 'Specific condition of the object' | trans }}</div>
             {% if not readonly or has_carrier_damage or has_finishing_layer_damage %}
                 {% for object_type in object_types %}
-                    <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="damages-{{ object_type }}">
-                        {% if not readonly or has_carrier_damage %}
-                            <div class="form-item report-column">
-                                <div class="report-header-2">{{ 'Carrier' | trans }}</div>
-                                {% for damage in damages[object_type] %}
-                                    {% if damage == 'custom' %}
-                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom', 'disabled': this_object_type != object_type } %}</div>
-                                    {% else %}
-                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'carrier_damage_' ~ damage, 'label': damage | trans, 'disabled': this_object_type != object_type } %}</div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                    {% if not readonly or this_object_type == object_type %}
+                        <div class="form-subgroup report-row{% if this_object_type != object_type %} hidden{% endif %}" id="damages-{{ object_type }}">
+                            {% if not readonly or has_carrier_damage %}
+                                <div class="form-item report-column">
+                                    <div class="report-header-2">{{ 'Carrier' | trans }}</div>
+                                    {% for damage in damages[object_type] %}
+                                        {% if damage == 'custom' %}
+                                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'carrier_damage_custom', 'disabled': this_object_type != object_type } %}</div>
+                                        {% else %}
+                                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'carrier_damage_' ~ damage, 'label': damage | trans, 'disabled': this_object_type != object_type } %}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
 
-                        {% if not readonly or has_finishing_layer_damage %}
-                            <div class="form-item report-column">
-                                <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
-                                {% for damage in damages[object_type] %}
-                                    {% if damage == 'custom' %}
-                                        <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_damage_custom', 'disabled': this_object_type != object_type } %}</div>
-                                    {% else %}
-                                        <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_damage_' ~ damage, 'label': damage | trans, 'disabled': this_object_type != object_type } %}</div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
+                            {% if not readonly or has_finishing_layer_damage %}
+                                <div class="form-item report-column">
+                                    <div class="report-header-2">{{ 'Finishing layer' | trans }}</div>
+                                    {% for damage in damages[object_type] %}
+                                        {% if damage == 'custom' %}
+                                            <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'finishing_layer_damage_custom', 'disabled': this_object_type != object_type } %}</div>
+                                        {% else %}
+                                            <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'finishing_layer_damage_' ~ damage, 'label': damage | trans, 'disabled': this_object_type != object_type } %}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             <div class="no-spaces">{% include 'textarea.html.twig' with { 'name': 'condition_specification', 'label': 'Specifications' | trans } %}</div>
@@ -151,70 +153,76 @@
 
     {% if not readonly or has_conservation_treatment %}
         {% for object_type in object_types %}
-            <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="conservation-treatment-{{ object_type }}">
-                <div class="report-header-2">{{ 'Conservation treatment' | trans }}</div>
-                <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
-                {% for conservation_treatment in conservation_treatments[object_type] %}
+            {% if not readonly or this_object_type == object_type %}
+                <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="conservation-treatment-{{ object_type }}">
+                    <div class="report-header-2">{{ 'Conservation treatment' | trans }}</div>
+                    <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
+                    {% for conservation_treatment in conservation_treatments[object_type] %}
+                        <div class="form-subgroup">
+                            <div class="form-item">
+                                {% if conservation_treatment == 'custom' %}
+                                    <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conservation_treatment_custom', 'label': 'Other' | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% else %}
+                                    <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'conservation_treatment_' ~ conservation_treatment, 'label': conservation_treatment | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
                     <div class="form-subgroup">
                         <div class="form-item">
-                            {% if conservation_treatment == 'custom' %}
-                                <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'conservation_treatment_custom', 'label': 'Other' | trans, 'disabled': this_object_type != object_type } %}</div>
-                            {% else %}
-                                <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'conservation_treatment_' ~ conservation_treatment, 'label': conservation_treatment | trans, 'disabled': this_object_type != object_type } %}</div>
-                            {% endif %}
+                            <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'conservation_treatment_hours', 'label': 'Estimated work hours' | trans, 'disabled': this_object_type != object_type } %}</div>
                         </div>
                     </div>
-                {% endfor %}
-                <div class="form-subgroup">
-                    <div class="form-item">
-                        <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'conservation_treatment_hours', 'label': 'Estimated work hours' | trans, 'disabled': this_object_type != object_type } %}</div>
-                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
     {% if not readonly or has_restoration_treatment %}
         {% for object_type in object_types %}
-            <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="restoration-treatment-{{ object_type }}">
-                <div class="report-header-2">{{ 'Restoration treatment' | trans }}</div>
-                <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
-                {% for restoration_treatment in restoration_treatments[object_type] %}
+            {% if not readonly or this_object_type == object_type %}
+                <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="restoration-treatment-{{ object_type }}">
+                    <div class="report-header-2">{{ 'Restoration treatment' | trans }}</div>
+                    <div class="report-legend">{{ 'Degree of urgency (very urgent) 1 - 2 - 3 (not urgent)' | trans }}</div>
+                    {% for restoration_treatment in restoration_treatments[object_type] %}
+                        <div class="form-subgroup">
+                            <div class="form-item">
+                                {% if restoration_treatment == 'custom' %}
+                                    <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restoration_treatment_custom', 'label': 'Other' | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% else %}
+                                    <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'restoration_treatment_' ~ restoration_treatment, 'label': restoration_treatment | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
                     <div class="form-subgroup">
                         <div class="form-item">
-                            {% if restoration_treatment == 'custom' %}
-                                <div class="form-checkbox-conservation-custom">{% include 'checkbox_conservation_custom.html.twig' with { 'name': 'restoration_treatment_custom', 'label': 'Other' | trans, 'disabled': this_object_type != object_type } %}</div>
-                            {% else %}
-                                <div class="form-checkbox-conservation">{% include 'checkbox_conservation.html.twig' with { 'name': 'restoration_treatment_' ~ restoration_treatment, 'label': restoration_treatment | trans, 'disabled': this_object_type != object_type } %}</div>
-                            {% endif %}
+                            <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'restoration_treatment_hours', 'label': 'Estimated work hours' | trans } %}</div>
                         </div>
                     </div>
-                {% endfor %}
-                <div class="form-subgroup">
-                    <div class="form-item">
-                        <div class="treatment-hours">{% include 'number.html.twig' with { 'name': 'restoration_treatment_hours', 'label': 'Estimated work hours' | trans } %}</div>
-                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
     {% if not readonly or has_research_needed %}
         {% for object_type in object_types %}
-            <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="research-{{ object_type }}">
-                <div class="report-header-2">{{ 'Further research needed' | trans }}</div>
-                {% for research in researches[object_type] %}
-                    <div class="form-subgroup">
-                        <div class="form-item">
-                            {% if research == 'custom' %}
-                                <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'disabled': this_object_type != object_type } %}</div>
-                            {% else %}
-                                <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'research_needed_' ~ research, 'label': research | trans, 'disabled': this_object_type != object_type } %}</div>
-                            {% endif %}
+            {% if not readonly or this_object_type == object_type %}
+                <div class="form-group{% if this_object_type != object_type %} hidden{% endif %}" id="research-{{ object_type }}">
+                    <div class="report-header-2">{{ 'Further research needed' | trans }}</div>
+                    {% for research in researches[object_type] %}
+                        <div class="form-subgroup">
+                            <div class="form-item">
+                                {% if research == 'custom' %}
+                                    <div class="form-checkbox-custom">{% include 'checkbox_custom.html.twig' with { 'name': 'research_needed_custom', 'disabled': this_object_type != object_type } %}</div>
+                                {% else %}
+                                    <div class="form-checkbox">{% include 'checkbox.html.twig' with { 'name': 'research_needed_' ~ research, 'label': research | trans, 'disabled': this_object_type != object_type } %}</div>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endfor %}
     {% endif %}
 
