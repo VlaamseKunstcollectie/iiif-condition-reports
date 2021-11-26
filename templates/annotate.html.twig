@@ -906,6 +906,9 @@ function clickedThumbnail(hash, image) {
     resetAnnotations();
 
     var div = document.getElementById('annotation-history-timestamps');
+    if(div == null) {
+        return;
+    }
     while (div.firstChild) {
         div.removeChild(div.firstChild);
     }
