@@ -1097,6 +1097,14 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     color: grey;
 }
 
+.anno-number {
+    vertical-align: top;
+}
+
+.anno-text {
+    display: inline-block;
+}
+
 .annotation-number {
     font-size: 200px;
 }

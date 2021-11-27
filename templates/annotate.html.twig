@@ -411,7 +411,9 @@ window.anno.on('createAnnotation', function(annotation, ele) {
                 if(annotation.hasOwnProperty('target') && annotation.target.hasOwnProperty('styleClass')) {
                     styleClass = annotation.target.styleClass;
                 }
-                addAnnoHistSpan(div, annotation.id, annotation.body[0].value, styleClass, true);
+                if(annotation.hasOwnProperty('body')) {
+                    addAnnoHistSpan(div, annotation.id, annotation.body, styleClass, true);
+                }
             }
         }
         addNumberOverlays(window.osd_anno, true);
@@ -468,7 +470,7 @@ window.anno.on('deleteAnnotation', function(annotation, ele) {
                         buttons[i].style = 'display: block';
                         var div = buttons[i].querySelector('div');
                         if(div != null) {
-                            addAnnoHistSpan(div, annotation.id, '', null, false);
+                            addAnnoHistSpan(div, annotation.id, null, null, false);
                         }
                     }
                 }
@@ -645,16 +647,13 @@ for(const image in annotations) {
             if (!window.annoIds.hasOwnProperty(id)) {
                 window.annoIds[id] = Object.keys(window.annoIds).length + 1;
             }
-            if(reportAnnos[id].hasOwnProperty('body')
-                && reportAnnos[id].body != null && reportAnnos[id].body.length > 0
-                && reportAnnos[id].body[0].hasOwnProperty('value') && reportAnnos[id].body[0].value != null
-                && reportAnnos[id].body[0].value !== '') {
+            if(reportAnnos[id].hasOwnProperty('body')) {
                 if(histEleDiv != null) {
                     var styleClass = null;
                     if(reportAnnos[id].hasOwnProperty('target') && reportAnnos[id].target.hasOwnProperty('styleClass')) {
                         styleClass = reportAnnos[id].target.styleClass;
                     }
-                    addAnnoHistSpan(histEleDiv, id, reportAnnos[id].body[0].value, styleClass, true);
+                    addAnnoHistSpan(histEleDiv, id, reportAnnos[id].body, styleClass, true);
                 }
                 if(printHistEleDiv != null) {
                     var div = document.createElement('div');
@@ -685,7 +684,7 @@ for(const image in deletedAnnos) {
         for(const id in deletedAnnos[image][reportId]) {
             deleted.push(id);
             if(histEleDiv_ != null) {
-                addAnnoHistSpan(histEleDiv_, id, '', null, false);
+                addAnnoHistSpan(histEleDiv_, id, null, null, false);
             }
         }
         window.deletedAnnotations[image][reportId] = deleted;
@@ -988,16 +987,13 @@ function clickedThumbnail(hash, image) {
                         if (!window.annoIds.hasOwnProperty(id)) {
                             window.annoIds[id] = Object.keys(window.annoIds).length + 1;
                         }
-                        if (annos[id].hasOwnProperty('body')
-                            && annos[id].body != null && annos[id].body.length > 0
-                            && annos[id].body[0].hasOwnProperty('value') && annos[id].body[0].value != null
-                            && annos[id].body[0].value !== '') {
+                        if (annos[id].hasOwnProperty('body')) {
                             newDiv.style = 'display: block';
                             var styleClass = null;
                             if(annos[id].hasOwnProperty('target') && annos[id].target.hasOwnProperty('styleClass')) {
                                 styleClass = annos[id].target.styleClass;
                             }
-                            addAnnoHistSpan(spanDiv, id, annos[id].body[0].value, styleClass, true);
+                            addAnnoHistSpan(spanDiv, id, annos[id].body, styleClass, true);
                         }
                     }
                 }
@@ -1007,7 +1003,7 @@ function clickedThumbnail(hash, image) {
                     var annos = window.deletedAnnotations[hash][id];
                     for (const id in annos) {
                         newDiv.style = 'display: block';
-                        addAnnoHistSpan(spanDiv, id, '', null, false);
+                        addAnnoHistSpan(spanDiv, id, null, null, false);
                     }
                 }
             }
@@ -1107,7 +1103,7 @@ function addNumberOverlays(osd, remove) {
 
 }
 
-function addAnnoHistSpan(div, id, text, styleClass, added) {
+function addAnnoHistSpan(div, id, body, styleClass, added) {
     var number = window.annoIds.hasOwnProperty(id) ? window.annoIds[id] : null;
     var divsToAdd = [];
     if (styleClass != null && added) {
@@ -1192,13 +1188,29 @@ function addAnnoHistSpan(div, id, text, styleClass, added) {
         divsToAdd.push(div);
     }
     for(var i = 0; i < divsToAdd.length; i++) {
-        var span = document.createElement('span');
+        var span = document.createElement('div');
         if (added) {
             span.className = 'anno-hist anno-hist-' + id;
+
+            var text = null;
+            if(body != null) {
+                for(var j = 0; j < body.length; j++) {
+                    if(body[j].hasOwnProperty('value') && body[j].value != null && body[j].value !== '') {
+                        if (text == null) {
+                            text = '<span class="anno-text">' + body[j].value;
+                        } else {
+                            text = text + '<br/>' + body[j].value + '';
+                        }
+                    }
+                }
+            }
+
             if (number === null) {
                 span.innerHTML = text;
+            } else if(text == null) {
+                span.innerHTML = '<span class="anno-number">' + number + '.</span>';
             } else {
-                span.innerHTML = number + '. ' + text;
+                span.innerHTML = '<span class="anno-number">' + number + '. </span>' + text + '</span>';
             }
         } else {
             span.className = 'anno-hist-deleted';
