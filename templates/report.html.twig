@@ -30,10 +30,16 @@
             <div id="wrap" class="readonly">
                 <div class="readonly-header">
                     <div class="header">{{ 'View report' | trans }}</div>
-                    <button type="button" id="print-button" onclick="window.print()">
-                        <i class="fas fa-print"></i>
-                        {{ 'Print' | trans }}
-                    </button>
+                    <div id="header-buttons">
+                        <a id="export-button" href="/{{ app.request.locale }}/json_data/{{ report_id }}">
+                            <i class="fas fa-file-export"></i>
+                            {{ 'JSON export' | trans }}
+                        </a>
+                        <button id="print-button" type="button" onclick="window.print()">
+                            <i class="fas fa-print"></i>
+                            {{ 'Print' | trans }}
+                        </button>
+                    </div>
                 </div>
                 {% include 'report_form.html.twig' %}
             </div>

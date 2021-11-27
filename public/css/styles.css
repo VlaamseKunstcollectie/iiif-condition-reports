@@ -474,6 +474,12 @@ textarea {
     margin-bottom: 15px;
 }
 
+#header-buttons {
+    display: flex;
+    margin-left: auto;
+    order: 2;
+}
+
 #wrap .readonly-header button,
 #report-navigation .save button,
 #object-type-select-div .save button,
@@ -1614,7 +1620,7 @@ footer a:hover {
     #annotation-tools,
     #thumbnails,
     .openseadragon-container > div:not(.openseadragon-canvas),
-    #print-button,
+    #header-buttons,
     #iiif-manifest-url,
     .footer {
         display: none !important;

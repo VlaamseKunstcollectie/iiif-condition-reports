@@ -16,6 +16,16 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
+    public static function getJsonData(EntityManager $em, $id)
+    {
+        $imageRelPath = '../..';
+        $data = self::getExistingReportData($em, $id, $imageRelPath);
+        unset($data['organisations']);
+        unset($data['representatives']);
+        unset($data['current_page']);
+        return $data;
+    }
+
     public static function getViewData(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
         $imageRelPath = '../..';
@@ -29,6 +39,7 @@ class ReportTemplateData
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
         $data['translated_routes'] = $translatedRoutes;
+        $data['report_id'] = $id;
         return $data;
     }
 
