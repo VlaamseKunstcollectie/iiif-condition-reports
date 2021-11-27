@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class JsonDataController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/json_data/{id}", name="json_export")
+     * @Route("/{_locale}/data/{id}.json", name="json_data")
      */
     public function jsonData(Request $request, $id)
     {
