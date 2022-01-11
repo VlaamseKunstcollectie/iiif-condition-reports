@@ -18,7 +18,15 @@ class JsonDataController extends AbstractController
     public function jsonData(Request $request, $id)
     {
         $em = $this->get('doctrine')->getManager();
-        $jsonData = ReportTemplateData::getJsonData($em, $id);
+        $requestUri = $request->getRequestUri();
+        $uri = $request->getUri();
+        $pos = strpos($uri, $requestUri);
+        if($pos !== false) {
+            $uri = substr($uri, 0, $pos);
+        } else {
+            $uri = '../..';
+        }
+        $jsonData = ReportTemplateData::getJsonData($em, $id, $uri);
 
         $headers = array('Content-Type' => 'application/json');
         return new Response(json_encode($jsonData, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES + JSON_UNESCAPED_UNICODE), 200, $headers);

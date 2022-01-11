@@ -16,10 +16,10 @@ use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getJsonData(EntityManager $em, $id)
+    public static function getJsonData(EntityManager $em, $id, $baseUrl)
     {
-        $imageRelPath = '../..';
-        $data = self::getExistingReportData($em, $id, $imageRelPath);
+        $data = self::getExistingReportData($em, $id, $baseUrl);
+        $data['test'] = $baseUrl;
         unset($data['organisations']);
         unset($data['representatives']);
         unset($data['current_page']);
