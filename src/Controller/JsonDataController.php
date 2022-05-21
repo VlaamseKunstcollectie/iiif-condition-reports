@@ -13,10 +13,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class JsonDataController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/data/{id}.json", name="json_data")
+     * @Route("/data/{id}.json", name="json_data")
      */
     public function jsonData(Request $request, $id)
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $em = $this->get('doctrine')->getManager();
         $requestUri = $request->getRequestUri();
         $uri = $request->getUri();

@@ -43,10 +43,12 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
+    public static function getDataToCreateExisting(EntityManager $em, $user, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
         $imageRelPath = '../../..';
         $data = self::getExistingReportData($em, $id, $imageRelPath);
+        $data['email'] = $user->getEmail();
+        $data['full_name'] = $user->getFullName();
         $data['report_reasons'] = $reportReasons;
         $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;
@@ -59,7 +61,7 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
+    public static function getDataToCreateBlank(EntityManager $em, $user, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
         // Prevent creation of a blank report if there is already a report for this inventory number
         $canCreate = true;
@@ -84,6 +86,8 @@ class ReportTemplateData
 
         return [
             'current_page' => 'reports',
+            'email' => $user->getEmail(),
+            'full_name' => $user->getFullName(),
             'prefilled_data' => $prefilledData,
             'images' => $images,
             'annotation_history' => array(),

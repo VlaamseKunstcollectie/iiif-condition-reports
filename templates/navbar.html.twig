@@ -1,15 +1,38 @@
 <nav class="navbar navbar-static-top navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav main-nav navbar-right">
-            <li{% if current_page == 'reports' %} class="active"{% endif %}>
-                <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
-            </li>
-            <li{% if current_page == 'organisations' %} class="active"{% endif %}>
-                <a href="{{ path('organisations') }}">{{ 'Organisations' | trans }}</a>
-            </li>
-            <li{% if current_page == 'representatives' %} class="active"{% endif %}>
-                <a href="{{ path('representatives') }}">{{ 'Representatives' | trans }}</a>
-            </li>
+            {% if is_granted('ROLE_USER') %}
+                <li{% if current_page == 'reports' %} class="active"{% endif %}>
+                    <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
+                </li>
+                <li{% if current_page == 'organisations' %} class="active"{% endif %}>
+                    <a href="{{ path('organisations') }}">{{ 'Organisations' | trans }}</a>
+                </li>
+                <li{% if current_page == 'representatives' %} class="active"{% endif %}>
+                    <a href="{{ path('representatives') }}">{{ 'Representatives' | trans }}</a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li{% if current_page == 'users' %} class="active"{% endif %}>
+                    <a href="{{ path('users') }}">{{ 'Users' | trans }}</a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_USER') %}
+                <li>
+                    <div id="user-profile-button">
+                        <a href="{{ path('password') }}">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div id="user-logout-button">
+                        <a href="{{ path('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+                </li>
+            {% endif %}
             <li>
                 <div id="lang-select">
                     <div id="lang-select-selected" onclick="clickedLangButton(this)">{{ app.request.locale | upper }}</div>

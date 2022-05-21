@@ -94,5 +94,26 @@ CREATE TABLE IF NOT EXISTS `iiif_manifests` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS user (
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `email` VARCHAR(180) NOT NULL,
+    `full_name` VARCHAR(255) NOT NULL,
+    `roles` JSON NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    UNIQUE INDEX UNIQ_8D93D649E7927C74 (email),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS reset_password_request (
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `user_id` INT NOT NULL,
+    `selector` VARCHAR(20) NOT NULL,
+    `hashed_token` VARCHAR(100) NOT NULL,
+    `requested_at` DATETIME NOT NULL,
+    `expires_at` DATETIME NOT NULL,
+    INDEX IDX_7CE748AA76ED395 (`user_id`),
+    PRIMARY KEY(`id`)
+);
+
 INSERT INTO images VALUES('1a05c8366de4f7a23edffd0c72bc76bb89646799a6a85b4d8fe8f1fa142262fd', '/annotation_images/frame.svg', '/annotation_images/frame_150px.svg') ON DUPLICATE KEY UPDATE image=VALUES(image), thumbnail=VALUES(thumbnail);
 INSERT INTO images VALUES('227518a708732010213d949b38822c15ae14ee1c956d6e9d3b1b9d9a1c5d4954', '/annotation_images/frame_back.svg', '/annotation_images.frame_back_150px.svg') ON DUPLICATE KEY UPDATE image=VALUES(image), thumbnail=VALUES(thumbnail);

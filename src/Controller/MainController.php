@@ -33,9 +33,17 @@ class MainController extends AbstractController
     {
         $t = $this->translator;
         $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
         //Set default locale if locale is missing
-        if($locale === null) {
-            return $this->redirectToRoute('main', array('_locale' => $t->getLocale()));
+        if($locale === null || !in_array($locale, $locales)) {
+            return $this->redirectToRoute('main', array('_locale' => $locales[0]));
+        }
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
         }
 
         $search = new Search();
@@ -137,7 +145,6 @@ class MainController extends AbstractController
         }
         usort($searchResults, array('App\Controller\MainController', 'cmp'));
 
-        $locales = $this->getParameter('locales');
         $translatedRoutes = array();
         foreach($locales as $l) {
             $translatedRoutes[] = array(

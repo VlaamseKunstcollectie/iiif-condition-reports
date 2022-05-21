@@ -1,6 +1,29 @@
 Reports: Rapporten
 Organisations: Organisaties
 Representatives: Vertegenwoordigers
+Users: Gebruikers
+
+Password: Wachtwoord
+I forgot my password: Ik ben mijn wachtwoord vergeten
+Reset your password: Reset uw wachtwoord
+Please fill out this field.: Gelieve dit veld in te vullen.
+Enter your email address and we will send you a link to reset your password: Geef uw e-mailadres in en we sturen een link om uw wachtwoord te resetten
+Send password reset email: Verstuur wachtwoord reset e-mail
+Password reset email sent: Wachtwoord reset e-mail verzonden
+If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password: Indien een account met dit e-mailadres bestaat, dan werd zonet een e-mail verstuurd met een link om uw wachtwoord te resetten
+This link will expire in: Deze link vervalt over
+If you don't receive an email please check your spam folder or: Indien u geen e-mail ontvangt, controleer uw spam folder of
+try again: probeer opnieuw
+Your password reset request: Uw wachtwoord reset verzoek
+Hi: Hallo
+To reset your password, please visit the following link: Om je wachtwoord te resetten, gelieve deze link te volgen
+Reset password: Reset wachtwoord
+Please enter a password: Gelieve een wachtwoord in te vullen
+Your password should be at least: Uw wachtwoord dient minstens
+characters: karakters lang te zijn
+New password: Nieuw wachtwoord
+Repeat Password: Herhaal wachtwoord
+The password fields must match: De wachtwoordvelden dienen overeen te komen
 
 Organisation: Organisatie
 Institution / organisation: Instelling / organisatie
@@ -119,6 +142,8 @@ Add organisation: Organisatie toevoegen
 Alter organisation: Organisatie wijzigen
 Add representative: Vertegenwoordiger toevoegen
 Alter representative: Vertegenwoordiger wijzigen
+Add user: Gebruiker toevoegen
+Alter user: Gebruiker wijzigen
 
 Alias: Alias
 Name: Naam
@@ -137,6 +162,7 @@ Notes: Notities
 Alias of your choice (optional): Zelfgekozen alias (optioneel)
 Name of the organisation: Naam van de organisatie
 Name of the representative: Naam van de vertegenwoordiger
+Name of the user: Naam van de gebruiker
 URL of company logo: URL van bedrijfslogo
 Street + house number: Straat + huisnummer
 Ex. 9000: Bv. 9000

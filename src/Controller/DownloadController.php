@@ -16,6 +16,14 @@ class DownloadController extends AbstractController
      */
     public function download(Request $request)
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $image = $request->get('image');
         $type = exif_imagetype($image);
         $mimes  = array(

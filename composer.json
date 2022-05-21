@@ -24,12 +24,18 @@
         "symfony/flex": "^1.3.1",
         "symfony/form": "5.3.*",
         "symfony/framework-bundle": "5.3.*",
+        "symfony/google-mailer": "5.3.*",
+        "symfony/mailer": "5.3.*",
+        "symfony/maker-bundle": "*",
         "symfony/mime": "5.3.*",
         "symfony/proxy-manager-bridge": "5.3.*",
         "symfony/runtime": "5.3.*",
+        "symfony/security-bundle": "5.3.*",
         "symfony/translation": "5.3.*",
         "symfony/twig-bundle": "5.3.*",
-        "symfony/yaml": "5.3.*"
+        "symfony/validator": "5.3.*",
+        "symfony/yaml": "5.3.*",
+        "symfonycasts/reset-password-bundle": "^1.13"
     },
     "config": {
         "optimize-autoloader": true,
@@ -39,7 +45,12 @@
         "platform": {
             "php": "7.2.5"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "simplesamlphp/composer-module-installer": true,
+            "symfony/runtime": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -76,5 +87,9 @@
             "allow-contrib": false,
             "require": "5.3.*"
         }
+    },
+    "require-dev": {
+        "symfony/stopwatch": "5.3.*",
+        "symfony/web-profiler-bundle": "5.3.*"
     }
 }

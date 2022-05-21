@@ -16,6 +16,14 @@ class ManifestController extends AbstractController
      */
     public function manifestAction(Request $request, $manifestId = '')
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         // Make sure the service URL name ends with a trailing slash
         $baseUrl = rtrim($this->getParameter('service_url'), '/') . '/';
 

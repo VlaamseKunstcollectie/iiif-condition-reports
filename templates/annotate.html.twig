@@ -214,7 +214,7 @@
 
 $('input#annotate-file').change(function() {
 
-    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
+    $(this).simpleUpload('/upload', {
 
         start: function(file) {
             document.getElementById('add-image-select').selectedIndex = 0;
@@ -248,7 +248,7 @@ $('input#annotate-file').change(function() {
 
 $('input#annotate-camera').change(function() {
 
-    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
+    $(this).simpleUpload('/upload', {
 
         start: function(file) {
             document.getElementById('add-image-select').selectedIndex = 0;
@@ -305,7 +305,10 @@ window.annoConf = {
     styleClass: 'condition-red',
     damageType: ''
     {% if readonly %}
-    , readOnly: true
+        , readOnly: true
+    {% else %}
+        , userId: '{{ email }}'
+        , userName: '{{ full_name }}'
     {% endif %}
 };
 window.overlays = [];
@@ -482,12 +485,6 @@ window.anno.on('deleteAnnotation', function(annotation, ele) {
 
 Annotorious.SelectorPack(window.anno, {});
 
-//TODO set proper auth info
-window.anno.setAuthInfo({
-    id: 'http://www.example.com/hero-solutions',
-    displayName: 'Hero Solutions'
-});
-
 {% if readonly %}
     {% for image in images %}
         window.osdPrint{{ image.hash }} = OpenSeadragon({
@@ -508,6 +505,11 @@ window.anno.setAuthInfo({
         });
         window.annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(window.osdPrint{{ image.hash }}, {});
     {% endfor %}
+{% else %}
+    window.anno.setAuthInfo({
+        id: '{{ email }}',
+        displayName: '{{ full_name }}'
+    });
 {% endif %}
 
 window.onload = function() {

@@ -1,0 +1,19 @@
+{% include 'header.html.twig' %}
+{{ form_start(form) }}
+    <div id="wrap">
+        <div class="header">{% if new %}{{ 'Add user' | trans }}{% else %}{{ 'Alter user' | trans }}{% endif %}</div>
+        <div id="user-form">
+            <div class="form-group">
+                <div class="form-subgroup">
+                    {{ form_row(form.fullName) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.plainPassword) }}
+                </div>
+                <div class="form-subgroup">
+                    {{ form_row(form.submit) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
+{% include 'footer.html.twig' %}

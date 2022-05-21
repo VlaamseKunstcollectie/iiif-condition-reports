@@ -85,6 +85,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "egulias/email-validator": {
+        "version": "3.1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -102,6 +105,9 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
+    },
+    "nikic/php-parser": {
+        "version": "v4.13.2"
     },
     "phpfastcache/riak-client": {
         "version": "3.4.3"
@@ -308,6 +314,15 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
+    },
     "symfony/http-client-contracts": {
         "version": "v2.4.0"
     },
@@ -317,14 +332,35 @@
     "symfony/http-kernel": {
         "version": "v5.3.6"
     },
+    "symfony/mailer": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
+        },
+        "files": [
+            "./config/packages/mailer.yaml"
+        ]
+    },
+    "symfony/maker-bundle": {
+        "version": "1.39",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
     "symfony/mime": {
         "version": "v5.3.8"
     },
     "symfony/options-resolver": {
         "version": "v5.3.4"
     },
-    "symfony/orm-pack": {
-        "version": "v2.1.0"
+    "symfony/password-hasher": {
+        "version": "v5.3.14"
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.23.1"
@@ -375,6 +411,30 @@
     "symfony/runtime": {
         "version": "v5.3.4"
     },
+    "symfony/security-bundle": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "98f1f2b0d635908c2b40f3675da2d23b1a069d30"
+        },
+        "files": [
+            "./config/packages/security.yaml"
+        ]
+    },
+    "symfony/security-core": {
+        "version": "v5.3.14"
+    },
+    "symfony/security-csrf": {
+        "version": "v5.3.14"
+    },
+    "symfony/security-guard": {
+        "version": "v5.3.14"
+    },
+    "symfony/security-http": {
+        "version": "v5.3.14"
+    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
     },
@@ -416,14 +476,51 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/validator": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "c32cfd98f714894c4f128bb99aa2530c1227603c"
+        },
+        "files": [
+            "./config/packages/validator.yaml"
+        ]
+    },
     "symfony/var-dumper": {
         "version": "v5.3.6"
     },
     "symfony/var-exporter": {
         "version": "v5.3.4"
     },
+    "symfony/web-profiler-bundle": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "24bbc3d84ef2f427f82104f766014e799eefcc3e"
+        },
+        "files": [
+            "./config/packages/web_profiler.yaml",
+            "./config/routes/web_profiler.yaml"
+        ]
+    },
     "symfony/yaml": {
         "version": "v5.3.6"
+    },
+    "symfonycasts/reset-password-bundle": {
+        "version": "1.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "97c1627c0384534997ae1047b93be517ca16de43"
+        },
+        "files": [
+            "./config/packages/reset_password.yaml"
+        ]
     },
     "twig/extensions": {
         "version": "1.0",

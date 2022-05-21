@@ -55,7 +55,8 @@ textarea {
 
 .reports,
 .orgs,
-.reps {
+.reps,
+.users {
     max-width: 1200px;
     margin: 30px auto;
     padding-left: 15px;
@@ -78,7 +79,8 @@ textarea {
 
 .reports-row,
 .orgs-row,
-.reps-row {
+.reps-row,
+.users-row {
     display: flex;
     padding: 15px;
     border: 1px solid #dbdbdb;
@@ -89,7 +91,8 @@ textarea {
 
 :not(.reports-row) + .reports-row,
 :not(.orgs-row) + .orgs-row,
-:not(.reps-row) + .reps-row {
+:not(.reps-row) + .reps-row,
+:not(.users-row) + .users.row {
     margin-top: 0;
 }
 
@@ -116,6 +119,7 @@ textarea {
 .reports-row-metadata,
 .orgs-row-metadata,
 .reps-row-metadata,
+.users-row-metadata,
 .object-row-metadata {
     flex-grow: 1;
 }
@@ -123,6 +127,7 @@ textarea {
 .reports-row-metadata > div,
 .orgs-row-metadata > div,
 .reps-row-metadata > div,
+.users-row-metadata > div,
 .object-row-metadata > div {
     display: flex;
     margin-bottom: 6px;
@@ -131,13 +136,15 @@ textarea {
 .reports-row-metadata > div:last-child,
 .orgs-row-metadata > div:last-child,
 .reps-row-metadata > div:last-child,
-.reps-row-metadata > div:last-child {
+.users-row-metadata > div:last-child,
+.object-row-metadata > div:last-child {
     margin-bottom: 0;
 }
 
 .reports-row-metadata div div,
 .orgs-row-metadata div div,
 .reps-row-metadata div div,
+.users-row-metadata div div,
 .object-row-metadata div div {
     margin-left: 20px;
 }
@@ -145,6 +152,7 @@ textarea {
 .reports-row-metadata div div:first-child,
 .orgs-row-metadata div div:first-child,
 .reps-row-metadata div div:first-child,
+.users-row-metadata div div:first-child,
 .object-row-metadata div div:first-child {
     color: #777777;
     margin-left: 0;
@@ -156,7 +164,8 @@ textarea {
 
 .reports-row-actions,
 .orgs-row-actions,
-.reps-row-actions {
+.reps-row-actions,
+.users-row-actions {
     text-align: right;
     margin-left: 20px;
     flex-grow: 0;
@@ -165,26 +174,30 @@ textarea {
 
 .reports-row-actions div,
 .orgs-row-actions div,
-.reps-row-actions div {
+.reps-row-actions div,
+.users-row-actions div {
     margin-bottom: 15px;
 }
 
 .orgs .orgs-header,
-.reps .reps-header {
+.reps .reps-header,
+.users .users-header {
     display: flex;
     margin-bottom: 15px;
 }
 
 .reports-row-actions .button,
 .orgs .button,
-.reps .button {
+.reps .button,
+.users .button {
     border-radius: 4px;
     color: white;
     display: inline-block;
 }
 
 .orgs .orgs-header .button,
-.reps .reps-header .button {
+.reps .reps-header .button,
+.users .users-header .button {
     background-color: #5f585d;
     margin-left: auto;
     margin-top: auto;
@@ -193,14 +206,17 @@ textarea {
 }
 
 .orgs .orgs-header .button:hover,
-.reps .reps-header .button:hover {
+.reps .reps-header .button:hover,
+.users .users-header .button:hover {
     background-color: #464b6b;
 }
 
 .orgs .orgs-header .button .fas,
 .reps .reps-header .button .fas,
+.users .users-header .button .fas,
 .orgs .orgs-header .button .far,
-.reps .reps-header .button .far {
+.reps .reps-header .button .far,
+.users .users-header .button .far {
     font-size: 14px;
     color: white;
     padding-right: 5px;
@@ -209,9 +225,11 @@ textarea {
 .reports .reports-row-actions .fas,
 .orgs .orgs-row-actions .fas,
 .reps .reps-row-actions .fas,
+.users .users-row-actions .fas,
 .reports .reports-row-actions .far,
 .orgs .orgs-row-actions .far,
-.reps .reps-row-actions .far {
+.reps .reps-row-actions .far,
+.users .users-row-actions .far {
     width: 35px;
     line-height: 35px;
     text-align: center;
@@ -222,16 +240,20 @@ textarea {
 .reports .reports-row-actions .button:hover .fas,
 .orgs .orgs-row-actions .button:hover .fas,
 .reps .reps-row-actions .button:hover .fas,
+.users .users-row-actions .button:hover .fas,
 .reports .reports-row-actions .button:hover .far,
 .orgs .orgs-row-actions .button:hover .far,
-.reps .reps-row-actions .button:hover .far {
+.reps .reps-row-actions .button:hover .far,
+.users .users-row-actions .button:hover .far {
     color: #464b6b;
 }
 
 .orgs .orgs-header .button:hover .fas,
 .reps .orgs-header .button:hover .fas,
+.users .orgs-header .button:hover .fas,
 .orgs .orgs-header .button:hover .far,
-.reps .orgs-header .button:hover .far {
+.reps .orgs-header .button:hover .far,
+.users .orgs-header .button:hover .far {
     color: white;
 }
 
@@ -537,7 +559,8 @@ textarea {
 
 #report-form,
 #organisation-form,
-#representative-form {
+#representative-form,
+#user-form {
     margin-top: -1px;
     margin-bottom: 30px;
     padding: 30px;
@@ -546,13 +569,10 @@ textarea {
 }
 
 #organisation-form,
-#representative-form {
+#representative-form,
+#user-form {
     padding: 5px 15px 15px 15px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
-}
-
-#organisation-form,
-#representative-form {
     margin-top: 15px;
 }
 
@@ -564,20 +584,23 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form > .form-tab > .form-group > .form-subgroup,
 #organisation-form > .form-group > .form-subgroup,
-#representative-form > .form-group > .form-subgroup {
+#representative-form > .form-group > .form-subgroup,
+#user-form > .form-group > .form-subgroup {
     display: flex;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item,
 #organisation-form > .form-group > .form-subgroup > div,
-#representative-form > .form-group > .form-subgroup > div {
+#representative-form > .form-group > .form-subgroup > div,
+#user-form > .form-group > .form-subgroup > div {
     margin-left: 15px;
     flex: 1;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item:first-child,
 #organisation-form > .form-group > .form-subgroup > div:first-child,
-#representative-form > .form-group > .form-subgroup > div:first-child {
+#representative-form > .form-group > .form-subgroup > div:first-child,
+#user-form > .form-group > .form-subgroup > div:first-child {
     margin-left: 0;
 }
 
@@ -614,7 +637,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form label,
 #organisation-form label,
-#representative-form label {
+#representative-form label,
+#user-form label {
     display: block;
     padding-top: 10px;
     flex-shrink: 0;
@@ -629,6 +653,9 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #representative-form select,
 #representative-form input,
 #representative-form textarea,
+#user-form select,
+#user-form input,
+#user-form textarea,
 #object-type-select-div-div select,
 #object-type-select-div-div input {
     margin-top: 2px;
@@ -644,10 +671,12 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form input[type=checkbox],
 #organisation-form input[type=checkbox],
 #representative-form input[type=checkbox],
+#user-form input[type=checkbox],
 #object-type-select-div-div input[type=checkbox],
 #report-form input[type=radio],
 #organisation-form input[type=radio],
 #representative-form input[type=radio],
+#user-form input[type=radio],
 #object-type-select-div-div input[type=radio] {
     margin-top: 3px;
 }
@@ -721,7 +750,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .report-header,
 #organisation-form .report-header,
-#representative-form .report-header {
+#representative-form .report-header,
+#user-form .report-header {
     padding-top: 30px;
     padding-bottom: 10px;
     font-size: 24px;
@@ -730,7 +760,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .report-header:first-child,
 #organisation-form .report-header:first-child,
-#representative-form .report-header:first-child {
+#representative-form .report-header:first-child,
+#user-form .report-header:first-child {
     padding-top: 0;
 }
 
@@ -1195,6 +1226,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form .next-button button,
 #organisation-form #form_submit,
 #representative-form #form_submit,
+#user-form #form_submit,
 #report-form #iiif-manifest-url {
     background-color: #747db3;
     border: none;
@@ -1215,6 +1247,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form .next-button button:hover,
 #organisation-form #form_submit:hover,
 #representative-form #form_submit:hover,
+#user-form #form_submit:hover,
 #report-form #iiif-manifest-url:hover {
     background-color: #3a3f5a;
 }
@@ -1270,7 +1303,8 @@ nav li:last-child a {
     margin-right: 0px !important;
 }
 
-#lang-select {
+#lang-select,
+#user-select {
     position: relative;
     font-family: Arial;
     width: fit-content;
@@ -1278,7 +1312,8 @@ nav li:last-child a {
     margin-right: 6px;
 }
 
-#lang-select-selected {
+#lang-select-selected,
+#user-select-selected {
     margin: 15px;
     background-color: #747db3;
     padding-right: 10px !important;
@@ -1300,19 +1335,27 @@ nav li:last-child a {
     top: 0;
 }
 
-.lang-select-hide {
+.lang-select-hide,
+.user-select-hide {
     display: none;
 }
 
+#user-select-items {
+    width: 100px;
+}
+
 #lang-select-items div,
-#lang-select-selected {
+#lang-select-selected,
+#user-select-items div,
+#user-select-selected {
     color: #ffffff;
     padding: 8px 16px;
     cursor: pointer;
     user-select: none;
 }
 
-#lang-select-items div:first-of-type {
+#lang-select-items div:first-of-type,
+#user-select-items div:first-of-type {
     background-color: white;
     color: #333333;
     margin-top: 15px;
@@ -1322,11 +1365,23 @@ nav li:last-child a {
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
 
-#lang-select-selected {
+#lang-select-items div:not(:first-of-type),
+#user-select-items div:not(:first-of-type) {
+    background-color: white;
+    color: #333333;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    text-align: center;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#lang-select-selected,
+#user-select-selected {
     padding: 0;
 }
 
-#lang-select-items {
+#lang-select-items,
+#user-select-items {
     position: absolute;
     background-color: #747db3;
     top: 100%;
@@ -1335,8 +1390,17 @@ nav li:last-child a {
     z-index: 99;
 }
 
-#lang-select-items div:hover {
+#lang-select-items div:hover,
+#user-select-items div:hover {
     background-color: #f8f8f8;
+}
+
+.message-green {
+    color: green;
+}
+
+.message-red {
+    color: red;
 }
 
 .search-form {
