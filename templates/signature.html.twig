@@ -1,0 +1,38 @@
+<div class="form-group">
+    <p>{{ prefilled_data[rep ~ '_rep_name'] }} ({{ prefilled_data[rep ~ '_name'] }} - {{ rep_name | trans }})</p>
+    <div class="signature-pad">
+        <div class="signature-pad--body">
+            <canvas id="signature-pad-{{ rep }}" width="900" style="touch-action: none; user-select: none;" height="300"></canvas>
+        </div>
+        <div class="signature-pad--footer">
+            <div class="signature-pad--actions">
+                <div>
+                    <button type="button" id="signature-pad-{{ rep }}-action-clear" class="button clear">{{ 'Clear' | trans }}</button>
+                    <button type="button" id="signature-pad-{{ rep }}-action-undo" class="button">{{ 'Undo' | trans }}</button>
+                    <button type="button" id="signature-pad-{{ rep }}-action-save" class="button">{{ 'Save' | trans }}</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            var clear{{ rep }}Button = document.getElementById('signature-pad-{{ rep }}-action-clear');
+            var undo{{ rep }}Button = document.getElementById('signature-pad-{{ rep }}-action-undo');
+            var save{{ rep }}Button = document.getElementById('signature-pad-{{ rep }}-action-save');
+            var signaturePad{{ rep }} = new SignaturePad(document.getElementById('signature-pad-{{ rep }}'), {
+                backgroundColor: 'rgba(255, 255, 255, 0)',
+                penColor: 'rgb(0, 0, 0)'
+            });
+            clear{{ rep }}Button.addEventListener("click", function (event) {
+                signaturePad{{ rep }}.clear();
+            });
+
+            undo{{ rep }}Button.addEventListener("click", function (event) {
+                var data = signaturePad{{ rep }}.toData();
+
+                if (data) {
+                    data.pop(); // remove the last dot or line
+                    signaturePad{{ rep }}.fromData(data);
+                }
+            });
+        </script>
+    </div>
+</div>

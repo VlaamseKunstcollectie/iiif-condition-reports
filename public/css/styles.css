@@ -1303,6 +1303,11 @@ nav li:last-child a {
     margin-right: 0px !important;
 }
 
+nav .fa-user,
+nav .fa-sign-out-alt {
+    color: white;
+}
+
 #lang-select,
 #user-select {
     position: relative;

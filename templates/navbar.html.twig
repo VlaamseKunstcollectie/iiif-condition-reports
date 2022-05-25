@@ -1,10 +1,10 @@
 <nav class="navbar navbar-static-top navbar-default">
     <div class="container-fluid">
         <ul class="nav navbar-nav main-nav navbar-right">
+            <li{% if current_page is defined and (current_page == 'reports' or current_page == 'login') %} class="active"{% endif %}>
+                <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
+            </li>
             {% if is_granted('ROLE_USER') %}
-                <li{% if current_page == 'reports' %} class="active"{% endif %}>
-                    <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
-                </li>
                 <li{% if current_page == 'organisations' %} class="active"{% endif %}>
                     <a href="{{ path('organisations') }}">{{ 'Organisations' | trans }}</a>
                 </li>
@@ -17,10 +17,17 @@
                     <a href="{{ path('users') }}">{{ 'Users' | trans }}</a>
                 </li>
             {% endif %}
-            {% if is_granted('ROLE_USER') %}
+            {% if not is_granted('ROLE_USER') %}
+                <li{% if current_page is defined and current_page == 'disclaimer' %} class="active"{% endif %}>
+                    <a href="{{ path('disclaimer') }}">{{ 'Disclaimer' | trans }}</a>
+                </li>
+            {% else %}
+                <li{% if current_page == 'recommendations' %} class="active"{% endif %}>
+                    <a href="{{ path('recommendations') }}">{{ 'Recommendations' | trans }}</a>
+                </li>
                 <li>
                     <div id="user-profile-button">
-                        <a href="{{ path('password') }}">
+                        <a href="{{ path('profile') }}">
                             <i class="fas fa-user"></i>
                         </a>
                     </div>

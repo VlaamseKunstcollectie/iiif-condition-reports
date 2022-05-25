@@ -7,7 +7,7 @@ security:
             algorithm: bcrypt
 
     access_control:
-        - { path: '^/[a-z]+/(login|reset-password(/.+)?)$', roles: PUBLIC_ACCESS }
+        - { path: '^/[a-z]+/(disclaimer|login|reset-password(/.+)?)$', roles: PUBLIC_ACCESS }
         - { path: '^/.*', roles: ROLE_USER }
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider

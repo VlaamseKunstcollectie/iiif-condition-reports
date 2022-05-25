@@ -19,7 +19,6 @@ class ReportTemplateData
     public static function getJsonData(EntityManager $em, $id, $baseUrl)
     {
         $data = self::getExistingReportData($em, $id, $baseUrl);
-        $data['test'] = $baseUrl;
         unset($data['organisations']);
         unset($data['representatives']);
         unset($data['current_page']);

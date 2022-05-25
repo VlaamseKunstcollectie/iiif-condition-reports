@@ -20,7 +20,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PasswordController extends AbstractController
+class ProfileController extends AbstractController
 {
     private $translator;
 
@@ -30,15 +30,15 @@ class PasswordController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/password", name="password")
+     * @Route("/{_locale}/profile", name="profile")
      */
-    public function password(Request $request, UserPasswordHasherInterface $passwordHasher)
+    public function profile(Request $request, UserPasswordHasherInterface $passwordHasher)
     {
         $locale = $request->get('_locale');
         $locales = $this->getParameter('locales');
         //Set default locale if locale is missing
         if($locale === null || !in_array($locale, $locales)) {
-            return $this->redirectToRoute('password', array('_locale' => $locales[0]));
+            return $this->redirectToRoute('profile', array('_locale' => $locales[0]));
         }
 
         if(!$this->getUser()) {
@@ -79,15 +79,15 @@ class PasswordController extends AbstractController
         foreach($locales as $l) {
             $translatedRoutes[] = array(
                 'lang' => $l,
-                'url' => $this->generateUrl('password', array('_locale' => $l)),
+                'url' => $this->generateUrl('profile', array('_locale' => $l)),
                 'active' => $l === $locale
             );
         }
 
-        return $this->render('password.html.twig', [
+        return $this->render('profile.html.twig', [
             'message' => $message,
             'error' => $error,
-            'current_page' => 'account',
+            'current_page' => 'profile',
             'form' => $form->createView(),
             'translated_routes' => $translatedRoutes
         ]);

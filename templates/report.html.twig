@@ -12,6 +12,9 @@
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/simpleupload.1.1.min.js') }}"></script>
+    {% if readonly %}
+        <script src="{{ asset('js/signature_pad.umd.min.js') }}"></script>
+    {% endif %}
 </head>
 {% set this_object_type = 'default' %}
 {% if prefilled_data.object_type is defined %}

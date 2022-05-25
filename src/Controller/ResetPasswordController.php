@@ -74,7 +74,7 @@ class ResetPasswordController extends AbstractController
         foreach($locales as $l) {
             $translatedRoutes[] = array(
                 'lang' => $l,
-                'url' => $this->generateUrl('password', array('_locale' => $l)),
+                'url' => $this->generateUrl('app_forgot_password_request', array('_locale' => $l)),
                 'active' => $l === $locale
             );
         }
@@ -104,7 +104,7 @@ class ResetPasswordController extends AbstractController
         foreach($locales as $l) {
             $translatedRoutes[] = array(
                 'lang' => $l,
-                'url' => $this->generateUrl('password', array('_locale' => $l)),
+                'url' => $this->generateUrl('app_check_email', array('_locale' => $l)),
                 'active' => $l === $locale
             );
         }
@@ -204,7 +204,7 @@ class ResetPasswordController extends AbstractController
         foreach($locales as $l) {
             $translatedRoutes[] = array(
                 'lang' => $l,
-                'url' => $this->generateUrl('password', array('_locale' => $l)),
+                'url' => $this->generateUrl('app_reset_password', array('_locale' => $l, 'token' => $token)),
                 'active' => $l === $locale
             );
         }
