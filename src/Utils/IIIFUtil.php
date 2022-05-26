@@ -41,6 +41,9 @@ class IIIFUtil
         if (is_file($file)) {
             $imagick = new Imagick(realpath($file));
             $imagick->setImageFormat('jpeg');
+            $imagick->setBackgroundColor('#ffffff');
+            $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
+            $imagick = $imagick->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
             $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality(100);
             $width = $imagick->getImageWidth();
