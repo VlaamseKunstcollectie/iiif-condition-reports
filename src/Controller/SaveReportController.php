@@ -42,11 +42,25 @@ class SaveReportController extends AbstractController
             $reportHistory = array();
             $baseId = '';
             $inventoryId = '';
+            $reason = '';
             $images = array();
+            $organisations = array();
+            $representatives = array();
             foreach($fields as $field) {
                 $fieldData = explode('=', $field);
                 $name = urldecode($fieldData[0]);
                 $value = urldecode($fieldData[1]);
+                $orgNamePos = strpos($name, '_name');
+                if($orgNamePos !== false && !empty($value)) {
+                    $organisations[] = substr($name, 0, $orgNamePos);
+                }
+                $repNamePos = strpos($name, '_rep_name');
+                if($repNamePos !== false && !empty($value)) {
+                    $representatives[] = substr($name, 0, $repNamePos);
+                }
+                if($name === 'reason') {
+                    $reason = $value;
+                }
                 if($name === 'annotation_data') {
                     $annotationData = json_decode($value);
                 } else if($name === 'base_id') {
@@ -61,6 +75,14 @@ class SaveReportController extends AbstractController
                     $reportData[$name] = $value;
                 }
             }
+
+            $signaturesRequired = 0;
+            foreach($representatives as $representative) {
+                if(in_array($representative, $organisations)) {
+                    $signaturesRequired++;
+                }
+            }
+
             $imageHashes = array();
             foreach($images as $image) {
                 $imageHashes[] = $image->hash;
@@ -74,6 +96,8 @@ class SaveReportController extends AbstractController
                 $report = new Report();
                 $report->setInventoryId($inventoryId);
                 $report->setTimestamp(new DateTime());
+                $report->setReason($reason);
+                $report->setSignaturesRequired($signaturesRequired);
                 if(!empty($baseId)) {
                     $report->setBaseId($baseId);
                 }

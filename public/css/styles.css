@@ -1645,6 +1645,29 @@ form {
     margin-top: 0;
 }
 
+.readonly .signatures .signatures-row {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+.readonly .signatures .signatures-row .signature-box {
+    padding: 5px 15px 15px 15px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.readonly .signatures .signatures-row:not(:first-of-type) {
+    margin-top: 30px;
+}
+
+.signature-canvas {
+    border: 1px solid #dbdbdb;
+}
+
 footer {
     width: 1230px;
     margin-left: auto;

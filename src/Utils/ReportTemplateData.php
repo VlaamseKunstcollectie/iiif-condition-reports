@@ -12,6 +12,7 @@ use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
 use App\Entity\Representative;
+use App\Entity\Signature;
 use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
@@ -29,6 +30,22 @@ class ReportTemplateData
     {
         $imageRelPath = '../..';
         $data = self::getExistingReportData($em, $id, $imageRelPath);
+
+        $signatures = $em->createQueryBuilder()
+            ->select('s.timestamp, s.name, s.role, s.filename')
+            ->from(Signature::class, 's')
+            ->where('s.reportId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        $signatureArray = array();
+        foreach($signatures as $signature) {
+            $signature['filename'] = $imageRelPath . '/' . $signature['filename'];
+            $signatureArray[$signature['role']] = $signature;
+        }
+
+        $data['signatures'] = $signatureArray;
         $data['report_reasons'] = $reportReasons;
         $data['object_types'] = $objectTypes;
         $data['report_fields'] = $reportFields;

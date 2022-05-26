@@ -221,6 +221,13 @@
                     addBacksideEle.hidden = selectedValue === 'sculpture';
                 }
             }
+
+            function checkReasonSelected() {
+                const reasonDropdown = document.getElementById('reason-dropdown');
+                if(reasonDropdown.value.length === 0) {
+                    showDiv('reason-form', false);
+                }
+            }
         </script>
 
         <form action="{{ path('save') }}" method="POST">
@@ -269,7 +276,7 @@
                     <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form', false)" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
                     <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form', false)" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
                     <div class="save">
-                        <button type="submit">
+                        <button type="submit" onclick="checkReasonSelected()">
                             <i class="fas fa-save"></i>
                             {{ 'Save' | trans }}
                         </button>

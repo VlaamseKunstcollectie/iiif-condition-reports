@@ -27,6 +27,14 @@ Repeat Password: Herhaal wachtwoord
 The password fields must match: De wachtwoordvelden dienen overeen te komen
 Password successfully updated.: Wachtwoord succesvol bijgewerkt.
 
+Signed by all parties: Door alle partijen ondertekend
+Signed by: Ondertekend door
+parties: partijen
+Not yet signed: Nog niet ondertekend
+signatures required: handtekeningen vereist
+Is this signature from: Is deze handtekening van
+correct: correct
+
 Attention, personal data!: Opgepast, persoonsgegevens!
 Privacy-sensitive data is collected via this tool. So please read this important information::: Via deze tool worden privacy-gevoelige gegevens verzameld. Lees daarom deze belangrijke informatie::
 The collected data (names, e-mail address and employing organisation) can never be disclosed, nor passed on to third parties, unless one is obliged to do so by an authorized government agency or when this proves essential as a result of a necessary step in the regular follow-up of the loan agreement in the framework for which a condition report is drawn up by means of this tool. The information collected can only be used in connection with the actions logically resulting from this loan agreement.: De verzamelde gegevens (namen, e-mailadres en tewerkstellende organisatie) kunnen nooit bekendgemaakt worden, noch aan derden doorgeven, behalve indien men daartoe verplicht wordt door een gemachtigde overheidsinstantie of wanneer dit essentieel blijkt tengevolge een noodzakelijke stap in de reguliere opvolging van de bruikleenovereenkomst in het kader waarvan middels deze tool een conditierapportage wordt opgemaakt. De verzamelde informatie kan enkel gebruikt worden in verband met de logischerwijze uit deze bruikleenovereenkomst voortvloeiende acties.
@@ -201,6 +209,8 @@ Inventory number: Inventarisnummer
 Title: Titel
 Creator: Vervaardiger
 Last modification: Laatste wijziging
+Last reason: Laatste aanleiding
+Last signatures: Laatste handtekeningen
 Created: Aangemaakt
 
 No results found: Geen resultaten gevonden
@@ -309,8 +319,8 @@ Image through camera: Afbeelding via camera
 Image on device: Afbeelding op toestel
 Image through URL: Afbeelding via URL
 IIIF image through URL: IIIF afbeelding via URL
-Insert URL of image ...: Vul URL in van afbeelding ...
-Insert URL of IIIF image ...: Vul URL in van IIIF afbeelding ...
+Insert image URL ...: Vul URL in van afbeelding ...
+Insert IIIF image URL ...: Vul URL in van IIIF afbeelding ...
 Are you sure you want to delete this image and its annotations?: Bent u zeker dat u deze afbeelding en de bijhorende annotaties wilt verwijderen?
 Deleted: Verwijderd
 deleted: verwijderd

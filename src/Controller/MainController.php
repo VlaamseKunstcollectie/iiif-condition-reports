@@ -55,6 +55,8 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         $searchResults = array();
 
+        $reportReasons = $this->getParameter('report_reasons');
+
         $em = $this->container->get('doctrine')->getManager();
 
         $inventoryNumber = '';
@@ -102,7 +104,7 @@ class MainController extends AbstractController
         }
 
         $queryBuilder = $em->createQueryBuilder()
-            ->select('r.id, r.baseId, r.inventoryId, r.timestamp, i.inventoryNumber, d.name, d.value')
+            ->select('r.id, r.baseId, r.inventoryId, r.timestamp, r.reason, i.inventoryNumber, d.name, d.value')
             ->from(Report::class, 'r')
             ->leftJoin(InventoryNumber::class, 'i', 'WITH', 'i.id = r.inventoryId')
             ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryId');
@@ -130,6 +132,15 @@ class MainController extends AbstractController
             $searchResults[$id]['inventory_id'] = $data['inventoryId'];
             $searchResults[$id]['inventory_number'] = $data['inventoryNumber'];
             $searchResults[$id]['timestamp'] = $data['timestamp']->format('Y-m-d H:i:s');
+            $reason = null;
+            if($data['reason'] !== null) {
+                foreach($reportReasons as $key => $reasons) {
+                    if(array_key_exists($data['reason'], $reasons['options'])) {
+                        $reason = $this->translator->trans($reasons['name']) . ' - ' . $this->translator->trans($reasons['options'][$data['reason']]);
+                    }
+                }
+            }
+            $searchResults[$id]['reason'] = $reason;
             $searchResults[$id][$data['name']] = $data['value'];
         }
         foreach($searchResults as $id => $data) {

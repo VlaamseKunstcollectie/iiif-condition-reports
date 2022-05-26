@@ -32,6 +32,16 @@ class Report
      */
     private $timestamp;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $reason;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $signaturesRequired;
+
     public function getId()
     {
         return $this->id;
@@ -70,5 +80,24 @@ class Report
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
+    }
+
+    public function getReason() {
+        return $this->reason;
+    }
+
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+    }
+
+    public function getSignaturesRequired()
+    {
+        return $this->signaturesRequired;
+    }
+
+    public function setSignaturesRequired($signaturesRequired)
+    {
+        $this->signaturesRequired = $signaturesRequired;
     }
 }

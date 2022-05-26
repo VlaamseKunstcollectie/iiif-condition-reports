@@ -34,6 +34,16 @@
                             <div>{{ 'Created' | trans }}:</div>
                             <div>{{ result.timestamp }}</div>
                         </div>
+                        <div class="reports-row-reason">
+                            <div>{{ 'Reason' | trans }}:</div>
+                            <div>{{ result.reason }}</div>
+                        </div>
+                        {% if result.signature_message is not null %}
+                            <div class="reports-row-signatures">
+                                <div>{{ 'Signatures' | trans }}:</div>
+                                <div>{{ result.signature_message }}</div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="reports-row-actions">
                         <div>{% if result.id is not empty %}<a href="{{ path('view', { id: result.id }) }}" class="button">

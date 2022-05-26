@@ -48,6 +48,12 @@
                         <div>{{ 'Last modification' | trans }}:</div>
                         <div>{{ result.timestamp }}</div>
                     </div>
+                    {% if result.reason is not null %}
+                        <div class="reports-row-reason">
+                            <div>{{ 'Last reason' | trans }}:</div>
+                            <div>{{ result.reason }}</div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="reports-row-actions">
                     <div>

@@ -214,7 +214,7 @@
 
 $('input#annotate-file').change(function() {
 
-    $(this).simpleUpload('/upload', {
+    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
 
         start: function(file) {
             document.getElementById('add-image-select').selectedIndex = 0;
@@ -248,7 +248,7 @@ $('input#annotate-file').change(function() {
 
 $('input#annotate-camera').change(function() {
 
-    $(this).simpleUpload('/upload', {
+    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
 
         start: function(file) {
             document.getElementById('add-image-select').selectedIndex = 0;
