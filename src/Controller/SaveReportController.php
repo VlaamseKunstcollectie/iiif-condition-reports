@@ -275,7 +275,6 @@ class SaveReportController extends AbstractController
                         $em->flush();
                     }
                 }
-                //TODO add signature
 
                 return $this->redirectToRoute('view', array('_locale' => $locale, 'id' => $report->getId()));
             } else {

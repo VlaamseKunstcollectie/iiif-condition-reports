@@ -321,9 +321,9 @@ window.osd_anno.addHandler('open', function(event) {
 
 window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
-        for(var i = 0; i < spans.length; i++) {
-            spans[i].classList.add('anno-hist-hover');
+        var span = document.getElementById('anno-hist-' + annotation.id);
+        if(span !== null) {
+            span.classList.add('anno-hist-hover');
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -337,9 +337,9 @@ window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
 
 window.anno.on('selectAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
-        for(var i = 0; i < spans.length; i++) {
-            spans[i].classList.add('anno-hist-hover');
+        var span = document.getElementById('anno-hist-' + annotation.id);
+        if(span !== null) {
+            span.classList.add('anno-hist-hover');
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -353,9 +353,9 @@ window.anno.on('selectAnnotation', function(annotation, ele) {
 
 window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
-        for(var i = 0; i < spans.length; i++) {
-            spans[i].classList.remove('anno-hist-hover');
+        var span = document.getElementById('anno-hist-' + annotation.id);
+        if(span !== null) {
+            span.classList.remove('anno-hist-hover');
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -369,9 +369,9 @@ window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
 
 window.anno.on('cancelSelected', function(annotation, ele) {
     if(annotation != null) {
-        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
-        for(var i = 0; i < spans.length; i++) {
-            spans[i].classList.remove('anno-hist-selected');
+        var span = document.getElementById('anno-hist-' + annotation.id);
+        if(span !== null) {
+            span.classList.remove('anno-hist-selected');
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -385,9 +385,9 @@ window.anno.on('cancelSelected', function(annotation, ele) {
 
 window.anno.on('updateAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
-        for(var i = 0; i < spans.length; i++) {
-            spans[i].classList.remove('anno-hist-selected');
+        var span = document.getElementById('anno-hist-' + annotation.id);
+        if(span !== null) {
+            span.classList.remove('anno-hist-selected');
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -425,7 +425,6 @@ window.anno.on('createAnnotation', function(annotation, ele) {
 
 window.anno.on('deleteAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        //TODO improve this massively
         var button = document.getElementById('anno-hist-' + annotation.id);
         if(button != null) {
             var parent = button.parentElement.parentElement;
@@ -1192,7 +1191,8 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
     for(var i = 0; i < divsToAdd.length; i++) {
         var span = document.createElement('div');
         if (added) {
-            span.className = 'anno-hist anno-hist-' + id;
+            span.className = 'anno-hist';
+            span.id = 'anno-hist-' + id;
 
             var text = null;
             if(body != null) {
@@ -1233,9 +1233,9 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                     eles[i].parentElement.classList.add('selected');
                 }
             }
-            var spans = document.getElementsByClassName('anno-hist-' + id);
-            for(var i = 0; i < spans.length; i++) {
-                spans[i].classList.add('anno-hist-hover');
+            var span = document.getElementById('anno-hist-' + id);
+            if(span !== null) {
+                span.classList.add('anno-hist-hover');
             }
             if (number !== null) {
                 var ele = document.getElementById('annotation-number-' + number);
@@ -1251,9 +1251,9 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                     eles[i].parentElement.classList.remove('selected');
                 }
             }
-            var spans = document.getElementsByClassName('anno-hist-' + id);
-            for(var i = 0; i < spans.length; i++) {
-                spans[i].classList.remove('anno-hist-hover');
+            var span = document.getElementById('anno-hist-' + id);
+            if(span != null) {
+                span.classList.remove('anno-hist-hover');
             }
             if (number !== null) {
                 var ele = document.getElementById('annotation-number-' + number);
@@ -1264,9 +1264,9 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
         };
         span.onclick = function () {
             if (window.anno.selectAnnotation(id) !== undefined) {
-                var spans = document.getElementsByClassName('anno-hist-' + id);
-                for(var i = 0; i < spans.length; i++) {
-                    spans[i].classList.add('anno-hist-selected');
+                var span = document.getElementById('anno-hist-' + id);
+                if(span !== null) {
+                    span.classList.add('anno-hist-selected');
                 }
                 if (number !== null) {
                     var ele = document.getElementById('annotation-number-' + number);
