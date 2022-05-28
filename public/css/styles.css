@@ -331,7 +331,7 @@ textarea {
 }
 
 #annotation-history {
-    width: 210px;
+    width: 215px;
     float: left;
     display: inline;
 }
@@ -812,7 +812,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-history .show-all {
     background-color: #f8f8f8;
     text-align: left;
-    width: 145px;
+    width: 150px;
     border: 1px solid #dbdbdb;
     border-left: none;
     font-weight: bold;
@@ -1118,14 +1118,14 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 .anno-hist-hover,
 .anno-hist:hover,
 .anno-hist-selected {
-    background-color: grey;
+    background-color: #cccccc;
 }
 
 .anno-hist-deleted {
     display: block;
     box-sizing: border-box;
     padding-left: 20px;
-    color: grey;
+    color: #999999;
 }
 
 .anno-number {
