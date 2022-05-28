@@ -1,22 +1,33 @@
 {% include 'header.html.twig' %}
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="login">
+        <div class="login-row">
+            <div class="login-header">Login</div>
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+            <div id="login-form">
+                {% if error %}
+                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <form action="{{ path('login') }}" method="post">
+                    <label for="username">Email:</label>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="_password"/>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button type="submit">login</button>
-    </form>
-    <a href="{{ path('app_forgot_password_request') }}">{{ 'I forgot my password' | trans }}</a>
+                    {# If you want to control the URL the user is redirected to on success
+                    <input type="hidden" name="_target_path" value="/account"/> #}
+
+                    <div class="login-submit">
+                        <a href="{{ path('app_forgot_password_request') }}">{{ 'I forgot my password' | trans }}</a>
+
+                        <button type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% include 'footer.html.twig' %}

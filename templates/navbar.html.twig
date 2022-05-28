@@ -1,6 +1,6 @@
 <nav class="navbar navbar-static-top navbar-default">
     <div class="container-fluid">
-        <ul class="nav navbar-nav main-nav navbar-right">
+        <ul class="nav-left">
             <li{% if current_page is defined and (current_page == 'reports' or current_page == 'login') %} class="active"{% endif %}>
                 <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
             </li>
@@ -25,12 +25,17 @@
                 <li{% if current_page == 'recommendations' %} class="active"{% endif %}>
                     <a href="{{ path('recommendations') }}">{{ 'Recommendations' | trans }}</a>
                 </li>
-                <li>
+            {% endif %}
+        </ul>
+        <ul class="nav-right">
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-user">
                     <div id="user-profile-button">
                         <a href="{{ path('profile') }}">
                             <i class="fas fa-user"></i>
                         </a>
                     </div>
+                    {{ app.user.fullName }}
                 </li>
                 <li>
                     <div id="user-logout-button">

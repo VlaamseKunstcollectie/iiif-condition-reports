@@ -53,6 +53,42 @@ textarea {
     padding-left: 15px;
 }
 
+.login {
+    min-height: calc(100vh - 199px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.login-row {
+    width: 400px;
+    padding: 30px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    background-color: white;
+}
+
+.login-header {
+    font-size: 21px;
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
+.login-submit {
+    display: flex;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.login a {
+    color: #747db3;
+    text-decoration: underline;
+}
+
 .reports,
 .orgs,
 .reps,
@@ -505,7 +541,8 @@ textarea {
 #wrap .readonly-header button,
 #report-navigation .save button,
 #object-type-select-div .save button,
-#report-form #annotation-images #add-image-url-button {
+#report-form #annotation-images #add-image-url-button,
+#login-form button {
     cursor: pointer;
     display: flex;
     flex-wrap: nowrap;
@@ -525,6 +562,11 @@ textarea {
     padding: 6px 12px;
 }
 
+#login-form button {
+    margin-bottom: 0;
+    padding: 6px 12px;
+}
+
 #report-form #annotation-images #add-image-url-button {
     padding: 6px 12px;
 }
@@ -537,7 +579,8 @@ textarea {
 #wrap .readonly-header button:hover,
 #report-navigation .save button:hover,
 #object-type-select-div .save button:hover,
-#report-form #annotation-images #add-image-url-button:hover {
+#report-form #annotation-images #add-image-url-button:hover,
+#login-form button:hover {
     background-color: #3a3f5a;
 }
 
@@ -638,10 +681,15 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form label,
 #organisation-form label,
 #representative-form label,
-#user-form label {
+#user-form label,
+#login-form label {
     display: block;
     padding-top: 10px;
     flex-shrink: 0;
+}
+
+#login-form label:first-of-type {
+    padding-top: 0;
 }
 
 #report-form select,
@@ -657,7 +705,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #user-form input,
 #user-form textarea,
 #object-type-select-div-div select,
-#object-type-select-div-div input {
+#object-type-select-div-div input,
+#login-form input {
     margin-top: 2px;
     padding: 6px;
     border-radius: 4px;
@@ -1267,11 +1316,21 @@ nav {
     max-width: 1230px;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-nav ul {
-    float: right !important;
-    margin-left: -15px;
+.nav-left {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav-right {
+    display: flex;
+}
+
+.nav-user {
+    display: flex;
 }
 
 nav li {
@@ -1293,10 +1352,6 @@ nav li a {
 
 nav li.active a {
     border-bottom: 3px solid white;
-}
-
-nav li:first-child a {
-    margin-left: 0px !important;
 }
 
 nav li:last-child a {
@@ -1418,6 +1473,10 @@ form {
     width: 1230px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.login form {
+    width: auto;
 }
 
 #form {
@@ -1669,18 +1728,18 @@ form {
 }
 
 footer {
-    width: 1230px;
-    margin-left: auto;
-    margin-right: auto;
+    border-top: 1px solid #dbdbdb;
 }
 
 footer div {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 0 15px 30px 15px;
 }
 
 footer p {
     padding-top: 15px;
-    border-top: 1px solid #dbdbdb;
 }
 
 footer a {
