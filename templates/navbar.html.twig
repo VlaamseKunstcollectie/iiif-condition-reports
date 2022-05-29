@@ -22,7 +22,7 @@
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-user">
                     <div id="user-select">
-                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i id="user-select-button" class="fas fa-user"></i> {{ app.user.fullName }}</div>
+                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i id="user-select-button" class="fas fa-user"></i>{{ app.user.fullName }}</div>
                         <div id="user-select-items" class="user-select-hide">
                             <div onclick="window.location.href = '{{ path('profile') }}'">{{ 'Profile' | trans }}</div>
                             <div onclick="window.location.href = '{{ path('logout') }}'">{{ 'Logout' | trans }}</div>
