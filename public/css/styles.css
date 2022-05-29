@@ -1372,6 +1372,11 @@ nav li {
     padding-bottom: 14px;
 }
 
+.user-select-href {
+    font-size: 14px;
+    margin-top: 18px;
+}
+
 nav li.active a {
     border-bottom: 3px solid white;
 }
