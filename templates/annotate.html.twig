@@ -633,6 +633,17 @@ for(const image in hist) {
     }
 }
 
+var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
+for(const image in deletedAnnos) {
+    for(const reportId in deletedAnnos[image]) {
+        var deleted = [];
+        for(const id in deletedAnnos[image][reportId]) {
+            deleted.push(id);
+        }
+        window.deletedAnnotations[image][reportId] = deleted;
+    }
+}
+
 var annotations = {{ annotations | json_encode | raw }};
 for(const image in annotations) {
     for(const reportId in annotations[image]) {
@@ -673,24 +684,21 @@ for(const image in annotations) {
     }
 }
 
-var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
 for(const image in deletedAnnos) {
     for(const reportId in deletedAnnos[image]) {
-        var deleted = [];
         var histEle_ = document.getElementById('annos-' + image + '-' + reportId);
         var histEleDiv_ = null;
         if(histEle_ != null) {
             histEleDiv_ = histEle_.querySelector('div');
         }
         for(const id in deletedAnnos[image][reportId]) {
-            deleted.push(id);
             if(histEleDiv_ != null) {
                 addAnnoHistSpan(histEleDiv_, id, null, null, false);
             }
         }
-        window.deletedAnnotations[image][reportId] = deleted;
     }
 }
+
 for (const id in window.annotationHistory[window.currentImage]) {
     window.annotationsVisible[window.currentImage][id] = true;
 }
@@ -1194,25 +1202,47 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
             span.className = 'anno-hist';
             span.id = 'anno-hist-' + id;
 
+            var deleted = false;
+            if(window.currentImage !== null && window.deletedAnnotations[window.currentImage] !== undefined) {
+                for (const [reportId, deletedAnnos] of Object.entries(window.deletedAnnotations[window.currentImage])) {
+                    if(deletedAnnos.includes(id)) {
+                        deleted = true;
+                        span.className += ' anno-hist-deleted';
+                        break;
+                    }
+                }
+            }
             var text = null;
             if(body != null) {
                 for(var j = 0; j < body.length; j++) {
                     if(body[j].hasOwnProperty('value') && body[j].value != null && body[j].value !== '') {
                         if (text == null) {
-                            text = '<span class="anno-text">' + body[j].value;
+                            if(deleted) {
+                                text = '<span class="anno-text anno-hist-deleted-span">';
+                            } else {
+                                text = '<span class="anno-text">';
+                            }
+                            text += body[j].value;
                         } else {
                             text = text + '<br/>' + body[j].value + '';
                         }
                     }
                 }
             }
-
             if (number === null) {
                 span.innerHTML = text;
             } else if(text == null) {
-                span.innerHTML = '<span class="anno-number">' + number + '.</span>';
+                if(deleted) {
+                    span.innerHTML = '<span class="anno-number anno-hist-deleted-span">' + number + '.</span>';
+                } else {
+                    span.innerHTML = '<span class="anno-number">' + number + '.</span>';
+                }
             } else {
-                span.innerHTML = '<span class="anno-number">' + number + '. </span>' + text + '</span>';
+                if(deleted) {
+                    span.innerHTML = '<span class="anno-number anno-hist-deleted-span">' + number + '. </span>' + text + '</span>';
+                } else {
+                    span.innerHTML = '<span class="anno-number">' + number + '. </span>' + text + '</span>';
+                }
             }
         } else {
             span.className = 'anno-hist-deleted';

@@ -1177,6 +1177,10 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     color: #999999;
 }
 
+.anno-hist-deleted-span {
+    color: #999999;
+}
+
 .anno-number {
     vertical-align: top;
 }
