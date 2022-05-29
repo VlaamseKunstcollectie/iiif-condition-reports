@@ -127,7 +127,7 @@ textarea {
 .orgs,
 .reps,
 .users,
-.recommendations {
+.disclaimer {
     max-width: 1200px;
     margin: 30px auto;
     padding-left: 15px;
@@ -172,15 +172,15 @@ textarea {
     margin: 15px;
 }
 
-.recommendations-row {
+.disclaimer-row {
     margin-top: 15px;
 }
 
-.recommendations-row p {
+.disclaimer-row p {
     margin-bottom: 15px;
 }
 
-.recommendations-row p:last-child {
+.disclaimer-row p:last-child {
     margin-bottom: 0;
 }
 
