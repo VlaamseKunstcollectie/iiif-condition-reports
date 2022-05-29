@@ -51,7 +51,6 @@ class ViewReportsController extends AbstractController
             ->from(Report::class, 'r')
             ->leftJoin(InventoryNumber::class, 'i', 'WITH', 'i.id = r.inventoryId')
             ->leftJoin(DatahubData::class, 'd', 'WITH', 'd.id = r.inventoryId')
-            ->leftJoin(Signature::class, 's', 'WITH', 's.id = r.id')
             ->where('r.baseId = :id')
             ->setParameter('id', $baseId)
             ->orderBy('r.timestamp', 'DESC')
