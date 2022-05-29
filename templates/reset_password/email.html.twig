@@ -1,7 +1,13 @@
-<h2>{{ 'Hi' | trans }}!</h2>
+<h2>{{ 'Hi!' | trans }}</h2>
 
-<p>{{ 'To reset your password, please visit the following link' | trans }}</p>
+<p>{{ 'We have received a request to reset your password for the condition reporting tool.' | trans }}</p>
+
+<p>{{ 'Click the following link to reset your password:' | trans }}</p>
 
 <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
 
 <p>{{ 'This link will expire in' | trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+<p>{{ 'If the link is not clickable, copy and paste the entire URL in your browser.' | trans }}</p>
+
+<p>{{ 'If you have not requested a new password, you can ignore this email.' | trans }}</p>

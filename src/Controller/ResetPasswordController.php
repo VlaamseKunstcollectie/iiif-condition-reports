@@ -269,7 +269,7 @@ class ResetPasswordController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('passwordreset@condition-reports.com', 'Condition Report Password Reset'))
             ->to($user->getEmail())
-            ->subject($translator->trans('Your password reset request'))
+            ->subject($translator->trans('Reset your password for the condition reporting tool'))
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
