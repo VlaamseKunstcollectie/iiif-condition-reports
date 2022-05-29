@@ -30,18 +30,12 @@
         <ul class="nav-right">
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-user">
-                    <div id="user-profile-button">
-                        <a href="{{ path('profile') }}">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    </div>
-                    {{ app.user.fullName }}
-                </li>
-                <li>
-                    <div id="user-logout-button">
-                        <a href="{{ path('logout') }}">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
+                    <div id="user-select">
+                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i class="fas fa-user"></i> {{ app.user.fullName }}</div>
+                        <div id="user-select-items" class="user-select-hide">
+                            <div onclick="window.location.href = '{{ path('profile') }}'">{{ 'Profile' | trans }}</div>
+                            <div onclick="window.location.href = '{{ path('logout') }}'">{{ 'Logout' | trans }}</div>
+                        </div>
                     </div>
                 </li>
             {% endif %}
@@ -79,6 +73,29 @@
                         }
                     }
                     document.addEventListener("click", closeLangSelect);
+
+                    function clickedUserButton(ele) {
+                        var userSelectItem = document.getElementById('user-select-items');
+                        if(userSelectItem != null) {
+                            userSelectItem.classList.toggle('user-select-hide');
+                        }
+                        var userSelectSelected = document.getElementById('user-select-selected');
+                        if(userSelectSelected != null) {
+                            userSelectSelected.classList.toggle('user-select-arrow-active');
+                        }
+                    }
+
+                    function closeUserSelect(ele) {
+                        var userSelectSelected = document.getElementById('user-select-selected');
+                        if (userSelectSelected != null && (ele == null || ele.target == null || ele.target !== userSelectSelected)) {
+                            userSelectSelected.classList.remove('user-select-arrow-active');
+                            var userSelectItems = document.getElementById('user-select-items');
+                            if(userSelectItems != null) {
+                                userSelectItems.classList.add('user-select-hide');
+                            }
+                        }
+                    }
+                    document.addEventListener("click", closeUserSelect);
                 </script>
             </li>
         </ul>
