@@ -6,7 +6,22 @@
     {% include 'condition.html.twig' %}
     {% include 'report_recommendations.html.twig' %}
     {% include 'annotate.html.twig' %}
+
     {% if readonly %}
-        {% include 'signatures.html.twig' %}
+        {% set reps = {
+            'owner': 'Owner / lender',
+            'user': 'Borrower / restorer',
+            'handler': 'Courier / art handler',
+            'third_party': 'Other third party'
+        } %}
+        {% set has_signatures = false %}
+        {% for rep, rep_name in reps %}
+            {% if prefilled_data[rep ~ '_name'] is defined and prefilled_data[rep ~ '_rep_name'] is defined %}
+                {% set has_signatures = true %}
+            {% endif %}
+        {% endfor %}
+        {% if has_signatures %}
+            {% include 'signatures.html.twig' with { 'reps': reps } %}
+        {% endif %}
     {% endif %}
 </div>

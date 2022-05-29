@@ -1,12 +1,5 @@
 <div class="report-header">{{ 'Signatures' | trans }}</div>
 
-{% set reps = {
-    'owner': 'Owner / lender',
-    'user': 'Borrower / restorer',
-    'handler': 'Courier / art handler',
-    'third_party': 'Other third party'
-} %}
-
 {% set signature_count = 0 %}
 {% for rep, rep_name in reps %}
     {% if prefilled_data[rep ~ '_name'] is defined and prefilled_data[rep ~ '_rep_name'] is defined %}
