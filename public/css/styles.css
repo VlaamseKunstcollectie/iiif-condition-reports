@@ -1360,24 +1360,20 @@ nav li {
     list-style: none;
 }
 
-nav li a {
+.nav-li-a {
     line-height: normal;
     float: none;
     display: inline-block;
-    font-size: 17.5px;
+    font-size: 17px;
     color: white;
     text-decoration: none;
     margin: 15px;
     margin-bottom: 0;
-    padding-bottom: 12px;
+    padding-bottom: 14px;
 }
 
 nav li.active a {
     border-bottom: 3px solid white;
-}
-
-nav li:last-child a {
-    margin-right: 0px !important;
 }
 
 nav .fa-user,
