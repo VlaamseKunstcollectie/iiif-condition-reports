@@ -1,14 +1,21 @@
 {% include 'header.html.twig' %}
 
-{% block title %}{{ 'Reset your password' | trans }}{% endblock %}
-
 {% block body %}
-    <h1>{{ 'Reset your password' | trans }}</h1>
+    <div class="login">
+        <div class="login-row">
+            <div class="login-header">{{ 'Reset your password' | trans }}</div>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">{{ 'Reset password' | trans }}</button>
-    {{ form_end(resetForm) }}
+            <div id="login-form" class="login-reset">
+                {{ form_start(resetForm) }}
+                    {{ form_errors(resetForm.plainPassword) }}
+                    {{ form_row(resetForm.plainPassword) }}
+                    <div class="login-submit">
+                        <button class="btn btn-primary">{{ 'Reset password' | trans }}</button>
+                    </div>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% include 'footer.html.twig' %}

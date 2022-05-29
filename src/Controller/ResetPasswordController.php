@@ -189,6 +189,7 @@ class ResetPasswordController extends AbstractController
                         ]),
                     ],
                     'label' => $translator->trans('New password'),
+                    'error_bubbling' => true
                 ],
                 'second_options' => [
                     'attr' => ['autocomplete' => 'new-password'],
