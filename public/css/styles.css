@@ -1473,25 +1473,22 @@ nav .fa-sign-out-alt {
     user-select: none;
 }
 
-#lang-select-items div:first-of-type,
-#user-select-items div:first-of-type {
+#lang-select-items div,
+#user-select-items div {
     background-color: white;
     color: #333333;
-    margin-top: 15px;
     border: 1px solid #dbdbdb;
     border-top: none;
-    text-align: center;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
 
-#lang-select-items div:not(:first-of-type),
-#user-select-items div:not(:first-of-type) {
-    background-color: white;
-    color: #333333;
-    border: 1px solid #dbdbdb;
-    border-top: none;
+#lang-select-items div {
     text-align: center;
-    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#lang-select-items div:first-of-type,
+#user-select-items div:first-of-type {
+    margin-top: 15px;
 }
 
 #lang-select-selected,
