@@ -17,7 +17,7 @@ body {
 }
 
 .main-container {
-    min-height: calc(100vh - 88px);
+    min-height: calc(100vh - 124px);
 }
 
 a {
@@ -1874,7 +1874,7 @@ footer {
     background-color: #e7e7e7;
 }
 
-footer div {
+footer > div {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -1892,6 +1892,10 @@ footer a {
 
 footer a:hover {
     color: #464b6b;
+}
+
+.footer-links {
+    margin-top: 15px;
 }
 
 @media screen and (max-width: 1200px) {
