@@ -28,6 +28,10 @@ textarea {
     resize: vertical;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .hidden {
     display: none !important;
     margin: 0 !important;
@@ -89,10 +93,16 @@ textarea {
     text-decoration: underline;
 }
 
+.login-error {
+    color: red;
+    margin-bottom: 15px;
+}
+
 .reports,
 .orgs,
 .reps,
-.users {
+.users,
+.recommendations {
     max-width: 1200px;
     margin: 30px auto;
     padding-left: 15px;
@@ -135,6 +145,18 @@ textarea {
 .object-row {
     display: flex;
     margin: 15px;
+}
+
+.recommendations-row {
+    margin-top: 15px;
+}
+
+.recommendations-row p {
+    margin-bottom: 15px;
+}
+
+.recommendations-row p:last-child {
+    margin-bottom: 0;
 }
 
 .reports-row-thumbnail,
@@ -1372,6 +1394,10 @@ nav .fa-sign-out-alt {
     width: fit-content;
 }
 
+#user-select i {
+    margin-right: 5px;
+}
+
 #lang-select-selected,
 #user-select-selected {
     margin: 15px;
@@ -1463,8 +1489,8 @@ nav .fa-sign-out-alt {
 }
 
 .search-form {
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #e7e7e7;
+    background-color: #e7e7e7;
+    border-bottom: 1px solid #dbdbdb;
     min-height: 50px;
 }
 
@@ -1728,6 +1754,7 @@ form {
 
 footer {
     border-top: 1px solid #dbdbdb;
+    background-color: #e7e7e7;
 }
 
 footer div {
