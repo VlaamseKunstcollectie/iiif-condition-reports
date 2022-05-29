@@ -62,7 +62,7 @@ textarea {
 }
 
 .login {
-    min-height: calc(100vh - 199px);
+    min-height: calc(100vh - 235px);
     display: flex;
     justify-content: center;
     align-items: center;
