@@ -32,6 +32,10 @@ textarea {
     font-weight: bold;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .hidden {
     display: none !important;
     margin: 0 !important;
@@ -427,6 +431,15 @@ textarea {
     overflow-y: scroll;
 }
 
+#annotation-history-timestamps > div {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+#annotation-history-timestamps > div:last-of-type {
+    border-bottom: 0;
+}
+
 #annotation-viewer-full {
     width: 100%;
     height: 100%;
@@ -585,7 +598,8 @@ textarea {
 #report-navigation .save button,
 #object-type-select-div .save button,
 #report-form #annotation-images #add-image-url-button,
-#login-form button {
+#login-form button,
+#export-button {
     cursor: pointer;
     display: flex;
     flex-wrap: nowrap;
@@ -597,6 +611,10 @@ textarea {
     padding: 11px 12px;
     border: 1px solid #dbdbdb;
     border-radius: 4px;
+}
+
+#export-button {
+    margin-right: 15px;
 }
 
 #object-type-select-div .save button {
@@ -614,7 +632,8 @@ textarea {
     padding: 6px 12px;
 }
 
-#wrap .readonly-header button {
+#wrap .readonly-header button,
+#export-button {
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -623,13 +642,15 @@ textarea {
 #report-navigation .save button:hover,
 #object-type-select-div .save button:hover,
 #report-form #annotation-images #add-image-url-button:hover,
-#login-form button:hover {
+#login-form button:hover,
+#export-button:hover {
     background-color: #3a3f5a;
 }
 
 #wrap .readonly-header .fa-print,
 #report-navigation .save .fa-save,
-#object-type-select-div .save .fa-save {
+#object-type-select-div .save .fa-save,
+#export-button .fa-file-export {
     color: white;
     font-size: 20px;
     margin-right: 10px;
@@ -639,7 +660,8 @@ textarea {
 
 #wrap .readonly-header button:hover .fa-print,
 #report-navigation .save button:hover .fa-save,
-#object-type-select-div .save button:hover .fa-save {
+#object-type-select-div .save button:hover .fa-save,
+#export-button:hover .fa-file-export {
     color: white;
 }
 
@@ -952,6 +974,11 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     color: #cccccc;
 }
 
+#report-form #annotation-history .annotations-list {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 #report-form #annotation-tools {
     display: flex;
     background-color: #f8f8f8;
@@ -1209,9 +1236,9 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .anno-hist {
-    display: block;
+    display: flex;
     box-sizing: border-box;
-    padding-left: 20px;
+    padding-left: 10px;
     cursor: pointer;
 }
 
@@ -1221,10 +1248,14 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     background-color: #cccccc;
 }
 
+.anno-hist-layer-span {
+    font-weight: 700;
+}
+
 .anno-hist-deleted {
-    display: block;
+    display: flex;
     box-sizing: border-box;
-    padding-left: 20px;
+    padding-left: 10px;
     color: #999999;
 }
 
@@ -1233,7 +1264,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .anno-number {
-    vertical-align: top;
+    margin-right: 5px;
 }
 
 .anno-text {
@@ -1368,6 +1399,7 @@ nav {
 }
 
 .container-fluid {
+    height: 51px;
     max-width: 1230px;
     margin-left: auto;
     margin-right: auto;
@@ -1429,7 +1461,7 @@ nav .fa-sign-out-alt {
 }
 
 #user-select i {
-    margin-right: 5px;
+    margin-right: 6px;
 }
 
 #lang-select-selected,

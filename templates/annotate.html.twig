@@ -32,7 +32,7 @@
                                             <i class="far fa-eye"></i>
                                             <span>{{ 'Current annotations' | trans }}</span>
                                         </button>
-                                        <div></div>
+                                        <div class="annotations-list"></div>
                                     </div>
                                 {% endif %}
                                 {% if annotation_history[image.hash] is defined %}
@@ -42,7 +42,7 @@
                                                 <i class="far fa-eye"></i>
                                                 <span>{{ timestamp }}</span>
                                             </button>
-                                            <div></div>
+                                            <div class="annotations-list"></div>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
@@ -1229,7 +1229,7 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                             }
                             text += body[j].value;
                         } else {
-                            text = text + '<br/>' + body[j].value + '';
+                            text = text + '<br/><span class="italic">' + body[j].value + '</span>';
                         }
                     }
                 }
@@ -1255,9 +1255,9 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                 span.innerHTML = '({{ 'Deleted' | trans }})';
             } else {
                 {% if app.request.locale == 'en' %}
-                span.innerHTML = '({{ 'Deleted' | trans }} ' + number + ')';
+                span.innerHTML = '({{ 'Deleted' | trans }} ' + number + '.)';
                 {% else %}
-                span.innerHTML = '(' + number + ' {{ 'deleted' | trans }})';
+                span.innerHTML = '(' + number + '. {{ 'deleted' | trans }})';
                 {% endif %}
             }
         }
