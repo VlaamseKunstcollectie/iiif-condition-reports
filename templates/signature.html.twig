@@ -35,17 +35,20 @@
                 undo{{ rep }}Button.addEventListener("click", function (event) {
                     var data = signaturePad{{ rep }}.toData();
 
-                    if (data) {
+                    if (data && data.length > 0) {
                         data.pop(); // remove the last dot or line
                         signaturePad{{ rep }}.fromData(data);
                     }
                 });
 
                 save{{ rep }}Button.onclick = function() {
-                    if(confirm('{{ 'Is this signature from' | trans }} {{ prefilled_data[rep ~ '_rep_name'] }} {{ 'correct' | trans }}?')) {
-                        signatureCanvas{{ rep }}.toBlob(function(blob) {
-                            saveSignature(blob, signatureFile{{ rep }}, '{{ prefilled_data[rep ~ '_rep_name'] }}', '{{ rep }}');
-                        });
+                    var data = signaturePad{{ rep }}.toData();
+                    if (data && data.length > 0) {
+                        if (confirm('{{ 'Is this signature from' | trans }} {{ prefilled_data[rep ~ '_rep_name'] }} {{ 'correct' | trans }}?')) {
+                            signatureCanvas{{ rep }}.toBlob(function (blob) {
+                                saveSignature(blob, signatureFile{{ rep }}, '{{ prefilled_data[rep ~ '_rep_name'] }}', '{{ rep }}');
+                            });
+                        }
                     }
                 };
 

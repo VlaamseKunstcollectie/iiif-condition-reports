@@ -31,7 +31,7 @@
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-user">
                     <div id="user-select">
-                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i class="fas fa-user"></i> {{ app.user.fullName }}</div>
+                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i id="user-select-button" class="fas fa-user"></i> {{ app.user.fullName }}</div>
                         <div id="user-select-items" class="user-select-hide">
                             <div onclick="window.location.href = '{{ path('profile') }}'">{{ 'Profile' | trans }}</div>
                             <div onclick="window.location.href = '{{ path('logout') }}'">{{ 'Logout' | trans }}</div>
@@ -87,7 +87,8 @@
 
                     function closeUserSelect(ele) {
                         var userSelectSelected = document.getElementById('user-select-selected');
-                        if (userSelectSelected != null && (ele == null || ele.target == null || ele.target !== userSelectSelected)) {
+                        var userSelectButton = document.getElementById('user-select-button');
+                        if (userSelectSelected != null && (ele == null || ele.target == null || ele.target !== userSelectSelected && ele.target !== userSelectButton)) {
                             userSelectSelected.classList.remove('user-select-arrow-active');
                             var userSelectItems = document.getElementById('user-select-items');
                             if(userSelectItems != null) {
