@@ -101,8 +101,21 @@ textarea {
     text-decoration: underline;
 }
 
-.login-error {
+.login-error,
+.login ul li {
     color: red;
+    margin-bottom: 15px;
+}
+
+.login ul {
+    list-style: none;
+}
+
+.login ul li {
+    margin-bottom: 0;
+}
+
+.login ul li:last-of-type {
     margin-bottom: 15px;
 }
 
@@ -719,6 +732,14 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 #login-form label:first-of-type {
+    padding-top: 0;
+}
+
+#login-form.login-reset label {
+    padding-top: 10px;
+}
+
+#login-form.login-reset div:first-of-type label {
     padding-top: 0;
 }
 
