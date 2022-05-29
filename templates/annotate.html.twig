@@ -321,9 +321,11 @@ window.osd_anno.addHandler('open', function(event) {
 
 window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span !== null) {
-            span.classList.add('anno-hist-hover');
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-hover');
+            }
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -337,9 +339,11 @@ window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
 
 window.anno.on('selectAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span !== null) {
-            span.classList.add('anno-hist-hover');
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-hover');
+            }
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -353,9 +357,11 @@ window.anno.on('selectAnnotation', function(annotation, ele) {
 
 window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span !== null) {
-            span.classList.remove('anno-hist-hover');
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('anno-hist-hover');
+            }
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -369,9 +375,11 @@ window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
 
 window.anno.on('cancelSelected', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span !== null) {
-            span.classList.remove('anno-hist-selected');
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('anno-hist-selected');
+            }
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -385,9 +393,11 @@ window.anno.on('cancelSelected', function(annotation, ele) {
 
 window.anno.on('updateAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var span = document.getElementById('anno-hist-' + annotation.id);
-        if(span !== null) {
-            span.classList.remove('anno-hist-selected');
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-selected');
+            }
         }
         var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
         if(number !== null) {
@@ -425,54 +435,50 @@ window.anno.on('createAnnotation', function(annotation, ele) {
 
 window.anno.on('deleteAnnotation', function(annotation, ele) {
     if(annotation != null) {
-        var button = document.getElementById('anno-hist-' + annotation.id);
-        if(button != null) {
-            var parent = button.parentElement.parentElement;
-            if(parent.className === 'show-hide-current-annos') {
-                button.parentElement.removeChild(button);
-                if(parent.querySelectorAll('div > span').length === 0) {
-                    parent.style = 'display: none';
-                }
-                // TODO find report ID and delete the proper one
-                //delete window.annotationHistory[hash][reportId][annotation.id];
-                //delete window.addedAnnotations[hash][reportId][annotation.id];
-                //delete window.deletedAnnotations[hash][reportId][annotation.id];
-
-                //TODO something along these lines:
-/*
-                for (const id in window.annotationHistory[hash]) {
-                    if (id in window.deletedAnnotations[hash]) {
-                        for (const delId of window.deletedAnnotations[hash][id]) {
-                            delete annotations[hash][delId];
+        var buttons = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(buttons != null) {
+            for(var i = buttons.length - 1; i >= 0; i--) {
+                buttons[i].classList.remove('anno-hist-hover');
+                var parentGroup = buttons[i].parentElement;
+                var parentParentDiv = parentGroup.parentElement;
+                var topDiv = parentParentDiv.parentElement;
+                if(topDiv.className === 'show-hide-current-annos') {
+                    parentGroup.removeChild(buttons[i]);
+                    if(parentGroup.querySelectorAll('div').length === 0) {
+                        parentParentDiv.removeChild(parentGroup);
+                    }
+                    if(parentParentDiv.childElementCount === 0) {
+                        topDiv.style = 'display: none';
+                    }
+                    if(window.currentImage in window.addedAnnotations) {
+                        for(id in window.addedAnnotations[window.currentImage]) {
+                            for (const [annoId, anno] of Object.entries(window.addedAnnotations[window.currentImage][id])) {
+                                if(annoId === annotation.id) {
+                                    delete window.addedAnnotations[window.currentImage][id][annoId];
+                                    break;
+                                }
+                            }
                         }
                     }
-                    if (id in window.addedAnnotations[hash]) {
-                        for (const [annoId, anno] of Object.entries(window.addedAnnotations[hash][id])) {
-                            annotations[hash][annoId] = anno;
+                } else {
+                    var alreadyIn = false;
+                    if(window.currentImage in window.deletedAnnotations) {
+                        for(id in window.deletedAnnotations[window.currentImage]) {
+                            if (window.deletedAnnotations[window.currentImage][id].includes(annotation.id)) {
+                                alreadyIn = true;
+                                break;
+                            }
                         }
                     }
-                }
-                    */
-
-            } else {
-                var alreadyIn = false;
-                if(window.currentImage in window.deletedAnnotations) {
-                    for(id in window.deletedAnnotations[window.currentImage]) {
-                        if (window.deletedAnnotations[window.currentImage][id].includes(annotation.id)) {
-                            alreadyIn = true;
-                            break;
-                        }
-                    }
-                }
-                if(!alreadyIn) {
-                    window.deletedAnnotations[window.currentImage]['999999999'].push(annotation.id);
-                    button.classList.remove('anno-hist-hover');
-                    var buttons = document.getElementsByClassName('show-hide-current-annos');
-                    for(var i = 0; i < buttons.length; i++) {
-                        buttons[i].style = 'display: block';
-                        var div = buttons[i].querySelector('div');
-                        if(div != null) {
-                            addAnnoHistSpan(div, annotation.id, null, null, false);
+                    if(!alreadyIn) {
+                        window.deletedAnnotations[window.currentImage]['999999999'].push(annotation.id);
+                        var buttons1 = document.getElementsByClassName('show-hide-current-annos');
+                        for(var j = 0; j < buttons1.length; j++) {
+                            buttons1[j].style = 'display: block';
+                            var div = buttons1[j].querySelector('div');
+                            if(div != null) {
+                                addAnnoHistSpan(div, annotation.id, null, null, false);
+                            }
                         }
                     }
                 }
@@ -1199,8 +1205,7 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
     for(var i = 0; i < divsToAdd.length; i++) {
         var span = document.createElement('div');
         if (added) {
-            span.className = 'anno-hist';
-            span.id = 'anno-hist-' + id;
+            span.className = 'anno-hist anno-hist-' + id;
 
             var deleted = false;
             if(window.currentImage !== null && window.deletedAnnotations[window.currentImage] !== undefined) {
@@ -1263,9 +1268,11 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                     eles[i].parentElement.classList.add('selected');
                 }
             }
-            var span = document.getElementById('anno-hist-' + id);
-            if(span !== null) {
-                span.classList.add('anno-hist-hover');
+            var spans = document.getElementsByClassName('anno-hist-' + id);
+            if(spans !== null) {
+                for(var i = 0; i < spans.length; i++) {
+                    spans[i].classList.add('anno-hist-hover');
+                }
             }
             if (number !== null) {
                 var ele = document.getElementById('annotation-number-' + number);
@@ -1281,9 +1288,11 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
                     eles[i].parentElement.classList.remove('selected');
                 }
             }
-            var span = document.getElementById('anno-hist-' + id);
-            if(span != null) {
-                span.classList.remove('anno-hist-hover');
+            var spans = document.getElementsByClassName('anno-hist-' + id);
+            if(spans !== null) {
+                for(var i = 0; i < spans.length; i++) {
+                    spans[i].classList.remove('anno-hist-hover');
+                }
             }
             if (number !== null) {
                 var ele = document.getElementById('annotation-number-' + number);
@@ -1294,9 +1303,11 @@ function addAnnoHistSpan(div, id, body, styleClass, added) {
         };
         span.onclick = function () {
             if (window.anno.selectAnnotation(id) !== undefined) {
-                var span = document.getElementById('anno-hist-' + id);
-                if(span !== null) {
-                    span.classList.add('anno-hist-selected');
+                var spans = document.getElementsByClassName('anno-hist-' + id);
+                if(spans !== null) {
+                    for(var i = 0; i < spans.length; i++) {
+                        spans[i].classList.add('anno-hist-selected');
+                    }
                 }
                 if (number !== null) {
                     var ele = document.getElementById('annotation-number-' + number);
