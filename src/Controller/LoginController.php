@@ -15,6 +15,14 @@ class LoginController extends AbstractController
      */
     public function index(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()) {
+                if (in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+                    return $this->redirectToRoute('main');
+                }
+            }
+        }
+
         $locale = $request->get('_locale');
         $locales = $this->getParameter('locales');
         //Set default locale if locale is missing

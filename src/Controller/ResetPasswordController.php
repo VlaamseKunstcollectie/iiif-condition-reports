@@ -48,6 +48,14 @@ class ResetPasswordController extends AbstractController
      */
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()) {
+                if (in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+                    return $this->redirectToRoute('main');
+                }
+            }
+        }
+
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class, [
                 'attr' => ['autocomplete' => 'email'],
@@ -92,6 +100,14 @@ class ResetPasswordController extends AbstractController
      */
     public function checkEmail(Request $request): Response
     {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()) {
+                if (in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+                    return $this->redirectToRoute('main');
+                }
+            }
+        }
+
         // Generate a fake token if the user does not exist or someone hit this page directly.
         // This prevents exposing whether or not a user was found with the given email address or not
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
@@ -122,6 +138,14 @@ class ResetPasswordController extends AbstractController
      */
     public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator, string $token = null): Response
     {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()) {
+                if (in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+                    return $this->redirectToRoute('main');
+                }
+            }
+        }
+
         if ($token) {
             // We store the token in session and remove it from the URL, to avoid the URL being
             // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
