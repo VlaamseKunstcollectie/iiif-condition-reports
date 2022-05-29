@@ -1,21 +1,26 @@
 {% include 'header.html.twig' %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error | trans }}</div>
-    {% endfor %}
-    <h1>{{ 'Reset your password' | trans }}</h1>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                {{ 'Enter your email address and we will send you a link to reset your password' | trans }}.
-            </small>
+    <div class="login">
+        <div class="login-row">
+            <div class="login-header">{{ 'Reset your password' | trans }}</div>
+
+            <div id="login-form">
+                {% for flash_error in app.flashes('reset_password_error') %}
+                    <div class="alert alert-danger login-error" role="alert">{{ flash_error | trans }}</div>
+                {% endfor %}
+
+                {{ form_start(requestForm) }}
+                    <p>{{ 'Enter your email address and we will send you a link to reset your password' | trans }}.</p>
+                    {{ form_row(requestForm.email) }}
+                    <div class="login-submit">
+                        <button class="btn btn-primary">{{ 'Send password reset email' | trans }}</button>
+                    </div>
+                {{ form_end(requestForm) }}
+            </div>
         </div>
-
-        <button class="btn btn-primary">{{ 'Send password reset email' | trans }}</button>
-    {{ form_end(requestForm) }}
+    </div>
 {% endblock %}
 
 {% include 'footer.html.twig' %}

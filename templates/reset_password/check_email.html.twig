@@ -1,16 +1,19 @@
 {% include 'header.html.twig' %}
 
-{% block title %}{{ 'Password reset email sent' | trans }}.{% endblock %}
-
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error | trans }}</div>
-    {% endfor %}
-    <p>
-        {{ 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password' | trans }}.
-        {{ 'This link will expire in' | trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>{{ 'If you don\'t receive an email please check your spam folder or' | trans }} <a href="{{ path('app_forgot_password_request') }}">{{ 'try again' | trans }}</a>.</p>
+    <div class="login">
+        <div class="login-row">
+            <div class="login-header">{{ 'Password reset email sent' | trans }}</div>
+            {% for flash_error in app.flashes('reset_password_error') %}
+                <div class="alert alert-danger login-error" role="alert">{{ flash_error | trans }}</div>
+            {% endfor %}
+            <p>
+                {{ 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password' | trans }}.
+                {{ 'This link will expire in' | trans }} {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+            </p>
+            <p>{{ 'If you don\'t receive an email please check your spam folder or' | trans }} <a href="{{ path('app_forgot_password_request') }}">{{ 'try again' | trans }}</a>.</p>
+        </div>
+    </div>
 {% endblock %}
 
 {% include 'footer.html.twig' %}

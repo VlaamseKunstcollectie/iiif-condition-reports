@@ -76,6 +76,14 @@ textarea {
     background-color: white;
 }
 
+.login-row p {
+    margin-bottom: 15px;
+}
+
+.login-row p:last-child {
+    margin-bottom: 0;
+}
+
 .login-header {
     font-size: 21px;
     font-weight: 700;

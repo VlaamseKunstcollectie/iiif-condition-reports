@@ -258,7 +258,7 @@ class ResetPasswordController extends AbstractController
             // Caution: This may reveal if a user is registered or not.
             //
             $this->addFlash('reset_password_error', sprintf(
-                 '%s - %s',
+                 '%s. %s',
                  $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
                  $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             ));

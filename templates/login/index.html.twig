@@ -10,10 +10,10 @@
                 {% endif %}
 
                 <form action="{{ path('login') }}" method="post">
-                    <label for="username">{{ 'Email' | trans }}:</label>
+                    <label for="username">{{ 'Email' | trans }}</label>
                     <input type="text" id="username" name="_username" value="{{ last_username }}"/>
 
-                    <label for="password">{{ 'Password' | trans }}:</label>
+                    <label for="password">{{ 'Password' | trans }}</label>
                     <input type="password" id="password" name="_password"/>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
