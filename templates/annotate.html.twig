@@ -983,6 +983,7 @@ function clickedThumbnail(hash, image) {
             newDiv.appendChild(button);
 
             var spanDiv = document.createElement('div');
+            spanDiv.className = 'annotations-list';
             newDiv.appendChild(spanDiv);
 
             if (hash in window.addedAnnotations) {
