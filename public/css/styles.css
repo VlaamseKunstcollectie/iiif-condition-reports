@@ -1359,13 +1359,17 @@ nav .fa-sign-out-alt {
     color: white;
 }
 
-#lang-select,
+#lang-select {
+    position: relative;
+    font-family: Arial;
+    width: fit-content;
+    margin-right: 8px;
+}
+
 #user-select {
     position: relative;
     font-family: Arial;
     width: fit-content;
-    margin-left: 15px;
-    margin-right: 6px;
 }
 
 #lang-select-selected,
