@@ -613,6 +613,16 @@ textarea {
     border-radius: 4px;
 }
 
+.signatures button {
+    cursor: pointer;
+    background-color: #5f585d;
+    color: white;
+    margin-bottom: 5px;
+    padding: 11px 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
 #export-button {
     margin-right: 15px;
 }
@@ -623,7 +633,8 @@ textarea {
     padding: 6px 12px;
 }
 
-#login-form button {
+#login-form button,
+.signatures button {
     margin-bottom: 0;
     padding: 6px 12px;
 }
@@ -643,7 +654,8 @@ textarea {
 #object-type-select-div .save button:hover,
 #report-form #annotation-images #add-image-url-button:hover,
 #login-form button:hover,
-#export-button:hover {
+#export-button:hover,
+.signatures button:hover {
     background-color: #3a3f5a;
 }
 
@@ -1800,7 +1812,7 @@ form {
 }
 
 .readonly .signatures .signatures-row .signature-box {
-    padding: 5px 15px 15px 15px;
+    padding: 15px;
     border: 1px solid #dbdbdb;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
     flex-wrap: wrap;
@@ -1812,7 +1824,49 @@ form {
 }
 
 .signature-canvas {
+    position: absolute;
     border: 1px solid #dbdbdb;
+}
+
+.signature-name {
+    font-weight: 700;
+}
+
+.signature-pad--body {
+    position: relative;
+    margin: 15px auto;
+    height: 202px;
+    width: 382px;
+}
+
+.signature-pad--actions {
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signatures .button-clear {
+    margin-right: 5px;
+}
+
+.signatures .button-clear,
+.signatures .button-undo {
+    background-color: white;
+    color: #333333;
+}
+
+.signatures .button-clear:hover,
+.signatures .button-undo:hover {
+    background-color: #dbdbdb;
+}
+
+.signatures .button-save {
+    float: right;
+}
+
+.signature-pad img {
+    display:block;
+    margin:auto;
 }
 
 footer {

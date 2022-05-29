@@ -1,5 +1,5 @@
 <div class="signature-box">
-    <p>{{ prefilled_data[rep ~ '_rep_name'] }} ({{ prefilled_data[rep ~ '_name'] }} - {{ rep_name | trans }})</p>
+    <p class="signature-name">{{ prefilled_data[rep ~ '_rep_name'] }} ({{ prefilled_data[rep ~ '_name'] }} - {{ rep_name | trans }})</p>
     <div class="signature-pad" id="signature-pad-{{ rep }}">
         {% if signatures[rep] is defined %}
             <p>{{ signatures[rep].timestamp | date("Y-m-d H:i:s") }}</p>
@@ -11,9 +11,9 @@
             <div class="signature-pad--footer">
                 <div class="signature-pad--actions">
                     <div>
-                        <button type="button" id="signature-pad-{{ rep }}-action-clear" class="button clear">{{ 'Clear' | trans }}</button>
-                        <button type="button" id="signature-pad-{{ rep }}-action-undo" class="button">{{ 'Undo' | trans }}</button>
-                        <button type="button" id="signature-pad-{{ rep }}-action-save" class="button">{{ 'Save' | trans }}</button>
+                        <button type="button" id="signature-pad-{{ rep }}-action-clear" class="button-clear">{{ 'Clear' | trans }}</button>
+                        <button type="button" id="signature-pad-{{ rep }}-action-undo" class="button-undo">{{ 'Undo' | trans }}</button>
+                        <button type="button" id="signature-pad-{{ rep }}-action-save" class="button-save">{{ 'Save' | trans }}</button>
                         <input type="file" id="signature-pad-file-{{ rep }}" name="signature-file" style="display: none">
                     </div>
                 </div>
