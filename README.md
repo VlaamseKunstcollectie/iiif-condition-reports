@@ -12,3 +12,7 @@ This tool is aimed toward the creation and management of condition reports using
 * php-imagick
 
 The tables as defined in `condition_report_tables.sql` have to be present in MySQL.
+
+## Architecture concept
+
+![Alt text](architectuurConditierapporten.png?raw=true)
