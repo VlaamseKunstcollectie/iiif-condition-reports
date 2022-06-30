@@ -12,25 +12,64 @@ use App\Entity\Report;
 use App\Entity\ReportData;
 use App\Entity\ReportHistory;
 use App\Entity\Representative;
+use App\Entity\Signature;
 use Doctrine\ORM\EntityManager;
 
 class ReportTemplateData
 {
-    public static function getViewData(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getJsonData(EntityManager $em, $id, $baseUrl)
     {
-        $data = self::getExistingReportData($em, $id, '../..');
+        $data = self::getExistingReportData($em, $id, $baseUrl);
+        unset($data['organisations']);
+        unset($data['representatives']);
+        unset($data['current_page']);
+        return $data;
+    }
+
+    public static function getViewData(EntityManager $em, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
+    {
+        $imageRelPath = '../..';
+        $data = self::getExistingReportData($em, $id, $imageRelPath);
+
+        $signatures = $em->createQueryBuilder()
+            ->select('s.timestamp, s.name, s.role, s.filename')
+            ->from(Signature::class, 's')
+            ->where('s.reportId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        $signatureArray = array();
+        foreach($signatures as $signature) {
+            $signature['filename'] = $imageRelPath . '/' . $signature['filename'];
+            $signatureArray[$signature['role']] = $signature;
+        }
+
+        $data['signatures'] = $signatureArray;
         $data['report_reasons'] = $reportReasons;
+        $data['object_types'] = $objectTypes;
+        $data['report_fields'] = $reportFields;
+        $data['frame_picture'] = array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']);
+        $data['backside_picture'] = array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']);
         $data['readonly'] = true;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
         $data['translated_routes'] = $translatedRoutes;
+        $data['report_id'] = $id;
         return $data;
     }
 
-    public static function getDataToCreateExisting(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getDataToCreateExisting(EntityManager $em, $user, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
-        $data = self::getExistingReportData($em, $id, '../..');
+        $imageRelPath = '../../..';
+        $data = self::getExistingReportData($em, $id, $imageRelPath);
+        $data['email'] = $user->getEmail();
+        $data['full_name'] = $user->getFullName();
         $data['report_reasons'] = $reportReasons;
+        $data['object_types'] = $objectTypes;
+        $data['report_fields'] = $reportFields;
+        $data['frame_picture'] = array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']);
+        $data['backside_picture'] = array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']);
         $data['readonly'] = false;
         $data['pattern_size'] = 20;
         $data['stroke_width'] = 2;
@@ -38,19 +77,43 @@ class ReportTemplateData
         return $data;
     }
 
-    public static function getDataToCreateBlank(EntityManager $em, $reportReasons, $id, $translatedRoutes)
+    public static function getDataToCreateBlank(EntityManager $em, $user, $reportReasons, $objectTypes, $reportFields, $pictures, $id, $translatedRoutes)
     {
+        // Prevent creation of a blank report if there is already a report for this inventory number
+        $canCreate = true;
+        $reportData = $em->createQueryBuilder()
+            ->select('r.id')
+            ->from(Report::class, 'r')
+            ->where('r.inventoryId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+        foreach ($reportData as $data) {
+            $canCreate = false;
+        }
+        if(!$canCreate) {
+            return null;
+        }
+
         $prefilledData = self::getDatahubData($em, $id, array());
-        $images = self::getImages($em, $prefilledData, '../..');
+
+        $imageRelPath = '../../..';
+        $images = self::getImages($em, $prefilledData, $imageRelPath);
 
         return [
             'current_page' => 'reports',
+            'email' => $user->getEmail(),
+            'full_name' => $user->getFullName(),
             'prefilled_data' => $prefilledData,
             'images' => $images,
             'annotation_history' => array(),
             'annotations' => array(),
             'deleted_annotations' => array(),
             'report_reasons' => $reportReasons,
+            'frame_picture' => array('hash' => $pictures['frame']['hash'], 'image' => $imageRelPath . $pictures['frame']['image'], 'thumbnail' => $imageRelPath . $pictures['frame']['thumbnail']),
+            'backside_picture' => array('hash' => $pictures['backside']['hash'], 'image' => $imageRelPath . $pictures['backside']['image'], 'thumbnail' => $imageRelPath . $pictures['backside']['thumbnail']),
+            'object_types' => $objectTypes,
+            'report_fields' => $reportFields,
             'organisations' => self::getOrganisations($em),
             'representatives' => self::getRepresentatives($em),
             'readonly' => false,

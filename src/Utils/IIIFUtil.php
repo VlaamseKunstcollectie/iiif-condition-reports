@@ -41,13 +41,21 @@ class IIIFUtil
         if (is_file($file)) {
             $imagick = new Imagick(realpath($file));
             $imagick->setImageFormat('jpeg');
+            $imagick->setBackgroundColor('#ffffff');
+            $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
+            $imagick = $imagick->mergeImageLayers(Imagick::LAYERMETHOD_FLATTEN);
             $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality(100);
-            $imagick->thumbnailImage(self::$thumbnailWidth, 500, true, false);
-            if (file_put_contents($thumbnail, $imagick) === false) {
-                throw new Exception("Could not store thumbnail.");
+            $width = $imagick->getImageWidth();
+            if($width > self::$thumbnailWidth) {
+                $imagick->thumbnailImage(self::$thumbnailWidth, 500, true, false);
+                if (file_put_contents($thumbnail, $imagick) === false) {
+                    throw new Exception("Could not store thumbnail.");
+                }
+            } else {
+                return $file;
             }
-            return true;
+            return $thumbnail;
         }
         else {
             throw new Exception("No valid image provided with {$file}.");

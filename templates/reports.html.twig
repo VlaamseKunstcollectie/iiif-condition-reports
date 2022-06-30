@@ -44,10 +44,18 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="reports-row-timestamp">
-                        <div>{{ 'Last modification' | trans }}:</div>
-                        <div>{{ result.timestamp }}</div>
-                    </div>
+                    {% if result.timestamp %}
+                        <div class="reports-row-timestamp">
+                            <div>{{ 'Last modification' | trans }}:</div>
+                            <div>{{ result.timestamp }}</div>
+                        </div>
+                    {% endif %}
+                    {% if result.reason is defined and result.reason is not null %}
+                        <div class="reports-row-reason">
+                            <div>{{ 'Last reason' | trans }}:</div>
+                            <div>{{ result.reason }}</div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="reports-row-actions">
                     <div>

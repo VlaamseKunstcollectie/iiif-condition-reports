@@ -12,112 +12,278 @@
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/simpleupload.1.1.min.js') }}"></script>
+    {% if readonly %}
+        <script src="{{ asset('js/signature_pad.umd.min.js') }}"></script>
+    {% endif %}
 </head>
-{% include 'navbar.html.twig' %}
+{% set this_object_type = 'default' %}
+{% if prefilled_data.object_type is defined %}
+    {% for object_type in object_types %}
+        {% if prefilled_data.object_type == object_type %}
+            {% set this_object_type = object_type %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
 {% if readonly %}
 <body>
-    <div id="readonly-container">
-        <div id="wrap" class="readonly">
-            <div class="readonly-header">
-                <div class="header">{{ 'View report' | trans }}</div>
-                <button type="button" id="print-button" onclick="window.print()">
-                    <i class="fas fa-print"></i>
-                    {{ 'Print' | trans }}
-                </button>
+    <div class="main-container">
+        {% include 'navbar.html.twig' %}
+        <div id="readonly-container">
+            <div id="wrap" class="readonly">
+                <div class="readonly-header">
+                    <div class="header">{{ 'View report' | trans }}</div>
+                    <div id="header-buttons">
+                        <a id="export-button" href="/data/{{ report_id }}.json">
+                            <i class="fas fa-file-export"></i>
+                            {{ 'JSON export' | trans }}
+                        </a>
+                        <button id="print-button" type="button" onclick="window.print()">
+                            <i class="fas fa-print"></i>
+                            {{ 'Print' | trans }}
+                        </button>
+                    </div>
+                </div>
+                {% include 'report_form.html.twig' %}
             </div>
-            {% include 'report_form.html.twig' %}
         </div>
-    </div>
 {% else %}
 <body onbeforeunload="return ''">
-    <script>
-        const divIds = [
-            'reason-form', 'basic-info-form', 'actors-form', 'material-form', 'condition-form', 'recommendations-form', 'annotate-form'
-        ];
-
-        // Execute any functions that are to be loaded on page load
-        // We have to do this for textareas whose height can only be dermined when visible
-        function showDiv(showId) {
-            for(var i = 0; i < divIds.length; i++) {
-                if(divIds[i] != showId) {
-                    var hideObj = document.getElementById(divIds[i]);
-                    hideObj.style.position = 'absolute';
-                    hideObj.style.top = '-9999px';
-                    hideObj.style.left = '-9999px';
-                    var removeHighlightButton = document.getElementById(divIds[i].concat("-button"));
-                    removeHighlightButton.classList.remove("active");
-                    removeHighlightButton.classList.add("inactive");
-                }
-            }
-            var showObj = document.getElementById(showId);
-            showObj.style.position = 'relative';
-            showObj.style.top = '0';
-            showObj.style.left = '0';
-            if(typeof eventsToTrigger !== 'undefined') {
-                for (var e in eventsToTrigger) {
-                    eval(eventsToTrigger[e] + "()");
-                }
-            }
-            var highlightButton = document.getElementById(showId.concat("-button"));
-            highlightButton.classList.remove("inactive");
-            highlightButton.classList.add("active");
-        }
-    </script>
-
-    <form action="{{ path('save') }}" method="POST">
-        <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
-        <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
-        <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
-        <input type="hidden" id="publisher" name="publisher"{% if prefilled_data.publisher is defined %} value="{{ prefilled_data.publisher }}"{% endif %}>
-        <input type="hidden" id="title_en" name="title_en"{% if prefilled_data.title_en is defined %} value="{{ prefilled_data.title_en }}"{% endif %}>
-        <div class="header-report">{{ 'Create report' | trans }}</div>
-        <div class="object-row">
-            <div class="object-row-thumbnail">
-                <img src="{% if prefilled_data.thumbnail is not defined %}{{ asset('images/no_image_available.png') }}{% else %}{{ prefilled_data.thumbnail }}{% endif %}" alt="">
-            </div>
-            <div class="object-row-metadata">
-                <div class="object-row-inventory-number">
-                    <div>{{ 'Inventory number' | trans }}: </div>
-                    <div>{{ prefilled_data.inventory_number }}</div>
-                </div>
-                <div class="object-row-title">
-                    <div>{{ 'Title' | trans }}:</div>
-                    <div>
-                        {% if app.request.locale == 'en' and prefilled_data.title_en is defined and prefilled_data.title_en is not empty %}
-                            {{ prefilled_data.title_en }}
-                        {% else %}
-                            {{ prefilled_data.title_nl }}
-                        {% endif %}
+    {% if prefilled_data.object_type is not defined or prefilled_data.object_type is empty %}
+        <div id="object-type-div">
+            <div id="object-type-select-div">
+                <div class="header-popup">{{ 'Create report' | trans }}</div>
+                <a id="object-type-close" href="{{ path('main') }}"><i class="fas fa-times"></i></a>
+                <div id="object-type-select-div-div">
+                    <label for="object-type-popup-select">{{ 'Object type' | trans }}</label>
+                    <div class="flex">
+                        <select required id="object-type-popup-select" onchange="
+                            if(this.options[this.selectedIndex].value === 'customOption') {
+                                toggleObjectTypeField(this, 'object-type-popup-custom', true, false);
+                            } else {
+                                toggleObjectTypeField(this, 'object-type-popup-custom', false, false);
+                                if(this.selectedIndex > 0) {
+                                    document.getElementById('wrap').style.display = 'block';
+                                    document.getElementById('object-type-select').selectedIndex = this.selectedIndex;
+                                }
+                            }
+                        " autocomplete="off">
+                            <option value="" selected disabled hidden>{{ 'Select the object type' | trans }}</option>
+                            {% for object_type in object_types %}
+                                {% if object_type == 'default' %}
+                                    <option value="customOption">{{ 'Other' | trans }}</option>
+                                {% else %}
+                                    <option value="{{ object_type }}">{{ object_type | trans }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="text" class="custom-input" id="object-type-popup-custom" placeholder="{{ 'Fill in another object type ...' | trans }}" style="display: none;" disabled="disabled" autocomplete="off">
                     </div>
                 </div>
-                <div class="object-row-creator">
-                    <div>{{ 'Creator' | trans }}: </div>
-                    <div>
-                    {% for creator in prefilled_data.creator_nl|split('\n') %}
-                        {{ creator }}{% if not loop.last %}<br>{% endif %}
-                    {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="wrap">
-            <div id="report-navigation">
-                <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form')" title="{{ 'Report_reason' | trans }}">{{ 'Report reason' | trans }}</button>
-                <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form')" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>
-                <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form')" title="{{ 'Involved actors' | trans }}">{{ 'Involved actors' | trans }}</button>
-                <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form')" title="{{ 'Physical characteristics' | trans }}">{{ 'Physical characteristics' | trans }}</button>
-                <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form')" title="{{ 'Condition and conservation' | trans }}">{{ 'Condition and conservation' | trans }}</button>
-                <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form')" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
-                <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form')" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
                 <div class="save">
-                    <button type="submit">
-                        <i class="fas fa-save"></i>
-                        {{ 'Save' | trans }}
-                    </button>
+                    <button onclick="checkSelectedObjectType();">{{ 'Save' | trans }}</button>
                 </div>
             </div>
-            {% include 'report_form.html.twig' %}
         </div>
-    </form>
+    {% endif %}
+    <div class="main-container">
+        {% include 'navbar.html.twig' %}
+        <script>
+            const divIds = [
+                'reason-form', 'basic-info-form', 'actors-form', 'material-form', 'condition-form', 'recommendations-form', 'annotate-form'
+            ];
+
+            // Execute any functions that are to be loaded on page load
+            // We have to do this for textareas whose height can only be dermined when visible
+            function showDiv(showId, scrollToTop) {
+                for(var i = 0; i < divIds.length; i++) {
+                    if(divIds[i] !== showId) {
+                        var hideObj = document.getElementById(divIds[i]);
+                        hideObj.style.position = 'absolute';
+                        hideObj.style.top = '-9999px';
+                        hideObj.style.left = '-9999px';
+                        var removeHighlightButton = document.getElementById(divIds[i].concat("-button"));
+                        removeHighlightButton.classList.remove("active");
+                        removeHighlightButton.classList.add("inactive");
+                    }
+                }
+                var showObj = document.getElementById(showId);
+                showObj.style.position = 'relative';
+                showObj.style.top = '0';
+                showObj.style.left = '0';
+                if(typeof eventsToTrigger !== 'undefined') {
+                    for (var e in eventsToTrigger) {
+                        eval(eventsToTrigger[e] + "()");
+                    }
+                }
+                var highlightButton = document.getElementById(showId.concat("-button"));
+                highlightButton.classList.remove("inactive");
+                highlightButton.classList.add("active");
+                if(scrollToTop) {
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            function toggleObjectTypeField(select, inputId, show, alterName) {
+                var input = document.getElementById(inputId);
+                if(show) {
+                    if(alterName) {
+                        select.removeAttribute('name');
+                    }
+                    if(input != null) {
+                        if(alterName) {
+                            input.name = 'object_type';
+                        }
+                        input.disabled = false;
+                        input.style = 'display: block';
+                        input.focus();
+                    }
+                } else {
+                    if(alterName) {
+                        select.name = 'object_type';
+                    }
+                    if(input != null) {
+                        if(alterName) {
+                            input.removeAttribute('name');
+                        }
+                        input.disabled = true;
+                        input.style = 'display: none';
+                    }
+                }
+            }
+
+            function checkSelectedObjectType() {
+                var objectTypeSelect = document.getElementById('object-type-popup-select');
+                if(objectTypeSelect.selectedIndex > 0) {
+                    var objectTypeSelectEle = document.getElementById('object-type-select');
+                    objectTypeSelectEle.selectedIndex = objectTypeSelect.selectedIndex;
+                    if(objectTypeSelect.options[objectTypeSelect.selectedIndex].value === 'customOption') {
+                        var objectTypeCustom = document.getElementById('object-type-popup-custom');
+                        if(objectTypeCustom.value !== '') {
+                            var objectTypeCustomEle = document.getElementById('object-type-custom');
+                            objectTypeCustomEle.value = objectTypeCustom.value;
+                            objectTypeCustomEle.style = 'display: block';
+                            objectTypeCustomEle.name = 'object_type';
+                            objectTypeCustomEle.disabled = false;
+                            document.getElementById('object-type-div').style = 'display: none';
+                            objectTypeSelectEle.removeAttribute('name');
+                            objectTypeChanged(objectTypeCustom.value);
+                        }
+                    } else {
+                        document.getElementById('object-type-div').style = "display: none";
+                        objectTypeChanged(objectTypeSelect.options[objectTypeSelect.selectedIndex].value);
+                    }
+                }
+            }
+
+            function objectTypeChanged(selectedValue) {
+                var objectTypes = {{ object_types | json_encode | raw }};
+                if(!objectTypes.includes(selectedValue)) {
+                    selectedValue = 'default';
+                }
+                var divs = [
+                    'measurements', 'materials', 'finishing-layer', 'connections',
+                    'damages', 'conservation-treatment', 'restoration-treatment', 'research',
+                    'annotation-select'
+                ];
+                for(var i = 0; i < objectTypes.length; i++) {
+                    for(var j = 0; j < divs.length; j++) {
+                        var div = document.getElementById(divs[j] + '-' + objectTypes[i]);
+                        if(div != null) {
+                            var inputs = div.querySelectorAll('input');
+                            for(var k = 0; k < inputs.length; k++) {
+                                inputs[k].disabled = objectTypes[i] !== selectedValue;
+                            }
+                            if(objectTypes[i] === selectedValue) {
+                                div.classList.remove('hidden');
+                            } else {
+                                div.classList.add('hidden');
+                            }
+                        }
+                    }
+                }
+                var frameNameDiv = document.getElementById('construction-frame-name');
+                if(frameNameDiv != null) {
+                    if (selectedValue === 'sculpture') {
+                        frameNameDiv.innerHTML = '{{ 'Pedestal' | trans }}';
+                    } else {
+                        frameNameDiv.innerHTML = '{{ 'Frame' | trans }}';
+                    }
+                }
+                var addFrameEle = document.getElementById('add-image-frame');
+                if(addFrameEle != null) {
+                    addFrameEle.disabled = selectedValue === 'sculpture';
+                    addFrameEle.hidden = selectedValue === 'sculpture';
+                }
+                var addBacksideEle = document.getElementById('add-image-backside');
+                if(addBacksideEle != null) {
+                    addBacksideEle.disabled = selectedValue === 'sculpture';
+                    addBacksideEle.hidden = selectedValue === 'sculpture';
+                }
+            }
+
+            function checkReasonSelected() {
+                const reasonDropdown = document.getElementById('reason-dropdown');
+                if(reasonDropdown.value.length === 0) {
+                    showDiv('reason-form', false);
+                }
+            }
+        </script>
+
+        <form action="{{ path('save') }}" method="POST">
+            <input type="hidden" id="inventory_id" name="inventory_id" value="{{ prefilled_data.inventory_id }}">
+            <input type="hidden" id="base_id" name="base_id"{% if prefilled_data.base_id is defined %} value="{{ prefilled_data.base_id }}"{% endif %}>
+            <input type="hidden" id="report_history" name="report_history"{% if prefilled_data.report_history is defined %} value="{{ prefilled_data.report_history | json_encode }}"{% endif %}>
+            <input type="hidden" id="publisher" name="publisher"{% if prefilled_data.publisher is defined %} value="{{ prefilled_data.publisher }}"{% endif %}>
+            <input type="hidden" id="title_en" name="title_en"{% if prefilled_data.title_en is defined %} value="{{ prefilled_data.title_en }}"{% endif %}>
+            <div class="header-report">{{ 'Create report' | trans }}</div>
+            <div class="object-row">
+                <div class="object-row-thumbnail">
+                    <img src="{% if prefilled_data.thumbnail is not defined %}{{ asset('images/no_image_available.png') }}{% else %}{{ prefilled_data.thumbnail }}{% endif %}" alt="">
+                </div>
+                <div class="object-row-metadata">
+                    <div class="object-row-inventory-number">
+                        <div>{{ 'Inventory number' | trans }}: </div>
+                        <div>{{ prefilled_data.inventory_number }}</div>
+                    </div>
+                    <div class="object-row-title">
+                        <div>{{ 'Title' | trans }}:</div>
+                        <div>
+                            {% if app.request.locale == 'en' and prefilled_data.title_en is defined and prefilled_data.title_en is not empty %}
+                                {{ prefilled_data.title_en }}
+                            {% else %}
+                                {{ prefilled_data.title_nl }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="object-row-creator">
+                        <div>{{ 'Creator' | trans }}: </div>
+                        <div>
+                        {% for creator in prefilled_data.creator_nl|split('\n') %}
+                            {{ creator }}{% if not loop.last %}<br>{% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="wrap">
+                <div id="report-navigation">
+                    <button id="reason-form-button" class="active" type="button" onclick="showDiv('reason-form', false)" title="{{ 'Report reason' | trans }}">{{ 'Report reason' | trans }}</button>
+                    <button id="basic-info-form-button" class="inactive" type="button" onclick="showDiv('basic-info-form', false)" title="{{ 'Object identification' | trans }}">{{ 'Object identification' | trans }}</button>
+                    <button id="actors-form-button" class="inactive" type="button" onclick="showDiv('actors-form', false)" title="{{ 'Involved actors' | trans }}">{{ 'Involved actors' | trans }}</button>
+                    <button id="material-form-button" class="inactive" type="button" onclick="showDiv('material-form', false)" title="{{ 'Physical characteristics' | trans }}">{{ 'Physical characteristics' | trans }}</button>
+                    <button id="condition-form-button" class="inactive" type="button" onclick="showDiv('condition-form', false)" title="{{ 'Condition and conservation' | trans }}">{{ 'Condition and conservation' | trans }}</button>
+                    <button id="recommendations-form-button" class="inactive" type="button" onclick="showDiv('recommendations-form', false)" title="{{ 'Recommendations' | trans }}">{{ 'Recommendations' | trans }}</button>
+                    <button id="annotate-form-button" class="inactive" type="button" onclick="showDiv('annotate-form', false)" title="{{ 'Annotations' | trans }}">{{ 'Annotations' | trans }}</button>
+                    <div class="save">
+                        <button type="submit" onclick="checkReasonSelected()">
+                            <i class="fas fa-save"></i>
+                            {{ 'Save' | trans }}
+                        </button>
+                    </div>
+                </div>
+                {% include 'report_form.html.twig' %}
+            </div>
+        </form>
 {% endif %}
 {% include 'footer.html.twig' %}

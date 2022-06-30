@@ -1,10 +1,68 @@
 Reports: Rapporten
 Organisations: Organisaties
 Representatives: Vertegenwoordigers
+Recommendations: Aanbevelingen
+Users: Gebruikers
+Profile: Profiel
+Logout: Afmelden
+
+Developed by Hero Solutions on behalf of the Flemish Art Collection vzw and the Royal Museum of Fine Arts Antwerp vzw as part of the IIIF2 project with the support of the Flemish Government. Questions about content, source code, IIIF deployment and reuse: Ontwikkeld door Hero Solutions in opdracht van de Vlaamse Kunstcollectie vzw en het Koninklijk Museum voor Schone Kunsten Antwerpen vzw in het kader van het project IIIF2 met steun van de Vlaamse Overheid. Vragen over inhoud, broncode, inzet IIIF en hergebruik
+Disclaimer: Disclaimer
+
+Change password: Wachtwoord wijzigen
+Email: E-mail
+Password: Wachtwoord
+Login: Aanmelden
+I forgot my password: Ik ben mijn wachtwoord vergeten
+Reset your password: Reset uw wachtwoord
+Please fill out this field.: Gelieve dit veld in te vullen.
+Enter your email address and we will send you a link to reset your password: Geef uw e-mailadres in en we sturen een link om uw wachtwoord te resetten
+Send password reset email: Verstuur wachtwoord reset e-mail
+Password reset email sent: Wachtwoord reset e-mail verzonden
+If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password: Indien een account met dit e-mailadres bestaat, dan werd zonet een e-mail verstuurd met een link om uw wachtwoord te resetten
+If you don't receive an email please check your spam folder or: Indien u geen e-mail ontvangt, controleer uw spam folder of
+try again: probeer opnieuw
+Reset your password for the condition reporting tool: Reset uw wachtwoord voor de conditierapportagetool
+Hi!: Hallo!
+We have received a request to reset your password for the condition reporting tool.: We hebben een aanvraag ontvangen om uw wachtwoord voor de conditierapportagetool opnieuw in te stellen.
+"Click the following link to reset your password:": "Klik op onderstaande link om uw wachtwoord te resetten:"
+This link will expire in: Deze link vervalt over
+If the link is not clickable, copy and paste the entire URL in your browser.:  Als de link niet aanklikbaar is, kopieer en plak dan de volledige URL in uw browser.
+If you have not requested a new password, you can ignore this email.: Indien u geen nieuw wachtwoord heeft aangevraagd, hoeft u geen rekening te houden met deze e-mail.
+Reset password: Reset wachtwoord
+Please enter a password: Gelieve een wachtwoord in te vullen
+Your password should be at least: Uw wachtwoord dient minstens
+characters: karakters lang te zijn
+New password: Nieuw wachtwoord
+Repeat Password: Herhaal wachtwoord
+The password fields must match: De wachtwoordvelden dienen overeen te komen
+Password successfully updated.: Wachtwoord succesvol bijgewerkt.
+
+Signed by all parties: Door alle partijen ondertekend
+Signed by: Ondertekend door
+parties: partijen
+Not yet signed: Nog niet ondertekend
+signatures required: handtekeningen vereist
+Is this signature from: Is deze handtekening van
+correct: correct
+
+Personal data: Persoonsgegevens
+"Privacy-sensitive data is collected via this tool. So please read this important information:": "Via deze tool worden privacy-gevoelige gegevens verzameld. Lees daarom deze belangrijke informatie:"
+No doubt you want to guarantee the privacy of every user of this tool. It is best to do this with due observance of all legal and other provisions regarding the protection of privacy.: Ongetwijfeld wil je de privacy van elke gebruiker van deze tool garanderen. Je doet dit best met inachtneming van alle wettelijke en andere bepalingen inzake de bescherming van de persoonlijke levenssfeer.
+The collected data (names, e-mail address and employing organisation) can never be disclosed, nor passed on to third parties, unless one is obliged to do so by an authorized government agency or when this proves essential as a result of a necessary step in the regular follow-up of the loan agreement in the framework for which a condition report is drawn up by means of this tool. The information collected can only be used in connection with the actions logically resulting from this loan agreement.: De verzamelde gegevens (namen, e-mailadres en tewerkstellende organisatie) kunnen nooit bekendgemaakt worden, noch aan derden doorgeven, behalve indien men daartoe verplicht wordt door een gemachtigde overheidsinstantie of wanneer dit essentieel blijkt tengevolge een noodzakelijke stap in de reguliere opvolging van de bruikleenovereenkomst in het kader waarvan middels deze tool een conditierapportage wordt opgemaakt. De verzamelde informatie kan enkel gebruikt worden in verband met de logischerwijze uit deze bruikleenovereenkomst voortvloeiende acties.
+The personal data may be processed and archived in internal databases of the lending organisation, for as long as necessary, and only for the purpose of correct lending practice or resulting actions. The data can in no way be used for direct marketing.: De persoonsgegevens kunnen worden verwerkt en gearchiveerd in interne databanken van de bruikleengevende organisatie, zolang noodzakelijk is, en enkel ten behoeve een correcte bruikleenpraktijk of daaruit voortvloeiende acties. De gegevens kunnen geenszins gebruikt worden voor directe marketing.
+In accordance with the Personal Data Processing Act of 08/12/1992, every user of this tool has a legal right to access and correct their personal data on simple request.: Conform de wet verwerking persoonsgegevens van 08/12/1992 beschikt elke gebruiker van deze tool op eenvoudig verzoek over een wettelijk recht op inzage en eventuele correctie van hun persoonsgegevens.
+This tool collects anonymous or aggregated personal data of a non-personal nature for a maximum of 2 weeks, such as browser type or IP address, the operating program that the user uses, ... for the proper functioning of the tool. After this period, this data is automatically deleted.: Deze tool verzamelt maximaal 2 weken anonieme of geaggregeerde persoonsgegevens van niet-persoonlijke aard, zoals browser type of IP-adres, het besturingsprogramma dat de gebruiker gebruikt, … ten behoeve van de goede werking van de tool. Na verloop van deze termijn worden deze gegevens automatisch gewist.
+For more information or for complaints about the handling of personal data, you can contact the Commission for the protection of privacy at the Ministry of Justice, Waterloolaan 115, 1000 Brussels.: Voor meer informatie of voor klachten over de behandeling van de persoonsgegevens kan men terecht bij de Commissie voor de bescherming van de persoonlijke levenssfeer bij het Ministerie van Justitie, Waterloolaan 115, 1000 Brussel.
 
 Organisation: Organisatie
+Institution / organisation: Instelling / organisatie
 Representative: Vertegenwoordiger
+Choose a role: Kies een rol
 
+Select the object type: Selecteer het objecttype
+Fill in another object type ...: Vul een ander objecttype in ...
+Responsible loan project: Verantwoordelijke bruikleenproject
 Search: Zoeken
 Search type: Type zoekopdracht
 Search by inventory number ...: Zoek op inventarisnummer ...
@@ -12,22 +70,53 @@ Exact: Exact
 Partly: Gedeeltelijk
 Starts with: Begint met
 
+Object type: Objecttype
+Painting: Schilderij
+painting: Schilderij
+Work on paper: Werk op papier
+work_on_paper: Werk op papier
+Sculpture: Beeldhouwwerk
+sculpture: Beeldhouwwerk
+
+Measurements and weight: Afmetingen en gewicht
+Paper: Papier
+Passe-partout: Passe-partout
+Box: Doos
+Total weight: Totaal gewicht
+Separate part A: Afzonderlijk deel A
+Separate part B: Afzonderlijk deel B
+Complete sculpture: Volledig beeldhouwwerk
+
 Identification of the reason for the report : Identificatie van de aanleiding voor het rapport
 Information loan project: Informatie bruikleenproject
 if applicable: indien van toepassing
-Name exhibition/loan project: Naam tentoonstelling/bruikleenproject
+Name exhibition / loan project / restoration project / ...: Naam tentoonstelling / bruikleenproject / restauratieproject / ...
 Link to webpage if applicable: Link naar eventuele webpagina
 Start date loan: Startdatum bruikleen
 End date loan: Einddatum bruikleen
 Loan number: Bruikleennummer
-Responsibility: Verantwoordelijkheid
+
+Information owner / lender: Informatie eigenaar / bruikleengever
+Information borrower / restorer: Informatie bruikleennemer / restaurateur
+Information courier / art handler: Informatie koerier / art handler
+Information other third party: Informatie andere derde partij
+Owner / lender: Eigenaar / bruikleengever
+Borrower / restorer: Bruikleennemer / restaurateur
+Courier / art handler: Koerier / art handler
+Other third party: Andere derde partij
+
+Clear: Verwijderen
+Undo: Ongedaan maken
+
+Location: Standplaats
 Object name: Objectnaam
 Measurements: Afmetingen
+Height: Hoogte
+Width: Breedte
+Depth: Diepte
 Weight: Gewicht
 Dating: Datering
 Copyright: Copyright
-
-Information owner: Informatie eigenaar
 
 Material type: Materiaalsoort
 Carrier: Drager
@@ -39,17 +128,14 @@ Construction techniques: Vervaardigingstechnieken
 Form: Vorm
 Relief: Reliëf
 Full plastic: Volplastisch
-Construction/composition: Constructie/samenstelling
+Construction / composition: Constructie / samenstelling
 Work: Werk
 Number of parts: Aantal onderdelen
-Loose: Los
-Fixed: Vast
 To be mounted with: Te monteren met
-Original: Origineel
-Not original: Niet origineel
 Connections: Verbindingen
 Between separate parts of the sculpture: Tussen afzonderlijke delen van het beeld
 Between sculpture and pedestal: Tussen beeld en sokkel
+Between carrier and frame: Tussen drager en lijst
 
 Condition of the object: Conditie van het object
 General condition: Algemene conditie
@@ -60,19 +146,8 @@ Conservation for transport needed: Conservering voor transport nodig
 Yes: Ja
 No: Nee
 
-Object requirements: Objectvereisten
-
-Show all: Toon alles
-Hide all: Verberg alles
-Current annotations: Huidige annotaties
-Add IIIF image URL: Voeg IIIF afbeelding URL toe
-Load: Laad
-Add image URL: Voeg afbeelding URL toe
-IIIF image is being loaded ...: IIIF afbeelding wordt opgehaald ...
-Image is being downloaded ...: Afbeelding wordt gedownload...
-
 Incoming object (depacking): Inkomend object (depacking)
-Acquisition (collection donor/seller/...): Verwerving (collectie schenker/verkoper/...)
+Acquisition (collection donor / seller / ...): Verwerving (collectie schenker / verkoper / ...)
 Long term loan (third party collection): Langdurige bruikleen (collectie derden)
 Temporary loan (third party collection): Tijdelijke bruikleen (collectie derden)
 Returning loan (own collection): Terugkomende bruikleen (eigen collectie)
@@ -80,9 +155,9 @@ Restoration: Restauratie
 Outgoing object (packing): Uitgaand object (packing)
 Outgoing loan (own collection): Uitgaande bruikleen (eigen collectie)
 Returning loan (third party collection): Terugkerende bruikleen (collectie derden)
-Decommissioning/rejection: Ontzameling/afstoting
-Movement to another building/institution: Verplaatsing naar ander gebouw/instelling
-To location/depot: Naar standplaats/depot
+Decommissioning / rejection: Ontzameling / afstoting
+Movement to another building / institution: Verplaatsing naar ander gebouw / instelling
+To location / depot: Naar standplaats / depot
 To exhibition room: Naar tentoonstellingsruimte
 To restoration room: Naar restauratieruimte
 To packing room: Naar verpakkingsruimte
@@ -102,10 +177,13 @@ Fill in another reason ...: Vul een andere aanleiding in ...
 Add organisation: Organisatie toevoegen
 Alter organisation: Organisatie wijzigen
 Add representative: Vertegenwoordiger toevoegen
+Alter representative: Vertegenwoordiger wijzigen
+Add user: Gebruiker toevoegen
+Alter user: Gebruiker wijzigen
 
 Alias: Alias
 Name: Naam
-Function: Functie
+Role: Rol
 Logo: Logo
 VAT number: BTW-nummer
 Address: Adres
@@ -120,7 +198,7 @@ Notes: Notities
 Alias of your choice (optional): Zelfgekozen alias (optioneel)
 Name of the organisation: Naam van de organisatie
 Name of the representative: Naam van de vertegenwoordiger
-Ex. own organisation, borrower, courier ...: Bv. eigen organisatie, bruikleennemer, koerier ...
+Name of the user: Naam van de gebruiker
 URL of company logo: URL van bedrijfslogo
 Street + house number: Straat + huisnummer
 Ex. 9000: Bv. 9000
@@ -131,11 +209,19 @@ https://www.example.com: https://www.voorbeeld.com
 Own notes about this organisation: Eigen notities over deze organisatie
 Own notes about this person: Eigen notities over deze persoon
 Ex. restorer, courier ...: Bv. restaurateur, koerier ...
+Lender: Bruikleengever
+Borrower: Bruikleennemer
+Courier: Koerier
+Restorer: Restaurateur
+Insurer: Verzekeraar
+Fill in another role ...: Vul een andere rol in ...
 
 Inventory number: Inventarisnummer
 Title: Titel
 Creator: Vervaardiger
 Last modification: Laatste wijziging
+Last reason: Laatste aanleiding
+Last signatures: Laatste handtekeningen
 Created: Aangemaakt
 
 No results found: Geen resultaten gevonden
@@ -153,8 +239,8 @@ Object identification: Objectidentificatie
 Involved actors: Betrokken actoren
 Physical characteristics: Fysieke kenmerken
 Condition and conservation: Conditie en conservering
-Recommendations: Aanbevelingen
 Annotations: Annotaties
+Signatures: Handtekeningen
 
 Conservation treatment: Conservatiebehandeling
 Degree of urgency (very urgent) 1 - 2 - 3 (not urgent): Urgentiegraad (zeer urgent) 1 - 2 - 3 (weinig urgent)
@@ -166,21 +252,122 @@ Further research needed: Verder onderzoek nodig
 Previous: Vorige
 Next: Volgende
 
+Frame: Lijst
+
+Presentation: Presentatie
+Setup plan / guidelines: Opstellingsplan / richtlijnen
+Present: Aanwezig
+Not present: Niet aanwezig
+Not necessary: Niet noodzakelijk
+Tools needed for setup: Hulpmiddelen nodig bij opstelling
+Unclear: Onduidelijk
+Setup: Opstelling
+Standing: Staand
+Hanging: Hangend
+Setup location: Opstellingslocatie
+Free in the room: Vrij in de ruimte
+On pedestal: Op sokkel
+Against the wall: Tegen de wand
+In showcase: In vitrine
+With hood: Met kap
+From the ceiling: Aan het plafond
+Suspension system: Ophangsysteem
+Further specifications: Verdere specificaties
+
+Environmental conditions conservation: Omgevingsvoorwaarden conservatie
+Guidelines temperature: Richtlijnen temperatuur
+Guidelines relative humidity: Richtlijnen relatieve vochtigheid
+Guidelines brightness: Richtlijnen lichtsterkte
+Guidelines ultraviolet light: Richtlijnen ultraviolet licht
+
+Storage: Stockage
+Supporting construction: Steunconstructie
+No supporting construction: Geen steunconstructie
+Keep dust-free: Stofvrij houden
+Inner packing: Binnenverpakking
+Storage without packing: Stockeren zonder verpakking
+
+Manipulation / transport: Manipulatie / transport
+Number of people: Aantal personen
+Moving equipment: Hulpmiddelen verplaatsing
+Cart with pneumatic tires: Kar met luchtbanden
+Pallet truck: Transpallet
+Handtruck: Steekwagen
+Transport equipment: Hulpmiddelen vervoer
+Truck with elevator: Vrachtwagen met lift
+Points of attention: Aandachtspunten
+Upright: Staand
+Lying down: Liggend
+Lashing straps: Spanbanden
+
+Packing: Verpakking
+Advice: Advies
+Supporting construction needed: Steunconstructie nodig
+Pack upright: Staand inpakken
+Pack lying down: Liggend inpakken
+Datalogger: Datalogger
+Outer packing: Buitenverpakking
+Pallet: Pallet
+Plastic crate with cushion: Kunststofkrat met kussen
+Open crate: Open kist
+Closed crate: Gesloten kist
+Climate box: Klimaatbox
+Tyvek: Tyvek
+Ethafoam for supporting construction: Ethafoam voor steunconstructie
+Polyethylene film: Polyethyleenfolie
+Silk paper: Zijdepapier
+Not packed: Niet verpakt
+Only local protection: Enkel plaatselijke bescherming
+
+Show all: Toon alles
+Hide all: Verberg alles
+Current annotations: Huidige annotaties
+Load: Laad
+Add image: Voeg afbeelding toe
+Simplified image of a frame: Vereenvoudigde afbeelding van een lijst
+Simplified image of a backside: Vereenvoudigde afbeelding van een achterkant
+Image through camera: Afbeelding via camera
+Image on device: Afbeelding op toestel
+Image through URL: Afbeelding via URL
+IIIF image through URL: IIIF afbeelding via URL
+Insert image URL ...: Vul URL in van afbeelding ...
+Insert IIIF image URL ...: Vul URL in van IIIF afbeelding ...
+Are you sure you want to delete this image and its annotations?: Bent u zeker dat u deze afbeelding en de bijhorende annotaties wilt verwijderen?
+Deleted: Verwijderd
+deleted: verwijderd
+Select layer: Selecteer laag
+Paint layer: Verflaag
+Combinations: Combinaties
+Carrier + paint layer: Drager + verflaag
+Carrier + finishing layer: Drager + afwerklaag
+Paint layer + finishing layer: Verflaag + afwerklaag
+Carrier + paint + finishing layer: Drager + verf + afwerklaag
+Select damage type: Selecteer soort schade
+
 stone: Steen
 metal: Metaal
 glass: Glas
-ceramic: Keramiek/aardewerk
+ceramic: Keramiek / aardewerk
 plaster: Gips
 textile: Textiel
 paper: Papier
 wood: Hout
 plastic: Kunststof
 
+loose: Los
+Loose: Los
+fixed: Vast
+Fixed: Vast
+original: Origineel
+Original: Origineel
+not_original: Niet origineel
+Not original: Niet origineel
+
 absent: Niet aanwezig
 glaze: Glazuur
 varnish: Vernis
 wax_layer: Waslaag
-painting: Beschildering
+painting_1: Beschildering
 monochrome: Monochroom
 polychrome: Polychroom
 patination: Patinering
@@ -208,7 +395,7 @@ surface_dirt: Oppervlaktevuil
 crusted_dirt: Geïncrusteerd vuil
 spots: Vlekken
 fingerprints: Vingerafdrukken
-old_restoration: Oude ingrepen/restauratie
+old_restoration: Oude ingrepen / restauratie
 salts: Zouten
 insect_damage: Insectenaantasting
 mold: Schimmel
@@ -221,9 +408,9 @@ discolorations: Verkleuringen
 wearage: Slijtage
 scratches: Krassen
 twists: Scheluw
-dents: Blutsen/deuken
+dents: Blutsen / deuken
 structural_damage: Structurele schade
-cracks: Barsten/spleten
+cracks: Barsten / spleten
 hair_tears: Haarscheurtjes
 holes: Gaten
 wrinkled: Gekreukt
@@ -236,10 +423,10 @@ removing_dust: Ontstoffen
 superficial_cleaning: Oppervlakkige reiniging
 insect_repellent_treatment: Insectenwerende behandeling
 removing_mold_spores: Schimmelsporen verwijderen
-reinforcing: Versteviging/steunconstructie
+reinforcing: Versteviging / steunconstructie
 regluing_loose_parts: Herlijmen van aparte delen
 fixating_loose_parts: Fixeren losse delen
-stabilizing_socket: Stabiliseren van de sokkel
+stabilizing_pedestal: Stabiliseren van de sokkel
 adding_protective_layer: Beschermlaag aanbrengen
 adding_barcode: Barcode aanbrengen
 
@@ -258,4 +445,52 @@ filling_gap_elements: Elementen opvullen van lacunes
 setup_method: Opstellingswijze
 material_technical_research: Materiaaltechnisch onderzoek
 analysis: Analyse
-necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk/kunsthistorisch onderzoek
+necessary_background_information: Noodzakelijke achtergrondinformatie bij het werk / kunsthistorisch onderzoek
+
+abrasions: Afslijten
+accretion: Accretie
+adhesive_tape: Plakband
+animal_glue: Dierlijke lijm
+blanching: Blancheren
+blisters: Blaren
+bloom: Waas, vochtaanslag
+blur: Wazigheid
+bowing: Kromtrekking
+condensation: Condenseren
+consolidated: Verstevigen
+crackle: Craquelures
+creases: Plooien
+crizzling: Ziek (glas)
+cupping: Schotelvorming
+dampness: Vochtigheid
+darkening: Verdonkeren
+deformation: Deformatie
+degradation: Sleetsheid
+deterioration: Degradatie
+discoloration: Verkleuring
+distortion: Vervorming
+excrements: Dierenuitwerpselen
+fading: Vervagen
+filling: Vulling
+finger_marks: Vingerafdrukken
+foxing: Roestbruine verkleuring
+frass: Houtpoeder
+joints: Joints
+keys: Spieën
+labels: Labels of etiketten
+losses_lacunae: Lacunes
+overpaint: Overschildering
+oxidation: Oxideren
+pitting: Holtevorming
+repairing: Herstelling
+silver_mirroring: Verzilvering
+stains: Vlekken
+stretchers: Spanramen
+strip_lining: Randdoublering
+tears: Scheuren
+tidelines: Vochtkringen
+warping: Kromtrekken
+wax_resin: Washars
+wear: Slijtage
+wood_borers: Houtboorders
+wrinkles: Plooivorming

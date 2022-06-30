@@ -1,0 +1,78 @@
+<div class="report-header">{{ 'Signatures' | trans }}</div>
+
+{% set signature_count = 0 %}
+{% for rep, rep_name in reps %}
+    {% if prefilled_data[rep ~ '_name'] is defined and prefilled_data[rep ~ '_rep_name'] is defined %}
+
+        {% set signature_count = signature_count + 1 %}
+        {% if signature_count == 1 %}
+            <div class="signatures">
+        {% endif %}
+
+        {% if signature_count % 2 == 1 %}
+            <div class="signatures-row">
+        {% endif %}
+
+        {% include 'signature.html.twig' with { 'rep': rep, 'rep_name' : rep_name } %}
+
+        {% if signature_count % 2 == 0 %}
+            </div>
+        {% endif %}
+
+    {% endif %}
+{% endfor %}
+{% if signature_count % 2 == 1 %}
+        <div class="signature-box" style="visibility: hidden; height: 0; margin-top: 0; border: none; padding-top: 0; padding-bottom: 0">
+            <canvas width="380px"></canvas>
+        </div>
+    </div>
+{% endif %}
+{% if signature_count > 0 %}
+    </div>
+{% endif %}
+<script>
+    function saveSignature(data, fileInputElement, name, role) {
+
+        name = name.replace("/", "%2F");
+        role = role.replace("/", "%2F");
+
+        let container = new DataTransfer();
+        let file = new File([data], "signature.png", { type: "image/png", lastModified: new Date().getTime() });
+        container.items.add(file);
+        fileInputElement.files = container.files;
+
+        $(fileInputElement).simpleUpload('/{{ app.request.locale }}/save_signature/{{ report_id }}/' + name + '/' + role, {
+
+            start: function(file) {
+            },
+
+            progress: function(progress){
+                console.log('upload progress: ' + Math.round(progress) + '%');
+            },
+
+            success: function(data){
+                console.log('upload successful!');
+                console.log(data);
+
+                if(data['image'] !== null) {
+                    const div = document.getElementById('signature-pad-' + role);
+                    while (div.firstChild) {
+                        div.removeChild(div.lastChild);
+                    }
+                    const p = document.createElement('p');
+                    p.innerText = data['timestamp'];
+                    const img = document.createElement('img');
+                    img.src = data['image'];
+
+                    div.appendChild(p);
+                    div.appendChild(img);
+                }
+            },
+
+            error: function(error){
+                console.log(error);
+                console.log('upload error: ' + error.name + ': ' + error.message);
+            }
+        });
+    }
+</script>

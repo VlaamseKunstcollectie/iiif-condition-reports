@@ -17,10 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoadIIIFImageController extends AbstractController
 {
     /**
-     * @Route("/loadiiifimage", name="loadiiifimage")
+     * @Route("/{_locale}/loadiiifimage", name="loadiiifimage")
      */
     public function loadiiifimage(Request $request)
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $imageUrl = $request->get('image');
         if(!StringUtil::endsWith($imageUrl, '/info.json')) {
             if(StringUtil::endsWith($imageUrl, '/')) {

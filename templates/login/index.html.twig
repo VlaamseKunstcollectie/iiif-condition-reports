@@ -1,0 +1,30 @@
+{% include 'header.html.twig' %}
+{% block body %}
+    <div class="login">
+        <div class="login-row">
+            <div class="login-header">Login</div>
+
+            <div id="login-form">
+                {% if error %}
+                    <div class="login-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <form action="{{ path('login') }}" method="post">
+                    <label for="username">{{ 'Email' | trans }}</label>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+
+                    <label for="password">{{ 'Password' | trans }}</label>
+                    <input type="password" id="password" name="_password"/>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="login-submit">
+                        <a href="{{ path('app_forgot_password_request') }}">{{ 'I forgot my password' | trans }}</a>
+
+                        <button type="submit">{{ 'Login' | trans }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% include 'footer.html.twig' %}

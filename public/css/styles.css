@@ -16,6 +16,10 @@ body {
     background-color: #f8f8f8;
 }
 
+.main-container {
+    min-height: calc(100vh - 124px);
+}
+
 a {
     text-decoration: none;
 }
@@ -24,14 +28,106 @@ textarea {
     resize: vertical;
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.hidden {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+::placeholder {
+    color: #999;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #999;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #999;
+}
+
 #wrap {
     padding-right: 15px;
     padding-left: 15px;
 }
 
+.login {
+    min-height: calc(100vh - 235px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.login-row {
+    width: 400px;
+    padding: 30px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    background-color: white;
+}
+
+.login-row p {
+    margin-bottom: 15px;
+}
+
+.login-row p:last-child {
+    margin-bottom: 0;
+}
+
+.login-header {
+    font-size: 21px;
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
+.login-submit {
+    display: flex;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.login a {
+    color: #747db3;
+    text-decoration: underline;
+}
+
+.login-error,
+.login ul li {
+    color: red;
+    margin-bottom: 15px;
+}
+
+.login ul {
+    list-style: none;
+}
+
+.login ul li {
+    margin-bottom: 0;
+}
+
+.login ul li:last-of-type {
+    margin-bottom: 15px;
+}
+
 .reports,
 .orgs,
-.reps {
+.reps,
+.users,
+.disclaimer {
     max-width: 1200px;
     margin: 30px auto;
     padding-left: 15px;
@@ -54,7 +150,8 @@ textarea {
 
 .reports-row,
 .orgs-row,
-.reps-row {
+.reps-row,
+.users-row {
     display: flex;
     padding: 15px;
     border: 1px solid #dbdbdb;
@@ -65,13 +162,26 @@ textarea {
 
 :not(.reports-row) + .reports-row,
 :not(.orgs-row) + .orgs-row,
-:not(.reps-row) + .reps-row {
+:not(.reps-row) + .reps-row,
+:not(.users-row) + .users.row {
     margin-top: 0;
 }
 
 .object-row {
     display: flex;
     margin: 15px;
+}
+
+.disclaimer-row {
+    margin-top: 15px;
+}
+
+.disclaimer-row p {
+    margin-bottom: 15px;
+}
+
+.disclaimer-row p:last-child {
+    margin-bottom: 0;
 }
 
 .reports-row-thumbnail,
@@ -92,6 +202,7 @@ textarea {
 .reports-row-metadata,
 .orgs-row-metadata,
 .reps-row-metadata,
+.users-row-metadata,
 .object-row-metadata {
     flex-grow: 1;
 }
@@ -99,6 +210,7 @@ textarea {
 .reports-row-metadata > div,
 .orgs-row-metadata > div,
 .reps-row-metadata > div,
+.users-row-metadata > div,
 .object-row-metadata > div {
     display: flex;
     margin-bottom: 6px;
@@ -107,13 +219,15 @@ textarea {
 .reports-row-metadata > div:last-child,
 .orgs-row-metadata > div:last-child,
 .reps-row-metadata > div:last-child,
-.reps-row-metadata > div:last-child {
+.users-row-metadata > div:last-child,
+.object-row-metadata > div:last-child {
     margin-bottom: 0;
 }
 
 .reports-row-metadata div div,
 .orgs-row-metadata div div,
 .reps-row-metadata div div,
+.users-row-metadata div div,
 .object-row-metadata div div {
     margin-left: 20px;
 }
@@ -121,6 +235,7 @@ textarea {
 .reports-row-metadata div div:first-child,
 .orgs-row-metadata div div:first-child,
 .reps-row-metadata div div:first-child,
+.users-row-metadata div div:first-child,
 .object-row-metadata div div:first-child {
     color: #777777;
     margin-left: 0;
@@ -132,7 +247,8 @@ textarea {
 
 .reports-row-actions,
 .orgs-row-actions,
-.reps-row-actions {
+.reps-row-actions,
+.users-row-actions {
     text-align: right;
     margin-left: 20px;
     flex-grow: 0;
@@ -141,26 +257,30 @@ textarea {
 
 .reports-row-actions div,
 .orgs-row-actions div,
-.reps-row-actions div {
+.reps-row-actions div,
+.users-row-actions div {
     margin-bottom: 15px;
 }
 
 .orgs .orgs-header,
-.reps .reps-header {
+.reps .reps-header,
+.users .users-header {
     display: flex;
     margin-bottom: 15px;
 }
 
 .reports-row-actions .button,
 .orgs .button,
-.reps .button {
+.reps .button,
+.users .button {
     border-radius: 4px;
     color: white;
     display: inline-block;
 }
 
 .orgs .orgs-header .button,
-.reps .reps-header .button {
+.reps .reps-header .button,
+.users .users-header .button {
     background-color: #5f585d;
     margin-left: auto;
     margin-top: auto;
@@ -169,14 +289,17 @@ textarea {
 }
 
 .orgs .orgs-header .button:hover,
-.reps .reps-header .button:hover {
+.reps .reps-header .button:hover,
+.users .users-header .button:hover {
     background-color: #464b6b;
 }
 
 .orgs .orgs-header .button .fas,
 .reps .reps-header .button .fas,
+.users .users-header .button .fas,
 .orgs .orgs-header .button .far,
-.reps .reps-header .button .far {
+.reps .reps-header .button .far,
+.users .users-header .button .far {
     font-size: 14px;
     color: white;
     padding-right: 5px;
@@ -185,9 +308,11 @@ textarea {
 .reports .reports-row-actions .fas,
 .orgs .orgs-row-actions .fas,
 .reps .reps-row-actions .fas,
+.users .users-row-actions .fas,
 .reports .reports-row-actions .far,
 .orgs .orgs-row-actions .far,
-.reps .reps-row-actions .far {
+.reps .reps-row-actions .far,
+.users .users-row-actions .far {
     width: 35px;
     line-height: 35px;
     text-align: center;
@@ -198,16 +323,20 @@ textarea {
 .reports .reports-row-actions .button:hover .fas,
 .orgs .orgs-row-actions .button:hover .fas,
 .reps .reps-row-actions .button:hover .fas,
+.users .users-row-actions .button:hover .fas,
 .reports .reports-row-actions .button:hover .far,
 .orgs .orgs-row-actions .button:hover .far,
-.reps .reps-row-actions .button:hover .far {
+.reps .reps-row-actions .button:hover .far,
+.users .users-row-actions .button:hover .far {
     color: #464b6b;
 }
 
 .orgs .orgs-header .button:hover .fas,
 .reps .orgs-header .button:hover .fas,
+.users .orgs-header .button:hover .fas,
 .orgs .orgs-header .button:hover .far,
-.reps .orgs-header .button:hover .far {
+.reps .orgs-header .button:hover .far,
+.users .orgs-header .button:hover .far {
     color: white;
 }
 
@@ -262,16 +391,21 @@ textarea {
     height: 800px;
     flex: 1;
     background-color: #f8f8f8;
-    border: 1px solid #dbdbdb;
-    border-top: none;
-    border-left: none;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.no-print-break {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    height: 800px;
+    width: 770px;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
 }
 
 .openseadragon-annotorious-print {
-    grid-row-start: 1;
-    grid-column-start: 1;
-    z-index: -1;
-    height: 900px;
+    height: 800px;
     width: 770px;
 }
 
@@ -280,7 +414,7 @@ textarea {
 }
 
 #annotation-history {
-    width: 210px;
+    width: 215px;
     float: left;
     display: inline;
 }
@@ -295,6 +429,15 @@ textarea {
     border-top: none;
     border-left: none;
     overflow-y: scroll;
+}
+
+#annotation-history-timestamps > div {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+#annotation-history-timestamps > div:last-of-type {
+    border-bottom: 0;
 }
 
 #annotation-viewer-full {
@@ -368,7 +511,8 @@ textarea {
 }
 
 #report-navigation .save .fa-save,
-#report-navigation .print .fa-print {
+#report-navigation .print .fa-print,
+#object-type-select-div .save .fa-save {
     padding-top: 7px;
     padding-bottom: 7px;
     font-size: 30px;
@@ -376,7 +520,8 @@ textarea {
 }
 
 #report-navigation .save button,
-#report-navigation .print button {
+#report-navigation .print button,
+#report-form #annotation-images #add-image-url-button {
     width: 46px;
     background-color: white;
     border: 1px solid #dbdbdb;
@@ -384,8 +529,58 @@ textarea {
 }
 
 #report-navigation .save button:hover .fa-save,
-#report-navigation .print button:hover .fa-print {
+#report-navigation .print button:hover .fa-print,
+#object-type-select-div .save button:hover .fa-save {
     color: #3a3f5a;
+}
+
+#object-type-div {
+    z-index: 1;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+}
+
+#object-type-select-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 400px;
+    height: auto;
+    border: 1px solid rgb(219, 219, 219);
+    padding: 30px;
+}
+
+.header-popup {
+    font-size: 21px;
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
+.custom-input {
+    margin-left: 10px;
+}
+
+.flex {
+    display: flex;
+}
+
+.number-box {
+    margin-left: 15px;
+}
+
+#object-type-close {
+    position: fixed;
+    top: 5px;
+    right: 10px;
+}
+
+#object-type-select:invalid {
+    color: #999;
 }
 
 #wrap .readonly-header {
@@ -393,8 +588,18 @@ textarea {
     margin-bottom: 15px;
 }
 
+#header-buttons {
+    display: flex;
+    margin-left: auto;
+    order: 2;
+}
+
 #wrap .readonly-header button,
-#report-navigation .save button {
+#report-navigation .save button,
+#object-type-select-div .save button,
+#report-form #annotation-images #add-image-url-button,
+#login-form button,
+#export-button {
     cursor: pointer;
     display: flex;
     flex-wrap: nowrap;
@@ -408,18 +613,56 @@ textarea {
     border-radius: 4px;
 }
 
-#wrap .readonly-header button {
+.signatures button {
+    cursor: pointer;
+    background-color: #5f585d;
+    color: white;
+    margin-bottom: 5px;
+    padding: 11px 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
+#export-button {
+    margin-right: 15px;
+}
+
+#object-type-select-div .save button {
+    margin-bottom: 0;
+    margin-top: 15px;
+    padding: 6px 12px;
+}
+
+#login-form button,
+.signatures button {
+    margin-bottom: 0;
+    padding: 6px 12px;
+}
+
+#report-form #annotation-images #add-image-url-button {
+    padding: 6px 12px;
+}
+
+#wrap .readonly-header button,
+#export-button {
     margin-top: auto;
     margin-bottom: auto;
 }
 
 #wrap .readonly-header button:hover,
-#report-navigation .save button:hover {
+#report-navigation .save button:hover,
+#object-type-select-div .save button:hover,
+#report-form #annotation-images #add-image-url-button:hover,
+#login-form button:hover,
+#export-button:hover,
+.signatures button:hover {
     background-color: #3a3f5a;
 }
 
 #wrap .readonly-header .fa-print,
-#report-navigation .save .fa-save {
+#report-navigation .save .fa-save,
+#object-type-select-div .save .fa-save,
+#export-button .fa-file-export {
     color: white;
     font-size: 20px;
     margin-right: 10px;
@@ -428,13 +671,16 @@ textarea {
 }
 
 #wrap .readonly-header button:hover .fa-print,
-#report-navigation .save button:hover .fa-save {
+#report-navigation .save button:hover .fa-save,
+#object-type-select-div .save button:hover .fa-save,
+#export-button:hover .fa-file-export {
     color: white;
 }
 
 #report-form,
 #organisation-form,
-#representative-form {
+#representative-form,
+#user-form {
     margin-top: -1px;
     margin-bottom: 30px;
     padding: 30px;
@@ -443,13 +689,10 @@ textarea {
 }
 
 #organisation-form,
-#representative-form {
+#representative-form,
+#user-form {
     padding: 5px 15px 15px 15px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
-}
-
-#organisation-form,
-#representative-form {
     margin-top: 15px;
 }
 
@@ -461,20 +704,23 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form > .form-tab > .form-group > .form-subgroup,
 #organisation-form > .form-group > .form-subgroup,
-#representative-form > .form-group > .form-subgroup {
+#representative-form > .form-group > .form-subgroup,
+#user-form > .form-group > .form-subgroup {
     display: flex;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item,
 #organisation-form > .form-group > .form-subgroup > div,
-#representative-form > .form-group > .form-subgroup > div {
+#representative-form > .form-group > .form-subgroup > div,
+#user-form > .form-group > .form-subgroup > div {
     margin-left: 15px;
-    flex-grow: 1;
+    flex: 1;
 }
 
 #report-form > .form-tab > .form-group > .form-subgroup > .form-item:first-child,
 #organisation-form > .form-group > .form-subgroup > div:first-child,
-#representative-form > .form-group > .form-subgroup > div:first-child {
+#representative-form > .form-group > .form-subgroup > div:first-child,
+#user-form > .form-group > .form-subgroup > div:first-child {
     margin-left: 0;
 }
 
@@ -505,12 +751,30 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     flex: 1;
 }
 
+#report-form #recommendations-form :not(.report-row) + .report-row {
+    margin-top: 0;
+}
+
 #report-form label,
 #organisation-form label,
-#representative-form label {
+#representative-form label,
+#user-form label,
+#login-form label {
     display: block;
     padding-top: 10px;
     flex-shrink: 0;
+}
+
+#login-form label:first-of-type {
+    padding-top: 0;
+}
+
+#login-form.login-reset label {
+    padding-top: 10px;
+}
+
+#login-form.login-reset div:first-of-type label {
+    padding-top: 0;
 }
 
 #report-form select,
@@ -521,7 +785,13 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #organisation-form textarea,
 #representative-form select,
 #representative-form input,
-#representative-form textarea {
+#representative-form textarea,
+#user-form select,
+#user-form input,
+#user-form textarea,
+#object-type-select-div-div select,
+#object-type-select-div-div input,
+#login-form input {
     margin-top: 2px;
     padding: 6px;
     border-radius: 4px;
@@ -532,11 +802,33 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     background-color: #f8f8f8;
 }
 
+#report-form input[type=checkbox],
+#organisation-form input[type=checkbox],
+#representative-form input[type=checkbox],
+#user-form input[type=checkbox],
+#object-type-select-div-div input[type=checkbox],
+#report-form input[type=radio],
+#organisation-form input[type=radio],
+#representative-form input[type=radio],
+#user-form input[type=radio],
+#object-type-select-div-div input[type=radio] {
+    margin-top: 3px;
+}
+
+#report-form .layer-select-box select,
+#report-form #annotation-select-painting select,
+#report-form #annotation-select-work_on_paper select,
+#report-form #annotation-select-sculpture select,
+#report-form #annotation-select-default select {
+    margin-top: 0;
+}
+
 #report-form .form-checkbox,
 #report-form .form-checkbox-custom,
 #report-form .form-checkbox-conservation,
 #report-form .form-checkbox-conservation-custom,
-#report-form .form-radio {
+#report-form .form-radio,
+#report-form .form-radio-custom {
     display: flex;
 }
 
@@ -549,7 +841,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form .form-checkbox-custom input[type=checkbox],
 #report-form .form-checkbox-conservation input[type=checkbox],
 #report-form .form-checkbox-conservation-custom input[type=checkbox],
-#report-form .form-radio input[type=radio] {
+#report-form .form-radio input[type=radio],
+#report-form .form-radio-custom input[type=radio] {
     height: 14px;
     line-height: 14px;
     width: auto;
@@ -558,7 +851,8 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .form-checkbox-custom input[type=checkbox],
 #report-form .form-checkbox-conservation input[type=checkbox],
-#report-form .form-checkbox-conservation-custom input[type=checkbox] {
+#report-form .form-checkbox-conservation-custom input[type=checkbox],
+#report-form .form-radio-custom input[type=radio] {
     margin-top: 12px;
 }
 
@@ -590,22 +884,31 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form .report-header,
 #organisation-form .report-header,
-#representative-form .report-header {
+#representative-form .report-header,
+#user-form .report-header {
     padding-top: 30px;
     padding-bottom: 10px;
-    font-size: 150%;
+    font-size: 24px;
     font-weight: bold;
 }
 
 #report-form .report-header:first-child,
 #organisation-form .report-header:first-child,
-#representative-form .report-header:first-child {
+#representative-form .report-header:first-child,
+#user-form .report-header:first-child {
     padding-top: 0;
 }
 
-#report-form .report-header-2 {
+#report-form .report-header-2,
+#report-form .report-header-3 {
     padding-top: 10px;
     font-weight: bold;
+    font-size: 18px;
+}
+
+#report-form .report-header-3 {
+    font-size: 14px;
+    font-style: italic;
 }
 
 #report-form .report-legend {
@@ -620,11 +923,17 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 
 #report-form #annotation-form {
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
-    border-left: 1px solid #dbdbdb;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    border-bottom: none;
 }
 
 #report-form .annotation-form {
     display: flex;
+}
+
+.show-hide-current-annos {
+    display: none;
 }
 
 #report-form #annotation-history button {
@@ -637,12 +946,29 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 #report-form #annotation-history .show-all {
     background-color: #f8f8f8;
     text-align: left;
-    width: 210px;
+    width: 150px;
     border: 1px solid #dbdbdb;
     border-left: none;
     font-weight: bold;
     display: flex;
     align-items: center;
+    height: 52px;
+}
+
+#report-form #annotation-history #show-hide-numbers {
+    background-color: #f8f8f8;
+    text-align: left;
+    width: 65px;
+    border: 1px solid #dbdbdb;
+    border-left: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    height: 52px;
+}
+
+.highlighted-number {
+    fill: #fff000;
 }
 
 #report-form #annotation-history .show,
@@ -660,17 +986,26 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     color: #cccccc;
 }
 
+#report-form #annotation-history .annotations-list {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 #report-form #annotation-tools {
     display: flex;
     background-color: #f8f8f8;
     height: 50px;
     border: 1px solid #dbdbdb;
     border-left: none;
+    border-right: none;
 }
 
 #report-form #annotation-tools > div {
     display: flex;
     border-right: 1px solid #dbdbdb;
+}
+
+#report-form #annotation-tools > div:first-child {
     padding-right: 15px;
 }
 
@@ -761,6 +1096,120 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     box-shadow:inset 0px 0px 0px 2px white, 0 0 5px black;
 }
 
+.layer-multiselect {
+    width: 200px;
+    margin: auto 15px;
+}
+
+.layer-select-box {
+    position: relative;
+}
+
+.layer-select-box select {
+    width: 100%;
+}
+
+.layer-over-select {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#layer-checkboxes {
+    display: none;
+    border: 1px #767676 solid;
+    z-index: 1;
+    position: absolute;
+    background-color: #f8f8f8;
+    min-width: 198px;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 40%);
+}
+
+#layer-checkboxes .layer-checkbox-div {
+    display: flex;
+    padding: 0 10px 0 10px;
+}
+
+#layer-checkboxes .layer-checkbox-div:hover {
+    background-color: #1e90ff;
+}
+
+#layer-checkboxes .layer-checkbox-div input {
+    width: auto;
+    height: auto;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+#layer-checkboxes .layer-checkbox-div label {
+    padding-top: 0;
+}
+
+#layer-checkboxes .layer-checkbox-div:hover label {
+    color: white;
+}
+
+#annotation-select-painting,
+#annotation-select-work_on_paper,
+#annotation-select-sculpture,
+#annotation-select-default {
+    margin: auto 15px;
+    min-width: 200px;
+}
+
+#report-form #annotation-images {
+    border-bottom: 1px solid #dbdbdb;
+}
+
+#report-form #annotation-images #add-images {
+    display: flex;
+    background-color: #f8f8f8;
+    height: 50px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+#report-form #annotation-images #add-image-select {
+    margin: auto 15px;
+}
+
+#report-form #annotation-images #add-image-select.add-image-select-url {
+    margin-right: 10px;
+}
+
+#report-form #annotation-images #add-image-div {
+    display: none;
+}
+
+#report-form #annotation-images #add-image-div.load-new-image-button {
+    display: flex;
+    width: 2500px;
+}
+
+#report-form #annotation-images #add-image-url-button {
+    margin: auto 15px auto 10px;
+    height: 35px;
+}
+
+#report-form #annotation-images #add-image-url {
+    margin: auto 0;
+}
+
+#report-form #annotation-images #thumbnails {
+    display: flex;
+    padding: 15px;
+    overflow-x: scroll;
+}
+
+#report-form #annotation-images #thumbnails div img {
+    display: block;
+}
+
+#report-form #annotation-images #thumbnails div:not(:first-of-type) {
+    margin-left: 15px;
+}
+
 #annotate-file,
 #annotate-camera {
     display: none;
@@ -774,8 +1223,72 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     border-radius: 8px;
 }
 
+.thumbnail-image {
+    position: relative;
+    width: 150px;
+}
+
+.trash-background-image {
+    position: absolute;
+    top: 10px;
+    left: 107px;
+}
+
+.trash-icon {
+    position: absolute;
+    top: 16px;
+    left: 115px;
+    width: 35px;
+    line-height: 35px;
+    font-size: 20px;
+}
+
+.delete-image-button {
+    cursor: pointer;
+}
+
+.anno-hist {
+    display: flex;
+    box-sizing: border-box;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.anno-hist-hover,
+.anno-hist:hover,
+.anno-hist-selected {
+    background-color: #cccccc;
+}
+
+.anno-hist-layer-span {
+    font-weight: 700;
+}
+
+.anno-hist-deleted {
+    display: flex;
+    box-sizing: border-box;
+    padding-left: 10px;
+    color: #999999;
+}
+
+.anno-hist-deleted-span {
+    color: #999999;
+}
+
+.anno-number {
+    margin-right: 5px;
+}
+
+.anno-text {
+    display: inline-block;
+}
+
+.annotation-number {
+    font-size: 200px;
+}
+
 .select2 {
-    width: 155px !important;
+    width: 280px !important;
 }
 
 .select2-container--open .select2-dropdown--below {
@@ -787,7 +1300,7 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2-selection {
-    width: 155px;
+    width: 210px;
 }
 
 .select2-container .select2-selection--single {
@@ -798,28 +1311,31 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
 }
 
 .select2-results__option {
-    height: 30px;
-    line-height: 30px;
+    height: 20px;
+    line-height: 20px;
 }
 
 .select2-results__option svg,
 #report-form #annotation-tools .select2-selection__rendered svg {
-    height: 30px;
-    width: 130px;
+    height: 20px;
+    width: 235px;
 }
 
-.fill-disconnected-cross-id-3 {
-    margin-top: 2px;
+.select2-results__option--disabled {
+    display: none !important;
 }
 
+.select2-results__option--group,
 .select2-container--default .select2-results > .select2-results__options {
-    overflow-y: hidden !important;
+    max-height: none !important;
+    height: auto !important;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     padding-left: 0 !important;
     padding-right: 18px !important;
     text-overflow: clip !important;
+    margin-top: 5px !important;
 }
 
 .select2-selection__arrow {
@@ -835,14 +1351,6 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     margin-left: 5px !important;
 }
 
-.fill-pattern-line {
-    stroke: red !important;
-}
-
-#democlass {
-    stroke: red !important;
-}
-
 #report-form .buttons {
     display: flex;
 }
@@ -852,14 +1360,21 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     display: block;
 }
 
-#report-form .next-button {
+#report-form #iiif-manifest-url {
+    display: table;
+}
+
+#report-form .next-button,
+#report-form #iiif-manifest-url {
     margin-left: auto;
 }
 
 #report-form .previous-button button,
 #report-form .next-button button,
 #organisation-form #form_submit,
-#representative-form #form_submit {
+#representative-form #form_submit,
+#user-form #form_submit,
+#report-form #iiif-manifest-url {
     background-color: #747db3;
     border: none;
     border-radius: 4px;
@@ -869,10 +1384,18 @@ div:not(.readonly) > #report-form .form-tab:not(#reason-form) {
     margin-top: 15px;
 }
 
+#report-form #iiif-manifest-url {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
 #report-form .previous-button button:hover,
 #report-form .next-button button:hover,
 #organisation-form #form_submit:hover,
-#representative-form #form_submit:hover {
+#representative-form #form_submit:hover,
+#user-form #form_submit:hover,
+#report-form #iiif-manifest-url:hover {
     background-color: #3a3f5a;
 }
 
@@ -888,14 +1411,21 @@ nav {
 }
 
 .container-fluid {
+    height: 51px;
     max-width: 1230px;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-nav ul {
-    float: right !important;
-    margin-left: -15px;
+.nav-left {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav-right {
+    display: flex;
 }
 
 nav li {
@@ -903,31 +1433,139 @@ nav li {
     list-style: none;
 }
 
-nav li a {
+.nav-li-a {
     line-height: normal;
     float: none;
     display: inline-block;
-    font-size: 17.5px;
+    font-size: 17px;
     color: white;
     text-decoration: none;
-    padding: 15px;
+    margin: 15px;
+    margin-bottom: 0;
+    padding-bottom: 14px;
 }
 
-nav li:first-child a {
-    margin-left: 0px !important;
+.user-select-href {
+    font-size: 14px;
+    margin-top: 18px;
 }
 
-nav li:last-child a {
-    margin-right: 0px !important;
+nav li.active a {
+    border-bottom: 3px solid white;
 }
 
-nav li a:hover {
-    color: #232536;
+nav .fa-user,
+nav .fa-sign-out-alt {
+    color: white;
+}
+
+#lang-select {
+    position: relative;
+    font-family: Arial;
+    width: fit-content;
+    margin-right: 8px;
+}
+
+#user-select {
+    position: relative;
+    font-family: Arial;
+    width: fit-content;
+}
+
+#user-select i {
+    margin-right: 6px;
+}
+
+#lang-select-selected,
+#user-select-selected {
+    margin: 15px;
+    inline-size: max-content;
+    background-color: #747db3;
+    padding-right: 10px !important;
+}
+
+#lang-select-selected:after,
+#user-select-selected:after {
+    position: absolute;
+    content: "";
+    top: 7px;
+    margin-left: 5px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+#lang-select-selected.lang-select-arrow-active:after,
+#user-select-selected.user-select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 0;
+}
+
+.lang-select-hide,
+.user-select-hide {
+    display: none;
+}
+
+#lang-select-items div,
+#lang-select-selected,
+#user-select-items div,
+#user-select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#lang-select-items div,
+#user-select-items div {
+    background-color: white;
+    color: #333333;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+}
+
+#lang-select-items div {
+    text-align: center;
+}
+
+#lang-select-items div:first-of-type,
+#user-select-items div:first-of-type {
+    margin-top: 15px;
+}
+
+#lang-select-selected,
+#user-select-selected {
+    padding: 0;
+}
+
+#lang-select-items,
+#user-select-items {
+    position: absolute;
+    background-color: #747db3;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+#lang-select-items div:hover,
+#user-select-items div:hover {
+    background-color: #f8f8f8;
+}
+
+.message-green {
+    color: green;
+}
+
+.message-red {
+    color: red;
 }
 
 .search-form {
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #e7e7e7;
+    background-color: #e7e7e7;
+    border-bottom: 1px solid #dbdbdb;
     min-height: 50px;
 }
 
@@ -935,6 +1573,10 @@ form {
     width: 1230px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.login form {
+    width: auto;
 }
 
 #form {
@@ -1038,13 +1680,30 @@ form {
     padding: 15px;
 }
 
-.readonly #report-form .form-group .report-header-2 {
+.readonly #report-form .form-group .report-header-2,
+.readonly #report-form .form-group .report-header-3 {
     padding-top: 0;
     padding-bottom: 10px;
 }
 
+.readonly #report-form #recommendations-form .form-group .report-row {
+    padding-top: 10px;
+}
+
+.readonly #report-form #recommendations-form .form-group :not(.report-row) + .report-row {
+    padding-top: 0;
+}
+
 .readonly #report-form .form-group .report-column:last-child {
     margin-left: 15px;
+}
+
+.readonly #report-form .form-group .report-column:first-child {
+    margin-left: 0;
+}
+
+.readonly #report-form #recommendations-form .form-group .report-column:first-child {
+    margin-left: 0;
 }
 
 .readonly #report-form .form-item {
@@ -1060,7 +1719,8 @@ form {
 .readonly #report-form .form-item.form-creator,
 .readonly #report-form .form-item .number-of-parts,
 .readonly #report-form .form-item .treatment-hours,
-.readonly #report-form .no-spaces {
+.readonly #report-form .no-spaces,
+.readonly #report-form .form-item .readonly-input {
     white-space: normal;
 }
 
@@ -1105,7 +1765,8 @@ form {
 
 .readonly #report-form .form-checkbox-custom input,
 .readonly #report-form .form-checkbox-conservation input,
-.readonly #report-form .form-checkbox-conservation-custom input {
+.readonly #report-form .form-checkbox-conservation-custom input,
+.readonly #report-form .form-radio-custom input {
     margin-top: 2px;
 }
 
@@ -1122,11 +1783,8 @@ form {
     padding-right: 0;
 }
 
-.readonly #report-form .report-row + div {
-    margin-top: 30px;
-}
-
 .readonly #report-form .no-spaces {
+    margin-top: 10px;
     display: flex;
 }
 
@@ -1138,15 +1796,120 @@ form {
     border-right: none;
 }
 
+.readonly #report-form .form-group div:nth-child(2) {
+    margin-top: 0;
+}
+
+.readonly #report-form .form-group .form-subgroup:nth-child(1) div:nth-child(1) {
+    margin-top: 0;
+}
+
+.readonly .signatures .signatures-row {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+.readonly .signatures .signatures-row .signature-box {
+    padding: 15px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    flex-wrap: wrap;
+    flex-grow: 1;
+}
+
+.readonly .signatures .signatures-row:not(:first-of-type) {
+    margin-top: 30px;
+}
+
+.signature-canvas {
+    position: absolute;
+    border: 1px solid #dbdbdb;
+}
+
+.signature-name {
+    font-weight: 700;
+}
+
+.signature-pad--body {
+    position: relative;
+    margin: 15px auto;
+    height: 202px;
+    width: 382px;
+}
+
+.signature-pad--actions {
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signatures .button-clear {
+    margin-right: 5px;
+}
+
+.signatures .button-clear,
+.signatures .button-undo {
+    background-color: white;
+    color: #333333;
+}
+
+.signatures .button-clear:hover,
+.signatures .button-undo:hover {
+    background-color: #dbdbdb;
+}
+
+.signatures .button-save {
+    float: right;
+}
+
+.signature-pad img {
+    display:block;
+    margin:auto;
+}
+
+footer {
+    border-top: 1px solid #dbdbdb;
+    background-color: #e7e7e7;
+}
+
+footer > div {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 15px 30px 15px;
+}
+
+footer p {
+    padding-top: 15px;
+}
+
+footer a {
+    color: #747db3;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: #464b6b;
+}
+
+.footer-links {
+    margin-top: 15px;
+}
+
 @media screen and (max-width: 1200px) {
     form,
-    #readonly-container {
+    #readonly-container,
+    footer {
         width: 100%;
     }
 }
 
 @media screen and (max-width: 630px) {
-    body, #form_inventory_number_div {
+    body,
+    #form_inventory_number_div,
+    footer {
         width: 100%;
     }
 
@@ -1156,19 +1919,23 @@ form {
     }
 }
 
-    .report-header{
-        break-after: avoid-page !important;
-    }
-
 @media print {
     nav,
     .readonly-header,
     #annotation-history,
+    #annotation-tools,
     #thumbnails,
-    .openseadragon-container div:not(.openseadragon-canvas),
-    #print-button,
-    #iiif-manifest-url {
+    .openseadragon-container > div:not(.openseadragon-canvas),
+    #header-buttons,
+    #iiif-manifest-url,
+    .footer {
         display: none !important;
+    }
+
+    #annotation-form,
+    #annotation-images {
+        box-shadow: none !important;
+        border: none !important;
     }
 
     #readonly-container {
@@ -1182,10 +1949,18 @@ form {
         height: 0;
     }
 
-    .openseadragon-annotorious-print {
+    #annotation-viewer,
+    #annotation-history-print {
+        display: block;
+    }
+
+    .no-print-break {
         grid-row-start: auto;
         grid-column-start: auto;
-        z-index: 0;
+        break-inside: avoid !important;
+        position: static;
+        top: 0;
+        left: 0;
     }
 
     #report-form {

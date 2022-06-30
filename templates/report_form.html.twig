@@ -1,7 +1,4 @@
 <div id="report-form">
-    {% if readonly and prefilled_data.manifest is defined %}
-        <a id="iiif-manifest-url" href="{{ prefilled_data.manifest }}"><strong style="color: blue;">IIIF Manifest</strong></a>
-    {% endif %}
     {% include 'reason.html.twig' %}
     {% include 'basic_info.html.twig' %}
     {% include 'actors.html.twig' %}
@@ -9,4 +6,22 @@
     {% include 'condition.html.twig' %}
     {% include 'recommendations.html.twig' %}
     {% include 'annotate.html.twig' %}
+
+    {% if readonly %}
+        {% set reps = {
+            'owner': 'Owner / lender',
+            'user': 'Borrower / restorer',
+            'handler': 'Courier / art handler',
+            'third_party': 'Other third party'
+        } %}
+        {% set has_signatures = false %}
+        {% for rep, rep_name in reps %}
+            {% if prefilled_data[rep ~ '_name'] is defined and prefilled_data[rep ~ '_rep_name'] is defined %}
+                {% set has_signatures = true %}
+            {% endif %}
+        {% endfor %}
+        {% if has_signatures %}
+            {% include 'signatures.html.twig' with { 'reps': reps } %}
+        {% endif %}
+    {% endif %}
 </div>

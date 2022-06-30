@@ -24,6 +24,20 @@ class CreateExistingReportController extends AbstractController
      */
     public function createExisting(Request $request, $baseId)
     {
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        //Set default locale if locale is missing
+        if($locale === null || !in_array($locale, $locales)) {
+            return $this->redirectToRoute('create_existing', array('_locale' => $locales[0], 'baseId' => $baseId));
+        }
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $em = $this->container->get('doctrine')->getManager();
 
         // Do not allow creation of a report with a baseId which in turn is also the id of a report (unless the baseId and the report id are the same)
@@ -56,9 +70,10 @@ class CreateExistingReportController extends AbstractController
             }
         }
         $reportReasons = $this->getParameter('report_reasons');
+        $objectTypes = $this->getParameter('object_types');
+        $reportFields = $this->getParameter('report_fields');
+        $pictures = $this->getParameter('pictures');
 
-        $locale = $request->get('_locale');
-        $locales = $this->getParameter('locales');
         $translatedRoutes = array();
         foreach($locales as $l) {
             $translatedRoutes[] = array(
@@ -68,6 +83,6 @@ class CreateExistingReportController extends AbstractController
             );
         }
 
-        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $reportReasons, $highestId, $translatedRoutes));
+        return $this->render('report.html.twig', ReportTemplateData::getDataToCreateExisting($em, $this->getUser(), $reportReasons, $objectTypes, $reportFields, $pictures, $highestId, $translatedRoutes));
     }
 }

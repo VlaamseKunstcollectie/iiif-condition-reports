@@ -1,8 +1,8 @@
 {% if readonly %}
     {% if prefilled_data[name] is defined %}
-        <span class="readonly-label">{{ label }}: </span><span class="readonly-input">{% if is_url is defined and is_url %}<a href="{{ prefilled_data[name] }}">{{ prefilled_data[name] }}</a>{% else %}{{ prefilled_data[name] }}{% endif %}</span>
+        <span class="readonly-label">{{ label }}: </span><span class="readonly-input">{% if is_url is defined and is_url %}<a href="{{ prefilled_data[name] }}">{{ prefilled_data[name] | trans }}</a>{% else %}{{ prefilled_data[name] | trans }}{% endif %}</span>
     {% endif %}
 {% else %}
     <label for="{{ name }}">{{ label }}</label>
-    <input name="{{ name }}" type="text" value="{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}"/>
+    <input name="{{ name }}" type="text" value="{% if prefilled_data[name] is defined %}{{ prefilled_data[name] | trans }}{% endif %}"{% if disabled is defined and disabled %} disabled{% endif %}/>
 {% endif %}

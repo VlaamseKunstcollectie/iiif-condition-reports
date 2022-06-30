@@ -1,38 +1,49 @@
 <div id="annotate-form"{% if not readonly %} class="form-tab"{% endif %}>
     {% if readonly %}
-    <div class="report-header">{{ 'Annotations' | trans }}</div>
+        <div class="report-header">{{ 'Annotations' | trans }}</div>
     {% endif %}
     <div id="annotation-form">
         <div id="annotation-history">
             {% set default_image = '' %}
             {% set has_history = false %}
-            {% for image in images %}
-                <input type="hidden" name="images[]" value="{{ image | json_encode | replace({'"': '\\"'}) }}">
-                {% if annotation_history[image.hash] is defined %}
-                    {% for id, timestamp in annotation_history[image.hash] %}
-                        {% set has_history = true %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+            <div id="hidden-images">
+                {% for image in images %}
+                    <input type="hidden" id="hidden-image-{{ image.hash }}" name="images[]" value="{{ image | json_encode | replace({'"': '\\"'}) }}">
+                    {% if annotation_history[image.hash] is defined %}
+                        {% for id, timestamp in annotation_history[image.hash] %}
+                            {% set has_history = true %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% if has_history or not readonly %}
                 {% for image in images %}
                     {% if loop.first %}
                         {% set default_image = image.hash %}
                         <div id="history">
-                            <button type="button" onclick="resetAnnotations();" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span></button>
+                            <div class="flex">
+                                <button type="button" onclick="resetAnnotations()" class="show-all" id="show-hide-all-annos"><i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span></button>
+                                <button type="button" onclick="toggleNumberOverlays(window.osd_anno)" id="show-hide-numbers"><i class="far fa-eye"></i><span>{{ '1' | trans }}</span></button>
+                            </div>
                             <div id="annotation-history-timestamps">
                                 {% if not readonly %}
-                                    <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-{{ image.hash }}-999999999" class="hide">
-                                        <i class="far fa-eye"></i>
-                                        <span>{{ 'Current annotations' | trans }}</span>
-                                    </button>
+                                    <div id="annos-{{ image.hash }}-999999999" class="show-hide-current-annos">
+                                        <button type="button" onclick="toggleAnnotations('999999999')" id="show-hide-annos-{{ image.hash }}-999999999" class="hide">
+                                            <i class="far fa-eye"></i>
+                                            <span>{{ 'Current annotations' | trans }}</span>
+                                        </button>
+                                        <div class="annotations-list"></div>
+                                    </div>
                                 {% endif %}
                                 {% if annotation_history[image.hash] is defined %}
                                     {% for id, timestamp in annotation_history[image.hash] %}
-                                        <button type="button" onclick="toggleAnnotations('{{ id }}')" id="show-hide-annos-{{ image.hash }}-{{ id }}" class="hide">
-                                            <i class="far fa-eye"></i>
-                                            <span>{{ timestamp }}</span>
-                                        </button>
+                                        <div id="annos-{{ image.hash }}-{{ id }}">
+                                            <button type="button" onclick="toggleAnnotations('{{ id }}')" id="show-hide-annos-{{ image.hash }}-{{ id }}" class="hide">
+                                                <i class="far fa-eye"></i>
+                                                <span>{{ timestamp }}</span>
+                                            </button>
+                                            <div class="annotations-list"></div>
+                                        </div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
@@ -44,7 +55,6 @@
         <div id="annotation-tools">
             {% if not readonly %}
                 <div>
-                    <!--<p>Vorm: </p>-->
                     <button class="drawing-tool-inactive" name="drawing-tools" type="button" onclick="setDrawingTool('rect');" value="rect">
                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                              viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
@@ -84,119 +94,106 @@
                     </button>
                 </div>
                 <div>
-                    <!--<p>Kleur: </p>-->
-                    <input type="radio" onclick="window.annoConf.styleColor='red'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'red';" id="choose-colour-red" name="choose-colour" value="red" checked/>
-                    <label for="choose-colour-red"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='green'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'green';" id="choose-colour-green" name="choose-colour" value="green"/>
-                    <label for="choose-colour-green"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='blue'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'blue';" id="choose-colour-blue" name="choose-colour" value="blue"/>
-                    <label for="choose-colour-blue"></label>
-                    <input type="radio" onclick="window.annoConf.styleColor='orange'; window.annoConf.styleClass='condition-' + window.annoConf.styleFill + 'orange';" id="choose-colour-orange" name="choose-colour" value="orange"/>
-                    <label for="choose-colour-orange"></label>
+                    <div class="layer-multiselect">
+                        <div class="layer-select-box" onclick="showLayerCheckboxes()">
+                            <select>
+                                <option>{{ 'Select layer' | trans }}</option>
+                            </select>
+                            <div class="layer-over-select" id="layer-over-select"></div>
+                        </div>
+                        <div id="layer-checkboxes">
+                            <div class="layer-checkbox-div"><input type="checkbox" id="layer-carrier" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-carrier">{{ 'Carrier' | trans }}</label></div>
+                            <div class="layer-checkbox-div"><input type="checkbox" id="layer-paint-layer" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-paint-layer">{{ 'Paint layer' | trans }}</label></div>
+                            <div class="layer-checkbox-div"><input type="checkbox" id="layer-finishing-layer" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-finishing-layer">{{ 'Finishing layer' | trans }}</label></div>
+                            <div class="layer-checkbox-div"><input type="checkbox" id="layer-frame" onchange="checkLayerCheckbox(this)" autocomplete="off"/><label for="layer-frame">{{ 'Frame' | trans }}</label></div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <!--<p>Opvulling: </p>-->
-                    <select id="fill-dropdown" onchange="selectDropdown()">
-                        <option value="">Geen opvulling</option>
-                        <option value="rect">Geen opvulling</option>
-                        <option value="diagonal-rect">Geen opvulling</option>
-                        <option value="disconnected-cross">Geen opvulling</option>
-                    </select>
-                </div>
+                {% set damage_types = [] %}
+                {% for key, damage_type in report_fields.damage_types %}
+                    {% set damage_type = key | trans %}
+                    {% set damage_types = damage_types | merge({ (key): damage_type }) %}
+                {% endfor %}
+                {% set damage_types = damage_types | sort %}
+                {% for object_type in object_types %}
+                    <div id="annotation-select-{{ object_type }}"{% if this_object_type != object_type %} class="hidden"{% endif %}>
+                        <select class="annotation-select" onchange="selectedDamageType(this)" autocomplete="off">
+                            <option value="" selected disabled hidden>{{ 'Select damage type' | trans }}</option>
+                            {% for key, damage_type in damage_types %}
+                                {% if object_type == 'default' or object_type in attribute(report_fields.damage_types, key).applies_to %}
+                                    <option value="{{ key | trans }}">{{ key | trans }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if readonly and prefilled_data.manifest is defined %}
+                <a id="iiif-manifest-url" href="{{ prefilled_data.manifest }}">IIIF Manifest</a>
             {% endif %}
         </div>
 
         <div id="annotation-viewer">
-            <div id="openseadragon-annotorious">
-                <!-- Patterns that can be used in the annotations -->
-                <svg style="position: absolute; top: -9999px; left: -9999px;">
-                    <pattern id="rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="red" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width * 2 }}"></line>
-                        <line stroke="red" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width * 2}}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-red" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-red" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size * 3 / 2 }}px">
-                        <line stroke="red" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="red" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-green" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-green" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="green" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="green" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-orange" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="orange" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="orange" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="0" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x1="{{ pattern_size }}" y1="0" x2="0" y2="0" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="diagonal-rect-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size }}" y2="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size }}" x1="{{ pattern_size }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                    <pattern id="disconnected-cross-blue" patternUnits="userSpaceOnUse" width="{{ pattern_size * 5 / 4 }}px" height="{{ pattern_size }}px">
-                        <line stroke="blue" x1="0" y1="0" x2="{{ pattern_size * 4 / 5 }}" y2="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                        <line stroke="blue" x2="0" y1="0" y2="{{ pattern_size * 4 / 5 }}" x1="{{ pattern_size * 4 / 5 }}" stroke-width="{{ stroke_width }}"></line>
-                    </pattern>
-                </svg>
-            </div>
+            <div id="overlays"></div>
+            <div id="openseadragon-annotorious"></div>
             {% if readonly %}
                 {% for image in images %}
-                    <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                    <div class="no-print-break">
+                        <div id="openseadragon-annotorious-print-{{ image.hash }}" class="openseadragon-annotorious-print"></div>
+                    </div>
+                    <div class="no-print-break">
+                        {% if annotation_history[image.hash] is defined %}
+                            <div id="annotation-history-print">
+                                {% for id, timestamp in annotation_history[image.hash] %}
+                                    <div id="annos-print-{{ image.hash }}-{{ id }}">{{ timestamp }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% endif %}
-            {% if images | length > 1 or not readonly %}
+        </div>
+
+        {% if images | length > 1 or not readonly %}
+            <div id="annotation-images">
+                {% if not readonly %}
+                    <!-- TODO fix this, if you change object type from sculpture (in an already made report) to anything else, this will not work -->
+                    <div id="add-images">
+                        <select id="add-image-select" onchange="selectedImageToAdd(this)" autocomplete="off">
+                            <option value="" selected disabled hidden>{{ 'Add image' | trans }}</option>
+                            <option value="frame" id="add-image-frame"{% if this_object_type == 'sculpture' %} disabled hidden{% endif %}>{{ 'Simplified image of a frame' | trans }}</option>
+                            <option value="backside" id="add-image-backside"{% if this_object_type == 'sculpture' %} disabled hidden{% endif %}>{{ 'Simplified image of a backside' | trans }}</option>
+                            <option value="camera">{{ 'Image through camera' | trans }}</option>
+                            <option value="device">{{ 'Image on device' | trans }}</option>
+                            <option value="url">{{ 'Image through URL' | trans }}</option>
+                            <option value="iiif">{{ 'IIIF image through URL' | trans }}</option>
+                        </select>
+                        <div id="add-image-div">
+                            <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment" style="display: none">
+                            <input type="file" id="annotate-file" name="annotate-file" accept="image/*" style="display: none">
+                            <input type="text" id="add-image-url" placeholder="{{ 'Fill in image URL ...' | trans }}">
+                            <button type="button" id="add-image-url-button" onclick="triggerImageAdd()">{{ 'Load' | trans }}</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="annotation_data" name="annotation_data">
+                {% endif %}
                 <div id="thumbnails">
                     {% for image in images %}
-                        <div style="width: 150px; height: 200px; max-width: 150px; max-height: 200px;" onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
-                            <img src="{{ image.thumbnail }}" alt="">
+                        <div class="thumbnail-image" id="thumbnail-image-{{ image.hash }}">
+                            <img src="{{ image.thumbnail }}" alt="" onclick="clickedThumbnail('{{ image.hash }}', '{{ image.image}}')">
+                            {% if not readonly %}
+                                <div class="delete-image-button" onclick="confirmDeleteImage('{{ image.hash }}')">
+                                    <svg class="trash-background-image" height="33" width="33">
+                                        <rect width="33" height="33" rx="4" fill="white"></rect>
+                                    </svg>
+                                    <i class="fas fa-trash-alt trash-icon"></i>
+                                </div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
-            {% endif %}
-            {% if not readonly %}
-                <label for="annotate-iiif-image">{{ 'Add IIIF image URL' | trans }}</label>
-                <input type="text" id="annotate-iiif-image">
-                <button type="button" onclick="loadIIIFImage()">{{ 'Load' | trans }}</button>
-                <label for="annotate-image">{{ 'Add image URL' | trans }}</label>
-                <input type="text" id="annotate-image">
-                <button type="button" onclick="loadImage()">{{ 'Load' | trans }}</button>
-
-                <input type="file" id="annotate-file" name="annotate-file" accept="image/*">
-                <label id="annotate-file-label" for="annotate-file">
-                    <span id="annotate-file-progress"></span>
-                    <i class="fas fa-plus"></i>
-                </label>
-
-                <input type="file" id="annotate-camera" name="annotate-file" accept="image/*" capture="environment">
-                <label id="annotate-camera-label" for="annotate-camera">
-                    <span id="annotate-camera-progress"></span>
-                    <i class="fas fa-camera"></i>
-                </label>
-
-                <input type="hidden" id="annotation_data" name="annotation_data">
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 
     <!--<button type="button" id="print-button" onclick="if(window.isPrinting) return; window.isPrinting = true; window.osd.viewport.goHome(true); setTimeout(function(){ window.isPrinting = false; window.print(); }, 100);">Printen</button>-->
@@ -204,7 +201,7 @@
     {% if not readonly %}
         <div class="buttons">
             <div class="previous-button">
-                <button type="button" onclick="showDiv('recommendations-form')">{{ 'Previous' | trans }}</button>
+                <button type="button" onclick="showDiv('recommendations-form', true)">{{ 'Previous' | trans }}</button>
             </div>
             <!--<div class="send-button">
                 <input type="submit" value="Rapport verzenden">
@@ -215,109 +212,26 @@
 
 <script>
 
-function loadIIIFImage() {
-    const xhr = new XMLHttpRequest();
-    document.getElementById('annotate-iiif-image').placeholder = "{{ 'IIIF image is being loaded ...' | trans }}";
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            document.getElementById('annotate-iiif-image').placeholder = "";
-            const response = JSON.parse(xhr.responseText);
-            addImage(response);
-        }
-    };
-    xhr.open('GET', '/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('annotate-iiif-image').value));
-    xhr.send();
-    document.getElementById('annotate-iiif-image').value = "";
-}
-
-function loadImage() {
-    const xhr = new XMLHttpRequest();
-    document.getElementById('annotate-image').placeholder = "{{ 'Image is being downloaded ...' | trans }}";
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            document.getElementById('annotate-image').placeholder = "";
-            const response = JSON.parse(xhr.responseText);
-            addImage(response);
-        }
-    };
-    xhr.open('GET', '/download?image=' + encodeURIComponent(document.getElementById('annotate-image').value));
-    xhr.send();
-    document.getElementById('annotate-image').value = "";
-}
-
-function clickedThumbnail(hash, image) {
-    window.allAnnotationsVisible = true;
-    resetAnnotations();
-
-    var div = document.getElementById("annotation-history-timestamps");
-    while (div.firstChild) {
-        div.removeChild(div.firstChild);
-    }
-    var ids = [];
-    for(const id in window.annotationHistory[hash]) {
-        ids.push(id);
-    }
-    for(var i = ids.length - 1; i >= 0; i--) {
-        var button = document.createElement("button");
-        const id = ids[i];
-        button.onclick = function () {
-            toggleAnnotations(id);
-        };
-        button.type = "button";
-        button.id = "show-hide-annos-" + hash + "-" + id;
-        button.className = "hide";
-        var iEye = document.createElement("i");
-        iEye.className = "far fa-eye";
-        var span = document.createElement("span");
-        if(id === '999999999') {
-            span.innerHTML = "Huidige annotaties";
-        } else {
-            span.innerHTML = window.annotationHistory[hash][id];
-        }
-        button.appendChild(iEye);
-        button.appendChild(span);
-        div.appendChild(button);
-    }
-
-    window.osd_anno.world.removeAll();
-    if(image.endsWith('/info.json')) {
-        window.osd_anno.addTiledImage({
-            'tileSource': image
-        });
-    } else {
-        window.osd_anno.addTiledImage({
-            'tileSource': {
-                'type': 'image',
-                'url': image
-            }
-        });
-    }
-
-
-    window.currentImage = hash;
-    window.allAnnotationsVisible = false;
-    resetAnnotations();
-}
-
 $('input#annotate-file').change(function() {
 
-    $(this).simpleUpload("/upload", {
+    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
 
         start: function(file) {
-            document.getElementById('annotate-file').value = "";
-            document.getElementById('annotate-file-progress').innerHTML = "Uploading...";
+            document.getElementById('add-image-select').selectedIndex = 0;
+            document.getElementById('annotate-file').value = '';
+//            document.getElementById('annotate-file-progress').innerHTML = 'Uploading...';
         },
 
         progress: function(progress){
             //received progress
-            document.getElementById('annotate-file-progress').innerHTML = Math.round(progress) + "%";
-            console.log("upload progress: " + Math.round(progress) + "%");
+//            document.getElementById('annotate-file-progress').innerHTML = Math.round(progress) + '%';
+            console.log('upload progress: ' + Math.round(progress) + '%');
         },
 
         success: function(data){
             //upload successful
-            document.getElementById('annotate-file-progress').innerHTML = "";
-            console.log("upload successful!");
+//            document.getElementById('annotate-file-progress').innerHTML = '';
+            console.log('upload successful!');
             console.log(data);
 
             addImage(data);
@@ -326,31 +240,32 @@ $('input#annotate-file').change(function() {
         error: function(error){
             //upload failed
             console.log(error);
-            document.getElementById('annotate-file-progress').innerHTML = "";
-            console.log("upload error: " + error.name + ": " + error.message);
+//            document.getElementById('annotate-file-progress').innerHTML = '';
+            console.log('upload error: ' + error.name + ': ' + error.message);
         }
     });
 });
 
 $('input#annotate-camera').change(function() {
 
-    $(this).simpleUpload("/upload", {
+    $(this).simpleUpload('/{{ app.request.locale }}/upload', {
 
         start: function(file) {
-            document.getElementById('annotate-camera').value = "";
-            document.getElementById('annotate-camera-progress').innerHTML = "Uploading...";
+            document.getElementById('add-image-select').selectedIndex = 0;
+            document.getElementById('annotate-camera').value = '';
+//            document.getElementById('annotate-camera-progress').innerHTML = 'Uploading...';
         },
 
         progress: function(progress){
             //received progress
-            document.getElementById('annotate-camera-progress').innerHTML = Math.round(progress) + "%";
-            console.log("upload progress: " + Math.round(progress) + "%");
+//            document.getElementById('annotate-camera-progress').innerHTML = Math.round(progress) + '%';
+            console.log('upload progress: ' + Math.round(progress) + '%');
         },
 
         success: function(data){
             //upload successful
-            document.getElementById('annotate-camera-progress').innerHTML = "";
-            console.log("upload successful!");
+//            document.getElementById('annotate-camera-progress').innerHTML = '';
+            console.log('upload successful!');
             console.log(data);
 
             addImage(data);
@@ -359,90 +274,255 @@ $('input#annotate-camera').change(function() {
         error: function(error){
             //upload failed
             console.log(error);
-            document.getElementById('annotate-camera-progress').innerHTML = "";
-            console.log("upload error: " + error.name + ": " + error.message);
+//            document.getElementById('annotate-camera-progress').innerHTML = '';
+            console.log('upload error: ' + error.name + ': ' + error.message);
         }
     });
 });
 
-function addImage(image) {
+window.osd_anno = OpenSeadragon({
+    id: 'openseadragon-annotorious',
+    tileSources: [
+        {% for image in images %}
+            {% if loop.first %}
+                {% if image.image ends with '/info.json' %}
+                    '{{ image.image }}'
+                {% else %}
+                    {
+                        'type': 'image',
+                        'url': '{{ image.image }}'
+                    }
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    ]
+});
 
-    if(image.hash == null) {
-        return;
+window.annoConf = {
+    locale: 'auto',
+    styleColor: 'red',
+    styleFill: '',
+    styleClass: 'condition-red',
+    damageType: ''
+    {% if readonly %}
+        , readOnly: true
+    {% else %}
+        , userId: '{{ email }}'
+        , userName: '{{ full_name }}'
+    {% endif %}
+};
+window.overlays = [];
+
+window.anno = OpenSeadragon.Annotorious(window.osd_anno, window.annoConf);
+
+window.osd_anno.addHandler('open', function(event) {
+    addNumberOverlays(window.osd_anno, true);
+});
+
+window.anno.on('mouseEnterAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-hover');
+            }
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.add('highlighted-number');
+            }
+        }
     }
+});
 
-    window.annotationHistory[image.hash] = {
-        '999999999': ""
-    };
-    window.addedAnnotations[image.hash] = {
-        '999999999': ""
-    };
-    window.deletedAnnotations[image.hash] = {
-        '999999999': []
-    };
-    window.annotationsVisible[image.hash] = {
-        '999999999': true
-    };
+window.anno.on('selectAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-hover');
+            }
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.add('highlighted-number');
+            }
+        }
+    }
+});
 
-    const inputDiv = document.createElement("input");
-    inputDiv.type = "hidden";
-    inputDiv.name = "images[]";
-    inputDiv.value = JSON.stringify(image);
-    document.getElementById("thumbnails").appendChild(inputDiv);
+window.anno.on('mouseLeaveAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('anno-hist-hover');
+            }
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
+            }
+        }
+    }
+});
 
-    const thumbnailDiv = document.createElement("div");
-    thumbnailDiv.style = "width: 150px; height: 200px; max-width: 150px; max-height: 200px;";
-    thumbnailDiv.onclick = function() {
-        clickedThumbnail(image.hash, image.image);
-    };
-    thumbnailDiv.innerHTML = '<img src="' + image.thumbnail + '" alt="">';
-    document.getElementById("thumbnails").appendChild(thumbnailDiv);
-}
+window.anno.on('cancelSelected', function(annotation, ele) {
+    if(annotation != null) {
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.remove('anno-hist-selected');
+            }
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
+            }
+        }
+    }
+});
+
+window.anno.on('updateAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        var spans = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(spans !== null) {
+            for(var i = 0; i < spans.length; i++) {
+                spans[i].classList.add('anno-hist-selected');
+            }
+        }
+        var number = window.annoIds.hasOwnProperty(annotation.id) ? window.annoIds[annotation.id] : null;
+        if(number !== null) {
+            var e = document.getElementById('annotation-number-' + number);
+            if(e != null) {
+                e.classList.remove('highlighted-number');
+            }
+        }
+    }
+});
+
+window.anno.on('createAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        if(!window.annoIds.hasOwnProperty(annotation.id)) {
+            window.annoIds[annotation.id] = Object.keys(window.annoIds).length + 1;
+            window.addedAnnotations[window.currentImage]['999999999'][annotation.id] = annotation;
+        }
+        var buttons = document.getElementsByClassName('show-hide-current-annos');
+        for(var i = 0; i < buttons.length; i++) {
+            buttons[i].style = 'display: block';
+            var div = buttons[i].querySelector('div');
+            if(div != null) {
+                var styleClass = null;
+                if(annotation.hasOwnProperty('target') && annotation.target.hasOwnProperty('styleClass')) {
+                    styleClass = annotation.target.styleClass;
+                }
+                if(annotation.hasOwnProperty('body')) {
+                    addAnnoHistSpan(div, null, annotation.id, annotation.body, styleClass, true);
+                }
+            }
+        }
+        addNumberOverlays(window.osd_anno, true);
+    }
+});
+
+window.anno.on('deleteAnnotation', function(annotation, ele) {
+    if(annotation != null) {
+        var buttons = document.getElementsByClassName('anno-hist-' + annotation.id);
+        if(buttons != null) {
+            for(var i = buttons.length - 1; i >= 0; i--) {
+                buttons[i].classList.remove('anno-hist-hover');
+                var parentGroup = buttons[i].parentElement;
+                var parentParentDiv = parentGroup.parentElement;
+                var topDiv = parentParentDiv.parentElement;
+                if(topDiv.className === 'show-hide-current-annos') {
+                    parentGroup.removeChild(buttons[i]);
+                    if(parentGroup.querySelectorAll('div').length === 0) {
+                        parentParentDiv.removeChild(parentGroup);
+                    }
+                    if(parentParentDiv.childElementCount === 0) {
+                        topDiv.style = 'display: none';
+                    }
+                    if(window.currentImage in window.addedAnnotations) {
+                        for(id in window.addedAnnotations[window.currentImage]) {
+                            for (const [annoId, anno] of Object.entries(window.addedAnnotations[window.currentImage][id])) {
+                                if(annoId === annotation.id) {
+                                    delete window.addedAnnotations[window.currentImage][id][annoId];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    var alreadyIn = false;
+                    if(window.currentImage in window.deletedAnnotations) {
+                        for(id in window.deletedAnnotations[window.currentImage]) {
+                            if (window.deletedAnnotations[window.currentImage][id].includes(annotation.id)) {
+                                alreadyIn = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!alreadyIn) {
+                        window.deletedAnnotations[window.currentImage]['999999999'].push(annotation.id);
+                        var buttons1 = document.getElementsByClassName('show-hide-current-annos');
+                        for(var j = 0; j < buttons1.length; j++) {
+                            buttons1[j].style = 'display: block';
+                            var div = buttons1[j].querySelector('div');
+                            if(div != null) {
+                                addAnnoHistSpan(div, null, annotation.id, null, null, false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    addNumberOverlays(window.osd_anno, true);
+});
+
+Annotorious.SelectorPack(window.anno, {});
+
+{% if readonly %}
+    {% for image in images %}
+        window.osdPrint{{ image.hash }} = OpenSeadragon({
+            id: 'openseadragon-annotorious-print-{{ image.hash }}',
+            tileSources: [
+                {% if image.image ends with '/info.json' %}
+                '{{ image.image }}'
+                {% else %}
+                {
+                    'type': 'image',
+                    'url': '{{ image.image }}'
+                }
+                {% endif %}
+            ]
+        });
+        window.osdPrint{{ image.hash }}.addHandler('open', function(event) {
+            addNumberOverlays(window.osdPrint{{ image.hash }}, false);
+        });
+        window.annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(window.osdPrint{{ image.hash }}, {});
+    {% endfor %}
+{% else %}
+    window.anno.setAuthInfo({
+        id: '{{ email }}',
+        displayName: '{{ full_name }}'
+    });
+{% endif %}
 
 window.onload = function() {
-    window.osd_anno = OpenSeadragon({
-        id: "openseadragon-annotorious",
-        tileSources: [
-            {% for image in images %}
-                {% if loop.first %}
-                    {% if image.image ends with '/info.json' %}
-                        '{{ image.image }}'
-                    {% else %}
-                        {
-                            'type': 'image',
-                            'url': '{{ image.image }}'
-                        }
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-        ]
-    });
 
-    window.annoConf = {
-        locale: 'auto',
-        styleColor: 'red',
-        styleFill: '',
-        styleClass: 'condition-red'
-    };
-
-    window.anno = OpenSeadragon.Annotorious(window.osd_anno, window.annoConf);
-
-    Annotorious.SelectorPack(window.anno, {});
-
-    //TODO set proper auth info
-    window.anno.setAuthInfo({
-        id: 'http://www.example.com/hero-solutions',
-        displayName: 'Hero Solutions'
-    });
-
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 
     {% if not readonly %}
         document.forms[0].addEventListener('submit', function() {
-            if(!window.annotationsVisible[window.currentImage]["999999999"]) {
-                toggleAnnotations("999999999");
-            }
-            storeCurrentAnnotations();
             document.body.onbeforeunload = '';
             var annotations = {};
             for(var i = 0; i < window.images.length; i++) {
@@ -461,39 +541,54 @@ window.onload = function() {
                     }
                 }
             }
-            document.getElementById("annotation_data").value = JSON.stringify(annotations);
+            document.getElementById('annotation_data').value = JSON.stringify(annotations);
         });
+        var objectTypePopupSelect = document.getElementById('object-type-popup-select');
+        if (objectTypePopupSelect != null) {
+            objectTypePopupSelect.selectedIndex = 0;
+        }
+        {% if prefilled_data.object_type is defined %}
+            var objectTypeSelect = document.getElementById('object-type-select');
+            if (objectTypeSelect != null) {
+                {% for object_type in object_types %}
+                    {% if this_object_type == object_type %}
+                        objectTypeSelect.selectedIndex = {{ loop.index }};
+                    {% endif %}
+                {% endfor %}
+            }
+        {% else %}
+            var objectTypeSelect = document.getElementById('object-type-select');
+            if (objectTypeSelect != null) {
+                objectTypeSelect.selectedIndex = 0;
+            }
+        {% endif %}
+        var addImageSelect = document.getElementById('add-image-select');
+        if (addImageSelect != null) {
+            addImageSelect.selectedIndex = 0;
+        }
+        var reasonDropdown = document.getElementById('reason-dropdown');
+        if(reasonDropdown != null) {
+            {% if prefilled_data.reason_custom is not defined %}
+                reasonDropdown.selectedIndex = 0;
+            {% endif %}
+        }
     {% else %}
         var cur = window.currentImage;
         {% for image in images %}
-            var annoPrint{{ image.hash }} = OpenSeadragon.Annotorious(OpenSeadragon({
-                id: "openseadragon-annotorious-print-{{ image.hash }}",
-                tileSources: [
-                    {% if image.image ends with '/info.json' %}
-                        '{{ image.image }}'
-                    {% else %}
-                        {
-                            'type': 'image',
-                            'url': '{{ image.image }}'
-                        }
-                    {% endif %}
-                ]
-            }), {});
-
             window.currentImage = '{{ image.hash }}';
-            refreshAnnotations(annoPrint{{ image.hash }});
+            refreshAnnotations(window.annoPrint{{ image.hash }}, window.osdPrint{{ image.hash }}, false);
         {% endfor %}
         window.currentImage = cur;
 
-        var headers = document.getElementsByClassName("report-header");
+        var headers = document.getElementsByClassName('report-header');
 
         for (var i = 0; i < headers.length; i++) {
             var nextSibling = headers[i].nextElementSibling;
 
-            if (typeof nextSibling !== 'undefined' && nextSibling.className === "form-group") {
-                var groupDiv = document.createElement("div");
+            if (typeof nextSibling !== 'undefined' && nextSibling.className === 'form-group') {
+                var groupDiv = document.createElement('div');
 
-                groupDiv.className = "nobreak";
+                groupDiv.className = 'nobreak';
 
                 headers[i].parentElement.insertBefore(groupDiv, headers[i]);
 
@@ -505,6 +600,8 @@ window.onload = function() {
 };
 
 window.drawingEnabled = false;
+window.numberOverlays = true;
+window.layerSelectExpanded = false;
 
 window.images = {{ images | json_encode | raw }};
 window.currentImage = '{{ default_image }}';
@@ -521,7 +618,7 @@ for(var i = 0; i < window.images.length; i++) {
     window.annotationsVisible[hash] = {};
     {% if not readonly %}
         window.annotationHistory[hash] = {
-            '999999999': ""
+            '999999999': ''
         };
         window.addedAnnotations[hash] = {
             '999999999': {}
@@ -542,39 +639,723 @@ for(const image in hist) {
     }
 }
 
+var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
+for(const image in deletedAnnos) {
+    for(const reportId in deletedAnnos[image]) {
+        var deleted = [];
+        for(const id in deletedAnnos[image][reportId]) {
+            deleted.push(id);
+        }
+        window.deletedAnnotations[image][reportId] = deleted;
+    }
+}
+
 var annotations = {{ annotations | json_encode | raw }};
 for(const image in annotations) {
     for(const reportId in annotations[image]) {
         var reportAnnos = {};
+        var histEle = document.getElementById('annos-' + image + '-' + reportId);
+        var printHistEleDiv = document.getElementById('annos-print-' + image + '-' + reportId);
+        var histEleDiv = null;
+        if(histEle != null) {
+            histEleDiv = histEle.querySelector('div');
+        }
         for(const id in annotations[image][reportId]) {
             reportAnnos[id] = JSON.parse(annotations[image][reportId][id]);
-            if (!window.annoIds.includes(id)) {
-                window.annoIds.push(id);
+            if (!window.annoIds.hasOwnProperty(id)) {
+                window.annoIds[id] = Object.keys(window.annoIds).length + 1;
+            }
+            if(reportAnnos[id].hasOwnProperty('body')) {
+                if(histEleDiv != null) {
+                    var styleClass = null;
+                    if(reportAnnos[id].hasOwnProperty('target') && reportAnnos[id].target.hasOwnProperty('styleClass')) {
+                        styleClass = reportAnnos[id].target.styleClass;
+                    }
+                    addAnnoHistSpan(histEleDiv, printHistEleDiv, id, reportAnnos[id].body, styleClass, true);
+                }
             }
         }
         window.addedAnnotations[image][reportId] = reportAnnos;
     }
 }
 
-var deletedAnnos = {{ deleted_annotations | json_encode | raw }};
 for(const image in deletedAnnos) {
     for(const reportId in deletedAnnos[image]) {
-        var deleted = [];
-        for(const id in annos[image][reportId]) {
-            deleted.push(id);
+        var histEle_ = document.getElementById('annos-' + image + '-' + reportId);
+        var histEleDiv_ = null;
+        if(histEle_ != null) {
+            histEleDiv_ = histEle_.querySelector('div');
         }
-        window.deletedAnnotations[image][reportId] = deleted;
+        var printHistEleDiv_ = document.getElementById('annos-print-' + image + '-' + reportId);
+        for(const id in deletedAnnos[image][reportId]) {
+            if(histEleDiv_ != null) {
+                addAnnoHistSpan(histEleDiv_, printHistEleDiv_, id, null, null, false);
+            }
+        }
     }
 }
+
 for (const id in window.annotationHistory[window.currentImage]) {
     window.annotationsVisible[window.currentImage][id] = true;
 }
 window.allAnnotationsVisible = true;
 
-function refreshAnnotations(viewer) {
+{% if not readonly %}
+
+document.addEventListener("click", closeLayerCheckboxes);
+
+function closeLayerCheckboxes(ele) {
+    var layerCheckboxes = document.getElementById('layer-over-select');
+    var checkboxes = document.getElementById('layer-checkboxes');
+    if (layerCheckboxes != null && checkboxes != null && (ele == null || ele.target == null || ele.target !== layerCheckboxes && ele.target !== checkboxes && ele.target.parentNode !== checkboxes && !(ele.target.parentNode != null && ele.target.parentNode.parentNode === checkboxes))) {
+        checkboxes.style.display = 'none';
+        window.layerSelectExpanded = false;
+    }
+}
+
+function showLayerCheckboxes() {
+    var checkboxes = document.getElementById('layer-checkboxes');
+    window.layerSelectExpanded = !window.layerSelectExpanded;
+    if (window.layerSelectExpanded) {
+        checkboxes.style.display = 'block';
+    } else {
+        checkboxes.style.display = 'none';
+    }
+}
+
+function checkLayerCheckbox(element) {
+    var checkboxCarrier = document.getElementById('layer-carrier');
+    var checkboxPaintLayer = document.getElementById('layer-paint-layer');
+    var checkboxFinishingLayer = document.getElementById('layer-finishing-layer');
+    var checkboxFrame = document.getElementById('layer-frame');
+    if(checkboxCarrier != null && checkboxPaintLayer != null && checkboxFinishingLayer != null && checkboxFrame != null) {
+        if(checkboxFrame.checked && element === checkboxFrame) {
+            checkboxCarrier.checked = false;
+            checkboxPaintLayer.checked = false;
+            checkboxFinishingLayer.checked = false;
+            window.annoConf.styleClass = 'condition-orange';
+        } else if(checkboxCarrier.checked) {
+            checkboxFrame.checked = false;
+            if(checkboxPaintLayer.checked) {
+                if(checkboxFinishingLayer.checked) {
+                    window.annoConf.styleClass = 'condition-red-green-blue';
+                } else {
+                    window.annoConf.styleClass = 'condition-red-blue';
+                }
+            } else if(checkboxFinishingLayer.checked) {
+                window.annoConf.styleClass = 'condition-green-blue';
+            } else {
+                window.annoConf.styleClass = 'condition-blue';
+            }
+        } else if(checkboxPaintLayer.checked) {
+            checkboxFrame.checked = false;
+            if(checkboxFinishingLayer.checked) {
+                window.annoConf.styleClass = 'condition-red-green';
+            } else {
+                window.annoConf.styleClass = 'condition-red';
+            }
+        } else if(checkboxFinishingLayer.checked) {
+            checkboxFrame.checked = false;
+            window.annoConf.styleClass = 'condition-green';
+        }
+    }
+}
+
+function selectedImageToAdd(selectElement) {
+    var addImageDivInput = document.getElementById('add-image-div');
+    switch(selectElement.options[selectElement.selectedIndex].value) {
+        case 'frame': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
+            addImage({{ frame_picture | json_encode | raw }});
+            selectElement.selectedIndex = 0;
+            break;
+        }
+        case 'backside': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
+            addImage({{ backside_picture | json_encode | raw }});
+            selectElement.selectedIndex = 0;
+            break;
+        }
+        case 'camera': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
+            document.getElementById('annotate-camera').click();
+            selectElement.selectedIndex = 0;
+            break;
+        }
+        case 'device': {
+            addImageDivInput.classList.remove('load-new-image-button');
+            selectElement.classList.remove('add-image-select-url');
+            document.getElementById('annotate-file').click();
+            selectElement.selectedIndex = 0;
+            break;
+        }
+        case 'url': {
+            addImageDivInput.classList.add('load-new-image-button');
+            selectElement.classList.add('add-image-select-url');
+            var addImageUrl = document.getElementById('add-image-url');
+            addImageUrl.placeholder = '{{ 'Insert image URL ...' | trans }}';
+            addImageUrl.value = '';
+            break;
+        }
+        case 'iiif': {
+            addImageDivInput.classList.add('load-new-image-button');
+            selectElement.classList.add('add-image-select-url');
+            var addImageUrl = document.getElementById('add-image-url');
+            addImageUrl.placeholder = '{{ 'Insert IIIF image URL ...' | trans }}';
+            addImageUrl.value = '';
+            break;
+        }
+    }
+}
+
+function triggerImageAdd() {
+    var selectElement = document.getElementById('add-image-select');
+    switch(selectElement.options[selectElement.selectedIndex].value) {
+        case 'iiif': {
+            var value = document.getElementById('add-image-url').value;
+            if (value !== '') {
+                loadIIIFImage();
+            }
+            break;
+        }
+        case 'url': {
+            var value = document.getElementById('add-image-url').value;
+            if (value != '') {
+                loadImage();
+            }
+            break;
+        }
+    }
+}
+
+function loadIIIFImage() {
+    const xhr = new XMLHttpRequest();
+    document.getElementById('add-image-url').placeholder = '{{ 'IIIF image is being loaded ...' | trans }}';
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            document.getElementById('add-image-url').placeholder = '';
+            const response = JSON.parse(xhr.responseText);
+            addImage(response);
+        }
+    };
+    xhr.open('GET', '/{{ app.request.locale }}/loadiiifimage?report=1&image=' + encodeURIComponent(document.getElementById('add-image-url').value));
+    xhr.send();
+    document.getElementById('add-image-url').value = '';
+    document.getElementById('add-image-select').selectedIndex = 0;
+    document.getElementById('add-image-div').classList.remove('load-new-image-button');
+}
+
+function loadImage() {
+    const xhr = new XMLHttpRequest();
+    document.getElementById('add-image-url').placeholder = '{{ 'Image is being downloaded ...' | trans }}';
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            document.getElementById('add-image-url').placeholder = '';
+            const response = JSON.parse(xhr.responseText);
+            addImage(response);
+        }
+    };
+    xhr.open('GET', '/{{ app.request.locale }}/download?image=' + encodeURIComponent(document.getElementById('add-image-url').value));
+    xhr.send();
+    document.getElementById('add-image-url').value = '';
+    document.getElementById('add-image-select').selectedIndex = 0;
+    document.getElementById('add-image-div').classList.remove('load-new-image-button');
+}
+
+function confirmDeleteImage(hash) {
+    if(confirm('{{ 'Are you sure you want to delete this image and its annotations?' | trans }}')) {
+        var ele = document.getElementById('thumbnail-image-' + hash);
+        if(ele != null) {
+            ele.parentNode.removeChild(ele);
+            if(window.currentImage === hash) {
+                window.allAnnotationsVisible = true;
+                resetAnnotations();
+                var div = document.getElementById('annotation-history-timestamps');
+                while (div.firstChild) {
+                    div.removeChild(div.firstChild);
+                }
+                window.osd_anno.world.removeAll();
+            }
+            delete window.annotationHistory[hash];
+            delete window.addedAnnotations[hash];
+            delete window.deletedAnnotations[hash];
+        }
+        var hiddenImageInput = document.getElementById('hidden-image-' + hash);
+        if(hiddenImageInput != null) {
+            hiddenImageInput.parentNode.removeChild(hiddenImageInput);
+        }
+    }
+}
+
+function addImage(image) {
+
+    if(image.hash == null) {
+        return;
+    }
+
+    window.images.push(image);
+    window.annotationHistory[image.hash] = {
+        '999999999': ''
+    };
+    window.addedAnnotations[image.hash] = {
+        '999999999': {}
+    };
+    window.deletedAnnotations[image.hash] = {
+        '999999999': []
+    };
+    window.annotationsVisible[image.hash] = {
+        '999999999': true
+    };
+
+    const inputDiv = document.createElement('input');
+    inputDiv.type = 'hidden';
+    inputDiv.name = 'images[]';
+    inputDiv.id = 'hidden-image-' + image.hash;
+    inputDiv.value = JSON.stringify(image);
+    document.getElementById('hidden-images').appendChild(inputDiv);
+
+    const img = document.createElement('img');
+    img.src = image.thumbnail;
+    img.alt = '';
+    img.onclick = function() {
+        clickedThumbnail(image.hash, image.image);
+    };
+
+    const deleteButton = document.createElement('div');
+    deleteButton.className = 'delete-image-button';
+    deleteButton.onclick = function() {
+        confirmDeleteImage(image.hash);
+    };
+    deleteButton.innerHTML = '<svg class="trash-background-image" height="33" width="33"><rect width="33" height="33" rx="4" fill="white"></rect></svg><i class="fas fa-trash-alt trash-icon"></i>';
+
+    const thumbnailDiv = document.createElement('div');
+    thumbnailDiv.className = 'thumbnail-image';
+    thumbnailDiv.id = 'thumbnail-image-' + image.hash;
+    thumbnailDiv.appendChild(img);
+    thumbnailDiv.appendChild(deleteButton);
+
+    document.getElementById('thumbnails').appendChild(thumbnailDiv);
+}
+
+function selectedDamageType(selectElement) {
+    window.annoConf.damageType = selectElement.options[selectElement.selectedIndex].value;
+}
+{% endif %}
+
+function clickedThumbnail(hash, image) {
+    window.allAnnotationsVisible = true;
+    resetAnnotations();
+
+    var div = document.getElementById('annotation-history-timestamps');
+    if(div != null) {
+        while (div.firstChild) {
+            div.removeChild(div.firstChild);
+        }
+        var ids = [];
+        for (const id in window.annotationHistory[hash]) {
+            ids.push(id);
+        }
+        for (var i = ids.length - 1; i >= 0; i--) {
+            const id = ids[i];
+            var newDiv = document.createElement('div');
+            newDiv.id = 'annos-' + hash + '-' + id;
+            var button = document.createElement('button');
+            button.onclick = function () {
+                toggleAnnotations(id);
+            };
+            button.type = 'button';
+            button.id = 'show-hide-annos-' + hash + '-' + id;
+            button.className = 'hide';
+            var iEye = document.createElement('i');
+            iEye.className = 'far fa-eye';
+            var span = document.createElement('span');
+            if (id === '999999999') {
+                span.innerHTML = '{{ 'Current annotations' | trans }}';
+                newDiv.className = 'show-hide-current-annos';
+            } else {
+                span.innerHTML = window.annotationHistory[hash][id];
+            }
+            button.appendChild(iEye);
+            button.appendChild(span);
+            newDiv.appendChild(button);
+
+            var spanDiv = document.createElement('div');
+            spanDiv.className = 'annotations-list';
+            newDiv.appendChild(spanDiv);
+
+            if (hash in window.addedAnnotations) {
+                if (id in window.addedAnnotations[hash]) {
+                    var annos = window.addedAnnotations[hash][id];
+                    for (const id in annos) {
+                        if (!window.annoIds.hasOwnProperty(id)) {
+                            window.annoIds[id] = Object.keys(window.annoIds).length + 1;
+                        }
+                        if (annos[id].hasOwnProperty('body')) {
+                            newDiv.style = 'display: block';
+                            var styleClass = null;
+                            if(annos[id].hasOwnProperty('target') && annos[id].target.hasOwnProperty('styleClass')) {
+                                styleClass = annos[id].target.styleClass;
+                            }
+                            addAnnoHistSpan(spanDiv, null, id, annos[id].body, styleClass, true);
+                        }
+                    }
+                }
+            }
+            if (hash in window.deletedAnnotations) {
+                if (id in window.deletedAnnotations[hash]) {
+                    var annos = window.deletedAnnotations[hash][id];
+                    for (const id in annos) {
+                        newDiv.style = 'display: block';
+                        addAnnoHistSpan(spanDiv, null, id, null, null, false);
+                    }
+                }
+            }
+            div.appendChild(newDiv);
+        }
+    }
+
+    if(image.endsWith('/info.json')) {
+        window.osd_anno.open({
+            'tileSource': image
+        });
+    } else {
+        window.osd_anno.open({
+            'tileSource': {
+                'type': 'image',
+                'url': image
+            }
+        });
+    }
+
+    window.currentImage = hash;
+    window.allAnnotationsVisible = false;
+    resetAnnotations();
+}
+
+function addNumberOverlays(osd, remove) {
+    if(osd.world.getItemAt(0) === undefined) {
+        return;
+    }
+
+    if(remove) {
+        for (var i = 0; i < window.overlays.length; i++) {
+            osd.removeOverlay(window.overlays[i].id);
+            var ele = document.getElementById(window.overlays[i].id);
+            if (ele != null) {
+                ele.parentElement.removeChild(ele);
+            }
+        }
+        window.overlays = [];
+
+        if (!window.numberOverlays) {
+            return;
+        }
+    }
+
+    var annoEles = osd.element.getElementsByClassName('a9s-annotation');
+    for (var j = 0; j < annoEles.length; j++) {
+        if (annoEles[j].hasAttribute('data-id')) {
+            var annoId = annoEles[j].getAttribute('data-id');
+            if (window.annoIds.hasOwnProperty(annoId)) {
+                var number = window.annoIds[annoId];
+                var width = 15;
+                var n = number;
+                while(n > 0) {
+                    n = Math.floor(n / 10);
+                    width += 11;
+                }
+
+                var id = 'annotation-number-overlay-' + number;
+                var bbox = annoEles[j].getBBox();
+
+                var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('id', id);
+                svg.setAttribute('width', width);
+                svg.setAttribute('height', 26);
+
+                var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('id', 'annotation-number-' + number);
+                rect.setAttribute('width', width);
+                rect.setAttribute('height', 26);
+                rect.setAttribute('rx', 13);
+                rect.setAttribute('fill', 'white');
+
+                var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', 7);
+                text.setAttribute('y', 20);
+                text.setAttribute('style', 'font-size: 20px');
+                text.innerHTML = number;
+
+                svg.appendChild(rect);
+                svg.appendChild(text);
+
+                document.getElementById('overlays').appendChild(svg);
+
+                var point = new OpenSeadragon.Point(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
+                point = osd.world.getItemAt(0).imageToViewportCoordinates(point);
+                var overlay = { id: id, x: point.x, y: point.y, placement: 'CENTER', checkResize: false };
+                osd.addOverlay(overlay);
+                if(remove) {
+                    window.overlays.push(overlay);
+                }
+
+                document.getElementById(id).style.display = 'block';
+            }
+        }
+    }
+
+}
+
+function addAnnoHistSpan(div, printDiv, id, body, styleClass, added) {
+    var number = window.annoIds.hasOwnProperty(id) ? window.annoIds[id] : null;
+    var divsToAdd = [];
+    var printDivsToAdd = [];
+    if (styleClass != null && added) {
+        var layers = [];
+        switch (styleClass) {
+            case 'condition-red':
+            case 'condition-green':
+            case 'condition-blue':
+            case 'condition-orange':
+                layers.push(styleClass);
+                break;
+            case 'condition-red-green':
+                layers.push('condition-red');
+                layers.push('condition-green');
+                break;
+            case 'condition-red-blue':
+                layers.push('condition-red');
+                layers.push('condition-blue');
+                break;
+            case 'condition-green-blue':
+                layers.push('condition-green');
+                layers.push('condition-blue');
+                break;
+            case 'condition-red-green-blue':
+                layers.push('condition-red');
+                layers.push('condition-green');
+                layers.push('condition-blue');
+                break;
+        }
+        divsToAdd = addLayersToDiv(layers, div);
+        if (printDiv !== null) {
+            printDivsToAdd = addLayersToDiv(layers, printDiv);
+        }
+    } else {
+        divsToAdd.push(div);
+        if (printDiv !== null) {
+            printDivsToAdd.push(printDiv);
+        }
+    }
+    addDivsToHistory(divsToAdd, id, added, body, number, false);
+    if (printDiv !== null) {
+        addDivsToHistory(printDivsToAdd, id, added, body, number, true);
+    }
+}
+
+function addDivsToHistory(divsToAdd, id, added, body, number, print) {
+
+    for(var i = 0; i < divsToAdd.length; i++) {
+        var span = document.createElement('div');
+        if (added) {
+            if(!print) {
+                span.className = 'anno-hist anno-hist-' + id;
+            } else {
+                span.className = 'anno-hist';
+            }
+
+            var deleted = false;
+            if(window.currentImage !== null && window.deletedAnnotations[window.currentImage] !== undefined) {
+                for (const [reportId, deletedAnnos] of Object.entries(window.deletedAnnotations[window.currentImage])) {
+                    if(deletedAnnos.includes(id)) {
+                        deleted = true;
+                        if(print) {
+                            span.className = 'anno-hist-deleted';
+                        } else {
+                            span.className += ' anno-hist-deleted';
+                        }
+                        break;
+                    }
+                }
+            }
+            var text = null;
+            if(body != null) {
+                for(var j = 0; j < body.length; j++) {
+                    if(body[j].hasOwnProperty('value') && body[j].value != null && body[j].value !== '') {
+                        if (text == null) {
+                            if(deleted) {
+                                text = '<span class="anno-text anno-hist-deleted-span">';
+                            } else {
+                                text = '<span class="anno-text">';
+                            }
+                            text += body[j].value;
+                        } else {
+                            if(deleted) {
+                                text = text + '<br/><span class="italic anno-hist-deleted-span">' + body[j].value + '</span>';
+                            } else {
+                                text = text + '<br/><span class="italic">' + body[j].value + '</span>';
+                            }
+                        }
+                    }
+                }
+            }
+            if (number === null) {
+                span.innerHTML = text;
+            } else if(text == null) {
+                if(deleted) {
+                    span.innerHTML = '<span class="anno-number anno-hist-deleted-span">' + number + '.</span>';
+                } else {
+                    span.innerHTML = '<span class="anno-number">' + number + '.</span>';
+                }
+            } else {
+                if(deleted) {
+                    span.innerHTML = '<span class="anno-number anno-hist-deleted-span">' + number + '. </span>' + text + '</span>';
+                } else {
+                    span.innerHTML = '<span class="anno-number">' + number + '. </span>' + text + '</span>';
+                }
+            }
+        } else {
+            span.className = 'anno-hist-deleted';
+            if (number === null) {
+                span.innerHTML = '({{ 'Deleted' | trans }})';
+            } else {
+                {% if app.request.locale == 'en' %}
+                span.innerHTML = '({{ 'Deleted' | trans }} ' + number + '.)';
+                {% else %}
+                span.innerHTML = '(' + number + '. {{ 'deleted' | trans }})';
+                {% endif %}
+            }
+        }
+        if(!print) {
+            span.onmouseover = function () {
+                var eles = document.getElementsByClassName('a9s-outer');
+                for (var i = 0; i < eles.length; i++) {
+                    if (eles[i].parentElement.getAttribute('data-id') === id) {
+                        eles[i].parentElement.classList.add('selected');
+                    }
+                }
+                var spans = document.getElementsByClassName('anno-hist-' + id);
+                if(spans !== null) {
+                    for(var i = 0; i < spans.length; i++) {
+                        spans[i].classList.add('anno-hist-hover');
+                    }
+                }
+                if (number !== null) {
+                    var ele = document.getElementById('annotation-number-' + number);
+                    if (ele != null) {
+                        ele.classList.add('highlighted-number');
+                    }
+                }
+            };
+            span.onmouseout = function () {
+                var eles = document.getElementsByClassName('a9s-outer');
+                for (var i = 0; i < eles.length; i++) {
+                    if (eles[i].parentElement.getAttribute('data-id') === id) {
+                        eles[i].parentElement.classList.remove('selected');
+                    }
+                }
+                var spans = document.getElementsByClassName('anno-hist-' + id);
+                if(spans !== null) {
+                    for(var i = 0; i < spans.length; i++) {
+                        spans[i].classList.remove('anno-hist-hover');
+                    }
+                }
+                if (number !== null) {
+                    var ele = document.getElementById('annotation-number-' + number);
+                    if (ele != null) {
+                        ele.classList.remove('highlighted-number');
+                    }
+                }
+            };
+            span.onclick = function () {
+                if (window.anno.selectAnnotation(id) !== undefined) {
+                    var spans = document.getElementsByClassName('anno-hist-' + id);
+                    if(spans !== null) {
+                        for(var i = 0; i < spans.length; i++) {
+                            spans[i].classList.add('anno-hist-selected');
+                        }
+                    }
+                    if (number !== null) {
+                        var ele = document.getElementById('annotation-number-' + number);
+                        if (ele != null) {
+                            ele.classList.add('highlighted-number');
+                        }
+                    }
+                }
+            };
+        }
+        if (divsToAdd[i].childNodes.length < 2) {
+            divsToAdd[i].appendChild(span);
+        } else {
+            divsToAdd[i].insertBefore(span, divsToAdd[i].firstChild.nextSibling);
+        }
+    }
+}
+
+function addLayersToDiv(layers, div) {
+    var divsToAdd = [];
+    for(var i = 0; i < layers.length; i++) {
+        var layerDiv = div.querySelector('.' + layers[i]);
+        if (layerDiv == null) {
+            layerDiv = document.createElement('div');
+            layerDiv.className = layers[i];
+            var nameSpan = document.createElement('span');
+            nameSpan.className = 'anno-hist-layer-span';
+            layerDiv.appendChild(nameSpan);
+            switch(layers[i]) {
+                case 'condition-red': {
+                    nameSpan.innerHTML = '{{ 'Paint layer' | trans }}';
+                    var finishingLayer = div.querySelector('.condition-green');
+                    if (finishingLayer != null) {
+                        div.insertBefore(layerDiv, finishingLayer);
+                    } else {
+                        var frame = div.querySelector('.condition-orange');
+                        if (frame != null) {
+                            div.insertBefore(layerDiv, frame);
+                        } else {
+                            div.appendChild(layerDiv);
+                        }
+                    }
+                    break;
+                }
+                case 'condition-green': {
+                    nameSpan.innerHTML = '{{ 'Finishing layer' | trans }}';
+                    var frame = div.querySelector('.condition-orange');
+                    if (frame != null) {
+                        div.insertBefore(layerDiv, frame);
+                    } else {
+                        div.appendChild(layerDiv);
+                    }
+                    break;
+                }
+                case 'condition-blue': {
+                    nameSpan.innerHTML = '{{ 'Carrier' | trans }}';
+                    if(div.childNodes.length === 0) {
+                        div.appendChild(layerDiv);
+                    } else {
+                        div.insertBefore(layerDiv, div.firstChild);
+                    }
+                    break;
+                }
+                case 'condition-orange':
+                    nameSpan.innerHTML = '{{ 'Frame' | trans }}';
+                    div.appendChild(layerDiv);
+                    break;
+            }
+        }
+        divsToAdd.push(layerDiv);
+    }
+    return divsToAdd;
+}
+
+function refreshAnnotations(viewer, osd, remove) {
     var annotations = {};
+    window.annotationNumber = 1;
     for (const id in window.annotationHistory[window.currentImage]) {
-        if(window.annotationsVisible[window.currentImage][id]) {
+        if(!remove || window.annotationsVisible[window.currentImage][id]) {
             if (id in window.deletedAnnotations[window.currentImage]) {
                 for (const delId of window.deletedAnnotations[window.currentImage][id]) {
                     delete annotations[delId];
@@ -587,27 +1368,26 @@ function refreshAnnotations(viewer) {
             }
         }
     }
-    var arr = [];
+    var annos = [];
     for(const [ annoId, anno ] of Object.entries(annotations)) {
-        arr.push(anno);
+        annos.push(anno);
     }
-    viewer.setAnnotations(arr);
+    viewer.setAnnotations(annos);
+    addNumberOverlays(osd, remove);
 }
 
 function toggleAnnotations(id) {
-    storeCurrentAnnotations();
     window.annotationsVisible[window.currentImage][id] = !window.annotationsVisible[window.currentImage][id];
-    var buttonId = "show-hide-annos-" + window.currentImage + "-" + id;
-    console.log(buttonId);
+    var buttonId = 'show-hide-annos-' + window.currentImage + '-' + id;
     var showAnnotationsButton = document.getElementById(buttonId);
     if(!window.annotationsVisible[window.currentImage][id]) {
-        //showAnnotationsButton.innerHTML = "Toon";
-        showAnnotationsButton.classList.remove("hide");
-        showAnnotationsButton.classList.add("show");
+        //showAnnotationsButton.innerHTML = 'Toon';
+        showAnnotationsButton.classList.remove('hide');
+        showAnnotationsButton.classList.add('show');
     } else {
-        //hideAnnotationsButton.innerHTML = "Verberg";
-        showAnnotationsButton.classList.remove("show");
-        showAnnotationsButton.classList.add("hide");
+        //hideAnnotationsButton.innerHTML = 'Verberg';
+        showAnnotationsButton.classList.remove('show');
+        showAnnotationsButton.classList.add('hide');
     }
 
     var allVisible = true;
@@ -619,74 +1399,74 @@ function toggleAnnotations(id) {
     }
     window.allAnnotationsVisible = allVisible;
     setShowHideAllButton();
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 }
 
 function setShowHideAllButton() {
-    var showAllAnnotationsButton = document.getElementById("show-hide-all-annos");
-    if(window.allAnnotationsVisible) {
-        showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span>';
-        showAllAnnotationsButton.classList.remove("show");
-        showAllAnnotationsButton.classList.add("hide");
-    } else {
-        showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span>';
-        showAllAnnotationsButton.classList.remove("hide");
-        showAllAnnotationsButton.classList.add("show");
+    var showAllAnnotationsButton = document.getElementById('show-hide-all-annos');
+    if(showAllAnnotationsButton != null) {
+        if (window.allAnnotationsVisible) {
+            showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Hide all' | trans }}</span>';
+            showAllAnnotationsButton.classList.remove('show');
+            showAllAnnotationsButton.classList.add('hide');
+        } else {
+            showAllAnnotationsButton.innerHTML = '<i class="far fa-eye"></i><span>{{ 'Show all' | trans }}</span>';
+            showAllAnnotationsButton.classList.remove('hide');
+            showAllAnnotationsButton.classList.add('show');
+        }
     }
 }
 
-function storeCurrentAnnotations() {
-    {% if not readonly %}
-        if(window.annotationsVisible[window.currentImage]["999999999"]) {
-            window.addedAnnotations[window.currentImage]["999999999"] = {};
-            var annos = window.anno.getAnnotations();
-            for (var i = 0; i < annos.length; i++) {
-                if (!window.annoIds.includes(annos[i].id)) {
-                    window.addedAnnotations[window.currentImage]["999999999"][annos[i].id] = annos[i];
-                }
-            }
-        }
-    {% endif %}
+function toggleNumberOverlays(osd) {
+    window.numberOverlays = !window.numberOverlays;
+    var numberOverlaysButton = document.getElementById('show-hide-numbers');
+    if(window.numberOverlays) {
+        numberOverlaysButton.innerHTML = '<i class="far fa-eye"></i><span>1</span>';
+        numberOverlaysButton.classList.remove('show');
+        numberOverlaysButton.classList.add('hide');
+    } else {
+        numberOverlaysButton.innerHTML = '<i class="far fa-eye"></i><span>1</span>';
+        numberOverlaysButton.classList.remove('hide');
+        numberOverlaysButton.classList.add('show');
+    }
+    addNumberOverlays(osd, true);
 }
 
 function resetAnnotations() {
-    storeCurrentAnnotations();
     window.allAnnotationsVisible = !window.allAnnotationsVisible;
     setShowHideAllButton();
     for (const id in window.annotationHistory[window.currentImage]) {
         window.annotationsVisible[window.currentImage][id] = window.allAnnotationsVisible;
-        var showAllButton = document.getElementById("show-hide-annos-" + window.currentImage + "-" + id);
+        var showAllButton = document.getElementById('show-hide-annos-' + window.currentImage + '-' + id);
         if(window.allAnnotationsVisible) {
-            //showAllButton.innerHTML = "Verberg";
-            showAllButton.classList.remove("show");
-            showAllButton.classList.add("hide");
+            showAllButton.classList.remove('show');
+            showAllButton.classList.add('hide');
         } else {
-            //showAllButton.innerHTML = "Toon";
-            showAllButton.classList.remove("hide");
-            showAllButton.classList.add("show");
+            showAllButton.classList.remove('hide');
+            showAllButton.classList.add('show');
         }
     }
-    refreshAnnotations(window.anno);
+    refreshAnnotations(window.anno, window.osd_anno, true);
 }
 
 {% if not readonly %}
     function setDrawingTool(drawingTool) {
-        if(!window.annotationsVisible[window.currentImage]["999999999"]) {
-            toggleAnnotations("999999999");
+        if(!window.annotationsVisible[window.currentImage]['999999999']) {
+            toggleAnnotations('999999999');
         }
         window.anno.setDrawingTool(drawingTool);
         window.anno.setDrawingEnabled(true);
         window.drawingEnabled = true;
 
-        var drawingToolButtons = document.getElementsByName("drawing-tools");
+        var drawingToolButtons = document.getElementsByName('drawing-tools');
 
         for (var i = 0; i < drawingToolButtons.length; i++) {
             if (drawingToolButtons[i].value === drawingTool) {
-                drawingToolButtons[i].classList.add("drawing-tool-active");
-                drawingToolButtons[i].classList.remove("drawing-tool-inactive");
+                drawingToolButtons[i].classList.add('drawing-tool-active');
+                drawingToolButtons[i].classList.remove('drawing-tool-inactive');
             } else {
-                drawingToolButtons[i].classList.add("drawing-tool-inactive");
-                drawingToolButtons[i].classList.remove("drawing-tool-active");
+                drawingToolButtons[i].classList.add('drawing-tool-inactive');
+                drawingToolButtons[i].classList.remove('drawing-tool-active');
             }
         }
     }
@@ -703,25 +1483,25 @@ function resetAnnotations() {
         for (var i = 0; i < colours.length; i++) {
             if (colours[i] === this) {
                 selectedColour = colours[i].value;
-                if (selectedColour === "red") {
+                if (selectedColour === 'red') {
                     style.innerHTML = `
                         .fill-pattern-line {
                             stroke: rgb(255,0,0) !important;
                         }
                     `;
-                } else if (selectedColour === "green") {
+                } else if (selectedColour === 'green') {
                     style.innerHTML = `
                         .fill-pattern-line {
                             stroke: rgb(0,255,0) !important;
                         }
                     `;
-                } else if (selectedColour === "blue") {
+                } else if (selectedColour === 'blue') {
                     style.innerHTML = `
                         .fill-pattern-line {
                             stroke: rgb(0,0,255) !important;
                         }
                     `;
-                } else if (selectedColour === "orange") {
+                } else if (selectedColour === 'orange') {
                     style.innerHTML = `
                         .fill-pattern-line {
                             stroke: rgb(255,165,0) !important;
@@ -733,48 +1513,19 @@ function resetAnnotations() {
         }
     }
 
-    $("#fill-dropdown").select2({
-        minimumResultsForSearch: Infinity,
-        templateResult: function(option) {
-            return optionFill(option);
-        },
-        templateSelection: function(option) {
-            return optionFill(option);
-        }
-    });
-
-    function optionFill(option) {
-        switch(option.id) {
-            default:
-                return option.text;
-            case "rect":
-                return $('<span><svg><pattern id="fill-rect-id-1" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="5" y1="0" x2="5" y2="10" stroke-width="1" /><line class="fill-pattern-line" x1="0" y1="5" x2="10" y2="5" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-rect-id-1);" /></svg></span>');
-            case "diagonal-rect":
-                return $('<span><svg><pattern id="fill-cross-id-2" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="10" y2="10" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="10" x1="10" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-cross-id-2);" /></svg></span>');
-            case "disconnected-cross":
-                return $('<span><svg class="fill-disconnected-cross-id-3"><pattern id="fill-disconnected-cross-id-3" patternUnits="userSpaceOnUse" width="10px" height="10px"><line class="fill-pattern-line" x1="0" y1="0" x2="6" y2="6" stroke-width="1" /><line class="fill-pattern-line" x2="0" y1="0" y2="6" x1="6" stroke-width="1" /></pattern><rect x="0" y="0" width="130px" height="30px" style="fill: url(#fill-disconnected-cross-id-3);" /></svg></span>');
-        }
-    }
-
-    function selectDropdown() {
-        var fill = document.getElementById("fill-dropdown").value;
-        if (fill === "") {
-            window.annoConf.styleFill = fill;
-            window.annoConf.styleClass = 'condition-' + window.annoConf.styleColor;
-        } else {
-            window.annoConf.styleFill = fill + '-';
-            window.annoConf.styleClass = 'condition-' + fill + '-' + window.annoConf.styleColor;
-        }
-    }
-
     window.setInterval(function() {
         if (window.drawingEnabled && !window.anno._app.current.annotationLayer.mouseTracker.isTracking()) {
             window.drawingEnabled = false;
-            var buttons = document.getElementsByClassName("drawing-tool-active");
+            var buttons = document.getElementsByClassName('drawing-tool-active');
             for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.add("drawing-tool-inactive");
-                buttons[i].classList.remove("drawing-tool-active");
+                buttons[i].classList.add('drawing-tool-inactive');
+                buttons[i].classList.remove('drawing-tool-active');
             }
+            var selectElements = document.getElementsByClassName('annotation-select');
+            for (var j = 0; j < selectElements.length; j++) {
+                selectElements[j].selectedIndex = 0;
+            }
+            window.annoConf.damageType = '';
         }
     }, 100);
 {% endif %}

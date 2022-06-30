@@ -1,4 +1,4 @@
-<div class="report-header-2">{{ 'Representative' | trans }}</div>
+<div class="report-header-2">{% if representative_title is defined %}{{ representative_title | trans }}{% else %}{{ 'Representative' | trans }}{% endif %}</div>
 {% if not readonly %}
     <script>
         var {{ type }}Representatives = {{ representatives | json_encode | raw }};
@@ -8,11 +8,17 @@
                 var element = document.querySelector("input[name='{{ type }}_" + key + "']");
                 if(element != null) {
                     element.value = {{ type }}Representatives[id][key];
+                } else {
+                    element = document.querySelector("textarea[name='{{ type }}_" + key + "']");
+                    if(element != null) {
+                        element.value = {{ type }}Representatives[id][key];
+                        window["fix{{ type }}_" + key + "textareaheight"]();
+                    }
                 }
             }
         }
     </script>
-    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)">
+    <select onchange="fill{{  type }}Representative(this.options[this.selectedIndex].value)" autocomplete="off">
         <option></option>
         {% for representative in representatives %}
             <option value="{{ representative.id }}">{{ representative.alias }}</option>
@@ -24,7 +30,7 @@
         {% include 'textfield.html.twig' with { 'name': type ~ '_name', 'label': 'Name' | trans } %}
     </div>
     <div class="form-item">
-        {% include 'textfield.html.twig' with { 'name': type ~ '_function', 'label': 'Responsibility' | trans } %}
+        {% include 'textfield.html.twig' with { 'name': type ~ '_role', 'label': 'Role' | trans } %}
     </div>
 </div>
 <div class="form-subgroup">
@@ -33,5 +39,10 @@
     </div>
     <div class="form-item">
         {% include 'textfield.html.twig' with { 'name': type ~ '_phone', 'label': 'Telephone' | trans } %}
+    </div>
+</div>
+<div class="form-subgroup">
+    <div class="form-item">
+        {% include 'textarea.html.twig' with { 'name': type ~ '_notes', 'label': 'Notes' | trans } %}
     </div>
 </div>

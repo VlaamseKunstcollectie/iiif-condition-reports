@@ -1,3 +1,7 @@
+painting: Painting
+work_on_paper: Work on paper
+sculpture: Sculpture
+
 stone: Stone
 metal: Metal
 glass: Glass
@@ -8,11 +12,16 @@ paper: Paper
 wood: Wood
 plastic: Plastic
 
+loose: Loose
+fixed: Fixed
+original: Original
+not_original: Not original
+
 absent: Absent
 glaze: Glaze
 varnish: Varnish
 wax_layer: Wax layer
-painting: Painting
+painting_1: Painting
 monochrome: Monochrome
 polychrome: Polychrome
 patination: Patination
@@ -71,7 +80,7 @@ removing_mold_spores: Removing mold spores
 reinforcing: Reinforcing
 regluing_loose_parts: Regluing loose parts
 fixating_loose_parts: Fixating loose parts
-stabilizing_socket: Stabilizing socket
+stabilizing_pedestal: Stabilizing pedestal
 adding_protective_layer: Adding protective layer
 adding_barcode: Adding barcode
 
@@ -91,3 +100,51 @@ setup_method: Setup method
 material_technical_research: Material technical research
 analysis: Analysis
 necessary_background_information: Necessary background information
+
+abrasions: Abrasions
+accretion: Accretion
+adhesive_tape: Adhesive tape
+animal_glue: Animal glue
+blanching: Blanching
+blisters: Blisters
+bloom: Bloom
+blur: Blur
+bowing: Bowing
+condensation: Condensation
+consolidated: Consolidated
+crackle: Crackle
+creases: Creases
+crizzling: Crizzling
+cupping: Cupping
+dampness: Dampness
+darkening: Darkening
+deformation: Deformation
+degradation: Degradation
+deterioration: Deterioration
+discoloration: Discoloration
+distortion: Distortion
+excrements: Excrements
+fading: Fading
+filling: Filling
+finger_marks: Finger marks
+foxing: Foxing
+frass: Frass
+joints: Joints
+keys: Keys
+labels: Labels
+losses_lacunae: Losses / lacunae
+overpaint: Overpaint
+oxidation: Oxidation
+pitting: Pitting
+repairing: Repairing
+silver_mirroring: Silver mirroring
+stains: Stains
+stretchers: Stretchers
+strip_lining: Strip-lining
+tears: Tears
+tidelines: Tidelines
+warping: Warping
+wax_resin: Wax-resin
+wear: Wear
+wood_borers: Wood borers
+wrinkles: Wrinkles

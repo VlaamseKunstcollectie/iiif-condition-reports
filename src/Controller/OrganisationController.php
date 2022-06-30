@@ -6,6 +6,7 @@ use App\Entity\DatahubData;
 use App\Entity\InventoryNumber;
 use App\Entity\Organisation;
 use App\Entity\Report;
+use App\Utils\CustomChoiceType;
 use App\Utils\IIIFUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,6 +31,20 @@ class OrganisationController extends AbstractController
      */
     public function organisation(Request $request, $id, $action)
     {
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        //Set default locale if locale is missing
+        if($locale === null || !in_array($locale, $locales)) {
+            return $this->redirectToRoute('organisation', array('_locale' => $locales[0], 'id' => $id, 'action' => $action));
+        }
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $em = $this->container->get('doctrine')->getManager();
 
         $organisation = new Organisation();
@@ -53,10 +68,16 @@ class OrganisationController extends AbstractController
             return $this->redirectToRoute('organisations');
         } else {
             $t = $this->translator;
+            $roles = $this->getParameter('organisation_roles');
+            $organisationRoles = [];
+            foreach($roles as $role) {
+                $organisationRoles[$role] = $role;
+            }
+            $customRole = $organisation->getRole() != null && $organisation->getRole() !== '' && !array_key_exists($organisation->getRole(), $organisationRoles) ? $organisation->getRole() : '';
             $form = $this->createFormBuilder($organisation)
                 ->add('alias', TextType::class, ['required' => false, 'label' => $t->trans('Alias'), 'attr' => ['placeholder' => $t->trans('Alias of your choice (optional)')]])
                 ->add('name', TextType::class, ['label' => $t->trans('Name'), 'attr' => ['placeholder' => $t->trans('Name of the organisation')]])
-                ->add('function', TextType::class, ['required' => false, 'label' => $t->trans('Function'), 'attr' => ['placeholder' => $t->trans('Ex. own organisation, borrower, courier ...')]])
+                ->add('role', TextType::class, ['required' => false, 'label' => $t->trans('Role')])
                 ->add('logo', TextType::class, ['required' => false, 'label' => $t->trans('Logo'), 'attr' => ['placeholder' => $t->trans('URL of company logo')]])
                 ->add('vat', TextType::class, ['required' => false, 'label' => $t->trans('VAT number'), 'attr' => ['placeholder' => 'BE0xxx.xxx.xxx']])
                 ->add('address', TextType::class, ['required' => false, 'label' => $t->trans('Adress'), 'attr' => ['placeholder' => $t->trans('Street + house number')]])
@@ -67,7 +88,7 @@ class OrganisationController extends AbstractController
                 ->add('website', TextType::class, ['required' => false, 'label' => $t->trans('Website'), 'attr' => ['placeholder' => $t->trans('https://www.example.com')]])
                 ->add('phone', TextType::class, ['required' => false, 'label' => $t->trans('Telephone'), 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
                 ->add('mobile', TextType::class, ['required' => false, 'label' => $t->trans('Cell phone'), 'attr' => ['placeholder' => 'xxxx xx.xx.xx']])
-                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this organisation')]])
+                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this organisation'), 'oninput' => 'fixTextareaheight()']])
                 ->add('submit', SubmitType::class, ['label' => $t->trans('Save')])
                 ->getForm();
             $form->handleRequest($request);
@@ -80,8 +101,6 @@ class OrganisationController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('organisations');
             } else {
-                $locale = $request->get('_locale');
-                $locales = $this->getParameter('locales');
                 $translatedRoutes = array();
                 foreach($locales as $l) {
                     $translatedRoutes[] = array(
@@ -95,6 +114,9 @@ class OrganisationController extends AbstractController
                     'current_page' => 'organisations',
                     'new' => empty($id),
                     'form' => $form->createView(),
+                    'organisation_roles' => $organisationRoles,
+                    'role' => $organisation->getRole(),
+                    'custom_role' => $customRole,
                     'translated_routes' => $translatedRoutes
                 ]);
             }

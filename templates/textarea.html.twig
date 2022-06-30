@@ -1,5 +1,7 @@
 {% if not readonly %}
-    <label for="{{ name }}">{{ label }}</label>
+    {% if label is defined %}
+        <label for="{{ name }}">{{ label }}</label>
+    {% endif %}
     <textarea cols="{{ cols | default(100) }}" oninput="fix{{ name }}textareaheight()" name="{{ name }}" id="textarea_{{ name }}">{% if prefilled_data[name] is defined %}{{ prefilled_data[name] }}{% endif %}</textarea>
     <script>
         function fix{{ name }}textareaheight() {
@@ -14,6 +16,8 @@
         eventsToTrigger.push('fix{{ name }}textareaheight');
     </script>
 {% elseif prefilled_data[name] is defined %}
-    <span class="readonly-label">{{ label }}: </span>
+    {% if label is defined %}
+        <span class="readonly-label">{{ label }}: </span>
+    {% endif %}
     <span class="readonly-input">{{ prefilled_data[name] | replace({'\n': '<br>'}) | raw }}</span>
 {% endif %}

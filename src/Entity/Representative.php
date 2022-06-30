@@ -18,6 +18,11 @@ class Representative
     public $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    public $organisation;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     public $alias;
@@ -30,7 +35,7 @@ class Representative
     /**
      * @ORM\Column(type="string", length=255)
      */
-    public $function;
+    public $role;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,7 +50,7 @@ class Representative
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $notes;
+    public $notes;
 
     public function getId()
     {
@@ -55,6 +60,16 @@ class Representative
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     public function getAlias()
@@ -77,14 +92,14 @@ class Representative
         $this->name = $name;
     }
 
-    public function getFunction()
+    public function getRole()
     {
-        return $this->function;
+        return $this->role;
     }
 
-    public function setFunction($function)
+    public function setRole($role)
     {
-        $this->function = $function;
+        $this->role = $role;
     }
 
     public function getEmail()

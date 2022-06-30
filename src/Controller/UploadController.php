@@ -12,10 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
     /**
-     * @Route("/upload", name="upload")
+     * @Route("/{_locale}/upload", name="upload")
      */
     public function upload(Request $request)
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $file = $request->files->get('annotate-file');
         if($file == null) {
             $response = new Response(json_encode(array('hash' => null)));

@@ -1,11 +1,13 @@
 ---
 parameters:
 
+  # Do not forget to add the appropriate translations to messages.nl.yaml when editing the report reasons
+  # Each reason always needs a unique ID
   report_reasons:
     1:
       name: Incoming object (depacking)
       options:
-        100: Acquisition (collection donor/seller/...)
+        100: Acquisition (collection donor / seller / ...)
         101: Long term loan (third party collection)
         102: Temporary loan (third party collection)
         103: Returning loan (own collection)
@@ -15,19 +17,19 @@ parameters:
       options:
         201: Outgoing loan (own collection)
         202: Returning loan (third party collection)
-        203: Decommissioning/rejection
+        203: Decommissioning / rejection
         204: Restoration
     3:
-      name: Movement to another building/institution
+      name: Movement to another building / institution
       options:
-        301: To location/depot
+        301: To location / depot
         302: To exhibition room
         303: To restoration room
         304: To packing room
     4:
       name: Movement within the same building
       options:
-        401: To location/depot
+        401: To location / depot
         402: To exhibition room
         403: To restoration room
         404: To packing room
@@ -46,9 +48,563 @@ parameters:
         602: Loss and damage
         603: Damage claim
 
+  # There must always be a 'default' object type as fallback at the end
+  object_types:
+    - painting
+    - work_on_paper
+    - sculpture
+    - default
+
+  # Do not forget to add the appropriate translations to messages.en.yaml and messages.nl.yaml when editing the report fields
+  # Supported types: default, painting, work_on_paper and sculpture
+  # You must always provide a default list as fallback (which ideally contains all elements of the other object types) and each list should end in 'custom'
+  # Spaces are not allowed in any of the list elements, only letters, numbers and underscores
+  report_fields:
+    # Measurements has a slightly more complex structure than the other fields. It is split into separate parts, each with its own header and items with labels.
+    measurements:
+      default:
+        - header: ''
+          items:
+            height: Height
+            width: Width
+            depth: Depth
+            weight: Weight
+      work_on_paper:
+        - header: Paper
+          items:
+            height: Height
+            width: Width
+        - header: Passe-partout
+          items:
+            height_passe_partout: Height
+            width_passe_partout: Width
+        - header: Box
+          items:
+            height_box: Height
+            width_box: Width
+            depth_box: Depth
+            weight: Total weight
+      sculpture:
+        - header: Separate part A
+          items:
+            height_part_a: Height
+            width_part_a: Width
+            depth_part_a: Depth
+            weight_part_a: Weight
+        - header: Separate part B
+          items:
+            height_part_b: Height
+            width_part_b: Width
+            depth_part_b: Depth
+            weight_part_b: Weight
+        - header: Complete sculpture
+          items:
+            height: Height
+            width: Width
+            depth: Depth
+            weight: Total weight
+    materials:
+      default:
+        - stone
+        - metal
+        - glass
+        - ceramic
+        - plaster
+        - textile
+        - paper
+        - wood
+        - plastic
+        - custom
+      painting:
+        - textile
+        - wood
+        - metal
+        - ceramic
+        - paper
+        - custom
+      work_on_paper:
+        - textile
+        - wood
+        - metal
+        - ceramic
+        - paper
+        - custom
+      sculpture:
+        - stone
+        - metal
+        - glass
+        - ceramic
+        - plaster
+        - textile
+        - paper
+        - wood
+        - plastic
+        - custom
+    finishing_layers:
+      default:
+        - absent
+        - glaze
+        - varnish
+        - wax_layer
+        - painting_1
+        - monochrome
+        - polychrome
+        - patination
+        - chop_marks
+        - polishing
+        - natural
+        - artificial
+        - custom
+    connections:
+      default:
+        - not_applicable
+        - welded
+        - soldered
+        - dived_wood
+        - glue
+        - screws
+        - nails
+        - bolts
+        - custom
+    damages:
+      default:
+        - surface_dirt
+        - crusted_dirt
+        - spots
+        - fingerprints
+        - old_restoration
+        - salts
+        - insect_damage
+        - mold
+        - water_damage
+        - corrosion
+        - gaps
+        - flaking
+        - powdering
+        - discolorations
+        - wearage
+        - scratches
+        - twists
+        - dents
+        - structural_damage
+        - cracks
+        - hair_tears
+        - holes
+        - wrinkled
+        - delamination
+        - missing_parts
+        - removable_parts
+        - brittle
+        - custom
+    conservation_treatments:
+      default:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - stabilizing_pedestal
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      painting:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      work_on_paper:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+      sculpture:
+        - removing_dust
+        - superficial_cleaning
+        - insect_repellent_treatment
+        - removing_mold_spores
+        - reinforcing
+        - regluing_loose_parts
+        - fixating_loose_parts
+        - stabilizing_pedestal
+        - adding_protective_layer
+        - adding_barcode
+        - custom
+    restoration_treatments:
+      default:
+        - thorough_cleaning
+        - local_cleaning
+        - polychromy_research
+        - reconstruction_of_original
+        - removing_material_tension
+        - removing_old_restoration
+        - replacing_construction
+        - protective_layer
+        - adding_fastening_system
+        - retouching
+        - filling_gap_elements
+        - custom
+    researches:
+      default:
+        - setup_method
+        - material_technical_research
+        - analysis
+        - necessary_background_information
+        - custom
+    damage_types:
+      abrasions:
+        aat: http://vocab.getty.edu/page/aat/300053077
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      accretion:
+        aat: http://vocab.getty.edu/page/aat/300255449
+        applies_to:
+          - painting
+          - sculpture
+      adhesive_tape:
+        aat: http://vocab.getty.edu/page/aat/300310136
+        applies_to:
+          - painting
+          - frame
+      animal_glue:
+        aat: http://vocab.getty.edu/page/aat/300192836
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      blanching:
+        aat: http://vocab.getty.edu/page/aat/300252414
+        applies_to:
+          - painting
+          - sculpture
+      blisters:
+        aat: http://vocab.getty.edu/page/aat/300228340
+        applies_to:
+          - painting
+          - sculpture
+      bloom:
+        aat: http://vocab.getty.edu/page/aat/300186215
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      blur:
+        aat: http://vocab.getty.edu/page/aat/300263272
+        applies_to:
+          - painting
+      bowing:
+        aat: http://vocab.getty.edu/page/aat/300389996
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      condensation:
+        aat: http://vocab.getty.edu/page/aat/300224979
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      consolidated:
+        aat: http://vocab.getty.edu/page/aat/300219960
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      corrosion:
+        aat: http://vocab.getty.edu/page/aat/300054107
+        applies_to:
+          - painting
+          - sculpture
+      crackle:
+        aat: http://vocab.getty.edu/page/aat/300228345
+        applies_to:
+          - painting
+      cracks:
+        aat: http://vocab.getty.edu/page/aat/300209168
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      creases:
+        aat: http://vocab.getty.edu/page/aat/300228802
+        applies_to:
+          - painting
+          - work_on_paper
+      crizzling:
+        aat: http://vocab.getty.edu/page/aat/300218594
+        applies_to:
+          - sculpture
+      cupping:
+        aat: http://vocab.getty.edu/page/aat/300220569
+        applies_to:
+          - painting
+          - frame
+      dampness:
+        aat: http://vocab.getty.edu/page/aat/300068676
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      darkening:
+        aat: http://vocab.getty.edu/page/aat/300379491
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      deformation:
+        aat: http://vocab.getty.edu/page/aat/300072976
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      degradation:
+        aat: http://vocab.getty.edu/page/aat/300228676
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      delamination:
+        aat: http://vocab.getty.edu/page/aat/300054128
+        applies_to:
+          - painting
+          - sculpture
+      dents:
+        aat: http://vocab.getty.edu/page/aat/300400799
+        applies_to:
+          - painting
+          - sculpture
+      deterioration:
+        aat: http://vocab.getty.edu/page/aat/300054106
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      discoloration:
+        aat: http://vocab.getty.edu/page/aat/300053045
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+      distortion:
+        aat: http://vocab.getty.edu/page/aat/300056332
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      excrements:
+        aat: http://vocab.getty.edu/page/aat/300191590
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      fading:
+        aat: http://vocab.getty.edu/page/aat/300053048
+        applies_to:
+          - painting
+          - work_on_paper
+      filling:
+        aat: http://vocab.getty.edu/page/aat/300053092
+        applies_to:
+          - painting
+      finger_marks:
+        aat: http://vocab.getty.edu/page/aat/300251471
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      flaking:
+        aat: http://vocab.getty.edu/page/aat/300054129
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      foxing:
+        aat: http://vocab.getty.edu/page/aat/300078853
+        applies_to:
+          - work_on_paper
+      frass:
+        aat: http://vocab.getty.edu/page/aat/300251469
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      insect_damage:
+        aat: http://vocab.getty.edu/page/aat/300230031
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      joints:
+        aat: http://vocab.getty.edu/page/aat/300033608
+        applies_to:
+          - frame
+      keys:
+        aat: http://vocab.getty.edu/page/aat/300219680
+        applies_to:
+          - painting
+      labels:
+        aat: http://vocab.getty.edu/page/aat/300028730
+        applies_to:
+          - painting
+          - frame
+      losses_lacunae:
+        aat: http://vocab.getty.edu/page/aat/300263354
+        applies_to:
+          - painting
+          - work_on_paper
+      mold:
+        aat: http://vocab.getty.edu/page/aat/300378932
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      overpaint:
+        aat: http://vocab.getty.edu/page/aat/300178448
+        applies_to:
+          - painting
+      oxidation:
+        aat: http://vocab.getty.edu/page/aat/300220235
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      pitting:
+        aat: http://vocab.getty.edu/page/aat/300054130
+        applies_to:
+          - painting
+          - sculpture
+      repairing:
+        aat: http://vocab.getty.edu/page/aat/300053737
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      retouching:
+        aat: http://vocab.getty.edu/page/aat/300136723
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      scratches:
+        aat: http://vocab.getty.edu/page/aat/300380562
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      silver_mirroring:
+        aat: http://vocab.getty.edu/page/aat/300054113
+        applies_to:
+          - work_on_paper
+      stains:
+        aat: http://vocab.getty.edu/page/aat/300379497
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      stretchers:
+        aat: http://vocab.getty.edu/page/aat/300022630
+        applies_to:
+          - painting
+      strip_lining:
+        aat: http://vocab.getty.edu/page/aat/300053732
+        applies_to:
+          - painting
+      tears:
+        aat: http://vocab.getty.edu/page/aat/300254138
+        applies_to:
+          - painting
+          - work_on_paper
+      tidelines:
+        aat: http://vocab.getty.edu/page/aat/300068676
+        applies_to:
+          - painting
+          - work_on_paper
+      warping:
+        aat: http://vocab.getty.edu/page/aat/300155059
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      water_damage:
+        aat: http://vocab.getty.edu/page/aat/300379358
+        applies_to:
+          - painting
+          - work_on_paper
+          - sculpture
+          - frame
+      wax_resin:
+        aat: http://vocab.getty.edu/page/aat/300379360
+        applies_to:
+          - painting
+      wear:
+        aat: http://vocab.getty.edu/page/aat/300219449
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      wood_borers:
+        aat: http://vocab.getty.edu/page/aat/300379588
+        applies_to:
+          - painting
+          - sculpture
+          - frame
+      wrinkles:
+        aat: http://vocab.getty.edu/page/aat/300228341
+        applies_to:
+          - painting
+          - work_on_paper
+
   locales:
     - en
     - nl
+
+  organisation_roles:
+    - Lender
+    - Borrower
+    - Courier
+    - Art handler
+    - Restorer
+    - Insurer
+
+  pictures:
+    frame:
+      hash: 1a05c8366de4f7a23edffd0c72bc76bb89646799a6a85b4d8fe8f1fa142262fd
+      image: /annotation_images/frame.svg
+      thumbnail: /annotation_images/frame_150px.svg
+    backside:
+      hash: 227518a708732010213d949b38822c15ae14ee1c956d6e9d3b1b9d9a1c5d4954
+      image: /annotation_images/frame_back.svg
+      thumbnail: /annotation_images/frame_back_150px.svg
 
   datahub_url: 'http://datahub.kmska.be'
   datahub_language: nl

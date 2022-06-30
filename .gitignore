@@ -11,4 +11,9 @@
 config/condition-reports.yaml
 .env
 .idea/
-public/annotation_images/
+public/annotation_images/*
+!public/annotation_images/frame.svg
+!public/annotation_images/frame_150px.svg
+!public/annotation_images/frame_back.svg
+!public/annotation_images/frame_back_150px.svg
+public/signature_images/

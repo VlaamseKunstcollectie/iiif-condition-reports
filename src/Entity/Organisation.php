@@ -15,12 +15,12 @@ class Organisation
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $alias;
+    public $alias;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,7 +30,7 @@ class Organisation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $function;
+    private $role;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -85,7 +85,7 @@ class Organisation
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $notes;
+    public $notes;
 
     public function getId()
     {
@@ -117,14 +117,14 @@ class Organisation
         $this->name = $name;
     }
 
-    public function getFunction()
+    public function getRole()
     {
-        return $this->function;
+        return $this->role;
     }
 
-    public function setFunction($function)
+    public function setRole($role)
     {
-        $this->function = $function;
+        $this->role = $role;
     }
 
     public function getLogo()

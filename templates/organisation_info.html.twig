@@ -8,11 +8,17 @@
                 var element = document.querySelector("input[name='{{ type }}_" + key + "']");
                 if(element != null) {
                     element.value = {{ type }}Organisations[id][key];
+                } else {
+                    element = document.querySelector("textarea[name='{{ type }}_" + key + "']");
+                    if(element != null) {
+                        element.value = {{ type }}Organisations[id][key];
+                        window["fix{{ type }}_" + key + "textareaheight"]();
+                    }
                 }
             }
         }
     </script>
-    <select onchange="fill{{  type }}Organisation(this.options[this.selectedIndex].value)">
+    <select onchange="fill{{  type }}Organisation(this.options[this.selectedIndex].value)" autocomplete="off">
         <option></option>
         {% for organisation in organisations %}
             <option value="{{ organisation.id }}">{{ organisation.alias }}</option>
@@ -53,5 +59,10 @@
     </div>
     <div class="form-item">
         {% include 'textfield.html.twig' with { 'name': type ~ '_mobile', 'label': 'Cell phone' | trans } %}
+    </div>
+</div>
+<div class="form-subgroup">
+    <div class="form-item">
+        {% include 'textarea.html.twig' with { 'name': type ~ '_notes', 'label': 'Notes' | trans } %}
     </div>
 </div>

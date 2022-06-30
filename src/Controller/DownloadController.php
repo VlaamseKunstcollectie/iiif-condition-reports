@@ -12,10 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class DownloadController extends AbstractController
 {
     /**
-     * @Route("/download", name="download")
+     * @Route("/{_locale}/download", name="download")
      */
     public function download(Request $request)
     {
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $image = $request->get('image');
         $type = exif_imagetype($image);
         $mimes  = array(
@@ -44,14 +52,16 @@ class DownloadController extends AbstractController
             $thumbnail = $folder . '/' . $filenameNoExt . '_thm.jpg';
             copy($image, $filename);
 
+            $thumbnail = IIIFUtil::generateThumbnail($filename, $thumbnail);
+
             $image = new Image();
             $image->setImage('/' . $filename);
+            $image->setThumbnail('/' . $thumbnail);
             $em = $this->container->get('doctrine')->getManager();
             $em->getConnection()->getConfiguration()->setSQLLogger(null);
             $em->persist($image);
             $em->flush();
 
-            IIIFUtil::generateThumbnail($filename, $thumbnail);
             $response = new Response(json_encode(array('hash' => $image->getHash(), 'image' => '/' . $filename, 'thumbnail' => '/' . $thumbnail)));
             $response->headers->set('Content-Type', 'application/json');
             return $response;

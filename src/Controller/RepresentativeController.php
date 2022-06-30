@@ -31,6 +31,20 @@ class RepresentativeController extends AbstractController
      */
     public function representative(Request $request, $id, $action)
     {
+        $locale = $request->get('_locale');
+        $locales = $this->getParameter('locales');
+        //Set default locale if locale is missing
+        if($locale === null || !in_array($locale, $locales)) {
+            return $this->redirectToRoute('representative', array('_locale' => $locales[0], 'id' => $id, 'action' => $action));
+        }
+        if(!$this->getUser()) {
+            return $this->redirectToRoute('main');
+        } else if(!$this->getUser()->getRoles()) {
+            return $this->redirectToRoute('main');
+        } else if (!in_array('ROLE_USER', $this->getUser()->getRoles(), true)) {
+            return $this->redirectToRoute('main');
+        }
+
         $em = $this->container->get('doctrine')->getManager();
 
         $representative = new Representative();
@@ -44,8 +58,8 @@ class RepresentativeController extends AbstractController
                 ->orderBy('r.alias')
                 ->getQuery()
                 ->getResult();
-            foreach ($representatives as $org) {
-                $representative = $org;
+            foreach ($representatives as $rep) {
+                $representative = $rep;
             }
         }
 
@@ -54,14 +68,28 @@ class RepresentativeController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('representatives');
         } else {
+            $organisationNames = [
+                '' => ''
+            ];
+            $orgs = $em->createQueryBuilder()
+                ->select('o')
+                ->from(Organisation::class, 'o')
+                ->orderBy('o.alias')
+                ->getQuery()
+                ->getResult();
+            foreach ($orgs as $org) {
+                $organisationNames[$org->alias] = $org->id;
+            }
+
             $t = $this->translator;
             $form = $this->createFormBuilder($representative)
+                ->add('organisation', ChoiceType::class, ['choices' => $organisationNames, 'label' => $t->trans('Organisatie')])
                 ->add('alias', TextType::class, ['required' => false, 'label' => $t->trans('Alias'), 'attr' => ['placeholder' => $t->trans('Alias of your choice (optional)')]])
                 ->add('name', TextType::class, ['label' => $t->trans('Name'), 'attr' => ['placeholder' => $t->trans('Name of the representative')]])
-                ->add('function', TextType::class, ['required' => false, 'label' => $t->trans('Function'), 'attr' => ['placeholder' => $t->trans('Ex. restorator, courier ...')]])
+                ->add('role', TextType::class, ['required' => false, 'label' => $t->trans('Role'), 'attr' => ['placeholder' => $t->trans('Ex. restorer, courier ...')]])
                 ->add('email', TextType::class, ['required' => false, 'label' => $t->trans('E-mail'), 'attr' => ['placeholder' => $t->trans('contact@example.com')]])
                 ->add('phone', TextType::class, ['required' => false, 'label' => $t->trans('Telephone'), 'attr' => ['placeholder' => 'xxx xx.xx.xx']])
-                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this person')]])
+                ->add('notes', TextareaType::class, ['required' => false, 'label' => $t->trans('Notes'), 'attr' => ['placeholder' => $t->trans('Own notes about this person'), 'oninput' => 'fixTextareaheight()']])
                 ->add('submit', SubmitType::class, ['label' => $t->trans('Save')])
                 ->getForm();
             $form->handleRequest($request);
@@ -74,8 +102,6 @@ class RepresentativeController extends AbstractController
                 $em->flush();
                 return $this->redirectToRoute('representatives');
             } else {
-                $locale = $request->get('_locale');
-                $locales = $this->getParameter('locales');
                 $translatedRoutes = array();
                 foreach($locales as $l) {
                     $translatedRoutes[] = array(

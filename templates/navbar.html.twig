@@ -1,19 +1,100 @@
 <nav class="navbar navbar-static-top navbar-default">
     <div class="container-fluid">
-        <ul class="nav navbar-nav main-nav navbar-right">
-            {% for translated_route in translated_routes %}
-                <li{% if translated_route.active %} class="active-lang"{% endif %}>
-                <a href="{{ translated_route.url }}">{{ translated_route.lang }}</a>
+        <ul class="nav-left">
+            {% if is_granted('ROLE_USER') %}
+                <li{% if current_page is defined and (current_page == 'reports' or current_page == 'login') %} class="active"{% endif %}>
+                    <a class="nav-li-a" href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
                 </li>
-            {% endfor %}
-            <li{% if current_page == 'reports' %} class="active"{% endif %}>
-                <a href="{{ path('main') }}">{{ 'Reports' | trans }}</a>
-            </li>
-            <li{% if current_page == 'organisations' %} class="active"{% endif %}>
-                <a href="{{ path('organisations') }}">{{ 'Organisations' | trans }}</a>
-            </li>
-            <li{% if current_page == 'representatives' %} class="active"{% endif %}>
-                <a href="{{ path('representatives') }}">{{ 'Representatives' | trans }}</a>
+                <li{% if current_page == 'organisations' %} class="active"{% endif %}>
+                    <a class="nav-li-a" href="{{ path('organisations') }}">{{ 'Organisations' | trans }}</a>
+                </li>
+                <li{% if current_page == 'representatives' %} class="active"{% endif %}>
+                    <a class="nav-li-a" href="{{ path('representatives') }}">{{ 'Representatives' | trans }}</a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li{% if current_page == 'users' %} class="active"{% endif %}>
+                    <a class="nav-li-a" href="{{ path('users') }}">{{ 'Users' | trans }}</a>
+                </li>
+            {% endif %}
+        </ul>
+        <ul class="nav-right">
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-user">
+                    <div id="user-select">
+                        <div id="user-select-selected" onclick="clickedUserButton(this)"><i id="user-select-button" class="fas fa-user"></i>{{ app.user.fullName }}</div>
+                        <div id="user-select-items" class="user-select-hide">
+                            <div onclick="window.location.href = '{{ path('profile') }}'">{{ 'Profile' | trans }}</div>
+                            <div onclick="window.location.href = '{{ path('logout') }}'">{{ 'Logout' | trans }}</div>
+                        </div>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-user">
+                    <div id="user-select">
+                        <a class="nav-li-a user-select-href" href="{{ path('login') }}"><i id="user-select-button" class="fas fa-user"></i>{{ 'Login' | trans }}</a>
+                    </div>
+                </li>
+            {% endif %}
+            <li>
+                <div id="lang-select">
+                    <div id="lang-select-selected" onclick="clickedLangButton(this)">{{ app.request.locale | upper }}</div>
+                    <div id="lang-select-items" class="lang-select-hide">
+                        {% for translated_route in translated_routes %}
+                            {% if translated_route.lang != app.request.locale %}
+                                <div onclick="window.location.href = '{{ translated_route.url }}'">{{ translated_route.lang | upper }}</div>
+                            {% endif %}
+                        {% endfor %}
+                  </div>
+                </div>
+                <script>
+                    function clickedLangButton(ele) {
+                        var langSelectItem = document.getElementById('lang-select-items');
+                        if(langSelectItem != null) {
+                            langSelectItem.classList.toggle('lang-select-hide');
+                        }
+                        var langSelectSelected = document.getElementById('lang-select-selected');
+                        if(langSelectSelected != null) {
+                            langSelectSelected.classList.toggle('lang-select-arrow-active');
+                        }
+                    }
+
+                    function closeLangSelect(ele) {
+                        var langSelectSelected = document.getElementById('lang-select-selected');
+                        if (langSelectSelected != null && (ele == null || ele.target == null || ele.target !== langSelectSelected)) {
+                            langSelectSelected.classList.remove('lang-select-arrow-active');
+                            var langSelectItems = document.getElementById('lang-select-items');
+                            if(langSelectItems != null) {
+                                langSelectItems.classList.add('lang-select-hide');
+                            }
+                        }
+                    }
+                    document.addEventListener("click", closeLangSelect);
+
+                    function clickedUserButton(ele) {
+                        var userSelectItem = document.getElementById('user-select-items');
+                        if(userSelectItem != null) {
+                            userSelectItem.classList.toggle('user-select-hide');
+                        }
+                        var userSelectSelected = document.getElementById('user-select-selected');
+                        if(userSelectSelected != null) {
+                            userSelectSelected.classList.toggle('user-select-arrow-active');
+                        }
+                    }
+
+                    function closeUserSelect(ele) {
+                        var userSelectSelected = document.getElementById('user-select-selected');
+                        var userSelectButton = document.getElementById('user-select-button');
+                        if (userSelectSelected != null && (ele == null || ele.target == null || ele.target !== userSelectSelected && ele.target !== userSelectButton)) {
+                            userSelectSelected.classList.remove('user-select-arrow-active');
+                            var userSelectItems = document.getElementById('user-select-items');
+                            if(userSelectItems != null) {
+                                userSelectItems.classList.add('user-select-hide');
+                            }
+                        }
+                    }
+                    document.addEventListener("click", closeUserSelect);
+                </script>
             </li>
         </ul>
     </div>

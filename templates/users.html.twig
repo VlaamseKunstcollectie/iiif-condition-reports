@@ -1,0 +1,37 @@
+{% include 'header.html.twig' %}
+<!--<h1>Beheer Gebruikers</h1>-->
+<div class="users">
+    <div class="users-header">
+        <div class="header">{{ 'Users' | trans }}</div>
+        <a class="button" href="{{ path('user', { type : 'new' }) }}">
+            <i class="fas fa-plus"></i>
+            {{ 'Add user' | trans }}
+        </a>
+    </div>
+    {% for user in users %}
+        <div class="users-row">
+            <div class="users-row-metadata">
+                <div class="users-row-name">
+                    <div>{{ 'Name' | trans }}:</div>
+                    <div>{{ user.fullName }}</div>
+                </div>
+                <div class="users-row-email">
+                    <div>{{ 'E-mail' | trans }}:</div>
+                    <div>{{ user.email }}</div>
+                </div>
+            </div>
+            <div class="users-row-actions">
+                <a class="table-cell" href="{{ path('user', { id: user.id }) }}">
+                    <!--Wijzig-->
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a class="table-cell" href="{{ path('user', { id: user.id, action: 'delete' }) }}"
+                   onclick="return confirm('{% if app.request.locale == 'nl' %}Bent u zeker dat u de gebruiker {{ user.email }} wilt verwijderen?{% else %}Are you sure you want to delete the user {{ user.email }}?{% endif %}')">
+                    <!--Verwijder-->
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% include 'footer.html.twig' %}
